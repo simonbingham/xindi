@@ -22,11 +22,9 @@ component accessors="true"
 		return this;
 	}
 	
-	/*
-	struct function deletePage( required numeric pageid )
+	boolean function deletePage( required numeric pageid )
 	{
 		var Page = getPageByID( arguments.pageid );
-		var result = {};
 		if( !IsNull( Page ) )
 		{
 			transaction
@@ -34,17 +32,16 @@ component accessors="true"
 				var startvalue = Page.getLeftValue();
 				ORMExecuteQuery( "update Page set leftvalue = leftvalue - 2 where leftvalue > :startvalue", { startvalue=startvalue } );
 				ORMExecuteQuery( "update Page set rightvalue = rightvalue - 2 where rightvalue > :startvalue", { startvalue=startvalue } );
-				EntityDelete( rc.Page );
-				result = { success=true, message="The page has been deleted." };
+				EntityDelete( Page );
+				result = true;
 			}
 		}
 		else
 		{
-			result = { success=false, message="The page could not be deleted." };
+			result = false;
 		}
 		return result;
 	}
-	*/	
 	
 	array function getPages()
 	{
@@ -139,32 +136,44 @@ component accessors="true"
 	}
 	*/
 	
-	/*
-	struct function savePage( required Page Page, numeric ancestorid=0 )
+	any function newPage()
 	{
-		var result = { success=false, message="The page could not be saved." };
-		if( !arguments.Page.isPersisted() && arguments.ancestorid )
+		return EntityNew( "Page" );
+	}		
+	
+	function savePage( required struct properties, required numeric ancestorid )
+	{
+		transaction
 		{
-			var Ancestor = getPageByID( arguments.ancestorid );
-			transaction{
-				arguments.Page.setLeftValue( Val( Ancestor.getRightValue() ) );
-				arguments.Page.setRightValue( Val( Ancestor.getRightValue() + 1 ) );
-				ORMExecuteQuery( "update Page set leftvalue = leftvalue + 2 where leftvalue > :startingvalue", { startingvalue=Val( Ancestor.getRightValue() - 1 ) } );
-				ORMExecuteQuery( "update Page set rightvalue = rightvalue + 2 where rightvalue > :startingvalue", { startingvalue=Val( Ancestor.getRightValue() - 1 ) } );
-				EntitySave( Page );
-			}
-			result = { success=true, message="The page has been saved." };			
-		}
-		else
-		{
-			transaction
+			var Page = ""; 
+			Page = getPageByID( Val( arguments.properties.pageid ) );
+			if( IsNull( Page ) ) Page = newPage();
+			Page.populate( arguments.properties );
+			var result = application.ValidateThis.validate( Page );
+			if( !result.hasErrors() )
 			{
-				EntitySave( Page );
+				if( !Page.isPersisted() && arguments.ancestorid )
+				{
+					var Ancestor = getPageByID( arguments.ancestorid );
+					Page.setLeftValue( Val( Ancestor.getRightValue() ) );
+					Page.setRightValue( Val( Ancestor.getRightValue() + 1 ) );
+					ORMExecuteQuery( "update Page set leftvalue = leftvalue + 2 where leftvalue > :startingvalue", { startingvalue=Val( Ancestor.getRightValue() - 1 ) } );
+					ORMExecuteQuery( "update Page set rightvalue = rightvalue + 2 where rightvalue > :startingvalue", { startingvalue=Val( Ancestor.getRightValue() - 1 ) } );
+					EntitySave( Page );
+					transaction action="commit";
+				}
+				else if( Page.isPersisted() )
+				{
+					EntitySave( Page );
+					transaction action="commit";
+				}
 			}
-			result = { success=true, message="The page has been saved." };	
+			else
+			{
+				transaction action="rollback";
+			}
 		}
 		return result;
 	}
-	*/	
 	
 }

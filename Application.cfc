@@ -22,7 +22,9 @@ component extends="frameworks.org.corfield.framework"
 	*/
 	this.development = CGI.SERVER_NAME == "localhost";
 	this.applicationroot = getDirectoryFromPath( getCurrentTemplatePath() );
+	this.sessionmanagement = true;
 	this.mappings[ "/model" ] = this.applicationroot & "model/";
+	this.mappings[ "/ValidateThis" ] = this.applicationroot & "frameworks/ValidateThis/";
 	this.datasource = ListLast( this.applicationroot, "\/" );
 	this.ormenabled = true;
 	this.ormsettings = {
@@ -55,11 +57,18 @@ component extends="frameworks.org.corfield.framework"
 		var beanfactory = new frameworks.org.corfield.ioc( "/model" );
 		setBeanFactory( beanfactory );
 		
+		// define validation framework
+		var ValidateThisConfig = { definitionPath="/model/" };
+		application.ValidateThis = CreateObject( "component", "ValidateThis.ValidateThis" ).init( ValidateThisConfig );
+		
 		// define revision identifier
 		application.revision = Hash( Now() );
 		
-		// define error notification settings
-		application.errornotifications = { enabled=true, to="smnbin@gmail.com", from="smnbin@gmail.com", subject="Error Notification (#ListLast( this.applicationroot, '\/' )#)" };
+		// define error settings
+		application.errorsettings = { enabled=true, to="smnbin@gmail.com", from="smnbin@gmail.com", subject="Error Notification (#ListLast( this.applicationroot, '\/' )#)" };
+		
+		// define page settings (cms)
+		application.pagesettings = { enableadddelete=true };
 	}
 	
 	/**

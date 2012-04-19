@@ -15,29 +15,5 @@
 --->
 
 <cfoutput>
-	<h1>Oops!</h1>
-
-	<cfsavecontent variable="local.error">
-		<p>An error has occurred.</p>
-
-		<h2>Failed Action</h2>
-		
-		<p>#request.failedAction#</p>
-	
-		<h2>Exception</h2>
-		
-		<cfdump var="#request.exception#">		
-	</cfsavecontent>
-
-	<cfif this.development>
-		#local.error#
-	<cfelse>
-		<p>An error has occurred and the site administrator has been notified.</p>
-		
-		<cfif application.errorsettings.enabled>
-			<cfmail to="#application.errorsettings.to#" from="#application.errorsettings.from#" subject="#application.errorsettings.to#">
-				#local.error#
-			</cfmail>
-		</cfif>
-	</cfif>
+	<cfif StructKeyExists( rc, "message" )><p>#rc.message#</p></cfif>
 </cfoutput>

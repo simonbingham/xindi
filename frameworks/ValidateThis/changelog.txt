@@ -1,0 +1,291 @@
+
+Version 0.5
+-----------
+
+- xml schema changed so that conditions are declared once in a <conditions> block at the top of the xml file, and then referred to by unique id throughout the rest of the document.
+- omitting the context attribute on a <rule> OR specifying a context of "*" will add a rule to the default context, which will automatically add that rule to ALL contexts.
+- when requesting validations from the BOValidator, specifying an empty context or a non-existent context will return the default context.
+
+Version 0.6
+-----------
+
+- xml schema addition of an optional <contexts> block which allows a developer to define the name of a form that should be used when generating client side validations for a specific context.  This is optional as there are two other ways of specifying the form name to be used.
+- added a ValidateThisConfig bean which is defined in the client coldspring.xml file and allows for customization of certain framework behaviours, including:
+	- BOValidatorPath - which specifies where to find the BOValidator.cfc component.  This allows a developer to replace the BOValidator that comes with the framework with one of their own.
+	- DefaultJSLib - which specifies the default JavaScript library to use when generating client-side validations.
+	- JSRoot - which specifies the path to the JavaScript files which will be loaded by the framework.
+	- defaultFormName - which specifies the form name to be used by default when generating client-side validations.
+- added a getAllContexts() method to the BOValidator which will return a Struct containing all of the contexts defined for the object.  Each key in the struct will contain an array of all of the business rules defined for that context.
+- added support for the remote attribute of the jQuery validation plugin.  Uses validation type "custom" with the parameter "remoteURL".
+- added support for custom error messages for standard validations using the jQuery validation plugin.
+- added automatic discovery of ClientScriptWriters, ClientRuleScripters and ServerRuleValidators so that they are no longer hardcoded into the coldspring config and new components will be recognized automatically.
+- added a generateInitializationScript method which can be used to generate all of the JavaScript statements necessary to load and configure the required JS libraries.
+- added a formName parameter to the getValidationScript method which allows a developer to pass in the name of a form when requesting client-side validation script.
+
+Version 0.61
+------------
+
+- changed the validate() method in the BOValidator to return a Result object.  This should not affect backward compatibility and allows for a very simple integration scenario.
+
+Version 0.62
+------------
+
+- added a getFailuresAsStruct() method to the Result object.
+- changed the behaviour of the email ServerRuleValidator to not fail on blank values.
+
+
+Version 0.65
+------------
+
+- implemented some internal changes required for Railo compatibility
+- fixed a bug in the Custom ClientRuleScripter
+- added the latest version of Brian Kotek's BeanInjector to the distribution
+
+Version 0.7
+------------
+
+- removed reliance on Coldspring - all DI is now done within the framework
+- added the ValidateThis.cfc service object, which allows for simpler integration
+- changed the ServerRuleValidation_Numeric to not fail on an empty property
+- added a getErrors method to the Result.cfc object to implement the interface for Model-Glue's ValidationErrorCollection
+
+Version 0.75
+------------
+
+- added internationalization (i18n) support
+- added a demo to show how to implement the i18n support
+
+Version 0.80
+------------
+
+- changed the signature of the validate() method in the ValidateThis.cfc facade. The order of the first two arguments changed as objectType became an optional argument.
+- created a Coldbox Plugin for ValidateThis!
+
+Version 0.85
+------------
+
+- fixed a bug in ServerValidator.cfc that was causing conditions using non-numeric DependentPropertyValues to throw an error
+- changed the getInitializationScript() method in the ValidateThis.cfc facade to not require an objectType
+- changed the getInitializationScript() method to allow for selectively including or not including script to load the JS libraries
+- xml files are now allowed to be named .xml.cfm 
+- xml files can be contained in a folder under the defined definitionPath folder with the same name as the object type
+- you can specify multiple folders in definitionPath in the ValidateThisConfig structure, and the framework will look in each of those folders, in the order specified, to find your xml files
+- added a method for getFailuresAsString() to the Result.cfc object (thanks Craig McDonald)
+- updated Coldbox Plugin in the following ways:
+	- if no setting for VT_definitionPath is defined, it will use the setting for ModelsPath and the setting for ModelsExternalLocationPath, in that order, to look for the xml definition files
+	- added a method called setupValidationSI() which uses the scriptInclude plugin to load JS into the page
+	
+The following may break backwards compatibility:
+- changed arguments expected by getInitializationScript() from:
+	<cfargument name="Context" type="any" required="false" default="" />
+	<cfargument name="formName" type="any" required="false" default="#getFormName(arguments.Context)#" hint="The name of the form for which validations are being generated." />
+	<cfargument name="JSLib" type="any" required="false" default="#variables.ValidateThisConfig.defaultJSLib#" />
+	<cfargument name="locale" type="Any" required="no" default="" />
+
+	to:
+	<cfargument name="JSLib" type="any" required="false" default="#variables.ValidateThisConfig.defaultJSLib#" />
+	<cfargument name="JSIncludes" type="Any" required="no" default="true" />
+	<cfargument name="locale" type="Any" required="no" default="" />
+
+Version 0.851
+-------------
+
+- a relative path specified in definitionPath may be specified with or without a trailing "/"
+
+Version 0.9
+-------------
+
+- removed all the hacky code required to support a bug in cfinvoke in Railo, that has since been fixed
+
+Version 0.91
+-------------
+
+- added support for Groovy objects and ColdFusion on Wheels object via the ObjectChecker object
+- added a getVersion() method available from both the ValidateThis.cfc facade and the BOValidator which reports the current version of the framework
+
+Version 0.92
+-------------
+
+- a couple of fixes for conditional validations and Groovy objects
+- added the ability to specify external paths for ServerRuleValidators
+- added a config option for abstractGetterMethod to allow for BOs with an abstract getter vs individual getters
+- updated the ValidateThisCBPlugin with changes from John Whish
+- added a new Parameter to the required validation type for conditional client-side validations: DependentFieldName
+
+Version 0.93
+-------------
+
+- descriptions are now auto-created for camelCased properties
+- added a (work-in-progress) demo for CF9 ORM and cf.Objective()
+- fixed a css issue with the demo form
+- fixed a bug with dependentPropertyValue with CF9 ORM objects
+
+Version 0.94
+-------------
+
+- added the boolean validation type
+- implemented proper optionality. All validations are now treated as optional unless the same property has been declared as required.
+- the framework will now attempt to find a rules definition file in the same folder as the cfc if an object is passed into a method.
+- added a newResult() method to the ColdBox plugin.
+- added a getFailureMessages() method to the Result object which returns an array of all validation failure messages.
+- fixed an issue with failure messages and the custom validation type wherein a failure message in the xml file would override a failure message generated by a custom method.
+
+Version 0.95
+-------------
+- changed jQuery validations so that missing form fields will not generate a JavaScript error
+- added the ResultPath config option to override the built-in Result object with a custom Result object
+- fixed an issue with how delimiters were being added via the getFailuresAsString() method in the Result object
+- added four new methods to the Result object: getFailuresByField(), getFailureMessagesByField(), getFailuresByProperty(), getFailureMessagesByProperty()
+- the byField methods return a struct consisting of clientFieldNames, the byProperty methods return a struct consisting of propertyNames
+- the getFailures methods return complete failure structs, the getFailureMessages methods return just the failure messages
+- the getFailureMessages methods return an array of strings by default, but can return a string concatenated using a custom delimiter
+- the above 4 new methods accept a limit argument which returns only the first x failures per field/property
+- deprecated the getFailuresAsStruct method in the Result object in favour of getFailuresByField/getFailuresByProperty
+- introduced externalFileReaders to enable both xml and json support
+- made it easier to add new client script writers and client rule scripters which reside in a client application
+- added LightWire for dependency injection
+- incorporated a fix from Martijn van der Woud for the client-side equalTo validation
+- added the ability to automatically inject the Result object into the BO during validate()
+- added a config option "injectResultIntoBO" for the above
+
+Version 0.96
+-------------
+- upgraded bundled version of jQuery to 1.4.2
+- upgraded bundled version of jQuery Validate plugin to 1.7
+- added the jQuery noConflict option to attempt to prevent JS framework conflicts
+- added support for multiple forms for the same object with different contexts on a single page
+- added support for metadata in JSON format, in addition to XML format
+- fixed a bug with getFormName() in BOValidator
+- added support for validating a structure
+- added a demo for validating a structure
+- added a configuration option for specifying JSIncludes at a global level
+
+Version 0.96.1
+--------------
+- fixed a bug introduced when adding the support for validating a struct
+
+Version 0.96.2
+--------------
+- fixed a bug when passing an explicit form name into the getValidationScript method
+- fixed another bug regarding form names and generated JS
+- fixed a bug regarding form names with dashes in them
+- fixed a bug in the ColdBox plugin
+- updated end-to-end tests
+
+Version 0.97
+--------------
+- fixed a bug in addRule
+- added a config option for defaultFailureMessagePrefix which can be used to remove the "The " at the front of the default failure messages
+- implemented annotation support for JSON format annotations
+- added a demo for JSON annotations
+
+Version 0.98
+--------------
+- !!compatibility!! - changed parameter element definitions to allow dynamic parameters that can now be a value, expression, or property
+- added a defaultFailureMessagePrefix configuration option
+- updated Custom validation type to allow for methods that simply return a boolean, rather than a struct
+- exposed additional methods through the framework facade (for debugging & testing, administration, and extension)
+- fixed a bug with overriding failure messages for the custom validation type
+- removed jQuery.noConflict()
+- added a getRequiredPropertiesAndDescs(context) method in the BOValidator.
+- updated Range validation type to allow for date ranges
+- added a createWrapper(struct|object) function to the ValidationFactory and exposed it through the facade to allow a developer to prepare objects|structures for validation using a BOValidator directly.
+- updated jquery/ClientScriptWriter_jQuery - removed hardcoded addMethod() usage in getInitializationScript() - Now checks all ClientRuleScripters for an optional generateInitMethod() to provide the custom validation initialization.
+- added an addParameter(name,value,type) method to the Validation object
+- bug fix in rules/context ordering  	
+- updated jquery/AbstractClientRuleScripter - added getValType() and refactored the generateAddMethod() to eliminate addClassRules() usage. 
+- updated jquery/ClientRuleScripter_[ValType] - added the optional generateInitScript() check to provide custom methods for the getInitializationScript()
+- added a hasParameter(name) method to the Validation object
+- added a loadValidators() method to the ValidationFactory object
+- changed the location of the tests and sample apps in the repo
+- the VT facade is now available inside the Validation object - can be used for development of new validation types
+- updated the EqualTo validation to pick up the ComparePropertyDesc from the validation metadata if it is not explicitly specified 
+- changed Numeric validation type to use isNumeric() instead of isValid("Numeric")
+- changed Date validation type to use isDate() instead of isValid("Date")
+- the validate() method can now accept a JSON string in addition to a struct
+
+
+- added new validation types:
+  - DateRange(from=1/1/1970,until=1/1/2012)
+  - DoesNotContainOtherProperties(propertyName="list,of,properties")
+  - False()
+  - FutureDate([after=12/31/1969])
+  - InList(list,[delim=","])
+  - IsValidObject([objectType=""],[context="*"])
+  - noHTML()
+  - NotInList(list,[delim=","])
+  - PastDate([before=1/1/1970])
+  - Patterns(patterns_name=/regex/ [,patterns_anotherName=/regex/, .... ],[minMatches=1])
+  - Size(min=2,[max=5])
+  - True()
+  - URL()
+  - Expression(expression_that_evaluates_to_true_or_false) - ** Server-only **
+
+Version 0.98.1
+--------------
+Bug fix
+  
+Version 0.98.2
+--------------
+- enhanced isValidObject validator to add individual failures to the final result
+- removed Size CRS to address JS bug
+- fixed a bug in Result object when working with locales
+
+Version 0.99
+--------------
+- added fieldIsRequired() method to the BOValidator object, making it available to the facade as well
+- added a ColdBox interceptor which deprecates the ColdBox plugins
+- ColdBox interceptor will use ColdBox configured resource bundles if you have any
+- new ColdBox 3, ColdBox 3 with i18n, and ColdBox Module demos
+- ColdBox plugins have been deprecated (and removed from the distribution)
+- changed name of validation type from Patterns to MinPatternsMatch
+- xml schema is now validated and either throws an error or logs a message if invalid based on debuggingMode setting
+- new debugging features added
+- you can now instruct VT not to validate a field client-side by assigning a class of 'ignore' to the field
+- added support for onMissingMethod in your business objects
+- you can now pass an actual object into getValidationScript() (or any method on the facade, in fact) if it's needed for dynamic parameters
+- added ability for CRS to return a JSON rule packet for use with the jquery.validate.js plugin and/or future jquery.validatethis.js ext
+- new validation type: Time
+- changed links to jQuery files to use a CDN or writes out to the browser so that ValidateThis can be anywhere on the file system
+- now using jQuery 1.5
+- deprecated getFailuresAsStruct and removed getFailuresForCAYA
+- added locking to ValidationFactory
+- success is now set to 'false' automatically when calling addFailure()
+- updated API for addFailure() to allow for specific arguments
+
+Version 1.0
+-----------
+- removed the query.validate.pack.js file as it is no longer provided by the plugin author - users pointing directly to that file will have to point to query.validate.min.js instead
+- generated failure messages are now being pulled from the file /ValidateThis/locales/en_US.properties, for both client and server
+- added support for optionality in client rule scripters that required it
+- added Qunit tests for CRSs
+- performance improvements to the JavaScript generated for client-side validations
+- edited getValidator to allow it to search components dot-path under definitionPath e.g model.entity.User -> /mydefinitionPath/mode/entity/User.xml
+- added an ignoreMissingProperties argument to the validate() method which defaults to false
+- fixed a bug which caused recursive failure information to be added to the Result object
+- converted Selenium end-to-end tests to use CFSelenium
+- fixed bug where the client daterange validator did not ignore blank fields
+- fixed bug where the desc attribute was ignored if it was the same as the name attribute.
+- added an ANT build file
+- fixed issue #26 - addressed issues with the use of $ in CRSs
+- fixed issue #17 - replaced use of local struct with var scope
+- added custom inheritance checking to work around significant performance problem with the CF in-build isInstanceOf()
+- fixes for case-sensitivity issues of ValidateThis folder
+- now using protocol-agnostic URLs to pull in scripts from CDN
+- added project README.md file
+- changed links in sample apps to be relative
+
+Version 1.1
+-----------
+- assorted fixes contributed by users
+- new validation type: notRegex
+
+Version 1.2
+-----------
+- a fix to the JS generation to avoid errors being thrown when a field is missing
+- processOn attribute added to rule entity, to allow for validation only on server and/or only on client
+- fixed a bug in the isValidObject SRV
+- performance enhancements to some CRSs
+- updated ServerValidator so it doesn't care about missing properties for custom validation types
+- fixed a bug where calling addResult didn't make the receiving result a failure if the added result was a failure
+ 
