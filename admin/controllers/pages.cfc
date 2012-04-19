@@ -23,49 +23,46 @@ component accessors="true" extends="abstract"
 		rc.pages = variables.PageService.getPages();
 	}
 
-	void function deletePage( required struct rc ) {
+	void function delete( required struct rc ) {
 		param name="rc.pageid" default="0";
-		var result = variables.PageService.deletePage( Val( rc.pageid ) );
-		if( !result ) rc.message = "The page could not be deleted.";
-		else rc.message = "The page has been deleted.";
-		variables.fw.redirect( "pages", "message" );
+		rc.messages = variables.PageService.deletePage( Val( rc.pageid ) );
+		variables.fw.redirect( "pages", "messages" );
 	}	
 	
 	void function maintain( required struct rc ) {
 		param name="rc.pageid" default="0";
-		if( !StructKeyExists( rc, "Page" ) )
-		{
-			rc.Page = variables.PageService.getPageByID( Val( rc.pageid ) );
-			if( IsNull( rc.Page ) ) rc.Page = variables.PageService.newPage();
-		}
+		if( !StructKeyExists( rc, "Page" ) ) rc.Page = variables.PageService.getPageByID( Val( rc.pageid ) );
+		rc.Validator = variables.PageService.getValidator( rc.Page );
+	}	
+	
+	void function move( required struct rc ) {
+		param name="rc.pageid" default="0";
+		param name="rc.direction" default="";
+		rc.messages = variables.PageService.movePage( Val( rc.pageid ), rc.direction );
+		variables.fw.redirect( "pages", "messages" );
 	}	
 
 	void function save( required struct rc ) {
 		param name="rc.pageid" default="0";
 		param name="rc.ancestorid" default="0";
 		param name="rc.title" default="";
+		param name="rc.navigationtitle" default="";
 		param name="rc.content" default="";
 		param name="rc.metatitle" default="";
 		param name="rc.metadescription" default="";
 		param name="rc.metakeywords" default="";
-		var properties = {
-			pageid = rc.pageid
-			, title = rc.title
-			, content = rc.content
-			, metatitle = rc.metatitle
-			, metadescription = rc.metadescription
-		};
-		var result = variables.PageService.savePage( properties, rc.ancestorid );
-		if( result.hasErrors() )
+		var properties = { pageid=rc.pageid, title=rc.title, navigationtitle=rc.navigationtitle, content=rc.content, metatitle=rc.metatitle, metadescription=rc.metadescription };
+		rc.result = variables.PageService.savePage( properties, rc.ancestorid );
+		if( rc.result.hasErrors() )
 		{
-			rc.message = "The page could not be saved.";
-			rc.Page = result.getTheObject();
-			variables.fw.redirect( "pages/maintain", "message,Page,pageid,ancestorid" );
+			rc.Page = rc.result.getTheObject();
+			rc.messages.error = "The page could not be saved. Please amend the fields listed below.";
+			variables.fw.redirect( "pages/maintain", "messages,Page,pageid,ancestorid,result" );
 		}
 		else
 		{
-			rc.message = "The page has been saved.";
-			variables.fw.redirect( "pages", "message" );	
+			rc.messages.success = "The page has been saved.";
+			variables.fw.redirect( "pages", "messages" );	
 		}
 	}
 	

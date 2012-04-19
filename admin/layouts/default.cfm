@@ -38,9 +38,13 @@
 			<![endif]-->
 			
 			<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+			<script src="assets/js/jquery.validate.pack.js"></script>	
+			<script src="assets/js/jquery.field.min.js"></script>
+			<script src="assets/js/bootstrap.min.js"></script>
+			<script src="assets/js/bootstrap-alert.js"></script>
 			<script src="assets/js/core.js?r=#rc.revision#"></script>
 			
-			<!--- TODO: add some sexy icons --->
+			<!--- TODO: add favicons --->
 			<!---
 			<link rel="shortcut icon" href="#rc.basehref#/assets/ico/favicon.ico">
 			<link rel="apple-touch-icon-precomposed" sizes="114x114" href="#rc.basehref#/assets/ico/apple-touch-icon-114-precomposed.png">
@@ -62,10 +66,10 @@
 						<a class="brand" href="#rc.basehref##request.subsystem#/" title="Return to home page">Content Management System</a>
 						
 						<div class="nav-collapse">
-							<ul class="nav">
+							<ul class="nav pull-right">
 								<!---<cfif rc.loggedin>--->
 									<li><a href="#buildURL( 'pages' )#">Pages</a></li>
-									<li><a href="#buildURL( '' )#">Users</a></li>
+									<li><a href="#buildURL( 'users' )#">Users</a></li>
 									<li><a href="#buildURL( '' )#">Logout</a></li>
 								<!---</cfif>--->
 							</ul>

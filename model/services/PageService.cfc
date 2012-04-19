@@ -22,10 +22,11 @@ component accessors="true"
 		return this;
 	}
 	
-	boolean function deletePage( required numeric pageid )
+	struct function deletePage( required numeric pageid )
 	{
 		var Page = getPageByID( arguments.pageid );
-		if( !IsNull( Page ) )
+		var messages = {};
+		if( Page.isPersisted() )
 		{
 			transaction
 			{
@@ -33,14 +34,14 @@ component accessors="true"
 				ORMExecuteQuery( "update Page set leftvalue = leftvalue - 2 where leftvalue > :startvalue", { startvalue=startvalue } );
 				ORMExecuteQuery( "update Page set rightvalue = rightvalue - 2 where rightvalue > :startvalue", { startvalue=startvalue } );
 				EntityDelete( Page );
-				result = true;
+				messages.success = "The page has been deleted.";
 			}
 		}
 		else
 		{
-			result = false;
+			messages.error = "The page could not be deleted.";
 		}
-		return result;
+		return messages;
 	}
 	
 	array function getPages()
@@ -50,7 +51,9 @@ component accessors="true"
 	
 	any function getPageByID( required numeric pageid )
 	{
-		return EntityLoadByPK( "Page", arguments.pageid );
+		var Page = EntityLoadByPK( "Page", arguments.pageid );
+		if( IsNull( Page ) ) Page = newPage();
+		return Page;
 	}
 	
 	any function getPageBySlug( required string slug )
@@ -63,7 +66,11 @@ component accessors="true"
 		return EntityLoad( "Page", { leftvalue = 1 }, true );
 	}	
 	
-	/*
+	any function getValidator( required any Page )
+	{
+		return application.ValidateThis.getValidator( theObject=arguments.Page );
+	}
+	
 	struct function movePage( required numeric pageid, required string direction )
 	{
 		var decreaseamount = "";
@@ -73,8 +80,8 @@ component accessors="true"
 		var previoussibling = "";
 		var previoussiblingdescendentidlist = "";
 		var Page = getPageByID( arguments.pageid );
-		var result = { success=false, message="The page could not be moved." };
-		if( rc.Page.isPersisted() )
+		var messages = "";
+		if( !Page.isPersisted() && ListFind( "up,down", Trim( arguments.direction ) ) )
 		{
 			if( arguments.direction eq "up" )
 			{
@@ -97,13 +104,13 @@ component accessors="true"
 						Page.setRightValue( Page.getRightValue() - decreaseamount );
 						previoussibling.setLeftValue( previoussibling.getLeftValue() + increaseamount );
 						previoussibling.setRightValue( previoussibling.getRightValue() + increaseamount );
-						savePage( Page );
-						savePage( previoussibling );
+						EntitySave( Page );
+						EntitySave( previoussibling );
 					}
-					result = { success=true, message="The page has been moved." };
+					messages.success="The page has been moved.";
 				}
 			}
-			else if( rc.direction eq "down" )
+			else
 			{
 				if( Page.hasNextSibling() )
 				{
@@ -125,21 +132,24 @@ component accessors="true"
 						Page.setRightValue( Page.getRightValue() + increaseamount );
 						nextsibling.setLeftValue( nextsibling.getLeftValue() - decreaseamount );
 						nextsibling.setRightValue( nextsibling.getRightValue() - decreaseamount );
-						savePage( Page );
-						savePage( nextsibling );
+						EntitySave( Page );
+						EntitySave( nextsibling );
 					}
-					result = { success=true, message="The page has been moved." };
+					messages.success="The page has been moved.";
 				}
 			}
 		}
-		return result;
+		else
+		{
+			messages.error = "The page could not be moved.";
+		}
+		return messages;
 	}
-	*/
 	
 	any function newPage()
 	{
 		return EntityNew( "Page" );
-	}		
+	}	
 	
 	function savePage( required struct properties, required numeric ancestorid )
 	{
@@ -147,8 +157,12 @@ component accessors="true"
 		{
 			var Page = ""; 
 			Page = getPageByID( Val( arguments.properties.pageid ) );
-			if( IsNull( Page ) ) Page = newPage();
 			Page.populate( arguments.properties );
+			if( !Page.hasMetaTitle() ) Page.setMetaTitle( Page.getTitle() );
+			var MetaData = CreateObject( "component", "model.beans.MetaData" ).init();
+			if( !Page.hasMetaDescription() && Page.hasContent() ) Page.setMetaDescription( MetaData.generateMetaDescription( Page.getContent() ) );
+			if( !Page.hasMetaKeywords() && Page.hasContent() ) Page.setMetaKeywords( MetaData.generateMetaKeywords( Page.getContent() ) );
+			// TODO: not sure reference to application scope should be here
 			var result = application.ValidateThis.validate( Page );
 			if( !result.hasErrors() )
 			{

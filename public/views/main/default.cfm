@@ -24,7 +24,7 @@
 <cfhtmlhead text="#local.canonicalurl#">
 
 <cfoutput>
-	<!--- display breadcrumb trail --->
+	<!--- breadcrumb trail --->
 	<cfif !rc.Page.isRoot()>
 		<div>	
 			<cfloop array="#rc.Page.getPath()#" index="local.Page">

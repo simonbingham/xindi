@@ -16,7 +16,7 @@
 
 <cfparam name="rc.pages" default="#rc.navigation#" />
 
-<!--- below there's lots of code that renders an indented list of pages - this could probably be shortened! --->
+<!--- here's lots of code that renders an indented list of pages - could probably be improved! --->
 
 <cfset local.previouslevel = -1 />
 

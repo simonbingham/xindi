@@ -5,4 +5,10 @@ $(function() {
 		e.preventDefault();	
 	});
 	
+	$( ".alert" ).alert();
+	
+	$( "a[title~='Delete']" ).click(function(){
+		return confirm( "Delete this item?" );
+	});	
+	
 });

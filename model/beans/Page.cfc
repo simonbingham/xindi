@@ -100,6 +100,11 @@ component persistent="true" table="pages" cacheuse="transactional"
 		return ArrayLen( getFirstChild() );
 	}
 
+	boolean function hasContent()
+	{
+		return Len( Trim( getContent() ) );
+	}
+
 	boolean function hasDescendents()
 	{
 		return ArrayLen( getDescendents() );
@@ -108,6 +113,21 @@ component persistent="true" table="pages" cacheuse="transactional"
 	boolean function hasNextSibling()
 	{
 		return !IsNull( getNextSibling() );
+	}
+
+	boolean function hasMetaDescription()
+	{
+		return Len( Trim( getMetaDescription() ) );
+	}
+	
+	boolean function hasMetaKeywords()
+	{
+		return Len( Trim( getMetaKeywords() ) );
+	}
+
+	boolean function hasMetaTitle()
+	{
+		return Len( Trim( getMetaTitle() ) );
 	}
 
 	boolean function hasPreviousSibling()
@@ -144,6 +164,7 @@ component persistent="true" table="pages" cacheuse="transactional"
 		return getLevel() == 0;
 	}
 	
+	// TODO: move to abstract cfc
 	// populate method sourced from https://gist.github.com/947636
 	void function populate( required struct memento, boolean trustedSetter=false, string include="", string exclude="", string disallowConversionToNull="" )
 	{
@@ -171,6 +192,20 @@ component persistent="true" table="pages" cacheuse="transactional"
 				}
 			}
 		}
+	}
+	
+	// TODO: move to global event handler
+	void function preInsert()
+	{
+		var timestamp = Now();
+		setCreated( timestamp );
+		setUpdated( timestamp );
+	}
+	
+	// TODO: move to global event handler
+	void function preUpdate()
+	{
+		setUpdated( Now() );
 	}	
 	
 }

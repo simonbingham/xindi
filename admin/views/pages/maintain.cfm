@@ -17,19 +17,24 @@
 <cfoutput>
 	<cfif rc.Page.isPersisted()><h1>Edit Page</h1><cfelse><h1>Add Page</h1></cfif>
 
-	#view( "helpers/message" )#
+	#view( "helpers/messages" )#
 	
-	<form action="#buildURL( 'pages.save' )#" method="post" class="form-horizontal">
+	<form action="#buildURL( 'pages.save' )#" method="post" class="form-horizontal" id="page-form">
 		<fieldset>
 			<legend>Page Content</legend>	
 	
 			<div class="control-group">
-				<label class="control-label" for="title">Title</label>
+				<label class="control-label" for="title">Title <cfif rc.Validator.propertyIsRequired( "title" )>*</cfif></label>
 				<div class="controls"><input class="input-xlarge" type="text" name="title" id="title" value="#HtmlEditFormat( rc.Page.getTitle() )#" maxlength="100"></div>
 			</div>
 			
 			<div class="control-group">
-				<label class="control-label" for="page-content">Content</label>
+				<label class="control-label" for="navigationtitle">Navigation Title <cfif rc.Validator.propertyIsRequired( "navigationtitle" )>*</cfif></label>
+				<div class="controls"><input class="input-xlarge" type="text" name="navigationtitle" id="navigationtitle" value="#HtmlEditFormat( rc.Page.getNavigationTitle() )#" maxlength="100"></div>
+			</div>			
+			
+			<div class="control-group">
+				<label class="control-label" for="page-content">Content <cfif rc.Validator.propertyIsRequired( "content" )>*</cfif></label>
 				<div class="controls"><textarea class="input-xlarge" name="content" id="page-content">#HtmlEditFormat( rc.Page.getContent() )#</textarea></div>
 			</div>
 		</fieldset>                        
@@ -62,4 +67,17 @@
 		<input type="hidden" name="pageid" id="pageid" value="#HtmlEditFormat( rc.Page.getPageID() )#">
 		<cfif StructKeyExists( rc, "ancestorid" )><input type="hidden" name="ancestorid" id="ancestorid" value="#HtmlEditFormat( rc.ancestorid )#"></cfif>		
 	</form>
+	
+	<script>
+	$(document).ready(function(){
+		$.validator.setDefaults({
+			errorClass: 'help-inline error', 
+			errorElement: 'span'
+		});
+	});
+	</script>		
+	
+	#rc.Validator.getInitializationScript()#
+
+	#rc.Validator.getValidationScript( formName="page-form" )#	
 </cfoutput>

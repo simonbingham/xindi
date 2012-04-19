@@ -37,6 +37,7 @@
 			
 			<script src="assets/js/core.js?r=#rc.revision#"></script>			
 			
+			<!--- TODO: add favicons --->
 			<!---
 			<link rel="shortcut icon" href="assets/ico/favicon.ico">
 			<link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
@@ -46,13 +47,10 @@
 		</head>
 
 		<body>
-			<!--- display navigation --->			
 			#view( "main/navigation", { pages=rc.navigation } )# 
 			
-			<!--- display content --->
 			#body#
 			
-			<!--- display footer --->
 			<ul>
 				<li><a href="#buildURL( 'main/map' )#">Site Map</a></li>
 			</ul>

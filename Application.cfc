@@ -32,7 +32,8 @@ component extends="frameworks.org.corfield.framework"
 		automanagesession = false,
 		cfclocation = this.mappings[ "/model" ],
 		dbcreate = "update",
-		sqlscript = this.applicationroot & "_setup/setup.sql"
+		sqlscript = this.applicationroot & "_setup/setup.sql",
+		eventhandling = true
 	};
 
 	/**
@@ -42,22 +43,24 @@ component extends="frameworks.org.corfield.framework"
 		cacheFileExists = !this.development,
 		defaultSubsystem = "public",
 		generateSES = true,
+		maxNumContextsPreserved = 1,
+		password = "",
 		reloadApplicationOnEveryRequest = this.development,
 		usingSubsystems = true
 	};
 	
 	/**
-     * called when the application starts
+     * called when application starts
 	 */	
 	void function setupApplication()
 	{
 		ORMReload();
 		
-		// define bean factory
+		// setup bean factory
 		var beanfactory = new frameworks.org.corfield.ioc( "/model" );
 		setBeanFactory( beanfactory );
 		
-		// define validation framework
+		// setup validation framework
 		var ValidateThisConfig = { definitionPath="/model/" };
 		application.ValidateThis = CreateObject( "component", "ValidateThis.ValidateThis" ).init( ValidateThisConfig );
 		
@@ -67,12 +70,12 @@ component extends="frameworks.org.corfield.framework"
 		// define error settings
 		application.errorsettings = { enabled=true, to="smnbin@gmail.com", from="smnbin@gmail.com", subject="Error Notification (#ListLast( this.applicationroot, '\/' )#)" };
 		
-		// define page settings (cms)
+		// define page settings
 		application.pagesettings = { enableadddelete=true };
 	}
 	
 	/**
-     * called when a request starts
+     * called when page request starts
 	 */	
 	void function setupRequest()
 	{
@@ -90,7 +93,7 @@ component extends="frameworks.org.corfield.framework"
 	}
 	
 	/**
-     * called when rendering of the view begins
+     * called when view rendering begins
 	 */		
 	void function setupView()
 	{
@@ -98,12 +101,12 @@ component extends="frameworks.org.corfield.framework"
 	}	
 	
 	/**
-     * called if a view is missing
+     * called if view is missing
 	 */	
 	any function onMissingView( required rc )
 	{
 		rc.Page = getBeanFactory().getBean( "PageService" ).getPageBySlug( rc.action );
-		if ( !IsNull( rc.Page ) )
+		if ( rc.Page.isPersisted )
 		{
 			rc.MetaData.setMetaTitle( rc.Page.getMetaTitle() ); 
 			rc.MetaData.setMetaDescription( rc.Page.getMetaDescription() );
