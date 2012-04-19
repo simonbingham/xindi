@@ -1,13 +1,28 @@
+/*
+   Copyright 2012, Simon Bingham
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
 component persistent="true" table="pages" cacheuse="transactional"   
 {
 
 	property name="pageid" fieldtype="id" setter="false" generator="native" column="page_id";
 	
-	property name="uuid" column="page_uuid" ormtype="string" length="150" default="";
 	property name="leftvalue" column="page_left" ormtype="int" default="";
 	property name="rightvalue" column="page_right" ormtype="int" default="";
 	property name="title" column="page_title" ormtype="string" length="150" default="";
-	property name="menutitle" column="page_menutitle" ormtype="string" length="150" default="";
+	property name="navigationtitle" column="page_navigationtitle" ormtype="string" length="150" default="";
 	property name="content" column="page_content" ormtype="text" default="";
 	property name="metatitle" column="page_metatitle" ormtype="string" length="200" default="";
 	property name="metadescription" column="page_metadescription" ormtype="string" length="200" default="";
@@ -15,42 +30,22 @@ component persistent="true" table="pages" cacheuse="transactional"
 	property name="created" column="page_created" ormtype="timestamp";
 	property name="updated" column="page_updated" ormtype="timestamp";
 
-	public Page function init()
+	Page function init()
 	{
 		return this;
 	}
 	
-	public numeric function getDescendentCount()
+	function getAncestor()
+	{
+		return ORMExecuteQuery( "from Page where leftvalue < :leftvalue and rightvalue > :rightvalue order by leftvalue desc", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue }, { maxresults=1 } );
+	}	
+	
+	numeric function getDescendentCount()
 	{
 		return ( variables.rightvalue - variables.leftvalue - 1 ) / 2;
 	}
 
-	public array function getFirstChild()
-	{
-		return ORMExecuteQuery( "from Page where leftvalue = :leftvalue", { leftvalue=variables.leftvalue + 1 } );
-	}	
-
-	public array function getLastChild()
-	{
-		return ORMExecuteQuery( "from Page where rightvalue = :rightvalue", { rightvalue=variables.rightvalue - 1 } );
-	}	
-	
-	public any function getLevel()
-	{
-		return ORMExecuteQuery( "select Count( pageSubQuery ) from Page as pageSubQuery where pageSubQuery.leftvalue < :leftvalue and pageSubQuery.rightvalue > :rightvalue", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue } )[ 1 ];
-	}
-
-	public any function getNextSibling()
-	{
-		return ORMExecuteQuery( "from Page where leftvalue = :leftvalue", { leftvalue=variables.rightvalue + 1 }, true );
-	}
-	
-	public any function getAncestor()
-	{
-		return ORMExecuteQuery( "from Page where leftvalue < :leftvalue and rightvalue > :rightvalue order by leftvalue desc", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue }, { maxresults=1 } );
-	}	
-
-	public string function getDescendentPageIDList()
+	string function getDescendentPageIDList()
 	{
 		var looppage = "";
 		var pageidlist = "";
@@ -59,74 +54,94 @@ component persistent="true" table="pages" cacheuse="transactional"
 		}
 		return pageidlist; 
 	}
-	
-	public array function getDescendents()
+
+	array function getDescendents()
 	{
 		return ORMExecuteQuery( "from Page where leftvalue > :leftvalue and rightvalue < :rightvalue", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue } );
+	}
+
+	array function getFirstChild()
+	{
+		return ORMExecuteQuery( "from Page where leftvalue = :leftvalue", { leftvalue=variables.leftvalue + 1 } );
+	}	
+
+	array function getLastChild()
+	{
+		return ORMExecuteQuery( "from Page where rightvalue = :rightvalue", { rightvalue=variables.rightvalue - 1 } );
 	}	
 	
-	public array function getPath()
+	function getLevel()
+	{
+		return ORMExecuteQuery( "select Count( pageSubQuery ) from Page as pageSubQuery where pageSubQuery.leftvalue < :leftvalue and pageSubQuery.rightvalue > :rightvalue", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue } )[ 1 ];
+	}
+
+	function getNextSibling()
+	{
+		return ORMExecuteQuery( "from Page where leftvalue = :leftvalue", { leftvalue=variables.rightvalue + 1 }, true );
+	}
+	
+	array function getPath()
 	{
 		return ORMExecuteQuery( "from Page where leftvalue < :leftvalue and rightvalue > :rightvalue", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue } );
 	}	
 
-	public any function getPreviousSibling()
+	function getPreviousSibling()
 	{
 		return ORMExecuteQuery( "from Page where rightvalue = :rightvalue", { rightvalue=variables.leftvalue - 1 }, true );
 	}
 	
-	public string function getUUID()
+	string function getSlug()
 	{
-		return variables.uuid & getPageID();
+		return ReReplace( LCase( getTitle() ), "[^a-z0-9]{1,}", "-", "all" ) & "-" & variables.pageid;
 	}	
 	
-	public boolean function hasChild()
+	boolean function hasChild()
 	{
 		return ArrayLen( getFirstChild() );
 	}
 
-	public boolean function hasDescendents()
+	boolean function hasDescendents()
 	{
 		return ArrayLen( getDescendents() );
 	}
 
-	public boolean function hasNextSibling()
+	boolean function hasNextSibling()
 	{
 		return !IsNull( getNextSibling() );
 	}
 
-	public boolean function hasPreviousSibling()
+	boolean function hasPreviousSibling()
 	{
 		return !IsNull( getPreviousSibling() );
 	}
 			
-	public boolean function hasRoute( array routes=[] )
+	boolean function hasRoute( array routes=[] )
 	{
 		for( var route in arguments.routes )
 		{
-			if( StructKeyExists( route, getUUID() ) ) return true;
+			if( StructKeyExists( route, getSlug() ) ) return true;
 		}
 		return false;
 	}
 	
-	public boolean function isChild()
+	boolean function isChild()
 	{
 		return getLevel() != 0;
 	}	
 
-	public boolean function isLeaf()
+	boolean function isLeaf()
 	{
 		return getDescendentCount() == 0;
 	}	
-	
-	public boolean function isRoot()
+
+	boolean function isPersisted()
 	{
-		return getLevel() == 0;
+		return !IsNull( variables.pageid );
 	}
 	
-	public void function preInsert()
+	boolean function isRoot()
 	{
-		variables.uuid = ReReplace( LCase( getMenuTitle() ), "[^a-z0-9]{1,}", "-", "all" ) & "-";
+		return getLevel() == 0;
 	}
 	
 }

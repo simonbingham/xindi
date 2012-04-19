@@ -13,3 +13,9 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 --->
+
+<cfoutput>
+	<h1>Site Map</h1>
+	
+	#view( "main/navigation", { pages=rc.pages } )#
+</cfoutput>

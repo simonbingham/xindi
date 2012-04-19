@@ -1,4 +1,4 @@
-<!---
+/*
    Copyright 2012, Simon Bingham
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,4 +12,27 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
---->
+*/
+
+component accessors="true"
+{
+
+	property name="PageService" setter="true" getter="false";
+	
+	void function init( required any fw )
+	{
+		variables.fw = arguments.fw;
+	}
+
+	void function default( required struct rc ) {
+		rc.Page = variables.PageService.getRoot();
+	}
+	
+	void function map( required struct rc ) {
+		rc.MetaData.setMetaTitle( "Site Map" ); 
+		rc.MetaData.setMetaDescription( "" );
+		rc.MetaData.setMetaKeywords( "" );		
+		rc.Pages = variables.PageService.getPages();
+	}	
+	
+}
