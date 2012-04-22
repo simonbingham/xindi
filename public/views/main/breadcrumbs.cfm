@@ -14,19 +14,14 @@
    limitations under the License.
 --->
 
-<!--- specify canonical url for page (http://support.google.com/webmasters/bin/answer.py?hl=en&answer=139394) --->
-<cfsavecontent variable="local.canonicalurl">
-	<cfoutput>
-		<link rel="canonical" href="#buildURL( rc.Page.getSlug() )#">
-	</cfoutput>
-</cfsavecontent>
-
-<cfhtmlhead text="#local.canonicalurl#">
-
 <cfoutput>
-	#view( "main/breadcrumbs", { Page=rc.Page } )#
-	
-	<h1>#rc.Page.getTitle()#</h1>
-	
-	#rc.Page.getContent()#
+	<cfif !rc.Page.isRoot()>
+		<div>	
+			<cfloop array="#rc.Page.getPath()#" index="local.Page">
+				<a href="#buildURL( local.Page.getSlug() )#">#local.Page.getNavigationTitle()#</a> &raquo;
+			</cfloop>
+			
+			#rc.Page.getNavigationTitle()#
+		</div>
+	</cfif>
 </cfoutput>

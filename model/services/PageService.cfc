@@ -58,8 +58,10 @@ component accessors="true"
 	
 	any function getPageBySlug( required string slug )
 	{
-		return getPageByID( Val( ListLast( arguments.slug, "-" ) ) );
-	}	
+		var Page = EntityLoad( "Page", { uuid=Trim( ListLast( arguments.slug, "/" ) ) }, TRUE );
+		if( IsNull( Page ) ) Page = newPage();
+		return Page;
+	}
 	
 	any function getRoot()
 	{
@@ -158,6 +160,7 @@ component accessors="true"
 			var Page = ""; 
 			Page = getPageByID( Val( arguments.properties.pageid ) );
 			Page.populate( arguments.properties );
+			// TODO: move the following block of code to Page object(?)
 			if( !Page.hasMetaTitle() ) Page.setMetaTitle( Page.getTitle() );
 			var MetaData = CreateObject( "component", "model.beans.MetaData" ).init();
 			if( !Page.hasMetaDescription() && Page.hasContent() ) Page.setMetaDescription( MetaData.generateMetaDescription( Page.getContent() ) );

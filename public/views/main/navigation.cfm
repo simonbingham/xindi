@@ -24,18 +24,14 @@
 	<cfif ArrayLen( rc.pages )>
 		<cfloop array="#rc.pages#" index="local.Page">
 			<cfsavecontent variable="local.link">
-				<cfif local.Page.hasDescendents() and !local.Page.isRoot()>				
-					#local.Page.getTitle()#			
-				<cfelse>
-					<cfset local.title = local.Page.getNavigationTitle()>
-					<cfset local.link = Replace( buildURL( local.Page.getSlug() ), "site:", "" )>
-					
-					<cfif local.Page.isRoot()>
-						<cfset local.link = rc.basehref>
-					</cfif>
-					
-					<a href="#local.link#">#local.title#</a>
+				<cfset local.title = local.Page.getNavigationTitle()>
+				<cfset local.link = Replace( buildURL( local.Page.getSlug() ), "site:", "" )>
+				
+				<cfif local.Page.isRoot()>
+					<cfset local.link = rc.basehref>
 				</cfif>
+				
+				<a href="#local.link#">#local.title#</a>
 			</cfsavecontent>		
 			
 			<cfif local.Page.getLevel() gt local.previouslevel>

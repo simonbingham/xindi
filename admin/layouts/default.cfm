@@ -25,6 +25,7 @@
 			<meta name="author" content="Simon Bingham (http://www.simonbingham.me.uk/)">
 			<meta name="viewport" content="width=device-width, initial-scale=1.0">
 			
+			<!--- TODO: replace base href --->
 			<base href="#rc.basehref##request.subsystem#/">
 
 			<title>Xindi Content Management System</title>

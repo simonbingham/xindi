@@ -38,7 +38,7 @@
 						<a href="#buildURL( action='pages.maintain', querystring='pageid/#local.Page.getPageID()#' )#" title="Edit #local.Page.getTitle()#">#local.Page.getNavigationTitle()#</a>							
 					</td>
 					<td>#DateFormat( local.Page.getCreated(), "full" )#</td>
-					<cfif application.pagesettings.enableadddelete><td><cfif local.Page.getLevel() lt 2><a href="#buildURL( action='pages.maintain', querystring='ancestorid/#local.Page.getPageID()#' )#" title="Add Page"><i class="icon-plus-sign"></i></a></cfif></td></cfif>
+					<cfif application.pagesettings.enableadddelete><td><a href="#buildURL( action='pages.maintain', querystring='ancestorid/#local.Page.getPageID()#' )#" title="Add Page"><i class="icon-plus-sign"></i></a></td></cfif>
 					<td><cfif local.Page.hasPreviousSibling()><a href="#buildURL( action='pages.move', querystring='pageid/#local.Page.getPageID()#/direction/up' )#" title="Move Up"><i class="icon-chevron-up"></i></a></cfif></td>
 					<td><cfif local.Page.hasNextSibling()><a href="#buildURL( action='pages.move', querystring='pageid/#local.Page.getPageID()#/direction/down' )#" title="Move Down"><i class="icon-chevron-down"></i></a></cfif></td>
 					<cfif application.pagesettings.enableadddelete><td><cfif local.Page.isLeaf() and !local.Page.isRoot()><a href="#buildURL( 'pages.delete' )#/pageid/#local.Page.getPageID()#" title="Delete"><i class="icon-remove"></i></a></cfif></td></cfif>

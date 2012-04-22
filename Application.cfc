@@ -20,7 +20,7 @@ component extends="frameworks.org.corfield.framework"
 	/**
 	* application settings
 	*/
-	this.development = CGI.SERVER_NAME == "localhost";
+	this.development = ListFind( "localhost,127.0.0.1", CGI.SERVER_NAME );
 	this.applicationroot = getDirectoryFromPath( getCurrentTemplatePath() );
 	this.sessionmanagement = true;
 	this.mappings[ "/model" ] = this.applicationroot & "model/";
@@ -80,7 +80,7 @@ component extends="frameworks.org.corfield.framework"
 	void function setupRequest()
 	{
 		// define base url
-	  	rc.basehref = "//" & CGI.SERVER_NAME & variables.framework.base;
+	  	rc.basehref = "//" & CGI.HTTP_HOST & variables.framework.base;
 	  	
 	  	// define default meta data
 		rc.MetaData = getBeanFactory().getBean( "MetaData" );
@@ -105,8 +105,8 @@ component extends="frameworks.org.corfield.framework"
 	 */	
 	any function onMissingView( required rc )
 	{
-		rc.Page = getBeanFactory().getBean( "PageService" ).getPageBySlug( rc.action );
-		if ( rc.Page.isPersisted )
+		rc.Page = getBeanFactory().getBean( "PageService" ).getPageBySlug( ListLast( CGI.PATH_INFO, "/" ) );
+		if ( rc.Page.isPersisted() )
 		{
 			rc.MetaData.setMetaTitle( rc.Page.getMetaTitle() ); 
 			rc.MetaData.setMetaDescription( rc.Page.getMetaDescription() );

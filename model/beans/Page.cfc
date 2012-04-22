@@ -19,6 +19,7 @@ component persistent="true" table="pages" cacheuse="transactional"
 
 	property name="pageid" fieldtype="id" setter="false" generator="native" column="page_id";
 	
+	property name="uuid" column="page_uuid" ormtype="string" length="150" default="";
 	property name="leftvalue" column="page_left" ormtype="int" default="";
 	property name="rightvalue" column="page_right" ormtype="int" default="";
 	property name="title" column="page_title" ormtype="string" length="150" default="";
@@ -32,6 +33,9 @@ component persistent="true" table="pages" cacheuse="transactional"
 
 	Page function init()
 	{
+		variables.metatitle = "";
+		variables.metadescription = "";
+		variables.metakeywords = "";
 		return this;
 	}
 	
@@ -92,7 +96,13 @@ component persistent="true" table="pages" cacheuse="transactional"
 	
 	string function getSlug()
 	{
-		return ReReplace( LCase( getTitle() ), "[^a-z0-9]{1,}", "-", "all" ) & "-" & variables.pageid;
+		var slug = "";
+		for( var Page in getPath() )
+		{
+			if( !Page.isRoot() ) slug &= Page.getUUID() & "/";
+		}
+		slug &= getUUID();
+		return slug;
 	}	
 	
 	boolean function hasChild()
@@ -117,17 +127,17 @@ component persistent="true" table="pages" cacheuse="transactional"
 
 	boolean function hasMetaDescription()
 	{
-		return Len( Trim( getMetaDescription() ) );
+		return !StructKeyExists( variables, "metadescription" ) || Len( Trim( getMetaDescription() ) );	
 	}
 	
 	boolean function hasMetaKeywords()
 	{
-		return Len( Trim( getMetaKeywords() ) );
+		return !StructKeyExists( variables, "metakeywords" ) || Len( Trim( getMetaKeywords() ) );
 	}
 
 	boolean function hasMetaTitle()
 	{
-		return Len( Trim( getMetaTitle() ) );
+		return !StructKeyExists( variables, "metatitle" ) || Len( Trim( getMetaTitle() ) );		
 	}
 
 	boolean function hasPreviousSibling()
@@ -164,6 +174,14 @@ component persistent="true" table="pages" cacheuse="transactional"
 		return getLevel() == 0;
 	}
 	
+	boolean function isUUIDUnique()
+	{
+		var matches = []; 
+		if( isPersisted() ) matches = ORMExecuteQuery( "from Page where pageid <> :pageid and uuid = :uuid", { pageid=getPageID(), uuid=getUUID()} );
+		else matches = ORMExecuteQuery( "from Page where uuid=:uuid", { uuid=getUUID() } );
+		return !ArrayLen( matches );
+	}	
+	
 	// TODO: move to abstract cfc
 	// populate method sourced from https://gist.github.com/947636
 	void function populate( required struct memento, boolean trustedSetter=false, string include="", string exclude="", string disallowConversionToNull="" )
@@ -193,6 +211,12 @@ component persistent="true" table="pages" cacheuse="transactional"
 			}
 		}
 	}
+
+	void function setUUID()
+	{
+		variables.uuid = ReReplace( LCase( getNavigationTitle() ), "[^a-z0-9]{1,}", "", "all" );
+		while ( !isUUIDUnique() ) variables.uuid &= "_";
+	}		
 	
 	// TODO: move to global event handler
 	void function preInsert()
@@ -200,12 +224,14 @@ component persistent="true" table="pages" cacheuse="transactional"
 		var timestamp = Now();
 		setCreated( timestamp );
 		setUpdated( timestamp );
+		setUUID();
 	}
 	
 	// TODO: move to global event handler
 	void function preUpdate()
 	{
 		setUpdated( Now() );
+		setUUID();
 	}	
 	
 }
