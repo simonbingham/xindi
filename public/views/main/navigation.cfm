@@ -14,11 +14,11 @@
    limitations under the License.
 --->
 
-<cfparam name="rc.pages" default="#rc.navigation#" />
+<cfparam name="rc.pages" default="#rc.navigation#">
 
 <!--- here's lots of code that renders an indented list of pages - could probably be improved! --->
 
-<cfset local.previouslevel = -1 />
+<cfset local.previouslevel = -1>
 
 <cfoutput>
 	<cfif ArrayLen( rc.pages )>

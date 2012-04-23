@@ -14,7 +14,7 @@
    limitations under the License.
 --->
 
-<cfset request.layout = false />
+<cfset request.layout = false>
 
 <cfoutput>
 	<!DOCTYPE html>

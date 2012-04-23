@@ -36,14 +36,6 @@
 			<![endif]-->
 			
 			<script src="assets/js/core.js?r=#rc.revision#"></script>			
-			
-			<!--- TODO: add favicons --->
-			<!---
-			<link rel="shortcut icon" href="assets/ico/favicon.ico">
-			<link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
-			<link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
-			<link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
-			--->
 		</head>
 
 		<body>
@@ -53,7 +45,7 @@
 			
 			<div id="footer">
 				<ul>
-					<li><a href="#buildURL( 'main/map' )#">Site Map</a></li>
+					<li><a href="#buildURL( 'main/sitemap' )#">Site Map</a></li>
 				</ul>
 			</div>
 		</body>

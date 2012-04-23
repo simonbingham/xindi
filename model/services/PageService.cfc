@@ -22,7 +22,7 @@ component accessors="true"
 		return this;
 	}
 	
-	struct function deletePage( required numeric pageid )
+	struct function deletePage( required numeric pageid, required string basehref )
 	{
 		var Page = getPageByID( arguments.pageid );
 		var messages = {};
@@ -34,6 +34,7 @@ component accessors="true"
 				ORMExecuteQuery( "update Page set leftvalue = leftvalue - 2 where leftvalue > :startvalue", { startvalue=startvalue } );
 				ORMExecuteQuery( "update Page set rightvalue = rightvalue - 2 where rightvalue > :startvalue", { startvalue=startvalue } );
 				EntityDelete( Page );
+				updateSitemapXML( arguments.basehref );
 				messages.success = "The page has been deleted.";
 			}
 		}
@@ -141,7 +142,7 @@ component accessors="true"
 		return EntityNew( "Page" );
 	}	
 	
-	function savePage( required struct properties, required numeric ancestorid, required any ValidateThis )
+	function savePage( required struct properties, required numeric ancestorid, required any ValidateThis, required string basehref )
 	{
 		transaction
 		{
@@ -171,6 +172,7 @@ component accessors="true"
 					EntitySave( Page );
 					transaction action="commit";
 				}
+				updateSitemapXML( arguments.basehref );
 			}
 			else
 			{
@@ -179,5 +181,14 @@ component accessors="true"
 		}
 		return result;
 	}
+	
+	private void function updateSitemapXML( required string basehref )
+	{
+		var pages = getPages();
+		var sitemap = "<?xml version='1.0' encoding='UTF-8'?><urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd'>";
+		for( var Page in pages ) sitemap &= "<url><loc>#arguments.basehref#index.cfm/#local.Page.getSlug()#</loc></url>";
+		sitemap &= "</urlset>";
+		FileWrite( ExpandPath( "./" ) & "sitemap.xml", sitemap );
+	}		
 	
 }
