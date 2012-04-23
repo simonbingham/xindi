@@ -18,7 +18,6 @@
 	<cfif StructKeyExists( rc, "messages" )>
 		<cfif StructKeyExists( rc.messages, "error" ) and !IsNull( rc.result ) and rc.result.hasErrors()>
 	    	<div class="alert alert-error">
-	    		<a class="close" data-dismiss="alert">&times;</a>
 				<p>#rc.messages.error#</p>
 				<ul>
 					<cfloop array="#rc.result.getFailureMessages()#" index="local.message">
@@ -28,28 +27,24 @@
 	    	</div>
 		<cfelseif StructKeyExists( rc.messages, "error" )>
 	    	<div class="alert alert-error">
-	    		<a class="close" data-dismiss="alert">&times;</a>
 				#rc.messages.error#
 	    	</div>
 		</cfif>
 		
 		<cfif StructKeyExists( rc.messages, "information" )>
 	    	<div class="alert alert-info">
-	    		<a class="close" data-dismiss="alert">&times;</a>
 	    		#rc.messages.information#
 	    	</div>
 		</cfif>
 		
 		<cfif StructKeyExists( rc.messages, "success" )>
 	    	<div class="alert alert-success">
-	    		<a class="close" data-dismiss="alert">&times;</a>
 	    		#rc.messages.success#
 	    	</div>
 		</cfif>
 		
 		<cfif StructKeyExists( rc.messages, "warning" )>
 	    	<div class="alert">
-	    		<a class="close" data-dismiss="alert">&times;</a>
 	    		#rc.messages.warning#
 	    	</div>
 		</cfif>

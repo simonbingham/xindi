@@ -39,12 +39,12 @@ component accessors="true"
 		return Left( Trim( ReReplaceNoCase( ReReplaceNoCase( stripHTML( arguments.description ), "([#Chr(09)#-#Chr(30)#])", " ", "all" ), "( ){2,}", " ", "all" ) ), 200 );
 	}
 	
-	string function stripHTML( required string s ) {
-		return ReReplaceNoCase( Trim( arguments.s ), "<[^>]{1,}>", " ", "all" );
+	string function stripHTML( required string thestring ) {
+		return ReReplaceNoCase( Trim( arguments.thestring ), "<[^>]{1,}>", " ", "all" );
 	}
 
-	private string function metaExclude( required string s ) {
-		return Trim( ReReplaceNoCase(" " & ReReplace( stripHtml( arguments.s ), "[ *]{1,}", "  ", "all"), "[ ]{1}(a|an|and|is|it|that|the|this|to|or)[ ]{1}", " ", "all" ) );
+	private string function metaExclude( required string thestring ) {
+		return Trim( ReReplaceNoCase(" " & ReReplace( stripHtml( arguments.thestring ), "[ *]{1,}", "  ", "all"), "[ ]{1}(a|an|and|is|it|that|the|this|to|or)[ ]{1}", " ", "all" ) );
 	}
 	
 	private string function listDeleteDuplicatesNoCase( required string list ) {
@@ -63,5 +63,5 @@ component accessors="true"
 		}
 		return Trim( local.lstNoDuplicates );
 	}
-		
+	
 }

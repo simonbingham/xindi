@@ -181,7 +181,7 @@ component extends="Abstract" persistent="true" table="pages" cacheuse="transacti
 	void function setUUID()
 	{
 		variables.uuid = ReReplace( LCase( getNavigationTitle() ), "[^a-z0-9]{1,}", "", "all" );
-		while ( !isUUIDUnique() ) variables.uuid &= "_";
+		while ( !isUUIDUnique() ) variables.uuid &= "_"; 
 	}		
 	
 	void function preInsert()

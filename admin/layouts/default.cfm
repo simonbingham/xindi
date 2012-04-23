@@ -41,7 +41,7 @@
 			<script src="assets/js/jquery.validate.pack.js"></script>	
 			<script src="assets/js/jquery.field.min.js"></script>
 			<script src="assets/js/bootstrap.min.js"></script>
-			<script src="assets/js/bootstrap-alert.js"></script>
+			<script src="assets/ckeditor/ckeditor.js"></script>
 			<script src="assets/js/core.js?r=#rc.revision#"></script>
 			
 			<link rel="shortcut icon" href="assets/ico/favicon.ico">

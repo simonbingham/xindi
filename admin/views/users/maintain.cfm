@@ -24,27 +24,27 @@
 			<legend>User Details</legend>	
 	
 			<div class="control-group">
-				<label class="control-label" for="firstname">First Name <cfif rc.Validator.propertyIsRequired( "firstname" )>*</cfif></label>
+				<label class="control-label" for="firstname">First Name <cfif rc.Validator.propertyIsRequired( "firstname", rc.context )>*</cfif></label>
 				<div class="controls"><input class="input-xlarge" type="text" name="firstname" id="firstname" value="#HtmlEditFormat( rc.User.getFirstName() )#" maxlength="50"></div>
 			</div>
 
 			<div class="control-group">
-				<label class="control-label" for="lastname">Last Name <cfif rc.Validator.propertyIsRequired( "lastname" )>*</cfif></label>
+				<label class="control-label" for="lastname">Last Name <cfif rc.Validator.propertyIsRequired( "lastname", rc.context )>*</cfif></label>
 				<div class="controls"><input class="input-xlarge" type="text" name="lastname" id="lastname" value="#HtmlEditFormat( rc.User.getLastName() )#" maxlength="50"></div>
 			</div>
 			
 			<div class="control-group">
-				<label class="control-label" for="email">Email <cfif rc.Validator.propertyIsRequired( "email" )>*</cfif></label>
+				<label class="control-label" for="email">Email Address <cfif rc.Validator.propertyIsRequired( "email", rc.context )>*</cfif></label>
 				<div class="controls"><input class="input-xlarge" type="text" name="email" id="email" value="#HtmlEditFormat( rc.User.getEmail() )#" maxlength="50"></div>
 			</div>			
 			
 			<div class="control-group">
-				<label class="control-label" for="username">Username <cfif rc.Validator.propertyIsRequired( "username" )>*</cfif></label>
+				<label class="control-label" for="username">Username <cfif rc.Validator.propertyIsRequired( "username", rc.context )>*</cfif></label>
 				<div class="controls"><input class="input-xlarge" type="text" name="username" id="username" value="#HtmlEditFormat( rc.User.getUsername() )#" maxlength="50"></div>
 			</div>			
 
 			<div class="control-group">
-				<label class="control-label" for="password">Password <cfif rc.Validator.propertyIsRequired( "password" )>*</cfif></label>
+				<label class="control-label" for="password">Password <cfif rc.Validator.propertyIsRequired( "password", rc.context )>*</cfif></label>
 				<div class="controls"><input class="input-xlarge" type="password" name="password" id="password" value="#HtmlEditFormat( rc.User.getPassword() )#" maxlength="50"></div>
 			</div>			
 		</fieldset>
@@ -68,5 +68,5 @@
 	
 	#rc.Validator.getInitializationScript()#
 
-	#rc.Validator.getValidationScript( formName="user-form" )#	
+	#rc.Validator.getValidationScript( formName="user-form", context=rc.context )#	
 </cfoutput>

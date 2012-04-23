@@ -35,27 +35,27 @@
 			
 			<div class="control-group">
 				<label class="control-label" for="page-content">Content <cfif rc.Validator.propertyIsRequired( "content" )>*</cfif></label>
-				<div class="controls"><textarea class="input-xlarge" name="content" id="page-content">#HtmlEditFormat( rc.Page.getContent() )#</textarea></div>
+				<div class="controls"><textarea class="input-xlarge ckeditor" name="content" id="page-content">#HtmlEditFormat( rc.Page.getContent() )#</textarea></div>
 			</div>
 		</fieldset>                        
 
 		<fieldset>
 			<legend>Meta Tags</legend>		
 		
-			<p>If left blank the meta tags will be generated automatically.</p>
-	
+	    	<div class="alert alert-info">If you leave these fields empty the meta tags will be generated automatically.</div>		
+		
 			<div class="control-group">
-				<label class="control-label" for="metaTitle">Meta Title</label>
+				<label class="control-label" for="metaTitle">Title</label>
 				<div class="controls"><input class="input-xlarge" type="text" name="metatitle" id="metatitle" value="#HtmlEditFormat( rc.Page.getMetaTitle() )#" maxlength="100"></div>
 			</div>
 			
 			<div class="control-group">
-				<label class="control-label" for="metaDescription">Meta Description</label>
+				<label class="control-label" for="metaDescription">Description</label>
 				<div class="controls"><input class="input-xlarge" type="text" name="metadescription" id="metadescription" value="#HtmlEditFormat( rc.Page.getMetaDescription() )#" maxlength="200"></div>
 			</div>
 			
 			<div class="control-group">
-				<label class="control-label" for="metaKeywords">Meta Keywords</label>
+				<label class="control-label" for="metaKeywords">Keywords</label>
 				<div class="controls"><input class="input-xlarge" type="text" name="metakeywords" id="metakeywords" value="#HtmlEditFormat( rc.Page.getMetaKeywords() )#" maxlength="200"></div>
 			</div>
 		</fieldset>

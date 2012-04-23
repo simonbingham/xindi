@@ -47,13 +47,15 @@
 		</head>
 
 		<body>
-			#view( "main/navigation", { pages=rc.navigation } )# 
+			<div id="navigation">#view( "main/navigation", { pages=rc.navigation } )#</div> 
 			
-			#body#
+			<div id="content">#body#</div>
 			
-			<ul>
-				<li><a href="#buildURL( 'main/map' )#">Site Map</a></li>
-			</ul>
+			<div id="footer">
+				<ul>
+					<li><a href="#buildURL( 'main/map' )#">Site Map</a></li>
+				</ul>
+			</div>
 		</body>
 	</html>
 </cfoutput>
