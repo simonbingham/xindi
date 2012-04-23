@@ -24,10 +24,10 @@
 			<tr>
 				<th>Title</th>
 				<th>Published</th>
-				<cfif application.pagesettings.enableadddelete><th>Add Sub Page</th></cfif>
+				<cfif application.config.pagesettings.enableadddelete><th>Add Sub Page</th></cfif>
 				<th>Move Up</th>
 				<th>Move Down</th>
-				<cfif application.pagesettings.enableadddelete><th>Delete</th></cfif>
+				<cfif application.config.pagesettings.enableadddelete><th>Delete</th></cfif>
 			</tr>
 		</thead>
 		
@@ -38,10 +38,10 @@
 						<a href="#buildURL( action='pages.maintain', querystring='pageid/#local.Page.getPageID()#' )#" title="Edit #local.Page.getTitle()#">#local.Page.getNavigationTitle()#</a>							
 					</td>
 					<td>#DateFormat( local.Page.getCreated(), "full" )#</td>
-					<cfif application.pagesettings.enableadddelete><td><a href="#buildURL( action='pages.maintain', querystring='ancestorid/#local.Page.getPageID()#' )#" title="Add Page"><i class="icon-plus-sign"></i></a></td></cfif>
+					<cfif application.config.pagesettings.enableadddelete><td><a href="#buildURL( action='pages.maintain', querystring='ancestorid/#local.Page.getPageID()#' )#" title="Add Page"><i class="icon-plus-sign"></i></a></td></cfif>
 					<td><cfif local.Page.hasPreviousSibling()><a href="#buildURL( action='pages.move', querystring='pageid/#local.Page.getPageID()#/direction/up' )#" title="Move Up"><i class="icon-chevron-up"></i></a></cfif></td>
 					<td><cfif local.Page.hasNextSibling()><a href="#buildURL( action='pages.move', querystring='pageid/#local.Page.getPageID()#/direction/down' )#" title="Move Down"><i class="icon-chevron-down"></i></a></cfif></td>
-					<cfif application.pagesettings.enableadddelete><td><cfif local.Page.isLeaf() and !local.Page.isRoot()><a href="#buildURL( 'pages.delete' )#/pageid/#local.Page.getPageID()#" title="Delete"><i class="icon-remove"></i></a></cfif></td></cfif>
+					<cfif application.config.pagesettings.enableadddelete><td><cfif local.Page.isLeaf() and !local.Page.isRoot()><a href="#buildURL( 'pages.delete' )#/pageid/#local.Page.getPageID()#" title="Delete"><i class="icon-remove"></i></a></cfif></td></cfif>
 				</tr>
 			</cfloop>
 		</tbody>

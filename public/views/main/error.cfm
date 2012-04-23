@@ -34,8 +34,8 @@
 	<cfelse>
 		<p>An error has occurred and the site administrator has been notified.</p>
 		
-		<cfif application.errorsettings.enabled>
-			<cfmail to="#application.errorsettings.to#" from="#application.errorsettings.from#" subject="#application.errorsettings.to#">
+		<cfif application.config.errorsettings.enabled>
+			<cfmail to="#application.config.errorsettings.to#" from="#application.config.errorsettings.from#" subject="#application.config.errorsettings.to#">
 				#local.error#
 			</cfmail>
 		</cfif>

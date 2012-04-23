@@ -20,7 +20,7 @@ component extends="frameworks.org.corfield.framework"
 	/**
 	* application settings
 	*/
-	this.development = ListFind( "localhost,127.0.0.1", CGI.SERVER_NAME );
+	this.development = ListFind( "localhost,127.0.0.1,xindi.localhost", CGI.SERVER_NAME );
 	this.applicationroot = getDirectoryFromPath( getCurrentTemplatePath() );
 	this.sessionmanagement = true;
 	this.mappings[ "/model" ] = this.applicationroot & "model/";
@@ -67,11 +67,8 @@ component extends="frameworks.org.corfield.framework"
 		// define revision identifier
 		application.revision = Hash( Now() );
 		
-		// define error settings
-		application.errorsettings = { enabled=true, to="smnbin@gmail.com", from="smnbin@gmail.com", subject="Error Notification (#ListLast( this.applicationroot, '\/' )#)" };
-		
-		// define page settings
-		application.pagesettings = { enableadddelete=true };
+		// get configuration
+		application.config = getConfig();
 	}
 	
 	/**
@@ -120,5 +117,24 @@ component extends="frameworks.org.corfield.framework"
 			return view( "public:main/notfound" );
 		}
 	}
+	
+	/**
+     * configuration
+	 */		
+	private struct function getConfig()
+	{
+		var config = {
+			errorsettings = { 
+				enabled=true
+				, to="smnbin@gmail.com"
+				, from="smnbin@gmail.com"
+				, subject="Error Notification (#ListLast( this.applicationroot, '\/' )#)" 
+			},
+			pagesettings = { 
+				enableadddelete=true 
+			}
+		};
+		return config;
+	}	
 
 }

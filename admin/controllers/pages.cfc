@@ -26,6 +26,8 @@ component accessors="true" extends="abstract"
 	void function delete( required struct rc ) {
 		param name="rc.pageid" default="0";
 		rc.messages = variables.PageService.deletePage( Val( rc.pageid ) );
+		var refreshsitemap = new Http( url="#rc.basehref#index.cfm/main/xmlmap", method="get" );
+		refreshsitemap.send(); // TODO: fix this - currently returning a 404	
 		variables.fw.redirect( "pages", "messages" );
 	}	
 	
@@ -61,6 +63,8 @@ component accessors="true" extends="abstract"
 		}
 		else
 		{
+			var refreshsitemap = new Http( url="#rc.basehref#index.cfm/main.xmlmap", method="get" );
+			refreshsitemap.send(); // TODO: fix this - currently returning a 404
 			rc.messages.success = "The page has been saved.";
 			variables.fw.redirect( "pages", "messages" );	
 		}
