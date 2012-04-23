@@ -41,18 +41,18 @@ component accessors="true"
 		return messages;
 	}
 	
-	array function getUsers()
-	{
-		return EntityLoad( "User", {}, "firstname" );		
-	}
-	
 	any function getUserByID( required numeric userid )
 	{
 		var User = EntityLoadByPK( "User", arguments.userid );
 		if( IsNull( User ) ) User = newUser();
 		return User;
 	}
-	
+
+	array function getUsers()
+	{
+		return EntityLoad( "User", {}, "firstname" );		
+	}
+		
 	any function getValidator( required any User )
 	{
 		return application.ValidateThis.getValidator( theObject=arguments.User );
@@ -63,15 +63,14 @@ component accessors="true"
 		return EntityNew( "User" );
 	}		
 	
-	function saveUser( required struct properties, required string context )
+	function saveUser( required struct properties, required string context, required any ValidateThis )
 	{
 		transaction
 		{
 			var User = ""; 
 			User = getUserByID( Val( arguments.properties.userid ) );
 			User.populate( arguments.properties );
-			// TODO: not sure reference to application scope should be here
-			var result = application.ValidateThis.validate( theObject=User, Context=arguments.context );
+			var result = arguments.ValidateThis.validate( theObject=User, Context=arguments.context );
 			if( !result.hasErrors() )
 			{
 				EntitySave( User );

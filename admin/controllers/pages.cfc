@@ -52,7 +52,7 @@ component accessors="true" extends="abstract"
 		param name="rc.metadescription" default="";
 		param name="rc.metakeywords" default="";
 		var properties = { pageid=rc.pageid, title=rc.title, navigationtitle=rc.navigationtitle, content=rc.content, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
-		rc.result = variables.PageService.savePage( properties, rc.ancestorid );
+		rc.result = variables.PageService.savePage( properties, rc.ancestorid, application.ValidateThis );
 		if( rc.result.hasErrors() )
 		{
 			rc.Page = rc.result.getTheObject();

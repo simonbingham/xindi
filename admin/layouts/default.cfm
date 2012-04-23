@@ -25,7 +25,6 @@
 			<meta name="author" content="Simon Bingham (http://www.simonbingham.me.uk/)">
 			<meta name="viewport" content="width=device-width, initial-scale=1.0">
 			
-			<!--- TODO: replace base href --->
 			<base href="#rc.basehref##request.subsystem#/">
 
 			<title>Xindi Content Management System</title>
@@ -64,7 +63,7 @@
 							<span class="icon-bar"></span>
 						</a>
 						
-						<a class="brand" href="#rc.basehref##request.subsystem#/" title="Return to home page">Content Management System</a>
+						<a class="brand" href="#rc.basehref##request.subsystem#/" title="Return to home page">Xindi</a>
 						
 						<div class="nav-collapse">
 							<ul class="nav pull-right">

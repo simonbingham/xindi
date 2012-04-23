@@ -14,7 +14,7 @@
    limitations under the License.
 */
 
-component persistent="true" table="pages" cacheuse="transactional"   
+component extends="Abstract" persistent="true" table="pages" cacheuse="transactional"   
 {
 
 	property name="pageid" fieldtype="id" setter="false" generator="native" column="page_id";
@@ -33,9 +33,6 @@ component persistent="true" table="pages" cacheuse="transactional"
 
 	Page function init()
 	{
-		variables.metatitle = "";
-		variables.metadescription = "";
-		variables.metakeywords = "";
 		return this;
 	}
 	
@@ -51,9 +48,8 @@ component persistent="true" table="pages" cacheuse="transactional"
 
 	string function getDescendentPageIDList()
 	{
-		var looppage = "";
 		var pageidlist = "";
-		for( looppage in getDescendents() ){
+		for( var looppage in getDescendents() ){
 			pageidlist = ListAppend( pageidlist, looppage.getPageID() );
 		}
 		return pageidlist; 
@@ -127,17 +123,17 @@ component persistent="true" table="pages" cacheuse="transactional"
 
 	boolean function hasMetaDescription()
 	{
-		return !StructKeyExists( variables, "metadescription" ) || Len( Trim( getMetaDescription() ) );	
+		return Len( Trim( getMetaDescription() ) );	
 	}
 	
 	boolean function hasMetaKeywords()
 	{
-		return !StructKeyExists( variables, "metakeywords" ) || Len( Trim( getMetaKeywords() ) );
+		return Len( Trim( getMetaKeywords() ) );
 	}
 
 	boolean function hasMetaTitle()
 	{
-		return !StructKeyExists( variables, "metatitle" ) || Len( Trim( getMetaTitle() ) );		
+		return Len( Trim( getMetaTitle() ) );		
 	}
 
 	boolean function hasPreviousSibling()
@@ -181,36 +177,6 @@ component persistent="true" table="pages" cacheuse="transactional"
 		else matches = ORMExecuteQuery( "from Page where uuid=:uuid", { uuid=getUUID() } );
 		return !ArrayLen( matches );
 	}	
-	
-	// TODO: move to abstract cfc
-	// populate method sourced from https://gist.github.com/947636
-	void function populate( required struct memento, boolean trustedSetter=false, string include="", string exclude="", string disallowConversionToNull="" )
-	{
-		var object = this;
-		var key = "";
-		var populate = true;
-		for( key in arguments.memento )
-		{
-			populate = true;
-			if( Len( arguments.include ) && !ListFindNoCase( arguments.include, key ) ) populate = false;
-			if( Len( arguments.exclude ) && ListFindNoCase( arguments.exclude, key ) ) populate = false;
-			if( populate )
-			{
-				if( StructKeyExists( object, "set" & key ) || arguments.trustedSetter )
-				{
-					if( IsSimpleValue( arguments.memento[ key ] ) && Trim( arguments.memento[ key ] ) == "" )
-					{
-						if( Len( arguments.disallowConversionToNull ) && !ListFindNoCase( arguments.disallowConversionToNull, key ) ) Evaluate( "object.set#key#(arguments.memento[key])" );
-						else Evaluate( 'object.set#key#(javacast("null",""))' );
-					}
-					else 
-					{
-						Evaluate( "object.set#key#(arguments.memento[key])" );
-					}
-				}
-			}
-		}
-	}
 
 	void function setUUID()
 	{
@@ -218,19 +184,15 @@ component persistent="true" table="pages" cacheuse="transactional"
 		while ( !isUUIDUnique() ) variables.uuid &= "_";
 	}		
 	
-	// TODO: move to global event handler
 	void function preInsert()
 	{
-		var timestamp = Now();
-		setCreated( timestamp );
-		setUpdated( timestamp );
+		super.preInsert();
 		setUUID();
 	}
 	
-	// TODO: move to global event handler
 	void function preUpdate()
 	{
-		setUpdated( Now() );
+		super.preUpdate();
 		setUUID();
 	}	
 	

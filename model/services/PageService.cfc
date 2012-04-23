@@ -44,11 +44,6 @@ component accessors="true"
 		return messages;
 	}
 	
-	array function getPages()
-	{
-		return EntityLoad( "Page", {}, "leftvalue" );		
-	}
-	
 	any function getPageByID( required numeric pageid )
 	{
 		var Page = EntityLoadByPK( "Page", arguments.pageid );
@@ -62,7 +57,12 @@ component accessors="true"
 		if( IsNull( Page ) ) Page = newPage();
 		return Page;
 	}
-	
+
+	array function getPages()
+	{
+		return EntityLoad( "Page", {}, "leftvalue" );		
+	}
+		
 	any function getRoot()
 	{
 		return EntityLoad( "Page", { leftvalue = 1 }, true );
@@ -94,14 +94,8 @@ component accessors="true"
 					previoussiblingdescendentidlist = previoussibling.getDescendentPageIDList();
 					decreaseamount = previoussibling.getRightValue() - previoussibling.getLeftValue() + 1;
 					transaction{
-						if( ListLen( Page.getDescendentPageIDList() ) )
-						{
-							ORMExecuteQuery( "update Page set leftvalue = leftvalue - :decreaseamount, rightvalue = rightvalue - :decreaseamount where pageid in ( #Page.getDescendentPageIDList()# )", { decreaseamount=Val( decreaseamount ) } );
-						}
-						if( ListLen( previoussiblingdescendentidlist ) )
-						{
-							ORMExecuteQuery( "update Page set leftvalue = leftvalue + :increaseamount, rightvalue = rightvalue + :increaseamount where pageid in ( #previoussiblingdescendentidlist# )", { increaseamount=Val( increaseamount ) } );
-						}
+						if( ListLen( Page.getDescendentPageIDList() ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue - :decreaseamount, rightvalue = rightvalue - :decreaseamount where pageid in ( #Page.getDescendentPageIDList()# )", { decreaseamount=Val( decreaseamount ) } );
+						if( ListLen( previoussiblingdescendentidlist ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue + :increaseamount, rightvalue = rightvalue + :increaseamount where pageid in ( #previoussiblingdescendentidlist# )", { increaseamount=Val( increaseamount ) } );
 						Page.setLeftValue( Page.getLeftValue() - decreaseamount );
 						Page.setRightValue( Page.getRightValue() - decreaseamount );
 						previoussibling.setLeftValue( previoussibling.getLeftValue() + increaseamount );
@@ -122,14 +116,8 @@ component accessors="true"
 					increaseamount = nextsibling.getRightValue() - nextsibling.getLeftValue() + 1;
 					transaction
 					{
-						if( ListLen( Page.getDescendentPageIDList() ) )
-						{
-							ORMExecuteQuery( "update Page set leftvalue = leftvalue + :increaseamount, rightvalue = rightvalue + :increaseamount where pageid in ( #Page.getDescendentPageIDList()# )", { increaseamount=Val( increaseamount ) } );
-						}
-						if( ListLen( nextsiblingdescendentidlist ) )
-						{
-							ORMExecuteQuery( "update Page set leftvalue = leftvalue - :decreaseamount, rightvalue = rightvalue - :decreaseamount where pageid in ( #nextsiblingdescendentidlist# )", { decreaseamount=Val( decreaseamount ) } );
-						}
+						if( ListLen( Page.getDescendentPageIDList() ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue + :increaseamount, rightvalue = rightvalue + :increaseamount where pageid in ( #Page.getDescendentPageIDList()# )", { increaseamount=Val( increaseamount ) } );
+						if( ListLen( nextsiblingdescendentidlist ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue - :decreaseamount, rightvalue = rightvalue - :decreaseamount where pageid in ( #nextsiblingdescendentidlist# )", { decreaseamount=Val( decreaseamount ) } );
 						Page.setLeftValue( Page.getLeftValue() + increaseamount );
 						Page.setRightValue( Page.getRightValue() + increaseamount );
 						nextsibling.setLeftValue( nextsibling.getLeftValue() - decreaseamount );
@@ -153,20 +141,19 @@ component accessors="true"
 		return EntityNew( "Page" );
 	}	
 	
-	function savePage( required struct properties, required numeric ancestorid )
+	function savePage( required struct properties, required numeric ancestorid, required any ValidateThis )
 	{
 		transaction
 		{
 			var Page = ""; 
 			Page = getPageByID( Val( arguments.properties.pageid ) );
 			Page.populate( arguments.properties );
-			// TODO: move the following block of code to Page object(?)
+			// TODO: maybe move meta tag generation code to Page.cfc(?)
 			if( !Page.hasMetaTitle() ) Page.setMetaTitle( Page.getTitle() );
 			var MetaData = CreateObject( "component", "model.beans.MetaData" ).init();
 			if( !Page.hasMetaDescription() && Page.hasContent() ) Page.setMetaDescription( MetaData.generateMetaDescription( Page.getContent() ) );
 			if( !Page.hasMetaKeywords() && Page.hasContent() ) Page.setMetaKeywords( MetaData.generateMetaKeywords( Page.getContent() ) );
-			// TODO: not sure reference to application scope should be here
-			var result = application.ValidateThis.validate( Page );
+			var result = arguments.ValidateThis.validate( Page );
 			if( !result.hasErrors() )
 			{
 				if( !Page.isPersisted() && arguments.ancestorid )

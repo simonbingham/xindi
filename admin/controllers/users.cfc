@@ -46,7 +46,7 @@ component accessors="true" extends="abstract"
 		param name="rc.password" default="";
 		param name="rc.context" default="create";
 		var properties = { userid=rc.userid, firstname=rc.firstname, lastname=rc.lastname, email=rc.email, username=rc.username, password=rc.password };
-		rc.result = variables.UserService.saveUser( properties, rc.context );
+		rc.result = variables.UserService.saveUser( properties, rc.context, application.ValidateThis );
 		if( rc.result.hasErrors() )
 		{
 			rc.User = rc.result.getTheObject();
