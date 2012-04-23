@@ -27,7 +27,7 @@
 			
 			<base href="#rc.basehref##request.subsystem#/">
 
-			<title>Xindi Content Management System</title>
+			<title>Xindi</title>
 
 			<link href="assets/css/bootstrap.min.css" rel="stylesheet">
 			<link href="assets/css/bootstrap-responsive.min.css" rel="stylesheet">
@@ -44,13 +44,10 @@
 			<script src="assets/js/bootstrap-alert.js"></script>
 			<script src="assets/js/core.js?r=#rc.revision#"></script>
 			
-			<!--- TODO: add favicons --->
-			<!---
 			<link rel="shortcut icon" href="#rc.basehref#/assets/ico/favicon.ico">
 			<link rel="apple-touch-icon-precomposed" sizes="114x114" href="#rc.basehref#/assets/ico/apple-touch-icon-114-precomposed.png">
 			<link rel="apple-touch-icon-precomposed" sizes="72x72" href="#rc.basehref#/assets/ico/apple-touch-icon-72-precomposed.png">
 			<link rel="apple-touch-icon-precomposed" href="#rc.basehref#/assets/ico/apple-touch-icon-57-precomposed.png">
-			--->			
 		</head>
 		
 		<body>
