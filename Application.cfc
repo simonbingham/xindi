@@ -129,8 +129,8 @@ component extends="frameworks.org.corfield.framework"
 		var config = {
 			errorsettings = { 
 				enabled=true
-				, to="smnbin@gmail.com"
-				, from="smnbin@gmail.com"
+				, to=""
+				, from=""
 				, subject="Error Notification (#ListLast( this.applicationroot, '\/' )#)" 
 			},
 			pagesettings = { 
