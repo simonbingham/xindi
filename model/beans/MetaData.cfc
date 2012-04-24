@@ -36,32 +36,32 @@ component accessors="true"
 	
 	string function generateMetaDescription( required string description )
 	{
-		return Left( Trim( ReReplaceNoCase( ReReplaceNoCase( stripHTML( arguments.description ), "([#Chr(09)#-#Chr(30)#])", " ", "all" ), "( ){2,}", " ", "all" ) ), 200 );
+		return Left( Trim( REReplaceNoCase( REReplaceNoCase( stripHTML( arguments.description ), "([#Chr(09)#-#Chr(30)#])", " ", "all" ), "( ){2,}", " ", "all" ) ), 200 );
 	}
 	
 	string function stripHTML( required string thestring ) {
-		return ReReplaceNoCase( Trim( arguments.thestring ), "<[^>]{1,}>", " ", "all" );
+		return REReplaceNoCase( Trim( arguments.thestring ), "<[^>]{1,}>", " ", "all" );
 	}
 
 	private string function metaExclude( required string thestring ) {
-		return Trim( ReReplaceNoCase(" " & ReReplace( stripHtml( arguments.thestring ), "[ *]{1,}", "  ", "all"), "[ ]{1}(a|an|and|is|it|that|the|this|to|or)[ ]{1}", " ", "all" ) );
+		return Trim( REReplaceNoCase(" " & REReplace( stripHTML( arguments.thestring ), "[ *]{1,}", "  ", "all"), "[ ]{1}(a|an|and|is|it|that|the|this|to|or)[ ]{1}", " ", "all" ) );
 	}
 	
 	private string function listDeleteDuplicatesNoCase( required string list ) {
 		var local = StructNew();
 		if( ArrayLen( arguments ) eq 2 ) local.delimiter = arguments[ 2 ];
 		else local.delimiter = ",";
-		local.aryElements = ListToArray( arguments.list, local.delimiter );
-		local.lstNoDuplicates = "";
-		for( local.i=1; local.i lte ArrayLen( local.aryElements ); local.i=local.i+1) 
+		local.elements = ListToArray( arguments.list, local.delimiter );
+		local.listnoduplicates = "";
+		for( local.i=1; local.i lte ArrayLen( local.elements ); local.i=local.i+1 ) 
 		{
-			if( Not ListFindNoCase( local.lstNoDuplicates, local.aryElements[ local.i ], local.delimiter ) )
+			if( !ListFindNoCase( local.listnoduplicates, local.elements[ local.i ], local.delimiter ) )
 			{
-				if( Len( local.lstNoDuplicates ) ) local.lstNoDuplicates = local.lstNoDuplicates & local.delimiter & local.aryElements[ local.i ];
-				else local.lstNoDuplicates = local.aryElements[ local.i ];
+				if( Len( local.listnoduplicates ) ) local.listnoduplicates = local.listnoduplicates & local.delimiter & local.elements[ local.i ];
+				else local.listnoduplicates = local.elements[ local.i ];
 			}
 		}
-		return Trim( local.lstNoDuplicates );
+		return Trim( local.listnoduplicates );
 	}
 	
 }

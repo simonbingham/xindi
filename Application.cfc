@@ -86,7 +86,10 @@ component extends="frameworks.org.corfield.framework"
 		rc.MetaData.setMetaKeywords( "" );
 		
 		// store revision identifier in request context
-		rc.revision = application.revision; 
+		rc.revision = application.revision;
+		
+		// call admin on every request (used for security)
+		controller( "admin:main.default" );		 
 	}
 	
 	/**

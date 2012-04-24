@@ -15,7 +15,7 @@
 --->
 
 <cfoutput>
-	<h1>Pages</h1>
+	<div class="page-header"><h1>Pages</h1></div>
 	
 	#view( "helpers/messages" )#
 	

@@ -15,7 +15,7 @@
 --->
 
 <cfoutput>
-	<cfif rc.User.isPersisted()><h1>Edit User</h1><cfelse><h1>Add User</h1></cfif>
+	<div class="page-header"><cfif rc.User.isPersisted()><h1>Edit User</h1><cfelse><h1>Add User</h1></cfif></div>
 
 	#view( "helpers/messages" )#
 	

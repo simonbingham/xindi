@@ -64,11 +64,11 @@
 						
 						<div class="nav-collapse">
 							<ul class="nav pull-right">
-								<!---<cfif rc.loggedin>--->
+								<cfif rc.loggedin>
 									<li><a href="#buildURL( 'pages' )#">Pages</a></li>
 									<li><a href="#buildURL( 'users' )#">Users</a></li>
-									<li><a href="#buildURL( '' )#">Logout</a></li>
-								<!---</cfif>--->
+									<li><a href="#buildURL( 'security/logout' )#">Logout</a></li>
+								</cfif>
 							</ul>
 						</div>
 					</div>

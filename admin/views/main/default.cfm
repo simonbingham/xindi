@@ -14,5 +14,10 @@
    limitations under the License.
 --->
 
-<h1>Welcome</h1>
-<p>Please use the options above to manage your website.</p>
+<cfoutput>
+	<div class="page-header"><h1>Welcome</h1></div>
+
+	#view( "helpers/messages" )#
+
+	<p>Please use the options above to manage your website.</p>
+</cfoutput>

@@ -15,7 +15,7 @@
 --->
 
 <cfoutput>
-	<h1>Users</h1>
+	<div class="page-header"><h1>Users</h1></div>
 	
 	<p><a href="#buildURL( 'users.maintain' )#"><i class="icon-plus"></i> Add User</a></p>
 	

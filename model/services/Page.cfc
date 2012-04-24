@@ -17,12 +17,12 @@
 component accessors="true"
 {
 	
-	any function init()
+	function init()
 	{
 		return this;
 	}
 	
-	struct function deletePage( required numeric pageid, required string basehref )
+	struct function deletePage( required numeric pageid, required string basehref, required boolean sesomitindex )
 	{
 		var Page = getPageByID( arguments.pageid );
 		var messages = {};
@@ -34,7 +34,7 @@ component accessors="true"
 				ORMExecuteQuery( "update Page set leftvalue = leftvalue - 2 where leftvalue > :startvalue", { startvalue=startvalue } );
 				ORMExecuteQuery( "update Page set rightvalue = rightvalue - 2 where rightvalue > :startvalue", { startvalue=startvalue } );
 				EntityDelete( Page );
-				updateSitemapXML( arguments.basehref );
+				updateSitemapXML( arguments.basehref, sesomitindex );
 				messages.success = "The page has been deleted.";
 			}
 		}
@@ -45,14 +45,14 @@ component accessors="true"
 		return messages;
 	}
 	
-	any function getPageByID( required numeric pageid )
+	function getPageByID( required numeric pageid )
 	{
 		var Page = EntityLoadByPK( "Page", arguments.pageid );
 		if( IsNull( Page ) ) Page = newPage();
 		return Page;
 	}
 	
-	any function getPageBySlug( required string slug )
+	function getPageBySlug( required string slug )
 	{
 		var Page = EntityLoad( "Page", { uuid=Trim( ListLast( arguments.slug, "/" ) ) }, TRUE );
 		if( IsNull( Page ) ) Page = newPage();
@@ -64,14 +64,14 @@ component accessors="true"
 		return EntityLoad( "Page", {}, "leftvalue" );		
 	}
 		
-	any function getRoot()
+	function getRoot()
 	{
 		return EntityLoad( "Page", { leftvalue = 1 }, true );
 	}	
 	
-	any function getValidator( required any Page )
+	function getValidator( required any ValidateThis, required any Page )
 	{
-		return application.ValidateThis.getValidator( theObject=arguments.Page );
+		return arguments.ValidateThis.getValidator( theObject=arguments.Page );
 	}
 	
 	struct function movePage( required numeric pageid, required string direction )
@@ -137,19 +137,18 @@ component accessors="true"
 		return messages;
 	}
 	
-	any function newPage()
+	private function newPage()
 	{
 		return EntityNew( "Page" );
 	}	
 	
-	function savePage( required struct properties, required numeric ancestorid, required any ValidateThis, required string basehref )
+	function savePage( required struct properties, required numeric ancestorid, required any ValidateThis, required string basehref, required boolean sesomitindex )
 	{
 		transaction
 		{
 			var Page = ""; 
 			Page = getPageByID( Val( arguments.properties.pageid ) );
 			Page.populate( arguments.properties );
-			// TODO: maybe move meta tag generation code to Page.cfc(?)
 			if( !Page.hasMetaTitle() ) Page.setMetaTitle( Page.getTitle() );
 			var MetaData = CreateObject( "component", "model.beans.MetaData" ).init();
 			if( !Page.hasMetaDescription() && Page.hasContent() ) Page.setMetaDescription( MetaData.generateMetaDescription( Page.getContent() ) );
@@ -172,7 +171,7 @@ component accessors="true"
 					EntitySave( Page );
 					transaction action="commit";
 				}
-				updateSitemapXML( arguments.basehref );
+				updateSitemapXML( arguments.basehref, sesomitindex  );
 			}
 			else
 			{
@@ -182,11 +181,14 @@ component accessors="true"
 		return result;
 	}
 	
-	private void function updateSitemapXML( required string basehref )
+	private void function updateSitemapXML( required string basehref, required boolean sesomitindex )
 	{
 		var pages = getPages();
 		var sitemap = "<?xml version='1.0' encoding='UTF-8'?><urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd'>";
-		for( var Page in pages ) sitemap &= "<url><loc>#arguments.basehref#index.cfm/#local.Page.getSlug()#</loc></url>";
+		for( var Page in pages ){
+			if( arguments.sesomitindex ) sitemap &= "<url><loc>#arguments.basehref##local.Page.getSlug()#</loc></url>";
+			else sitemap &= "<url><loc>#arguments.basehref#index.cfm/#local.Page.getSlug()#</loc></url>";
+		} 
 		sitemap &= "</urlset>";
 		FileWrite( ExpandPath( "./" ) & "sitemap.xml", sitemap );
 	}		

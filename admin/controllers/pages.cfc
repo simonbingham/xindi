@@ -25,14 +25,14 @@ component accessors="true" extends="abstract"
 
 	void function delete( required struct rc ) {
 		param name="rc.pageid" default="0";
-		rc.messages = variables.PageService.deletePage( Val( rc.pageid ), rc.basehref );
+		rc.messages = variables.PageService.deletePage( Val( rc.pageid ), rc.basehref, variables.fw.getConfig().sesomitindex );
 		variables.fw.redirect( "pages", "messages" );
 	}	
 	
 	void function maintain( required struct rc ) {
 		param name="rc.pageid" default="0";
 		if( !StructKeyExists( rc, "Page" ) ) rc.Page = variables.PageService.getPageByID( Val( rc.pageid ) );
-		rc.Validator = variables.PageService.getValidator( rc.Page );
+		rc.Validator = variables.PageService.getValidator( application.ValidateThis, rc.Page );
 	}	
 	
 	void function move( required struct rc ) {
@@ -52,7 +52,7 @@ component accessors="true" extends="abstract"
 		param name="rc.metadescription" default="";
 		param name="rc.metakeywords" default="";
 		var properties = { pageid=rc.pageid, title=rc.title, navigationtitle=rc.navigationtitle, content=rc.content, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
-		rc.result = variables.PageService.savePage( properties, rc.ancestorid, application.ValidateThis, rc.basehref );
+		rc.result = variables.PageService.savePage( properties, rc.ancestorid, application.ValidateThis, rc.basehref, variables.fw.getConfig().sesomitindex );
 		if( rc.result.hasErrors() )
 		{
 			rc.Page = rc.result.getTheObject();

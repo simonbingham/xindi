@@ -16,23 +16,30 @@
 
 component accessors="true"
 {
-
-	property name="PageService" setter="true" getter="false";
+	property name="SecurityService" setter="true" getter="false";
 	
 	void function init( required any fw )
 	{
 		variables.fw = arguments.fw;
 	}
 
-	void function default( required struct rc ) {
-		rc.Page = variables.PageService.getRoot();
+	void function default( required rc )
+	{
+		var securearea = true; 
+		var whitelist = "^admin:security,^public:";
+		rc.loggedin = variables.SecurityService.hasCurrentUser();
+		if ( !rc.loggedin )
+		{
+			for ( var unsecured in ListToArray( whitelist ) )
+			{
+				if ( ReFindNoCase( unsecured, variables.fw.getFullyQualifiedAction() ) )
+				{
+					securearea = false;
+					break;
+				}
+			}
+			if ( securearea ) variables.fw.redirect( "admin:security" );
+		}
 	}
-	
-	void function sitemap( required struct rc ) {
-		rc.MetaData.setMetaTitle( "Site Map" ); 
-		rc.MetaData.setMetaDescription( "" );
-		rc.MetaData.setMetaKeywords( "" );		
-		rc.Pages = variables.PageService.getPages();
-	}	
-	
+  
 }

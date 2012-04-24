@@ -34,7 +34,7 @@ component accessors="true" extends="abstract"
 		param name="rc.context" default="create";
 		if( !StructKeyExists( rc, "User" ) ) rc.User = variables.UserService.getUserByID( Val( rc.userid ) );
 		if( rc.User.isPersisted() ) rc.context = "update";
-		rc.Validator = variables.UserService.getValidator( rc.User );
+		rc.Validator = variables.UserService.getValidator( application.ValidateThis, rc.User );
 	}	
 	
 	void function save( required struct rc ) {

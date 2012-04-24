@@ -17,7 +17,7 @@
 component accessors="true"
 {
 	
-	any function init()
+	function init()
 	{
 		return this;
 	}
@@ -41,11 +41,16 @@ component accessors="true"
 		return messages;
 	}
 	
-	any function getUserByID( required numeric userid )
+	function getUserByID( required numeric userid )
 	{
 		var User = EntityLoadByPK( "User", arguments.userid );
 		if( IsNull( User ) ) User = newUser();
 		return User;
+	}
+
+	function getUserByCredentials( required struct properties )
+	{
+		return EntityLoad( "User", arguments.properties, true );
 	}
 
 	array function getUsers()
@@ -53,12 +58,12 @@ component accessors="true"
 		return EntityLoad( "User", {}, "firstname" );		
 	}
 		
-	any function getValidator( required any User )
+	function getValidator( required any ValidateThis, required any User )
 	{
-		return application.ValidateThis.getValidator( theObject=arguments.User );
+		return arguments.ValidateThis.getValidator( theObject=arguments.User );
 	}
 	
-	any function newUser()
+	function newUser()
 	{
 		return EntityNew( "User" );
 	}		
