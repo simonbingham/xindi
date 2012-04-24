@@ -32,9 +32,13 @@ component extends="frameworks.org.corfield.framework"
 		automanagesession = false,
 		cfclocation = this.mappings[ "/model" ],
 		dbcreate = "update",
-		sqlscript = this.applicationroot & "_setup/setup.sql",
 		eventhandling = true
 	};
+	if( this.development )
+	{
+		this.ormsettings.dbcreate = "dropcreate";
+		this.ormsettings.sqlscript = this.applicationroot & "_setup/setup.sql";
+	}
 
 	/**
 	* FW/1 framework settings (https://github.com/seancorfield/fw1)
