@@ -9,7 +9,7 @@ Xindi is a completely free, open source CFML content management system that uses
 
 ## Quick Start
 
-Clone the git repo - git clone git@github.com:simonbingham/xindi.git - or [download it] (https://github.com/simonbingham/xindi/zipball/master).
+Clone the git repo - `git clone git@github.com:simonbingham/xindi.git` - or [download it] (https://github.com/simonbingham/xindi/zipball/master).
 
 ## Installation
 
