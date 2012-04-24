@@ -17,7 +17,7 @@
 component accessors="true"
 {
 
-	property name="PageService" setter="true" getter="false";
+	property name="ContentService" setter="true" getter="false";
 	
 	void function init( required any fw )
 	{
@@ -25,14 +25,14 @@ component accessors="true"
 	}
 
 	void function default( required struct rc ) {
-		rc.Page = variables.PageService.getRoot();
+		rc.Page = variables.ContentService.getRoot();
 	}
 	
 	void function sitemap( required struct rc ) {
 		rc.MetaData.setMetaTitle( "Site Map" ); 
 		rc.MetaData.setMetaDescription( "" );
 		rc.MetaData.setMetaKeywords( "" );		
-		rc.Pages = variables.PageService.getPages();
+		rc.Pages = variables.ContentService.getPages();
 	}	
 	
 }

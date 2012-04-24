@@ -97,7 +97,7 @@ component extends="frameworks.org.corfield.framework"
 	 */		
 	void function setupView()
 	{
-		rc.navigation = getBeanFactory().getBean( "PageService" ).getPages();
+		rc.navigation = getBeanFactory().getBean( "ContentService" ).getPages();
 	}	
 	
 	/**
@@ -105,7 +105,7 @@ component extends="frameworks.org.corfield.framework"
 	 */	
 	any function onMissingView( required rc )
 	{
-		rc.Page = getBeanFactory().getBean( "PageService" ).getPageBySlug( ListLast( CGI.PATH_INFO, "/" ) );
+		rc.Page = getBeanFactory().getBean( "ContentService" ).getPageBySlug( ListLast( CGI.PATH_INFO, "/" ) );
 		if ( rc.Page.isPersisted() )
 		{
 			rc.MetaData.setMetaTitle( rc.Page.getMetaTitle() ); 

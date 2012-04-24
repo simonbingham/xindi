@@ -149,10 +149,6 @@ component accessors="true"
 			var Page = ""; 
 			Page = getPageByID( Val( arguments.properties.pageid ) );
 			Page.populate( arguments.properties );
-			if( !Page.hasMetaTitle() ) Page.setMetaTitle( Page.getTitle() );
-			var MetaData = CreateObject( "component", "model.beans.MetaData" ).init();
-			if( !Page.hasMetaDescription() && Page.hasContent() ) Page.setMetaDescription( MetaData.generateMetaDescription( Page.getContent() ) );
-			if( !Page.hasMetaKeywords() && Page.hasContent() ) Page.setMetaKeywords( MetaData.generateMetaKeywords( Page.getContent() ) );
 			var result = arguments.ValidateThis.validate( Page );
 			if( !result.hasErrors() )
 			{

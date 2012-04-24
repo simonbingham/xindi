@@ -178,12 +178,6 @@ component extends="Abstract" persistent="true" table="pages" cacheuse="transacti
 		return !ArrayLen( matches );
 	}	
 
-	void function setUUID()
-	{
-		variables.uuid = ReReplace( LCase( getNavigationTitle() ), "[^a-z0-9]{1,}", "", "all" );
-		while ( !isUUIDUnique() ) variables.uuid &= "_"; 
-	}		
-	
 	void function preInsert()
 	{
 		super.preInsert();
@@ -194,6 +188,32 @@ component extends="Abstract" persistent="true" table="pages" cacheuse="transacti
 	{
 		super.preUpdate();
 		setUUID();
-	}	
-	
+	}
+
+	void function setMetaDescription( string metadescription="" )
+	{
+		var MetaData = CreateObject( "component", "model.beans.MetaData" );
+		if( !Len( Trim( arguments.metadescription ) ) && hasContent() ) variables.metadescription = MetaData.generateMetaDescription( getContent() );
+		else variables.metadescription = arguments.metadescription;
+	}
+
+	void function setMetaKeywords( string metakeywords="" )
+	{
+		var MetaData = CreateObject( "component", "model.beans.MetaData" );
+		if( !hasMetaKeywords() && hasContent() ) variables.metakeywords = MetaData.generateMetaKeywords( getContent() );
+		else variables.metakeywords = arguments.metakeywords;
+	}
+
+	void function setMetaTitle( string metatitle="" )
+	{
+		if( !Len( Trim( arguments.metatitle ) ) ) variables.metatitle = getTitle();
+		else variables.metatitle = arguments.metatitle;
+	}
+
+	void function setUUID()
+	{
+		variables.uuid = ReReplace( LCase( getNavigationTitle() ), "[^a-z0-9]{1,}", "", "all" );
+		while ( !isUUIDUnique() ) variables.uuid &= "_"; 
+	}
+		
 }

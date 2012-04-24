@@ -17,28 +17,28 @@
 component accessors="true" extends="abstract"   
 {
 
-	property name="PageService" setter="true" getter="false";
+	property name="ContentService" setter="true" getter="false";
 
 	void function default( required struct rc ) {
-		rc.pages = variables.PageService.getPages();
+		rc.pages = variables.ContentService.getPages();
 	}
 
 	void function delete( required struct rc ) {
 		param name="rc.pageid" default="0";
-		rc.messages = variables.PageService.deletePage( Val( rc.pageid ), rc.basehref, variables.fw.getConfig().sesomitindex );
+		rc.messages = variables.ContentService.deletePage( Val( rc.pageid ), rc.basehref, variables.fw.getConfig().sesomitindex );
 		variables.fw.redirect( "pages", "messages" );
 	}	
 	
 	void function maintain( required struct rc ) {
 		param name="rc.pageid" default="0";
-		if( !StructKeyExists( rc, "Page" ) ) rc.Page = variables.PageService.getPageByID( Val( rc.pageid ) );
-		rc.Validator = variables.PageService.getValidator( application.ValidateThis, rc.Page );
+		if( !StructKeyExists( rc, "Page" ) ) rc.Page = variables.ContentService.getPageByID( Val( rc.pageid ) );
+		rc.Validator = variables.ContentService.getValidator( application.ValidateThis, rc.Page );
 	}	
 	
 	void function move( required struct rc ) {
 		param name="rc.pageid" default="0";
 		param name="rc.direction" default="";
-		rc.messages = variables.PageService.movePage( Val( rc.pageid ), rc.direction );
+		rc.messages = variables.ContentService.movePage( Val( rc.pageid ), rc.direction );
 		variables.fw.redirect( "pages", "messages" );
 	}	
 
@@ -52,7 +52,7 @@ component accessors="true" extends="abstract"
 		param name="rc.metadescription" default="";
 		param name="rc.metakeywords" default="";
 		var properties = { pageid=rc.pageid, title=rc.title, navigationtitle=rc.navigationtitle, content=rc.content, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
-		rc.result = variables.PageService.savePage( properties, rc.ancestorid, application.ValidateThis, rc.basehref, variables.fw.getConfig().sesomitindex );
+		rc.result = variables.ContentService.savePage( properties, rc.ancestorid, application.ValidateThis, rc.basehref, variables.fw.getConfig().sesomitindex );
 		if( rc.result.hasErrors() )
 		{
 			rc.Page = rc.result.getTheObject();
