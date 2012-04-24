@@ -25,9 +25,13 @@ If you experience any problems with Xindi please either amend the source code yo
 
 ## Contributing
 
-Xindi is authored by [Simon Bingham] (https://twitter.com/#!/simonbingham), but anyone and everyone is welcome to contribute. Special thanks go to [John Whish] (https://twitter.com/#!/aliaspooryorik) for his contributions to the project.
+Xindi is authored by [Simon Bingham] (https://twitter.com/#!/simonbingham), but anyone and everyone is welcome to contribute. 
+
+Special thanks go to [John Whish] (https://twitter.com/#!/aliaspooryorik) for his contributions.
 
 ## Frameworks
+
+Xindi uses the frameworks listed below.
 
 ### Backend
 
@@ -43,6 +47,6 @@ Xindi is authored by [Simon Bingham] (https://twitter.com/#!/simonbingham), but 
 
 ## License
 
-Licensed under the Licensed under the [Apache License, Version 2.0] (http://www.apache.org/licenses/LICENSE-2.0). 
+Xindi is licensed under the [Apache License, Version 2.0] (http://www.apache.org/licenses/LICENSE-2.0). 
 
 The frameworks listed above have their own licenses which you should review before using Xindi.
