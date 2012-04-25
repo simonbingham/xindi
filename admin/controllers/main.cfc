@@ -26,7 +26,7 @@ component accessors="true"
 	void function default( required rc )
 	{
 		var securearea = true; 
-		var whitelist = "^admin:security,^public:";
+		var whitelist = application.config.securitysettings.whitelist;
 		rc.loggedin = variables.SecurityService.hasCurrentUser();
 		if ( !rc.loggedin )
 		{
