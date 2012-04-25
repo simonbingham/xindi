@@ -16,31 +16,59 @@
 
 component accessors="true"
 {
-
+	
 	/*
 	 * Dependency injection
 	 */	
-
-	property name="ContentService" setter="true" getter="false";
 	
+	property name="UserService" getter="false";
+	property name="Validator" getter="false";
+	
+	variables.userkey = "userid";
+
 	/*
 	 * Public methods
-	 */		
-	
-	void function init( required any fw )
+	 */
+
+	function deleteCurrentUser()
 	{
-		variables.fw = arguments.fw;
+		if ( hasCurrentUser() ) StructDelete( session, variables.userkey );
 	}
 
-	void function default( required struct rc ) {
-		rc.Page = variables.ContentService.getRoot();
+	function getCurrentUser()
+	{
+		if ( hasCurrentUser() ) return variables.UserService.getUserByID( session[ variables.userkey ] ).isPersisted();
 	}
-	
-	void function sitemap( required struct rc ) {
-		rc.MetaData.setMetaTitle( "Site Map" ); 
-		rc.MetaData.setMetaDescription( "" );
-		rc.MetaData.setMetaKeywords( "" );		
-		rc.Pages = variables.ContentService.getPages();
+		
+	boolean function hasCurrentUser()
+	{
+		return StructKeyExists( session, variables.userkey );
+	}
+
+	function loginUser( required struct properties )
+	{
+		var User = variables.UserService.newUser();
+		User.populate( arguments.properties );
+		var result = variables.Validator.validate( User, "login" );
+		if( !result.hasErrors() )
+		{
+			User = variables.UserService.getUserByCredentials( arguments.properties );
+			if( !IsNull( User ) )
+			{
+				setCurrentUser( User );
+			}
+			else
+			{
+				var failure = { propertyName="username", clientFieldname="username", message="Sorry, your login details have not been recognised." };
+				result.addFailure( failure );				
+			}
+		}
+		return result;
 	}	
+	
+	function setCurrentUser( required any User )
+	{
+		session[ variables.userkey ] = arguments.User.getUserID();
+	}
 	
 }

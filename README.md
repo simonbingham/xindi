@@ -49,6 +49,6 @@ Xindi uses the frameworks listed below.
 
 ## License
 
-Xindi is licensed under the [Apache License, Version 2.0] (http://www.apache.org/licenses/LICENSE-2.0). 
+Xindi is licensed under the [MIT License (MIT)] (http://www.opensource.org/licenses/mit-license.php). 
 
 The frameworks listed above have their own licenses which you should review before using Xindi.

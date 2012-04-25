@@ -1,17 +1,17 @@
 /*
-   Copyright 2012, Simon Bingham
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+	Copyright (c) 2012, Simon Bingham
+	
+	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
+	files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, 
+	modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software 
+	is furnished to do so, subject to the following conditions:
+	
+	The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+	
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES 
+	OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE 
+	LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
+	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 component accessors="true" extends="abstract"   
@@ -40,7 +40,7 @@ component accessors="true" extends="abstract"
 	void function maintain( required struct rc ) {
 		param name="rc.pageid" default="0";
 		if( !StructKeyExists( rc, "Page" ) ) rc.Page = variables.ContentService.getPageByID( Val( rc.pageid ) );
-		rc.Validator = variables.ContentService.getValidator( application.ValidateThis, rc.Page );
+		rc.Validator = variables.ContentService.getValidator( rc.Page );
 	}	
 	
 	void function move( required struct rc ) {
@@ -60,7 +60,7 @@ component accessors="true" extends="abstract"
 		param name="rc.metadescription" default="";
 		param name="rc.metakeywords" default="";
 		var properties = { pageid=rc.pageid, title=rc.title, navigationtitle=rc.navigationtitle, content=rc.content, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
-		rc.result = variables.ContentService.savePage( properties, rc.ancestorid, application.ValidateThis, rc.basehref, variables.fw.getConfig().sesomitindex );
+		rc.result = variables.ContentService.savePage( properties, rc.ancestorid, rc.basehref, variables.fw.getConfig().sesomitindex );
 		if( rc.result.hasErrors() )
 		{
 			rc.Page = rc.result.getTheObject();
