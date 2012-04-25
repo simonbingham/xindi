@@ -40,7 +40,12 @@ component accessors="true"
 		rc.MetaData.setMetaTitle( "Site Map" ); 
 		rc.MetaData.setMetaDescription( "" );
 		rc.MetaData.setMetaKeywords( "" );		
-		rc.Pages = variables.ContentService.getPages();
-	}	
+		rc.pages = variables.ContentService.getPages();
+	}
+	
+	void function xml( required struct rc ) {
+		rc.sesomitindex = variables.fw.getConfig().sesomitindex;
+		rc.pages = variables.ContentService.getPages();
+	}		
 	
 }

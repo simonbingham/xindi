@@ -81,7 +81,9 @@ component extends="frameworks.org.corfield.framework"
 	void function setupRequest()
 	{
 		// define base url
-	  	rc.basehref = "//" & CGI.HTTP_HOST & variables.framework.base;
+		if ( CGI.HTTPS eq "on" ) rc.basehref = "https://";
+		else rc.basehref = "http://";
+		rc.basehref &= CGI.HTTP_HOST & variables.framework.base;
 	  	
 	  	// define default meta data
 		rc.MetaData = getBeanFactory().getBean( "MetaData" );
