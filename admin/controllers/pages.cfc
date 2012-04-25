@@ -16,8 +16,16 @@
 
 component accessors="true" extends="abstract"   
 {
+	
+	/*
+	 * Dependency injection
+	 */		
 
 	property name="ContentService" setter="true" getter="false";
+
+	/*
+	 * Public methods
+	 */	
 
 	void function default( required struct rc ) {
 		rc.pages = variables.ContentService.getPages();

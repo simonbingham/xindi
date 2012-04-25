@@ -16,7 +16,11 @@
 
 component accessors="true"
 {
-	
+
+	/*
+	 * Public methods
+	 */
+	 	
 	function init()
 	{
 		return this;
@@ -137,11 +141,6 @@ component accessors="true"
 		return messages;
 	}
 	
-	private function newPage()
-	{
-		return EntityNew( "Page" );
-	}	
-	
 	function savePage( required struct properties, required numeric ancestorid, required any ValidateThis, required string basehref, required boolean sesomitindex )
 	{
 		transaction
@@ -176,6 +175,15 @@ component accessors="true"
 		}
 		return result;
 	}
+	
+	/*
+	 * Private methods
+	 */	
+	
+	private function newPage()
+	{
+		return EntityNew( "Page" );
+	}	
 	
 	private void function updateSitemapXML( required string basehref, required boolean sesomitindex )
 	{

@@ -16,7 +16,11 @@
 
 component accessors="true"
 {
-	
+
+	/*
+	 * Public methods
+	 */
+	 	
 	function init()
 	{
 		return this;

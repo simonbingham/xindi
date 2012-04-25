@@ -17,6 +17,10 @@
 component 
 {
 	
+	/*
+	 * Public methods
+	 */
+	
 	void function preInsert()
 	{
 		var timestamp = Now();

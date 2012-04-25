@@ -17,7 +17,15 @@
 component accessors="true"
 {
 
+	/*
+	 * Dependency injection
+	 */	
+
 	property name="ContentService" setter="true" getter="false";
+	
+	/*
+	 * Public methods
+	 */		
 	
 	void function init( required any fw )
 	{

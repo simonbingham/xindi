@@ -17,6 +17,10 @@
 component extends="Abstract" persistent="true" table="pages" cacheuse="transactional"   
 {
 
+	/*
+	 * Properties
+	 */
+
 	property name="pageid" fieldtype="id" setter="false" generator="native" column="page_id";
 	
 	property name="uuid" column="page_uuid" ormtype="string" length="150" default="";
@@ -30,6 +34,10 @@ component extends="Abstract" persistent="true" table="pages" cacheuse="transacti
 	property name="metakeywords" column="page_metakeywords" ormtype="string" length="200" default="";
 	property name="created" column="page_created" ormtype="timestamp";
 	property name="updated" column="page_updated" ormtype="timestamp";
+
+	/*
+	 * Public methods
+	 */
 
 	Page function init()
 	{

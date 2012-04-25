@@ -17,9 +17,17 @@
 component accessors="true"
 {
 	
+	/*
+	 * Dependency injection
+	 */	
+	
 	property name="UserService" setter="true" getter="false";
 	
 	variables.userkey = "userid";
+
+	/*
+	 * Public methods
+	 */
 
 	function deleteCurrentUser()
 	{

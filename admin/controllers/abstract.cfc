@@ -17,6 +17,10 @@
 component accessors="true"
 {
 
+	/*
+	 * Public methods
+	 */	
+
 	void function init( required any fw )
 	{
 		variables.fw = arguments.fw;

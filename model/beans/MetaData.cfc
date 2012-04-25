@@ -17,10 +17,18 @@
 component accessors="true" 
 {
 	
+	/*
+	 * Properties
+	 */	
+	
 	property name="metatitle";
 	property name="metakeywords";
 	property name="metadescription";
-	
+
+	/*
+	 * Public methods
+	 */
+	 	
 	function init()
 	{
 		variables.metatitle = "";
@@ -42,6 +50,10 @@ component accessors="true"
 	string function stripHTML( required string thestring ) {
 		return REReplaceNoCase( Trim( arguments.thestring ), "<[^>]{1,}>", " ", "all" );
 	}
+
+	/*
+	 * Private methods
+	 */
 
 	private string function metaExclude( required string thestring ) {
 		return Trim( REReplaceNoCase(" " & REReplace( stripHTML( arguments.thestring ), "[ *]{1,}", "  ", "all"), "[ ]{1}(a|an|and|is|it|that|the|this|to|or)[ ]{1}", " ", "all" ) );

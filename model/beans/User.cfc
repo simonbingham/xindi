@@ -16,6 +16,11 @@
 
 component extends="Abstract" persistent="true" table="users" cacheuse="transactional"
 {
+
+	/*
+	 * Properties
+	 */	
+	
 	property name="userid" fieldtype="id" setter="false" generator="native" column="user_id";
 
 	property name="firstname" ormtype="string" length="50" column="user_firstname" default="";
@@ -25,6 +30,10 @@ component extends="Abstract" persistent="true" table="users" cacheuse="transacti
 	property name="password" ormtype="string" length="50" column="user_password";
 	property name="created" ormtype="timestamp" column="user_created";
 	property name="updated" ormtype="timestamp" column="user_updated";
+	
+	/*
+	 * Public methods
+	 */	
 	
 	function init()
 	{

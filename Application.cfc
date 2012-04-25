@@ -141,7 +141,7 @@ component extends="frameworks.org.corfield.framework"
 				enableadddelete=true 
 			},
 			securitysettings = {
-				whitelist = "^admin:security,^public:" // unsecure actions
+				whitelist = "^admin:security,^public:"
 			}
 		};
 		return config;
