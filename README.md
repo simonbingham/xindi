@@ -32,16 +32,6 @@ Clone the git repo - `git clone git@github.com:simonbingham/xindi.git` - or [dow
 
 You'll be able to access Xindi's (unstyled) public facing site at [http://localhost/xindi/] (http://localhost/xindi/) and the content management system itself at [http://localhost/xindi/admin] (http://localhost/xindi/admin). The default username and password are 'admin'.
 
-## Problems
-
-If you experience any problems with Xindi please either amend the source code yourself and submit a pull request or [report the issue] (https://github.com/simonbingham/xindi/issues).
-
-## Contributing
-
-Xindi is authored by [Simon Bingham] (https://twitter.com/#!/simonbingham), but anyone and everyone is welcome to contribute. 
-
-Special thanks go to [John Whish] (https://twitter.com/#!/aliaspooryorik) for his contributions to the project.
-
 ## Frameworks
 
 Xindi uses the frameworks listed below.
@@ -57,6 +47,16 @@ Xindi uses the frameworks listed below.
 * [Twitter Bootstrap] (http://twitter.github.com/bootstrap/)
 * [jQuery (and jQuery UI)] (http://jquery.com/)
 * [CKeditor] (http://ckeditor.com/)
+
+## Contributing
+
+Xindi is authored by [Simon Bingham] (https://twitter.com/#!/simonbingham), but anyone and everyone is welcome to contribute. 
+
+Special thanks go to [John Whish] (https://twitter.com/#!/aliaspooryorik) for his contributions to the project.
+
+## Problems
+
+If you experience any problems with Xindi please either amend the source code yourself and submit a pull request or [report the issue] (https://github.com/simonbingham/xindi/issues).
 
 ## License
 
