@@ -48,6 +48,12 @@ Xindi uses the frameworks listed below.
 * [jQuery (and jQuery UI)] (http://jquery.com/)
 * [CKeditor] (http://ckeditor.com/)
 
+## License
+
+Xindi is licensed under the [MIT License (MIT)] (http://www.opensource.org/licenses/mit-license.php). 
+
+The frameworks listed above have their own licenses which you should review before using Xindi.
+
 ## Contributing
 
 Xindi is authored by [Simon Bingham] (https://twitter.com/#!/simonbingham), but anyone and everyone is welcome to contribute. 
@@ -57,12 +63,6 @@ Special thanks go to [John Whish] (https://twitter.com/#!/aliaspooryorik) for hi
 ## Problems
 
 If you experience any problems with Xindi please either amend the source code yourself and submit a pull request or [report the issue] (https://github.com/simonbingham/xindi/issues).
-
-## License
-
-Xindi is licensed under the [MIT License (MIT)] (http://www.opensource.org/licenses/mit-license.php). 
-
-The frameworks listed above have their own licenses which you should review before using Xindi.
 
 ## Wishlist
 
