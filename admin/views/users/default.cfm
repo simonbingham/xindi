@@ -36,7 +36,7 @@
 				<cfloop array="#rc.users#" index="local.User">
 					<tr>
 						<td><a href="#buildURL( action='users.maintain', querystring='userid/#local.User.getUserID()#' )#" title="Edit #local.User.getFullName()#">#local.User.getFullName()#</a></td>
-						<td>#local.User.getEmail()#</td>
+						<td><a href="mailto:#local.User.getEmail()#">#local.User.getEmail()#</a></td>
 						<td>#DateFormat( local.User.getCreated(), "full" )#</td>
 						<td><a href="#buildURL( 'users.delete' )#/userid/#local.User.getUserID()#" title="Delete"><i class="icon-remove"></i></a></td>
 					</tr>

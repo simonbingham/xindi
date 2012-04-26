@@ -6,6 +6,7 @@ Version 2012.x.x
 - Fixed meta data generation bug.
 - Fixed text editor conflict with ValidateThis.
 - Fixed page sorting error.
+- Made email addresses in user manager clickable.
 
 Version 2012.4.25
 -----------
