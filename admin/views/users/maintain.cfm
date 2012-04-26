@@ -60,7 +60,7 @@
 	<script>
 	$(document).ready(function(){
 		$.validator.setDefaults({
-			errorClass: 'help-inline error', 
+			errorClass: 'error', 
 			errorElement: 'span'
 		});
 	});

@@ -9,6 +9,7 @@ Xindi is a completely free, open source CFML content management system that uses
 * Password protected
 * Page management
 * User account management
+* Text editor
 * Search engine friendly urls
 * Search form
 * Breadcrumb trail
@@ -28,7 +29,8 @@ Clone the git repo - `git clone git@github.com:simonbingham/xindi.git` - or [dow
 
 1. Install Xindi in your web root.
 2. Create a datasource called "xindi".
-3. That's it!
+3. Run the SQL script in the "_setup/setup.sql" file against your database.
+4. That's it!
 
 You'll be able to access Xindi's (unstyled) public facing site at [http://localhost/xindi/] (http://localhost/xindi/) and the content management system itself at [http://localhost/xindi/admin] (http://localhost/xindi/admin). The default username and password are 'admin'.
 

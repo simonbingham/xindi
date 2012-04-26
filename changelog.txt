@@ -1,4 +1,4 @@
-Version 2012.4.26
+Version 2012.4.25
 -----------
 
 - Initial release.

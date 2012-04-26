@@ -1,5 +1,5 @@
 /*
-	Xindi (http://simonbingham.github.com/xindi/) - Version 2012.4.26
+	Xindi (http://simonbingham.github.com/xindi/) - Version 2012.4.25
 	
 	Copyright (c) 2012, Simon Bingham (http://www.simonbingham.me.uk/)
 	
@@ -34,8 +34,7 @@ component extends="frameworks.org.corfield.framework"
 		automanagesession = false,
 		cfclocation = this.mappings[ "/model" ],
 		dbcreate = "update",
-		eventhandling = true,
-		sqlscript = this.applicationroot & "_setup/setup.sql"
+		eventhandling = true
 	};
 
 	/**
