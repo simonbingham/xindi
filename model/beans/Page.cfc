@@ -41,6 +41,7 @@ component extends="Abstract" persistent="true" table="pages" cacheuse="transacti
 
 	Page function init()
 	{
+		variables.MetaData = CreateObject( "component", "model.beans.MetaData" );
 		return this;
 	}
 	
@@ -101,13 +102,21 @@ component extends="Abstract" persistent="true" table="pages" cacheuse="transacti
 	string function getSlug()
 	{
 		var slug = "";
-		for( var Page in getPath() )
+		if( !isRoot() )
 		{
-			if( !Page.isRoot() ) slug &= Page.getUUID() & "/";
+			for( var Page in getPath() )
+			{
+				if( !Page.isRoot() ) slug &= Page.getUUID() & "/";
+			}
+			slug &= getUUID();
 		}
-		slug &= getUUID();
 		return slug;
-	}	
+	}
+	
+	string function getSummary()
+	{
+		return Left( variables.MetaData.stripHTML( getContent() ), 500 ) & "...";
+	}
 	
 	boolean function hasChild()
 	{
@@ -200,15 +209,13 @@ component extends="Abstract" persistent="true" table="pages" cacheuse="transacti
 
 	void function setMetaDescription( string metadescription="" )
 	{
-		var MetaData = CreateObject( "component", "model.beans.MetaData" );
-		if( !Len( Trim( arguments.metadescription ) ) && hasContent() ) variables.metadescription = MetaData.generateMetaDescription( getContent() );
+		if( !Len( Trim( arguments.metadescription ) ) && hasContent() ) variables.metadescription = variables.MetaData.generateMetaDescription( getContent() );
 		else variables.metadescription = arguments.metadescription;
 	}
 
 	void function setMetaKeywords( string metakeywords="" )
 	{
-		var MetaData = CreateObject( "component", "model.beans.MetaData" );
-		if( !hasMetaKeywords() && hasContent() ) variables.metakeywords = MetaData.generateMetaKeywords( getContent() );
+		if( !hasMetaKeywords() && hasContent() ) variables.metakeywords = variables.MetaData.generateMetaKeywords( getContent() );
 		else variables.metakeywords = arguments.metakeywords;
 	}
 

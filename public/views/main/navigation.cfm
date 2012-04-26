@@ -14,7 +14,6 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 --->
 
-<cfparam name="rc.pages" default="#rc.navigation#">
 <cfparam name="rc.cachetimespan" default="#CreateTimeSpan( 0, 0, 5, 0 )#">
 
 <!--- here's lots of code that renders an indented list of pages - could probably be improved! --->
@@ -23,17 +22,10 @@
 
 <cfcache timespan="#rc.cachetimespan#">
 	<cfoutput>
-		<cfif ArrayLen( rc.pages )>
-			<cfloop array="#rc.pages#" index="local.Page">
+		<cfif ArrayLen( rc.navigation )>
+			<cfloop array="#rc.navigation#" index="local.Page">
 				<cfsavecontent variable="local.link">
-					<cfset local.title = local.Page.getNavigationTitle()>
-					<cfset local.link = Replace( buildURL( local.Page.getSlug() ), "site:", "" )>
-					
-					<cfif local.Page.isRoot()>
-						<cfset local.link = rc.basehref>
-					</cfif>
-					
-					<a href="#local.link#">#local.title#</a>
+					<a href="#buildURL( local.Page.getSlug() )#">#local.Page.getNavigationTitle()#</a>
 				</cfsavecontent>		
 				
 				<cfif local.Page.getLevel() gt local.previouslevel>

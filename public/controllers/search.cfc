@@ -28,19 +28,11 @@ component accessors="true" extends="abstract"
 	 */		
 	
 	void function default( required struct rc ) {
-		rc.Page = variables.ContentService.getRoot();
-	}
-	
-	void function sitemap( required struct rc ) {
-		rc.MetaData.setMetaTitle( "Site Map" ); 
+		param name="rc.searchterm" default="";
+		rc.MetaData.setMetaTitle( "Search Results" ); 
 		rc.MetaData.setMetaDescription( "" );
-		rc.MetaData.setMetaKeywords( "" );		
-		rc.pages = variables.ContentService.getPages();
+		rc.MetaData.setMetaKeywords( "" );
+		if( Len( Trim( rc.searchterm ) ) ) rc.pages = variables.ContentService.getPages( rc.searchterm );
 	}
-	
-	void function xml( required struct rc ) {
-		rc.sesomitindex = variables.fw.getConfig().sesomitindex;
-		rc.pages = variables.ContentService.getPages();
-	}		
 	
 }

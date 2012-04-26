@@ -1,4 +1,4 @@
-/*
+<!---
 	Copyright (c) 2012, Simon Bingham (http://www.simonbingham.me.uk/)
 	
 	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
@@ -12,35 +12,21 @@
 	OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE 
 	LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
+--->
 
-component accessors="true" extends="abstract"  
-{
-
-	/*
-	 * Dependency injection
-	 */	
-
-	property name="ContentService" setter="true" getter="false";
+<cfoutput>
+	<h1>Search Results</h1>
 	
-	/*
-	 * Public methods
-	 */		
-	
-	void function default( required struct rc ) {
-		rc.Page = variables.ContentService.getRoot();
-	}
-	
-	void function sitemap( required struct rc ) {
-		rc.MetaData.setMetaTitle( "Site Map" ); 
-		rc.MetaData.setMetaDescription( "" );
-		rc.MetaData.setMetaKeywords( "" );		
-		rc.pages = variables.ContentService.getPages();
-	}
-	
-	void function xml( required struct rc ) {
-		rc.sesomitindex = variables.fw.getConfig().sesomitindex;
-		rc.pages = variables.ContentService.getPages();
-	}		
-	
-}
+	<cfif StructKeyExists( rc, "pages" ) and ArrayLen( rc.pages )>
+		<p>#ArrayLen( rc.pages )# <cfif ArrayLen( rc.pages ) eq 1>record was<cfelse>records were</cfif> found matching &quot;#rc.searchterm#&quot;.</p>
+		
+		<cfloop array="#rc.pages#" index="local.Page">
+			<h2><a href="#buildURL( local.Page.getSlug() )#">#local.Page.getNavigationTitle()#</a></h2>
+			<p>#local.Page.getSummary()#</p>
+		</cfloop>
+	<cfelseif StructKeyExists( rc, "pages" )>
+		<p>No records were found matching &quot;#rc.searchterm#&quot;.</p>
+	<cfelse>
+		<p>Please enter a search team.</p>
+	</cfif>
+</cfoutput>

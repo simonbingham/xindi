@@ -65,6 +65,8 @@ component extends="frameworks.org.corfield.framework"
 		var ValidateThisConfig = { definitionPath="/model/" };
 		beanFactory.addBean( "Validator", new ValidateThis.ValidateThis( ValidateThisConfig ) );
 		
+		beanFactory.addBean( "Validator", new ValidateThis.ValidateThis( ValidateThisConfig ) );
+		
 		// define revision identifier
 		application.revision = Hash( Now() );
 		

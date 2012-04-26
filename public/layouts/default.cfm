@@ -39,6 +39,13 @@
 		</head>
 
 		<body>
+			<div id="search">
+				<form action="#buildURL( 'search' )#" method="post">
+					<input type="text" name="searchterm" id="searchterm" placeholder="Enter keywords" />
+					<input type="submit" name="searchbutton" id="searchbutton" value="Search" />
+				</form>
+			</div>
+			
 			<div id="navigation">#view( "main/navigation", { pages=rc.navigation, cachetimespan=application.config.caching.timespan } )#</div> 
 			
 			<div id="content">#body#</div>

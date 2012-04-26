@@ -14,33 +14,16 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true" extends="abstract"  
+component accessors="true"
 {
 
 	/*
-	 * Dependency injection
+	 * Public methods
 	 */	
 
-	property name="ContentService" setter="true" getter="false";
-	
-	/*
-	 * Public methods
-	 */		
-	
-	void function default( required struct rc ) {
-		rc.Page = variables.ContentService.getRoot();
+	void function init( required any fw )
+	{
+		variables.fw = arguments.fw;
 	}
-	
-	void function sitemap( required struct rc ) {
-		rc.MetaData.setMetaTitle( "Site Map" ); 
-		rc.MetaData.setMetaDescription( "" );
-		rc.MetaData.setMetaKeywords( "" );		
-		rc.pages = variables.ContentService.getPages();
-	}
-	
-	void function xml( required struct rc ) {
-		rc.sesomitindex = variables.fw.getConfig().sesomitindex;
-		rc.pages = variables.ContentService.getPages();
-	}		
-	
+
 }
