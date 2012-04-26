@@ -28,11 +28,11 @@ Clone the git repo - `git clone git@github.com:simonbingham/xindi.git` - or [dow
 ## Installation
 
 1. Install Xindi in your web root.
-2. Create a datasource called "xindi".
+2. Create a datasource with the same name as your project folder.
 3. Run the "_setup/setup.sql" SQL script against your database.
 4. That's it!
 
-You'll be able to access Xindi's (unstyled) public facing site at [http://localhost/xindi/] (http://localhost/xindi/) and the content management system itself at [http://localhost/xindi/admin] (http://localhost/xindi/admin). The default username and password are 'admin'.
+You'll be able to access Xindi's public facing site at [http://localhost/xindi/] (http://localhost/xindi/) and the content management system itself at [http://localhost/xindi/admin] (http://localhost/xindi/admin). The default username and password are 'admin'.
 
 ## Frameworks
 
