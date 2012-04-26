@@ -88,9 +88,6 @@ component extends="frameworks.org.corfield.framework"
 	  	
 	  	// define default meta data
 		rc.MetaData = getBeanFactory().getBean( "MetaData" );
-		rc.MetaData.setMetaTitle( "" ); 
-		rc.MetaData.setMetaDescription( "" );
-		rc.MetaData.setMetaKeywords( "" );
 		
 		// store revision identifier in request context
 		rc.revision = application.revision;
