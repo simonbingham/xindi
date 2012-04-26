@@ -6,7 +6,7 @@ Xindi is a completely free, open source CFML content management system that uses
 
 ## Features
 
-* Password protected content management system
+* Password protected
 * Page management
 * User account management
 * Search engine friendly urls
@@ -64,6 +64,6 @@ Xindi is licensed under the [MIT License (MIT)] (http://www.opensource.org/licen
 
 The frameworks listed above have their own licenses which you should review before using Xindi.
 
-##Wishlist
+## Wishlist
 
-If you think Xindi's great and would like to thank me with a gift [you'll find my Amazon wishlist here] (http://www.amazon.co.uk/registry/wishlist/5NCOEAWSRYHU).
+If you think Xindi's great and would like to thank me with a gift [you'll find my Amazon wishlist here] (http://www.amazon.co.uk/registry/wishlist/5NCOEAWSRYHU). Alternatively, you can send me a big wodge of cash! ;)
