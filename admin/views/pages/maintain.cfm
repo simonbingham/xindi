@@ -77,6 +77,14 @@
 			errorClass: 'error', 
 			errorElement: 'span'
 		});
+		
+		$( "form" ).bind( "submit", function(){
+			if( typeof CKEDITOR != "undefined" ){
+				for( instance in CKEDITOR.instances ){
+					CKEDITOR.instances[ instance ].updateElement();
+				}
+			}
+		});			
 	});
 	</script>		
 	

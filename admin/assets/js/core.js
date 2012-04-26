@@ -11,6 +11,12 @@ $(function() {
 		return confirm( "Delete this item?" );
 	});
 	
+	// populate navigation title when page title is entered	
+	$( "input#title" ).blur(function(){
+		var navigationtitle = $( "input#navigationtitle" )
+		if( navigationtitle.val().length==0 ) navigationtitle.val( $( this ).val() );
+	});	
+	
 	// text editor configuration
 	var currentURI = document.location.href;
 	CKEDITOR.config[ "baseHref" ] = currentURI.substring( 0, currentURI.indexOf( "index.cfm" ) );

@@ -1,3 +1,13 @@
+Version 2012.4.25.17
+-----------
+
+- Added JavaScript to populate navigation title when page title is entered.
+- Improved installation instructions.
+- Fixed meta data generation bug.
+- Fixed text editor conflict with ValidateThis.
+- Fixed page sorting error.
+- Made email addresses in user manager clickable.
+
 Version 2012.4.25
 -----------
 

@@ -1,5 +1,5 @@
 /*
-	Xindi (http://simonbingham.github.com/xindi/) - Version 2012.4.25
+	Xindi (http://simonbingham.github.com/xindi/) - Version 2012.4.25.17
 	
 	Copyright (c) 2012, Simon Bingham (http://www.simonbingham.me.uk/)
 	
@@ -61,6 +61,9 @@ component extends="frameworks.org.corfield.framework"
 		// setup bean factory
 		var beanfactory = new frameworks.org.corfield.ioc( "/model" );
 		setBeanFactory( beanfactory );
+		var ValidateThisConfig = { definitionPath="/model/" };
+		beanFactory.addBean( "Validator", new ValidateThis.ValidateThis( ValidateThisConfig ) );
+		beanFactory.addBean( "MetaData", new model.beans.MetaData() );
 		
 		// setup validation framework
 		var ValidateThisConfig = { definitionPath="/model/" };
@@ -85,9 +88,6 @@ component extends="frameworks.org.corfield.framework"
 	  	
 	  	// define default meta data
 		rc.MetaData = getBeanFactory().getBean( "MetaData" );
-		rc.MetaData.setMetaTitle( "" ); 
-		rc.MetaData.setMetaDescription( "" );
-		rc.MetaData.setMetaKeywords( "" );
 		
 		// store revision identifier in request context
 		rc.revision = application.revision;

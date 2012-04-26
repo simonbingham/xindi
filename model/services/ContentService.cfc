@@ -21,6 +21,7 @@ component accessors="true"
 	 * Dependency injection
 	 */	
 	
+	property name="MetaData" getter="false";
 	property name="Validator" getter="false";
 
 	/*
@@ -93,8 +94,8 @@ component accessors="true"
 		var previoussibling = "";
 		var previoussiblingdescendentidlist = "";
 		var Page = getPageByID( arguments.pageid );
-		var messages = "";
-		if( !Page.isPersisted() && ListFind( "up,down", Trim( arguments.direction ) ) )
+		var messages = {};
+		if( Page.isPersisted() && ListFindNoCase( "up,down", Trim( arguments.direction ) ) )
 		{
 			if( arguments.direction eq "up" )
 			{
@@ -114,7 +115,7 @@ component accessors="true"
 						EntitySave( Page );
 						EntitySave( previoussibling );
 					}
-					messages.success="The page has been moved.";
+					messages.success = "The page has been moved.";
 				}
 			}
 			else
@@ -136,7 +137,7 @@ component accessors="true"
 						EntitySave( Page );
 						EntitySave( nextsibling );
 					}
-					messages.success="The page has been moved.";
+					messages.success = "The page has been moved.";
 				}
 			}
 		}
@@ -154,6 +155,9 @@ component accessors="true"
 			var Page = ""; 
 			Page = getPageByID( Val( arguments.properties.pageid ) );
 			Page.populate( arguments.properties );
+			if( !Page.hasMetaTitle() ) Page.setMetaTitle( Page.getTitle() );
+			if( !Page.hasMetaDescription() ) Page.setMetaDescription( variables.MetaData.generateMetaDescription( Page.getContent() ) );
+			if( !Page.hasMetaKeywords() ) Page.setMetaKeywords( variables.MetaData.generateMetaKeywords( Page.getContent() ) );			
 			var result = variables.Validator.validate( theObject=Page, Context=arguments.context );
 			if( !result.hasErrors() )
 			{

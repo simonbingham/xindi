@@ -29,10 +29,10 @@ component accessors="true" extends="abstract"
 	
 	void function default( required struct rc ) {
 		param name="rc.searchterm" default="";
+		if( Len( Trim( rc.searchterm ) ) ) rc.pages = variables.ContentService.getPages( rc.searchterm );
 		rc.MetaData.setMetaTitle( "Search Results" ); 
 		rc.MetaData.setMetaDescription( "" );
 		rc.MetaData.setMetaKeywords( "" );
-		if( Len( Trim( rc.searchterm ) ) ) rc.pages = variables.ContentService.getPages( rc.searchterm );
 	}
 	
 }
