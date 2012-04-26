@@ -21,6 +21,7 @@ component accessors="true"
 	 * Dependency injection
 	 */	
 	
+	property name="MetaData" getter="false";
 	property name="Validator" getter="false";
 
 	/*
@@ -154,6 +155,9 @@ component accessors="true"
 			var Page = ""; 
 			Page = getPageByID( Val( arguments.properties.pageid ) );
 			Page.populate( arguments.properties );
+			if( !Page.hasMetaTitle() ) Page.setMetaTitle( Page.getTitle() );
+			if( !Page.hasMetaDescription() ) Page.setMetaDescription( variables.MetaData.generateMetaDescription( Page.getContent() ) );
+			if( !Page.hasMetaKeywords() ) Page.setMetaKeywords( variables.MetaData.generateMetaKeywords( Page.getContent() ) );			
 			var result = variables.Validator.validate( theObject=Page, Context=arguments.context );
 			if( !result.hasErrors() )
 			{

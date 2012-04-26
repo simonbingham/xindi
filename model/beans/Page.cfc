@@ -114,8 +114,7 @@ component extends="Abstract" persistent="true" table="pages" cacheuse="transacti
 	
 	string function getSummary()
 	{
-		var MetaData = CreateObject( "component", "model.beans.MetaData" );
-		return Left( MetaData.stripHTML( getContent() ), 500 ) & "...";
+		return Left( REReplaceNoCase( Trim( getContent() ), "<[^>]{1,}>", " ", "all" ), 500 ) & "...";
 	}
 	
 	boolean function hasChild()
@@ -205,26 +204,6 @@ component extends="Abstract" persistent="true" table="pages" cacheuse="transacti
 	{
 		super.preUpdate();
 		setUUID();
-	}
-
-	void function setMetaDescription( string metadescription="" )
-	{
-		var MetaData = CreateObject( "component", "model.beans.MetaData" );
-		if( !Len( Trim( arguments.metadescription ) ) && hasContent() ) variables.metadescription = MetaData.generateMetaDescription( getContent() );
-		else variables.metadescription = arguments.metadescription;
-	}
-
-	void function setMetaKeywords( string metakeywords="" )
-	{
-		var MetaData = CreateObject( "component", "model.beans.MetaData" );
-		if( !hasMetaKeywords() && hasContent() ) variables.metakeywords = MetaData.generateMetaKeywords( getContent() );
-		else variables.metakeywords = arguments.metakeywords;
-	}
-
-	void function setMetaTitle( string metatitle="" )
-	{
-		if( !Len( Trim( arguments.metatitle ) ) ) variables.metatitle = getTitle();
-		else variables.metatitle = arguments.metatitle;
 	}
 
 	void function setUUID()

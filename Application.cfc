@@ -61,6 +61,9 @@ component extends="frameworks.org.corfield.framework"
 		// setup bean factory
 		var beanfactory = new frameworks.org.corfield.ioc( "/model" );
 		setBeanFactory( beanfactory );
+		var ValidateThisConfig = { definitionPath="/model/" };
+		beanFactory.addBean( "Validator", new ValidateThis.ValidateThis( ValidateThisConfig ) );
+		beanFactory.addBean( "MetaData", new model.beans.MetaData() );
 		
 		// setup validation framework
 		var ValidateThisConfig = { definitionPath="/model/" };
