@@ -34,7 +34,7 @@ component accessors="true" extends="abstract"
 	void function delete( required struct rc ) {
 		param name="rc.pageid" default="0";
 		rc.messages = variables.ContentService.deletePage( Val( rc.pageid ) );
-		var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:main/xml", method="get" );
+		var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:main/mapxml", method="get" );
 		refreshsitemap.send();		
 		variables.fw.redirect( "pages", "messages" );
 	}	
@@ -71,7 +71,7 @@ component accessors="true" extends="abstract"
 		}
 		else
 		{
-			var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:main/xml", method="get" );
+			var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:main/mapxml", method="get" );
 			refreshsitemap.send();
 			rc.messages.success = "The page has been saved.";
 			variables.fw.redirect( "pages", "messages" );	

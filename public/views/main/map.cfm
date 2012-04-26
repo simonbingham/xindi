@@ -17,5 +17,5 @@
 <cfoutput>
 	<h1>Site Map</h1>
 	
-	#view( "main/navigation", { pages=rc.pages } )#
+	#view( "main/navigation", { pages=rc.pages, cachetimespan=application.config.caching.timespan } )#
 </cfoutput>

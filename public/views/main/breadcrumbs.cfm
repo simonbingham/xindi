@@ -14,14 +14,18 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 --->
 
+<cfparam name="rc.cachetimespan" default="#CreateTimeSpan( 0, 0, 5, 0 )#">
+
 <cfoutput>
-	<cfif !rc.Page.isRoot()>
-		<div>	
-			<cfloop array="#rc.Page.getPath()#" index="local.Page">
-				<a href="#buildURL( local.Page.getSlug() )#">#local.Page.getNavigationTitle()#</a> &raquo;
-			</cfloop>
-			
-			#rc.Page.getNavigationTitle()#
-		</div>
+	<cfif !IsNull( rc.Page ) and !rc.Page.isRoot()>
+		<cfcache timespan="#rc.cachetimespan#">
+			<div>	
+				<cfloop array="#rc.Page.getPath()#" index="local.Page">
+					<a href="#buildURL( local.Page.getSlug() )#">#local.Page.getNavigationTitle()#</a> &raquo;
+				</cfloop>
+				
+				#rc.Page.getNavigationTitle()#
+			</div>
+		</cfcache>
 	</cfif>
 </cfoutput>
