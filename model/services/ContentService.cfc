@@ -146,14 +146,14 @@ component accessors="true"
 		return messages;
 	}
 	
-	function savePage( required struct properties, required numeric ancestorid )
+	function savePage( required struct properties, required numeric ancestorid, required string context )
 	{
 		transaction
 		{
 			var Page = ""; 
 			Page = getPageByID( Val( arguments.properties.pageid ) );
 			Page.populate( arguments.properties );
-			var result = variables.Validator.validate( Page );
+			var result = variables.Validator.validate( theObject=Page, Context=arguments.context );
 			if( !result.hasErrors() )
 			{
 				if( !Page.isPersisted() && arguments.ancestorid )

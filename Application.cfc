@@ -32,25 +32,22 @@ component extends="frameworks.org.corfield.framework"
 		automanagesession = false,
 		cfclocation = this.mappings[ "/model" ],
 		dbcreate = "update",
-		eventhandling = true
+		eventhandling = true,
+		sqlscript = this.applicationroot & "_setup/setup.sql"
 	};
-	if( this.development )
-	{
-		this.ormsettings.dbcreate = "dropcreate";
-		this.ormsettings.sqlscript = this.applicationroot & "_setup/setup.sql";
-	}
 
 	/**
 	* FW/1 framework settings (https://github.com/seancorfield/fw1)
 	*/
 	variables.framework = {
-		cacheFileExists = !this.development,
-		defaultSubsystem = "public",
-		generateSES = true,
-		maxNumContextsPreserved = 1,
-		password = "",
-		reloadApplicationOnEveryRequest = this.development,
-		usingSubsystems = true
+		cacheFileExists = !this.development
+		,defaultSubsystem = "public"
+		,generateSES = true
+		,maxNumContextsPreserved = 1
+		,password = ""
+		,reloadApplicationOnEveryRequest = this.development
+		,usingSubsystems = true
+		// ,routes = [ { ""="", hint="" } ]
 	};
 	
 	/**

@@ -41,7 +41,10 @@ component accessors="true" extends="abstract"
 	
 	void function maintain( required struct rc ) {
 		param name="rc.pageid" default="0";
+		param name="rc.context" default="create";
 		if( !StructKeyExists( rc, "Page" ) ) rc.Page = variables.ContentService.getPageByID( Val( rc.pageid ) );
+		if( rc.Page.isPersisted() && !rc.Page.hasRoute( variables.fw.getRoutes() ) ) rc.context = "update";
+		else if( rc.Page.isPersisted() && rc.Page.hasRoute( variables.fw.getRoutes() ) ) rc.context = "updatewithroute";
 		rc.Validator = variables.ContentService.getValidator( rc.Page );
 	}	
 	
@@ -61,8 +64,9 @@ component accessors="true" extends="abstract"
 		param name="rc.metatitle" default="";
 		param name="rc.metadescription" default="";
 		param name="rc.metakeywords" default="";
+		param name="rc.context" default="create";
 		var properties = { pageid=rc.pageid, title=rc.title, navigationtitle=rc.navigationtitle, content=rc.content, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
-		rc.result = variables.ContentService.savePage( properties, rc.ancestorid );
+		rc.result = variables.ContentService.savePage( properties, rc.ancestorid, rc.context );
 		if( rc.result.hasErrors() )
 		{
 			rc.Page = rc.result.getTheObject();

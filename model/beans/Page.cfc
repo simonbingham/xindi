@@ -24,8 +24,8 @@ component extends="Abstract" persistent="true" table="pages" cacheuse="transacti
 	property name="pageid" fieldtype="id" setter="false" generator="native" column="page_id";
 	
 	property name="uuid" column="page_uuid" ormtype="string" length="150" default="";
-	property name="leftvalue" column="page_left" ormtype="int" default="";
-	property name="rightvalue" column="page_right" ormtype="int" default="";
+	property name="leftvalue" column="page_left" ormtype="int" default="0";
+	property name="rightvalue" column="page_right" ormtype="int" default="0";
 	property name="title" column="page_title" ormtype="string" length="150" default="";
 	property name="navigationtitle" column="page_navigationtitle" ormtype="string" length="150" default="";
 	property name="content" column="page_content" ormtype="text" default="";

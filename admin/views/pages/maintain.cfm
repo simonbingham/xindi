@@ -24,17 +24,17 @@
 			<legend>Page Content</legend>	
 	
 			<div class="control-group">
-				<label class="control-label" for="title">Title <cfif rc.Validator.propertyIsRequired( "title" )>*</cfif></label>
+				<label class="control-label" for="title">Title <cfif rc.Validator.propertyIsRequired( "title", rc.context )>*</cfif></label>
 				<div class="controls"><input class="input-xlarge" type="text" name="title" id="title" value="#HtmlEditFormat( rc.Page.getTitle() )#" maxlength="100"></div>
 			</div>
 			
 			<div class="control-group">
-				<label class="control-label" for="navigationtitle">Navigation Title <cfif rc.Validator.propertyIsRequired( "navigationtitle" )>*</cfif></label>
+				<label class="control-label" for="navigationtitle">Navigation Title <cfif rc.Validator.propertyIsRequired( "navigationtitle", rc.context )>*</cfif></label>
 				<div class="controls"><input class="input-xlarge" type="text" name="navigationtitle" id="navigationtitle" value="#HtmlEditFormat( rc.Page.getNavigationTitle() )#" maxlength="100"></div>
 			</div>			
-			
+		
 			<div class="control-group">
-				<label class="control-label" for="page-content">Content <cfif rc.Validator.propertyIsRequired( "content" )>*</cfif></label>
+				<label class="control-label" for="page-content">Content <cfif rc.Validator.propertyIsRequired( "content", rc.context )>*</cfif></label>
 				<div class="controls"><textarea class="input-xlarge ckeditor" name="content" id="page-content">#HtmlEditFormat( rc.Page.getContent() )#</textarea></div>
 			</div>
 		</fieldset>                        
@@ -45,28 +45,31 @@
 	    	<div class="alert alert-info">If you leave these fields empty the meta tags will be generated automatically.</div>		
 		
 			<div class="control-group">
-				<label class="control-label" for="metaTitle">Title</label>
+				<label class="control-label" for="metatitle">Title <cfif rc.Validator.propertyIsRequired( "metatitle", rc.context )>*</cfif></label>
 				<div class="controls"><input class="input-xlarge" type="text" name="metatitle" id="metatitle" value="#HtmlEditFormat( rc.Page.getMetaTitle() )#" maxlength="100"></div>
 			</div>
 			
 			<div class="control-group">
-				<label class="control-label" for="metaDescription">Description</label>
+				<label class="control-label" for="metadescription">Description <cfif rc.Validator.propertyIsRequired( "metadescription", rc.context )>*</cfif></label>
 				<div class="controls"><input class="input-xlarge" type="text" name="metadescription" id="metadescription" value="#HtmlEditFormat( rc.Page.getMetaDescription() )#" maxlength="200"></div>
 			</div>
 			
 			<div class="control-group">
-				<label class="control-label" for="metaKeywords">Keywords</label>
+				<label class="control-label" for="metakeywords">Keywords <cfif rc.Validator.propertyIsRequired( "metakeywords", rc.context )>*</cfif></label>
 				<div class="controls"><input class="input-xlarge" type="text" name="metakeywords" id="metakeywords" value="#HtmlEditFormat( rc.Page.getMetaKeywords() )#" maxlength="200"></div>
 			</div>
 		</fieldset>
 		
 		<div class="form-actions">
 			<input type="submit" name="submit" id="submit" value="Save Page" class="btn btn-primary">
+			<input type="hidden" name="context" id="context" value="#rc.context#">
 		</div>
 		
 		<input type="hidden" name="pageid" id="pageid" value="#HtmlEditFormat( rc.Page.getPageID() )#">
 		<cfif StructKeyExists( rc, "ancestorid" )><input type="hidden" name="ancestorid" id="ancestorid" value="#HtmlEditFormat( rc.ancestorid )#"></cfif>		
 	</form>
+	
+	<p>* this field is required</p>
 	
 	<script>
 	$(document).ready(function(){
@@ -79,5 +82,5 @@
 	
 	#rc.Validator.getInitializationScript()#
 
-	#rc.Validator.getValidationScript( formName="page-form" )#	
+	#rc.Validator.getValidationScript( formName="page-form", context=rc.context )#	
 </cfoutput>

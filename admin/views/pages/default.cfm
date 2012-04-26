@@ -14,6 +14,8 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 --->
 
+<cfset local.routes = variables.framework.routes />
+
 <cfoutput>
 	<div class="page-header"><h1>Pages</h1></div>
 	
@@ -35,15 +37,21 @@
 			<cfloop array="#rc.pages#" index="local.Page">
 				<tr>
 					<td <cfif !local.Page.isRoot()>class="chevron-right" style="padding-left:#( ( Page.getLevel()-1 ) * 26 ) + 26#px; background-position:#( ( local.Page.getLevel() - 1 ) * 26 ) + 5#px 50%"</cfif>>
-						<a href="#buildURL( action='pages.maintain', querystring='pageid/#local.Page.getPageID()#' )#" title="Edit #local.Page.getTitle()#">#local.Page.getNavigationTitle()#</a>							
+						<cfif !local.Page.hasRoute( local.routes )>
+							<a href="#buildURL( action='pages.maintain', querystring='pageid/#local.Page.getPageID()#' )#" title="Edit #local.Page.getTitle()#">#local.Page.getNavigationTitle()#</a>
+						<cfelse>
+							#local.Page.getNavigationTitle()# *
+						</cfif>							
 					</td>
 					<td>#DateFormat( local.Page.getCreated(), "full" )#</td>
 					<cfif application.config.pagesettings.enableadddelete><td><a href="#buildURL( action='pages.maintain', querystring='ancestorid/#local.Page.getPageID()#' )#" title="Add Page"><i class="icon-plus-sign"></i></a></td></cfif>
 					<td><cfif local.Page.hasPreviousSibling()><a href="#buildURL( action='pages.move', querystring='pageid/#local.Page.getPageID()#/direction/up' )#" title="Move Up"><i class="icon-chevron-up"></i></a></cfif></td>
 					<td><cfif local.Page.hasNextSibling()><a href="#buildURL( action='pages.move', querystring='pageid/#local.Page.getPageID()#/direction/down' )#" title="Move Down"><i class="icon-chevron-down"></i></a></cfif></td>
-					<cfif application.config.pagesettings.enableadddelete><td><cfif local.Page.isLeaf() and !local.Page.isRoot()><a href="#buildURL( 'pages.delete' )#/pageid/#local.Page.getPageID()#" title="Delete"><i class="icon-remove"></i></a></cfif></td></cfif>
+					<cfif application.config.pagesettings.enableadddelete><td><cfif local.Page.isLeaf() and !local.Page.isRoot() and !local.Page.hasRoute( local.routes )><a href="#buildURL( 'pages.delete' )#/pageid/#local.Page.getPageID()#" title="Delete"><i class="icon-remove"></i></a></cfif></td></cfif>
 				</tr>
 			</cfloop>
 		</tbody>
 	</table>
+	
+	<cfif ArrayLen( local.routes )><p>* you cannot edit or delete this page because it routes to another website feature.</p></cfif>
 </cfoutput>
