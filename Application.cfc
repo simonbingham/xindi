@@ -1,4 +1,6 @@
 /*
+	Xindi (http://simonbingham.github.com/xindi/) - Version 2012.4.26
+	
 	Copyright (c) 2012, Simon Bingham (http://www.simonbingham.me.uk/)
 	
 	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
@@ -63,8 +65,6 @@ component extends="frameworks.org.corfield.framework"
 		
 		// setup validation framework
 		var ValidateThisConfig = { definitionPath="/model/" };
-		beanFactory.addBean( "Validator", new ValidateThis.ValidateThis( ValidateThisConfig ) );
-		
 		beanFactory.addBean( "Validator", new ValidateThis.ValidateThis( ValidateThisConfig ) );
 		
 		// define revision identifier

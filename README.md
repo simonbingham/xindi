@@ -4,6 +4,17 @@
 
 Xindi is a completely free, open source CFML content management system that uses ORM and the [nested set model] (http://en.wikipedia.org/wiki/Nested_set_model).
 
+## Features
+
+* Password protected content management system
+* Page management
+* User account management
+* Search engine friendly urls
+* Search form
+* Breadcrumb trail
+* Site map
+* Sitemap.xml generation
+
 ## Minimum Requirements
 
 * Adobe ColdFusion 9
@@ -19,7 +30,7 @@ Clone the git repo - `git clone git@github.com:simonbingham/xindi.git` - or [dow
 2. Create a datasource called "xindi".
 3. That's it!
 
-You'll be able to access Xindi's public facing site at [http://localhost/xindi/] (http://localhost/xindi/) and content management system at [http://localhost/xindi/admin] (http://localhost/xindi/admin). The default username and password are 'admin'.
+You'll be able to access Xindi's (unstyled) public facing site at [http://localhost/xindi/] (http://localhost/xindi/) and the content management system itself at [http://localhost/xindi/admin] (http://localhost/xindi/admin). The default username and password are 'admin'.
 
 ## Problems
 
@@ -29,7 +40,7 @@ If you experience any problems with Xindi please either amend the source code yo
 
 Xindi is authored by [Simon Bingham] (https://twitter.com/#!/simonbingham), but anyone and everyone is welcome to contribute. 
 
-Special thanks go to [John Whish] (https://twitter.com/#!/aliaspooryorik) for his contributions.
+Special thanks go to [John Whish] (https://twitter.com/#!/aliaspooryorik) for his contributions to the project.
 
 ## Frameworks
 
