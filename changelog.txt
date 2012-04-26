@@ -5,6 +5,7 @@ Version 2012.x.x
 - Improved installation instructions.
 - Fixed meta data generation bug.
 - Fixed text editor conflict with ValidateThis.
+- Fixed page sorting error.
 
 Version 2012.4.25
 -----------

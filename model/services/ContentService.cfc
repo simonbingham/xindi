@@ -94,7 +94,7 @@ component accessors="true"
 		var previoussibling = "";
 		var previoussiblingdescendentidlist = "";
 		var Page = getPageByID( arguments.pageid );
-		var messages = "";
+		var messages = {};
 		if( !Page.isPersisted() && ListFind( "up,down", Trim( arguments.direction ) ) )
 		{
 			if( arguments.direction eq "up" )
@@ -115,7 +115,7 @@ component accessors="true"
 						EntitySave( Page );
 						EntitySave( previoussibling );
 					}
-					messages.success="The page has been moved.";
+					messages.success = "The page has been moved.";
 				}
 			}
 			else
@@ -137,7 +137,7 @@ component accessors="true"
 						EntitySave( Page );
 						EntitySave( nextsibling );
 					}
-					messages.success="The page has been moved.";
+					messages.success = "The page has been moved.";
 				}
 			}
 		}
