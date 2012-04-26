@@ -95,7 +95,7 @@ component accessors="true"
 		var previoussiblingdescendentidlist = "";
 		var Page = getPageByID( arguments.pageid );
 		var messages = {};
-		if( !Page.isPersisted() && ListFind( "up,down", Trim( arguments.direction ) ) )
+		if( Page.isPersisted() && ListFindNoCase( "up,down", Trim( arguments.direction ) ) )
 		{
 			if( arguments.direction eq "up" )
 			{
