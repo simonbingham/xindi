@@ -63,3 +63,7 @@ Xindi uses the frameworks listed below.
 Xindi is licensed under the [MIT License (MIT)] (http://www.opensource.org/licenses/mit-license.php). 
 
 The frameworks listed above have their own licenses which you should review before using Xindi.
+
+##Wishlist
+
+If you think Xindi's great and would like to thank me with a gift [you'll find my Amazon wishlist here] (http://www.amazon.co.uk/registry/wishlist/5NCOEAWSRYHU).
