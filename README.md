@@ -19,7 +19,7 @@ Xindi is a completely free, open source CFML content management system that uses
 ## Minimum Requirements
 
 * Adobe ColdFusion 9
-* MySQL 4/5
+* MySQL 5
 
 ## Quick Start
 
