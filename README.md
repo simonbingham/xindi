@@ -66,4 +66,8 @@ If you experience any problems with Xindi please either amend the source code yo
 
 ## Wishlist
 
+<<<<<<< HEAD
 If you like Xindi and would like to say "thank you" with a gift [you'll find my Amazon wishlist here] (http://www.amazon.co.uk/registry/wishlist/5NCOEAWSRYHU).
+=======
+If you like Xindi and would like to say "thank you" with a gift [you'll find my Amazon wishlist here] (http://www.amazon.co.uk/registry/wishlist/5NCOEAWSRYHU). Alternatively, you can send me a big wodge of cash! ;)
+>>>>>>> origin/develop
