@@ -1,3 +1,9 @@
+Version 2012.x.x
+-----------
+
+- Added JavaScript to populate navigation title when page title is entered.
+- Improved installation instructions.
+
 Version 2012.4.25
 -----------
 
