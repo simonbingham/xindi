@@ -31,6 +31,7 @@
 
 			<link href="assets/css/bootstrap.min.css" rel="stylesheet">
 			<link href="assets/css/bootstrap-responsive.min.css" rel="stylesheet">
+			<link href="assets/css/smoothness/jquery-ui-1.8.19.custom.css" rel="stylesheet">
 			<link href="assets/css/core.css?r=#rc.revision#" rel="stylesheet">
 
 			<!--[if lt IE 9]>
@@ -38,6 +39,7 @@
 			<![endif]-->
 			
 			<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+			<script src="assets/js/jquery-ui-1.8.19.custom.min.js"></script>
 			<script src="assets/js/jquery.validate.pack.js"></script>	
 			<script src="assets/js/jquery.field.min.js"></script>
 			<script src="assets/js/bootstrap.min.js"></script>
@@ -66,6 +68,7 @@
 							<ul class="nav pull-right">
 								<cfif rc.loggedin>
 									<li><a href="#buildURL( 'pages' )#">Pages</a></li>
+									<cfif application.config.newssettings.enabled><li><a href="#buildURL( 'news' )#">News</a></li></cfif>
 									<li><a href="#buildURL( 'users' )#">Users</a></li>
 									<li><a href="#buildURL( 'security/logout' )#">Logout</a></li>
 								</cfif>

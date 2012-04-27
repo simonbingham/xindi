@@ -1,5 +1,5 @@
 /*
-	Xindi (http://simonbingham.github.com/xindi/) - Version 2012.4.27
+	Xindi (http://simonbingham.github.com/xindi/) - Version 2012.4.27.17
 	
 	Copyright (c) 2012, Simon Bingham (http://www.simonbingham.me.uk/)
 	
@@ -22,7 +22,7 @@ component extends="frameworks.org.corfield.framework"
 	/**
 	* application settings
 	*/
-	this.development = ListFind( "localhost,127.0.0.1,xindi.localhost", CGI.SERVER_NAME );
+	this.development = ListFind( "localhost,127.0.0.1", CGI.SERVER_NAME );
 	this.applicationroot = getDirectoryFromPath( getCurrentTemplatePath() );
 	this.sessionmanagement = true;
 	this.mappings[ "/model" ] = this.applicationroot & "model/";
@@ -134,7 +134,10 @@ component extends="frameworks.org.corfield.framework"
 			enquirysettings = {
 				subject = "Enquiry"
 				, emailto = ""
-			},			
+			},	
+			newssettings = {
+				enabled = true
+			},						
 			errorsettings = { 
 				enabled=true
 				, to=""

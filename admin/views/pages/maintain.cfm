@@ -62,11 +62,11 @@
 		
 		<div class="form-actions">
 			<input type="submit" name="submit" id="submit" value="Save Page" class="btn btn-primary">
-			<input type="hidden" name="context" id="context" value="#rc.context#">
 		</div>
 		
 		<input type="hidden" name="pageid" id="pageid" value="#HtmlEditFormat( rc.Page.getPageID() )#">
-		<cfif StructKeyExists( rc, "ancestorid" )><input type="hidden" name="ancestorid" id="ancestorid" value="#HtmlEditFormat( rc.ancestorid )#"></cfif>		
+		<cfif StructKeyExists( rc, "ancestorid" )><input type="hidden" name="ancestorid" id="ancestorid" value="#HtmlEditFormat( rc.ancestorid )#"></cfif>
+		<input type="hidden" name="context" id="context" value="#HtmlEditFormat( rc.context )#">			
 	</form>
 	
 	<p>* this field is required</p>
@@ -84,7 +84,7 @@
 					CKEDITOR.instances[ instance ].updateElement();
 				}
 			}
-		});			
+		});		
 	});
 	</script>		
 	

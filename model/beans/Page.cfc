@@ -186,14 +186,6 @@ component extends="Abstract" persistent="true" table="pages" cacheuse="transacti
 		return getLevel() == 0;
 	}
 	
-	boolean function isUUIDUnique()
-	{
-		var matches = []; 
-		if( isPersisted() ) matches = ORMExecuteQuery( "from Page where pageid <> :pageid and uuid = :uuid", { pageid=getPageID(), uuid=getUUID()} );
-		else matches = ORMExecuteQuery( "from Page where uuid=:uuid", { uuid=getUUID() } );
-		return !ArrayLen( matches );
-	}	
-
 	void function preInsert()
 	{
 		super.preInsert();
@@ -211,5 +203,17 @@ component extends="Abstract" persistent="true" table="pages" cacheuse="transacti
 		variables.uuid = ReReplace( LCase( getNavigationTitle() ), "[^a-z0-9]{1,}", "", "all" );
 		while ( !isUUIDUnique() ) variables.uuid &= "_"; 
 	}
+	
+	/*
+	 * Private methods
+	 */	
+	
+	private boolean function isUUIDUnique()
+	{
+		var matches = []; 
+		if( isPersisted() ) matches = ORMExecuteQuery( "from Page where pageid <> :pageid and uuid = :uuid", { pageid=getPageID(), uuid=getUUID()} );
+		else matches = ORMExecuteQuery( "from Page where uuid=:uuid", { uuid=getUUID() } );
+		return !ArrayLen( matches );
+	}		
 		
 }

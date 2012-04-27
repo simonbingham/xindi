@@ -1,6 +1,6 @@
 $(function() {
 
-	// return to top of page	
+	// return to top of page
 	$( "#top-of-page" ).click(function(e){
 		$( "html,body" ).animate( { scrollTop: 0 }, "slow" );
 		e.preventDefault();	
@@ -10,12 +10,12 @@ $(function() {
 	$( "a[title~='Delete']" ).click(function(){
 		return confirm( "Delete this item?" );
 	});
-	
-	// populate navigation title when page title is entered	
-	$( "input#title" ).blur(function(){
+
+	// populate navigation title when page title is entered
+	$( "#page-form input#title" ).blur(function(){
 		var navigationtitle = $( "input#navigationtitle" )
 		if( navigationtitle.val().length==0 ) navigationtitle.val( $( this ).val() );
-	});	
+	});
 	
 	// text editor configuration
 	var currentURI = document.location.href;

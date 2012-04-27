@@ -155,6 +155,7 @@ component accessors="true"
 			var Page = ""; 
 			Page = getPageByID( Val( arguments.properties.pageid ) );
 			Page.populate( arguments.properties );
+			if( IsNull( Page.getContent() ) ) Page.setContent( "" );
 			if( !Page.hasMetaTitle() ) Page.setMetaTitle( Page.getTitle() );
 			if( !Page.hasMetaDescription() ) Page.setMetaDescription( variables.MetaData.generateMetaDescription( Page.getContent() ) );
 			if( !Page.hasMetaKeywords() ) Page.setMetaKeywords( variables.MetaData.generateMetaKeywords( Page.getContent() ) );			

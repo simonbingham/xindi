@@ -21,56 +21,56 @@ component accessors="true" extends="abstract"
 	 * Dependency injection
 	 */		
 
-	property name="ContentService" setter="true" getter="false";
+	property name="NewsService" setter="true" getter="false";
 
 	/*
 	 * Public methods
 	 */	
 
 	void function default( required struct rc ) {
-		rc.pages = variables.ContentService.getPages();
+		rc.articles = variables.NewsService.getArticles();
 	}
 
 	void function delete( required struct rc ) {
-		param name="rc.pageid" default="0";
-		rc.messages = variables.ContentService.deletePage( Val( rc.pageid ) );
+		param name="rc.articleid" default="0";
+		rc.messages = variables.NewsService.deleteArticle( Val( rc.articleid ) );
+		/*
 		var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:main/xml", method="get" );
-		refreshsitemap.send();		
-		variables.fw.redirect( "pages", "messages" );
-	}	
+		refreshsitemap.send();
+		*/		
+		variables.fw.redirect( "news", "messages" );
+	}
 	
 	void function maintain( required struct rc ) {
-		param name="rc.pageid" default="0";
-		param name="rc.context" default="create";
-		if( !StructKeyExists( rc, "Page" ) ) rc.Page = variables.ContentService.getPageByID( Val( rc.pageid ) );
-		if( rc.Page.isPersisted() && !rc.Page.hasRoute( variables.fw.getRoutes() ) ) rc.context = "update";
-		rc.Validator = variables.ContentService.getValidator( rc.Page );
+		param name="rc.articleid" default="0";
+		if( !StructKeyExists( rc, "Article" ) ) rc.Article = variables.NewsService.getArticleByID( Val( rc.articleid ) );
+		rc.Validator = variables.NewsService.getValidator( rc.Article );
 	}	
 	
 	void function save( required struct rc ) {
-		param name="rc.pageid" default="0";
-		param name="rc.ancestorid" default="0";
+		param name="rc.articleid" default="0";
 		param name="rc.title" default="";
-		param name="rc.navigationtitle" default="";
+		param name="rc.published" default="";
 		param name="rc.content" default="";
 		param name="rc.metatitle" default="";
 		param name="rc.metadescription" default="";
 		param name="rc.metakeywords" default="";
-		param name="rc.context" default="create";
-		var properties = { pageid=rc.pageid, title=rc.title, navigationtitle=rc.navigationtitle, content=rc.content, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
-		rc.result = variables.ContentService.savePage( properties, rc.ancestorid, rc.context );
+		var properties = { articleid=rc.articleid, title=rc.title, published=rc.published, content=rc.content, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
+		rc.result = variables.NewsService.saveArticle( properties );
 		if( rc.result.hasErrors() )
 		{
-			rc.Page = rc.result.getTheObject();
-			rc.messages.error = "The page could not be saved. Please amend the fields listed below.";
-			variables.fw.redirect( "pages/maintain", "messages,Page,pageid,ancestorid,result" );
+			rc.Article = rc.result.getTheObject();
+			rc.messages.error = "The article could not be saved. Please amend the fields listed below.";
+			variables.fw.redirect( "news/maintain", "messages,Article,articleid,result" );
 		}
 		else
 		{
+			/*
 			var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:main/xml", method="get" );
 			refreshsitemap.send();
-			rc.messages.success = "The page has been saved.";
-			variables.fw.redirect( "pages", "messages" );	
+			*/
+			rc.messages.success = "The article has been saved.";
+			variables.fw.redirect( "news", "messages" );	
 		}
 	}
 	

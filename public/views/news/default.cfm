@@ -14,6 +14,20 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 --->
 
-<h1>Page Not Found</h1>
-
-<p>The page you requested could not be found.</p>
+<cfoutput>
+	<h1>News</h1>
+	
+	<cfif ArrayLen( rc.articles )>
+		<cfloop array="#rc.articles#" index="local.Article">
+			<div>
+				<h2><a href="#buildURL( action='news.article', querystring='uuid=#local.Article.getUUID()#' )#">#local.Article.getTitle()#</a></h2>
+				
+				<p>Published: #DateFormat( local.Article.getPublished(), "full" )#</p>
+				
+				#local.Article.getSummary()#
+			</div>
+		</cfloop>
+	<cfelse>
+		<p>There are currently no news stories.</p>
+	</cfif>
+</cfoutput>
