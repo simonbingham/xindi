@@ -1,5 +1,5 @@
 /*
-	Xindi (http://simonbingham.github.com/xindi/) - Version 2012.4.25.17
+	Xindi (http://simonbingham.github.com/xindi/) - Version 2012.4.27
 	
 	Copyright (c) 2012, Simon Bingham (http://www.simonbingham.me.uk/)
 	
@@ -131,6 +131,10 @@ component extends="frameworks.org.corfield.framework"
 	private struct function getConfig()
 	{
 		var config = {
+			enquirysettings = {
+				subject = "Enquiry"
+				, emailto = ""
+			},			
 			errorsettings = { 
 				enabled=true
 				, to=""

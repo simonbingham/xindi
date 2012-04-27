@@ -1,4 +1,4 @@
-<!---
+/*
 	Copyright (c) 2012, Simon Bingham (http://www.simonbingham.me.uk/)
 	
 	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
@@ -12,10 +12,52 @@
 	OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE 
 	LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
---->
+*/
 
-<cfset request.layout = false />
+component accessors="true"
+{
 
-<cfsavecontent variable="local.xml"><cfoutput><?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"><cfloop array="#rc.pages#" index="local.Page"><cfif( rc.sesomitindex )><url><loc>#rc.basehref##local.Page.getSlug()#</loc></url><cfelse><url><loc>#rc.basehref#index.cfm/#local.Page.getSlug()#</loc></url></cfif></cfloop></urlset></cfoutput></cfsavecontent>
-
-<cffile action="write" file="#ExpandPath( "./" )#sitemap.xml" output="#local.xml#">
+	/*
+	 * Dependency injection
+	 */	
+	
+	property name="Validator" getter="false";
+	
+	/*
+	 * Public methods
+	 */
+	 	
+	function init()
+	{
+		return this;
+	}
+	
+	function getValidator( required any Enquiry )
+	{
+		return variables.Validator.getValidator( theObject=arguments.Enquiry );
+	}	
+	
+	function newEnquiry(){
+		return new model.beans.Enquiry();
+	}
+	
+	struct function sendEnquiry( required struct properties, required struct config, required string emailtemplatepath ){
+		var emailtemplate = "";
+		var Enquiry = newEnquiry(); 
+		Enquiry.populate( arguments.properties );
+		result = variables.Validator.validate( theObject=Enquiry );
+		if( !result.hasErrors() )
+		{
+			savecontent variable="emailtemplate" { include arguments.emailtemplatepath; }
+			var Email = new mail();
+		    Email.setSubject( arguments.config.enquirysettings.subject );
+	    	Email.setTo( arguments.config.enquirysettings.emailto );
+	    	Email.setFrom( Enquiry.getEmail() );
+	    	Email.setBody( emailtemplate );
+	    	Email.setType( "html" );
+	        Email.send();
+		}
+		return result;
+	}
+	
+}

@@ -14,8 +14,39 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 --->
 
-<cfset request.layout = false />
-
-<cfsavecontent variable="local.xml"><cfoutput><?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"><cfloop array="#rc.pages#" index="local.Page"><cfif( rc.sesomitindex )><url><loc>#rc.basehref##local.Page.getSlug()#</loc></url><cfelse><url><loc>#rc.basehref#index.cfm/#local.Page.getSlug()#</loc></url></cfif></cfloop></urlset></cfoutput></cfsavecontent>
-
-<cffile action="write" file="#ExpandPath( "./" )#sitemap.xml" output="#local.xml#">
+<cfoutput>
+	<cfif StructKeyExists( rc, "messages" )>
+		<cfif StructKeyExists( rc.messages, "error" ) and !IsNull( rc.result ) and rc.result.hasErrors()>
+	    	<div class="alert alert-error">
+				<p>#rc.messages.error#</p>
+				<ul>
+					<cfloop array="#rc.result.getFailureMessages()#" index="local.message">
+						<li>#local.message#</li>
+					</cfloop>
+				</ul>
+	    	</div>
+		<cfelseif StructKeyExists( rc.messages, "error" )>
+	    	<div class="alert alert-error">
+				#rc.messages.error#
+	    	</div>
+		</cfif>
+		
+		<cfif StructKeyExists( rc.messages, "information" )>
+	    	<div class="alert alert-info">
+	    		#rc.messages.information#
+	    	</div>
+		</cfif>
+		
+		<cfif StructKeyExists( rc.messages, "success" )>
+	    	<div class="alert alert-success">
+	    		#rc.messages.success#
+	    	</div>
+		</cfif>
+		
+		<cfif StructKeyExists( rc.messages, "warning" )>
+	    	<div class="alert">
+	    		#rc.messages.warning#
+	    	</div>
+		</cfif>
+	</cfif>
+</cfoutput>
