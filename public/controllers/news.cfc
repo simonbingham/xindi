@@ -1,4 +1,4 @@
-<!---
+/*
 	Copyright (c) 2012, Simon Bingham (http://www.simonbingham.me.uk/)
 	
 	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
@@ -12,8 +12,41 @@
 	OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE 
 	LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
---->
+*/
 
-<h1>Page Not Found</h1>
+component accessors="true" extends="abstract"  
+{
 
-<p>The page you requested could not be found.</p>
+	/*
+	 * Dependency injection
+	 */	
+
+	property name="NewsService" setter="true" getter="false";
+	
+	/*
+	 * Public methods
+	 */		
+
+	void function default( required struct rc ) {
+		rc.articles = variables.NewsService.getArticles( true );
+		rc.MetaData.setMetaTitle( "News" ); 
+		rc.MetaData.setMetaDescription( "" );
+		rc.MetaData.setMetaKeywords( "" );		
+	}
+	
+	void function article( required struct rc ) {
+		param name="rc.uuid" default="";
+		rc.Article = variables.NewsService.getArticleByUUID( rc.uuid );
+		if( rc.Article.isPersisted() )
+		{
+			rc.MetaData.setMetaTitle( rc.Article.getMetaTitle() ); 
+			rc.MetaData.setMetaDescription( rc.Article.getMetaDescription() );
+			rc.MetaData.setMetaKeywords( rc.Article.getMetaKeywords() );
+		}
+		else
+		{
+			variables.fw.redirect( "main/notfound" );
+		}		
+	}
+
+}

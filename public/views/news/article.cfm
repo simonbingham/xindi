@@ -14,6 +14,19 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 --->
 
-<h1>Page Not Found</h1>
+<!--- specify canonical url for page (http://support.google.com/webmasters/bin/answer.py?hl=en&answer=139394) --->
+<cfsavecontent variable="local.canonicalurl">
+	<cfoutput>
+		<link rel="canonical" href="#buildURL( action='news.article', querystring='uuid=#rc.Article.getUUID()#' )#">
+	</cfoutput>
+</cfsavecontent>
 
-<p>The page you requested could not be found.</p>
+<cfhtmlhead text="#local.canonicalurl#">
+
+<cfoutput>
+	<h1>#rc.Article.getTitle()#</h1>
+	
+	<p>Published: #DateFormat( rc.Article.getPublished(), "full" )#</p>
+	
+	#rc.Article.getContent()#
+</cfoutput>

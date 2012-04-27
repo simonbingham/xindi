@@ -14,6 +14,34 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 --->
 
-<h1>Page Not Found</h1>
-
-<p>The page you requested could not be found.</p>
+<cfoutput>
+	<div class="article-header"><h1>News</h1></div>
+	
+	<p><a href="#buildURL( 'news.maintain' )#"><i class="icon-plus"></i> Add Article</a></p>
+	
+	#view( "helpers/messages" )#
+	
+	<cfif ArrayLen( rc.articles )>
+		<table class="table table-striped table-bordered table-condensed">
+			<thead>
+				<tr>
+					<th>Title</th>
+					<th>Published</th>
+					<th>Delete</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<cfloop array="#rc.articles#" index="local.Article">
+					<tr>
+						<td><a href="#buildURL( action='news.maintain', querystring='articleid/#local.Article.getArticleID()#' )#" title="Edit #local.Article.getTitle()#">#local.Article.getTitle()#</a></td>
+						<td>#DateFormat( local.Article.getPublished(), "full" )#</td>
+						<td><a href="#buildURL( 'news.delete' )#/articleid/#local.Article.getArticleID()#" title="Delete"><i class="icon-remove"></i></a></td>
+					</tr>
+				</cfloop>
+			</tbody>
+		</table>
+	<cfelse>
+		<p>There are currently no news stories.</p>
+	</cfif>
+</cfoutput>
