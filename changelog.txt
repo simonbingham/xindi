@@ -1,3 +1,8 @@
+Version 2012.4.29
+-----------
+
+- Correctly defined methods as public and private.
+
 Version 2012.4.27.17
 -----------
 

@@ -36,29 +36,21 @@ component accessors="true"
 		variables.metadescription = "";
 		return this;
 	}
-	
+
+	string function generateMetaDescription( required string description )
+	{
+		return Left( Trim( REReplaceNoCase( REReplaceNoCase( stripHTML( arguments.description ), "([#Chr(09)#-#Chr(30)#])", " ", "all" ), "( ){2,}", " ", "all" ) ), 200 );
+	}
+		
 	string function generateMetaKeywords( required string keywords )
 	{
 		return Left( Trim( listDeleteDuplicatesNoCase( ListChangeDelims( metaExclude( arguments.keywords ), ",", " ." ) ) ), 200 );
 	}
 	
-	string function generateMetaDescription( required string description )
-	{
-		return Left( Trim( REReplaceNoCase( REReplaceNoCase( stripHTML( arguments.description ), "([#Chr(09)#-#Chr(30)#])", " ", "all" ), "( ){2,}", " ", "all" ) ), 200 );
-	}
-	
-	string function stripHTML( required string thestring ) {
-		return REReplaceNoCase( Trim( arguments.thestring ), "<[^>]{1,}>", " ", "all" );
-	}
-
 	/*
 	 * Private methods
 	 */
 
-	private string function metaExclude( required string thestring ) {
-		return Trim( REReplaceNoCase(" " & REReplace( stripHTML( arguments.thestring ), "[ *]{1,}", "  ", "all"), "[ ]{1}(a|an|and|is|it|that|the|this|to|or)[ ]{1}", " ", "all" ) );
-	}
-	
 	private string function listDeleteDuplicatesNoCase( required string list ) {
 		var local = StructNew();
 		if( ArrayLen( arguments ) eq 2 ) local.delimiter = arguments[ 2 ];
@@ -75,5 +67,13 @@ component accessors="true"
 		}
 		return Trim( local.listnoduplicates );
 	}
+	
+	private string function metaExclude( required string thestring ) {
+		return Trim( REReplaceNoCase(" " & REReplace( stripHTML( arguments.thestring ), "[ *]{1,}", "  ", "all"), "[ ]{1}(a|an|and|is|it|that|the|this|to|or)[ ]{1}", " ", "all" ) );
+	}
+	
+	private string function stripHTML( required string thestring ) {
+		return REReplaceNoCase( Trim( arguments.thestring ), "<[^>]{1,}>", " ", "all" );
+	}	
 	
 }

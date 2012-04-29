@@ -47,6 +47,13 @@ component accessors="true" extends="abstract"
 		rc.Validator = variables.ContentService.getValidator( rc.Page );
 	}	
 	
+	void function move( required struct rc ) {
+		param name="rc.pageid" default="0";
+		param name="rc.direction" default="";
+		rc.messages = variables.ContentService.movePage( Val( rc.pageid ), rc.direction );
+		variables.fw.redirect( "pages", "messages" );
+	}	
+	
 	void function save( required struct rc ) {
 		param name="rc.pageid" default="0";
 		param name="rc.ancestorid" default="0";
