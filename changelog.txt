@@ -2,6 +2,7 @@ Version 2012.4.29
 -----------
 
 - Correctly defined methods as public and private.
+- Fixed bug in error template preventing display of error in notification email.
 
 Version 2012.4.27.17
 -----------
