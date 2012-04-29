@@ -79,12 +79,6 @@ component extends="Abstract" persistent="true" table="articles" cacheuse="transa
 		setUUID();
 	}
 
-	void function setUUID()
-	{
-		variables.uuid = ReReplace( LCase( getTitle() ), "[^a-z0-9]{1,}", "", "all" );
-		while ( !isUUIDUnique() ) variables.uuid &= "_"; 
-	}
-
 	/*
 	 * Private methods
 	 */
@@ -96,5 +90,11 @@ component extends="Abstract" persistent="true" table="articles" cacheuse="transa
 		else matches = ORMExecuteQuery( "from Article where uuid=:uuid", { uuid=getUUID() } );
 		return !ArrayLen( matches );
 	}
-	
+
+	private void function setUUID()
+	{
+		variables.uuid = ReReplace( LCase( getTitle() ), "[^a-z0-9]{1,}", "", "all" );
+		while ( !isUUIDUnique() ) variables.uuid &= "_"; 
+	}
+		
 }

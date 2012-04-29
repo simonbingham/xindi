@@ -44,16 +44,6 @@ component extends="Abstract" persistent="true" table="pages" cacheuse="transacti
 		return this;
 	}
 	
-	function getAncestor()
-	{
-		return ORMExecuteQuery( "from Page where leftvalue < :leftvalue and rightvalue > :rightvalue order by leftvalue desc", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue }, { maxresults=1 } );
-	}	
-	
-	numeric function getDescendentCount()
-	{
-		return ( variables.rightvalue - variables.leftvalue - 1 ) / 2;
-	}
-
 	string function getDescendentPageIDList()
 	{
 		var pageidlist = "";
@@ -63,21 +53,6 @@ component extends="Abstract" persistent="true" table="pages" cacheuse="transacti
 		return pageidlist; 
 	}
 
-	array function getDescendents()
-	{
-		return ORMExecuteQuery( "from Page where leftvalue > :leftvalue and rightvalue < :rightvalue", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue } );
-	}
-
-	array function getFirstChild()
-	{
-		return ORMExecuteQuery( "from Page where leftvalue = :leftvalue", { leftvalue=variables.leftvalue + 1 } );
-	}	
-
-	array function getLastChild()
-	{
-		return ORMExecuteQuery( "from Page where rightvalue = :rightvalue", { rightvalue=variables.rightvalue - 1 } );
-	}	
-	
 	function getLevel()
 	{
 		return ORMExecuteQuery( "select Count( pageSubQuery ) from Page as pageSubQuery where pageSubQuery.leftvalue < :leftvalue and pageSubQuery.rightvalue > :rightvalue", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue } )[ 1 ];
@@ -117,21 +92,6 @@ component extends="Abstract" persistent="true" table="pages" cacheuse="transacti
 		return Left( REReplaceNoCase( Trim( getContent() ), "<[^>]{1,}>", " ", "all" ), 500 ) & "...";
 	}
 	
-	boolean function hasChild()
-	{
-		return ArrayLen( getFirstChild() );
-	}
-
-	boolean function hasContent()
-	{
-		return Len( Trim( getContent() ) );
-	}
-
-	boolean function hasDescendents()
-	{
-		return ArrayLen( getDescendents() );
-	}
-
 	boolean function hasNextSibling()
 	{
 		return !IsNull( getNextSibling() );
@@ -166,11 +126,6 @@ component extends="Abstract" persistent="true" table="pages" cacheuse="transacti
 		return false;
 	}
 	
-	boolean function isChild()
-	{
-		return getLevel() != 0;
-	}	
-
 	boolean function isLeaf()
 	{
 		return getDescendentCount() == 0;
@@ -198,15 +153,54 @@ component extends="Abstract" persistent="true" table="pages" cacheuse="transacti
 		setUUID();
 	}
 
-	void function setUUID()
-	{
-		variables.uuid = ReReplace( LCase( getNavigationTitle() ), "[^a-z0-9]{1,}", "", "all" );
-		while ( !isUUIDUnique() ) variables.uuid &= "_"; 
-	}
-	
 	/*
 	 * Private methods
 	 */	
+	
+	private function getAncestor()
+	{
+		return ORMExecuteQuery( "from Page where leftvalue < :leftvalue and rightvalue > :rightvalue order by leftvalue desc", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue }, { maxresults=1 } );
+	}	
+	
+	private numeric function getDescendentCount()
+	{
+		return ( variables.rightvalue - variables.leftvalue - 1 ) / 2;
+	}
+	
+	private array function getDescendents()
+	{
+		return ORMExecuteQuery( "from Page where leftvalue > :leftvalue and rightvalue < :rightvalue", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue } );
+	}
+
+	private array function getFirstChild()
+	{
+		return ORMExecuteQuery( "from Page where leftvalue = :leftvalue", { leftvalue=variables.leftvalue + 1 } );
+	}	
+
+	private array function getLastChild()
+	{
+		return ORMExecuteQuery( "from Page where rightvalue = :rightvalue", { rightvalue=variables.rightvalue - 1 } );
+	}		
+	
+	private boolean function hasChild()
+	{
+		return ArrayLen( getFirstChild() );
+	}
+
+	private boolean function hasContent()
+	{
+		return Len( Trim( getContent() ) );
+	}
+
+	private boolean function hasDescendents()
+	{
+		return ArrayLen( getDescendents() );
+	}	
+	
+	private boolean function isChild()
+	{
+		return getLevel() != 0;
+	}	
 	
 	private boolean function isUUIDUnique()
 	{
@@ -214,6 +208,12 @@ component extends="Abstract" persistent="true" table="pages" cacheuse="transacti
 		if( isPersisted() ) matches = ORMExecuteQuery( "from Page where pageid <> :pageid and uuid = :uuid", { pageid=getPageID(), uuid=getUUID()} );
 		else matches = ORMExecuteQuery( "from Page where uuid=:uuid", { uuid=getUUID() } );
 		return !ArrayLen( matches );
-	}		
+	}
+	
+	private void function setUUID()
+	{
+		variables.uuid = ReReplace( LCase( getNavigationTitle() ), "[^a-z0-9]{1,}", "", "all" );
+		while ( !isUUIDUnique() ) variables.uuid &= "_"; 
+	}
 		
 }
