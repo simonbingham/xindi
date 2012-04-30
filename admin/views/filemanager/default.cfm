@@ -22,7 +22,7 @@
 	string function urlSafePath( required string path )
 	{
 		var result = Replace( arguments.path, "/", ":", "all" );
-		if ( !Len( Trim( result ) ) ) result = "*";
+		if( !Len( Trim( result ) ) ) result = "*";
 		return result;
 	}
 </cfscript>	
@@ -124,7 +124,7 @@
 							
 							<p>There are currently no files.</p>
 						</cfif>
-						
+
 						<script>
 						function sendToEditor(fileUrl){
 							window.opener.CKEDITOR.tools.callFunction( #session.CKEditorFuncNum#, "#rc.clientfilesdirectory##rc.subdirectory#/" + fileUrl );

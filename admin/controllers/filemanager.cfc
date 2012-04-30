@@ -14,32 +14,30 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true" extends="abstract" 
+component accessors="true" extends="abstract"
 {
+
+	/*
+	 * Dependency injection
+	 */		
+
+	property name="FileManagerService" setter="true" getter="false";
 
 	/*
 	 * Public methods
 	 */	
 
-	void function before( required rc )
+	void function before( required struct rc )
 	{
 		rc.webrootdirectory = GetDirectoryFromPath( CGI.CF_TEMPLATE_PATH );
-		rc.clientfilesdirectory = "_clientfiles/";
-		if ( !IsNull( rc.subdirectory ) )
-		{
-			rc.subdirectory = Replace( rc.subdirectory, "*", "", "all" );
-			rc.subdirectory = Replace( ReReplace( rc.subdirectory, "(\.){2,}", "", "all" ), ":", "/", "all" );
-		}
-		else
-		{
-			rc.subdirectory = "";
-		}
+		rc.clientfilesdirectory = "_clientfiles";
+		rc.subdirectory = "";
+		if ( !IsNull( rc.subdirectory ) ) rc.subdirectory = Replace( ReReplace( Replace( rc.subdirectory, "*", "", "all" ), "(\.){2,}", "", "all" ), ":", "/", "all" );
 		rc.currentdirectory = rc.webrootdirectory & rc.clientfilesdirectory & rc.subdirectory;
-		var FileObj = CreateObject( "java", "java.io.File" ).init( JavaCast( "String", rc.currentdirectory ) );
-		if ( !FileObj.isDirectory() ) rc.message.error = "Sorry, the requested " & rc.subdirectory & " is not valid.";
+		if ( !variables.FileManagerService.isDirectory( rc.currentdirectory ) ) rc.message.error = "Sorry, the requested " & rc.subdirectory & " is not valid.";
 	}
 
-	void function configure( required rc )
+	void function configure( required struct rc )
 	{	
 		if( StructKeyExists( rc, "editorType" ) ) session.editorType = rc.editorType;
 		if( StructKeyExists( rc, "EDITOR_RESOURCE_TYPE" ) ) session.EDITOR_RESOURCE_TYPE = rc.EDITOR_RESOURCE_TYPE;
@@ -49,58 +47,35 @@ component accessors="true" extends="abstract"
 		variables.fw.redirect( "filemanager" );
 	}
 
-	void function createdirectory( required rc )
+	void function createdirectory( required struct rc )
 	{
-		var newdirectorypath = ReReplaceNoCase( Trim( rc.newdirectory ), "[^a-z0-9_\-\.]", "", "all" );
-		if ( newdirectorypath != "" ) 
-		{
-			var fileObj = createObject( "java", "java.io.File" ).init( JavaCast( "string", rc.currentdirectory & "/" & newdirectorypath ) );
-			if ( fileObj.mkdirs() ) 
-			{
-				rc.message.success = "The directory " & newdirectorypath & " has been created.";
-				variables.fw.redirect( action="filemanager.default", querystring="subdirectory=#urlSafePath( rc.subdirectory & "/" & newdirectorypath )#", preserve="message" );
-			}
-			else
-			{
-				rc.message.error = newdirectorypath & " is not a valid name.";
-				variables.fw.redirect( action="filemanager.default", querystring="subdirectory=#urlSafePath( rc.subdirectory )#", preserve="message" );
-			}
-		}
+		param name="rc.newdirectory" default="";
+		var newdirectory = ReReplaceNoCase( Trim( rc.newdirectory ), "[^a-z0-9_\-\.]", "", "all" );
+		var result = variables.FileManagerService.createDirectory( rc.currentdirectory & "/" & newdirectory );
+		rc.messages = result.messages;
+		if( result.theobject.mkdirs() && result.success ) variables.fw.redirect( action="filemanager.default", querystring="subdirectory=#urlSafePath( rc.subdirectory & "/" & newdirectory )#", preserve="messages" );
+		else variables.fw.redirect( action="filemanager.default", querystring="subdirectory=#urlSafePath( rc.subdirectory )#", preserve="messages" );
 	} 
 
-	void function default( required rc )
+	void function default( required struct rc )
 	{
-		var qListing = DirectoryList( rc.currentdirectory, false, "query" );
-		var queryobject = new query();
-		queryobject.setDBType( "query" );
-		queryobject.setAttributes( sourceQuery=qListing );
-		queryobject.setSQL( "select * from sourceQuery where name not like '.%' order by type" );
-		rc.listing = queryobject.execute().getResult();
+		rc.listing = variables.FileManagerService.getDirectoryList( rc.currentdirectory );
 	}
 
-	void function delete( required rc )
+	void function delete( required struct rc )
 	{
-		var FileObj = CreateObject( "java", "java.io.File" ).init( JavaCast( "String", rc.currentdirectory  & "/" & rc.delete ) );
-		if ( FileObj.isFile() ) FileObj.delete();
-		rc.message.success = "The file " & rc.delete & " has been deleted.";
-		variables.fw.redirect( action="filemanager.default", querystring="subdirectory=#urlSafePath( rc.subdirectory )#", preserve="message" );
+		param name="rc.delete" default="";
+		var result = variables.FileManagerService.deleteFile( rc.currentdirectory  & "/" & rc.delete );
+		rc.messages = result.messages;
+		variables.fw.redirect( action="filemanager.default", querystring="subdirectory=#urlSafePath( rc.subdirectory )#", preserve="messages" );
 	}
 
-	void function upload( required rc )
+	void function upload( required struct rc )
 	{
-		if ( !Len( Trim( rc.file ) ) ) variables.fw.redirect( action="filemanager.default", querystring="subdirectory=#urlSafePath( rc.subdirectory )#", preserve="message" );
-		var result = FileUpload( rc.currentdirectory, "file", "", "MakeUnique" );
-		if ( !ListFindNoCase( application.config.filemanagersettings.allowedextensions, result.serverfileext ) )
-		{
-			var FileObj = CreateObject( "java", "java.io.File" ).init( JavaCast( "String", result.serverdirectory & "/" & result.serverfile ) );
-			if ( FileObj.isFile() ) FileObj.delete();
-			rc.message.error = "Sorry, files ending in " & result.serverfileext & " are not allowed.";
-		}
-		else
-		{
-			rc.message.success = "The file " & result.serverfile & " has been uploaded.";
-		}
-		variables.fw.redirect( action="filemanager.default", querystring="subdirectory=#urlSafePath( rc.subdirectory )#", preserve="message" );
+		param name="rc.file" default="";
+		var result = variables.FileManagerService.uploadFile( "file", rc.currentdirectory, application.config.filemanagersettings.allowedextensions );
+		rc.messages = result.messages;
+		variables.fw.redirect( action="filemanager.default", querystring="subdirectory=#urlSafePath( rc.subdirectory )#", preserve="messages" );
 	}
 	
 	/*
