@@ -1,5 +1,5 @@
 /*
-	Xindi (http://simonbingham.github.com/xindi/) - Version 2012.4.29
+	Xindi (http://simonbingham.github.com/xindi/) - Version 2012.4.30
 	
 	Copyright (c) 2012, Simon Bingham (http://www.simonbingham.me.uk/)
 	
@@ -134,6 +134,9 @@ component extends="frameworks.org.corfield.framework"
 			enquirysettings = {
 				subject = "Enquiry"
 				, emailto = ""
+			},
+			filemanagersettings = {
+				allowedextensions = "txt,gif,jpg,png,wav,mpeg3,pdf,zip"
 			},	
 			newssettings = {
 				enabled = true

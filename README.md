@@ -9,6 +9,7 @@ Xindi is a completely free, open source CFML content management system that uses
 * Password protected
 * Page management
 * User account management
+* News feature
 * Enquiry form
 * Text editor
 * Search engine friendly urls
