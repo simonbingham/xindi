@@ -34,10 +34,6 @@
 			<link href="assets/css/smoothness/jquery-ui-1.8.19.custom.css" rel="stylesheet">
 			<link href="assets/css/core.css?r=#rc.revision#" rel="stylesheet">
 
-			<!--[if lt IE 9]>
-				<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-			<![endif]-->
-			
 			<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 			<script src="assets/js/jquery-ui-1.8.19.custom.min.js"></script>
 			<script src="assets/js/jquery.validate.pack.js"></script>	

@@ -42,11 +42,19 @@ $(function() {
 	[
 		["Bold", "Italic", "-", "NumberedList", "BulletedList", "-", "Link", "Unlink","-","About"]
 	];
-	CKEDITOR.config[ "toolbar" ] = "Basic";
+	CKEDITOR.config[ "toolbar" ] = "Full";
 	CKEDITOR.config[ "height" ] = 400;
 	CKEDITOR.config[ "uiColor" ] = "##ddd"; 
 	CKEDITOR.config[ "contentsCss" ] = CKEDITOR.config[ "baseHref" ] + "assets/css/core.css";
 	CKEDITOR.config[ "skin" ] = "kama";
 	CKEDITOR.config[ "bodyId" ] = "content";
+	fileBrowserpath = CKEDITOR.config[ "baseHref" ] + "index.cfm?action=admin:filemanager.configure&";
+	CKEDITOR.config[ "filebrowserBrowseUrl" ] = fileBrowserpath + "editorType=cke&EDITOR_RESOURCE_TYPE=file";
+	CKEDITOR.config[ "filebrowserImageBrowseUrl" ] = fileBrowserpath + "editorType=cke&EDITOR_RESOURCE_TYPE=image";
+	CKEDITOR.config[ "filebrowserFlashBrowseUrl" ] = fileBrowserpath + "editorType=cke&EDITOR_RESOURCE_TYPE=flash";
+	CKEDITOR.config[ "filebrowserUploadUrl" ] = "";
+	CKEDITOR.config[ "filebrowserImageUploadUrl" ] = "";
+	CKEDITOR.config[ "filebrowserFlashUploadUrl" ] = "";
+	
 	
 });

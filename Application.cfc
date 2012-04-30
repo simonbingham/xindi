@@ -134,6 +134,9 @@ component extends="frameworks.org.corfield.framework"
 			enquirysettings = {
 				subject = "Enquiry"
 				, emailto = ""
+			},
+			filemanagersettings = {
+				allowedextensions = "txt,gif,jpg,png,wav,mpeg3,pdf,zip"
 			},	
 			newssettings = {
 				enabled = true
