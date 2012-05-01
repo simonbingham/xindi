@@ -31,10 +31,6 @@
 			
 			<link href="assets/css/core.css?r=#rc.revision#" rel="stylesheet">
 			
-			<!--[if lt IE 9]>
-				<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-			<![endif]-->
-			
 			<script src="assets/js/core.js?r=#rc.revision#"></script>			
 		</head>
 
