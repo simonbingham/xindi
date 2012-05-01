@@ -1,7 +1,8 @@
-Version 2012.5.1.17
+Version 2012.5.1.14
 -----------
 
 - Added global event handler.
+- Improved controller and service code.
 
 Version 2012.5.1
 -----------

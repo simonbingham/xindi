@@ -45,7 +45,8 @@ component accessors="true"
 		var emailtemplate = "";
 		var Enquiry = newEnquiry(); 
 		Enquiry.populate( arguments.properties );
-		result = variables.Validator.validate( theObject=Enquiry );
+		var result = variables.Validator.validate( theObject=Enquiry );
+		result.messages = {};
 		if( !result.hasErrors() )
 		{
 			savecontent variable="emailtemplate" { include arguments.emailtemplatepath; }
@@ -56,6 +57,11 @@ component accessors="true"
 	    	Email.setBody( emailtemplate );
 	    	Email.setType( "html" );
 	        Email.send();
+	        result.messages.success = "Your enquiry has been sent.";
+		}
+		else
+		{
+			result.messages.error = "Your enquiry could not be sent. Please amend the following:";
 		}
 		return result;
 	}

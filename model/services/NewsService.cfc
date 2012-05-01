@@ -36,20 +36,20 @@ component accessors="true"
 	struct function deleteArticle( required numeric articleid )
 	{
 		var Article = getArticleByID( arguments.articleid );
-		var messages = {};
+		var result = {};
 		if( Article.isPersisted() )
 		{
 			transaction
 			{
 				EntityDelete( Article );
-				messages.success = "The article has been deleted.";
+				result.messages.success = "The article has been deleted.";
 			}
 		}
 		else
 		{
-			messages.error = "The article could not be deleted.";
+			result.messages.error = "The article could not be deleted.";
 		}
-		return messages;
+		return result;
 	}
 	
 	function getArticleByID( required numeric articleid )
@@ -93,10 +93,12 @@ component accessors="true"
 			{
 				EntitySave( Article );
 				transaction action="commit";
+				result.messages.success = "The article has been saved.";
 			}
 			else
 			{
 				transaction action="rollback";
+				result.messages.error = "Your article could not be saved. Please amend the following:";
 			}
 		}
 		return result;
