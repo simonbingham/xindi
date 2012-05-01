@@ -3,6 +3,7 @@ Version 2012.5.1
 
 - Renamed Abstract.cfc bean to Base.cfc.
 - Fixed hasRoute method bug.
+- Remove HTML5 JavaScript from layout.
 
 Version 2012.4.30
 -----------
