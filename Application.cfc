@@ -140,6 +140,8 @@ component extends="frameworks.org.corfield.framework"
 			},	
 			newssettings = {
 				enabled = true
+				, rsstitle = ""
+				, rssdescription = ""
 			},						
 			errorsettings = { 
 				enabled=true

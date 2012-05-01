@@ -42,6 +42,11 @@ component extends="Base" persistent="true" table="articles" cacheuse="transactio
 		return this;
 	}
 
+	string function getRSSSummary() 
+	{
+		return XMLFormat( getSummary() );
+	}
+
 	string function getSummary()
 	{
 		return Left( REReplaceNoCase( Trim( getContent() ), "<[^>]{1,}>", " ", "all" ), 500 ) & "...";
