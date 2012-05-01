@@ -14,7 +14,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component extends="Abstract" persistent="false" accessors="true"
+component extends="Base" persistent="false" accessors="true"
 {
 	
 	/*

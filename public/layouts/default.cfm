@@ -29,11 +29,9 @@
 			
 			<base href="#rc.basehref#">
 			
-			<link href="assets/css/core.css?r=#rc.revision#" rel="stylesheet">
+			<cfif application.config.newssettings.enabled><link rel="alternate" type="application/rss+xml" href="#buildURL( 'news.rss' )#"></cfif>
 			
-			<!--[if lt IE 9]>
-				<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-			<![endif]-->
+			<link href="assets/css/core.css?r=#rc.revision#" rel="stylesheet">
 			
 			<script src="assets/js/core.js?r=#rc.revision#"></script>			
 		</head>

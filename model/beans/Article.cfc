@@ -14,7 +14,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component extends="Abstract" persistent="true" table="articles" cacheuse="transactional"   
+component extends="Base" persistent="true" table="articles" cacheuse="transactional"   
 {
 
 	/*
@@ -40,6 +40,11 @@ component extends="Abstract" persistent="true" table="articles" cacheuse="transa
 	Article function init()
 	{
 		return this;
+	}
+
+	string function getRSSSummary() 
+	{
+		return XMLFormat( getSummary() );
 	}
 
 	string function getSummary()

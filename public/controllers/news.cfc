@@ -27,13 +27,6 @@ component accessors="true" extends="abstract"
 	 * Public methods
 	 */		
 
-	void function default( required struct rc ) {
-		rc.articles = variables.NewsService.getArticles( true );
-		rc.MetaData.setMetaTitle( "News" ); 
-		rc.MetaData.setMetaDescription( "" );
-		rc.MetaData.setMetaKeywords( "" );		
-	}
-	
 	void function article( required struct rc ) {
 		param name="rc.uuid" default="";
 		rc.Article = variables.NewsService.getArticleByUUID( rc.uuid );
@@ -48,5 +41,16 @@ component accessors="true" extends="abstract"
 			variables.fw.redirect( "main/notfound" );
 		}		
 	}
+	
+	void function default( required struct rc ) {
+		rc.articles = variables.NewsService.getArticles( published=true );
+		rc.MetaData.setMetaTitle( "News" ); 
+		rc.MetaData.setMetaDescription( "" );
+		rc.MetaData.setMetaKeywords( "" );		
+	}
+	
+	void function rss( required struct rc ) {
+		rc.articles = variables.NewsService.getArticles( published=true );
+	}	
 
 }

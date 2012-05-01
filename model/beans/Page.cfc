@@ -14,7 +14,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component extends="Abstract" persistent="true" table="pages" cacheuse="transactional"   
+component extends="Base" persistent="true" table="pages" cacheuse="transactional"   
 {
 
 	/*
@@ -120,9 +120,7 @@ component extends="Abstract" persistent="true" table="pages" cacheuse="transacti
 	boolean function hasRoute( array routes=[] )
 	{
 		for( var route in arguments.routes )
-		{
-			if( StructKeyExists( route, getSlug() ) ) return true;
-		}
+			if( StructKeyExists( route, "/" & getSlug() ) ) return true;
 		return false;
 	}
 	

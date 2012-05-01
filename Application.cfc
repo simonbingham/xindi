@@ -1,5 +1,5 @@
 /*
-	Xindi (http://simonbingham.github.com/xindi/) - Version 2012.4.30
+	Xindi (http://simonbingham.github.com/xindi/) - Version 2012.5.1
 	
 	Copyright (c) 2012, Simon Bingham (http://www.simonbingham.me.uk/)
 	
@@ -140,6 +140,8 @@ component extends="frameworks.org.corfield.framework"
 			},	
 			newssettings = {
 				enabled = true
+				, rsstitle = ""
+				, rssdescription = ""
 			},						
 			errorsettings = { 
 				enabled=true
