@@ -135,28 +135,28 @@ component extends="frameworks.org.corfield.framework"
 			enquirysettings = {
 				subject = "Enquiry"
 				, emailto = ""
-			},
-			filemanagersettings = {
+			}
+			, filemanagersettings = {
 				allowedextensions = "txt,gif,jpg,png,wav,mpeg3,pdf,zip"
-			},	
-			newssettings = {
+			}
+			, newssettings = {
 				enabled = true
 				, rsstitle = ""
 				, rssdescription = ""
-			},						
-			errorsettings = { 
+			}
+			, errorsettings = { 
 				enabled=true
 				, to=""
 				, from=""
 				, subject="Error Notification (#ListLast( this.applicationroot, '\/' )#)" 
-			},
-			pagesettings = { 
+			}
+			, pagesettings = { 
 				enableadddelete=true 
-			},
-			securitysettings = {
+			}
+			, securitysettings = {
 				whitelist = "^admin:security,^public:"
-			},
-			caching = {
+			}
+			, caching = {
 				timespan = CreateTimeSpan( 0, 0, 5, 0 )
 			}
 		};
