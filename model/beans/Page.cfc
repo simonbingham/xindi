@@ -120,9 +120,7 @@ component extends="Base" persistent="true" table="pages" cacheuse="transactional
 	boolean function hasRoute( array routes=[] )
 	{
 		for( var route in arguments.routes )
-		{
-			if( StructKeyExists( route, getSlug() ) ) return true;
-		}
+			if( StructKeyExists( route, "/" & getSlug() ) ) return true;
 		return false;
 	}
 	
