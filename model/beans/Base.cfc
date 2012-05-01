@@ -17,22 +17,6 @@
 component 
 {
 	
-	/*
-	 * Public methods
-	 */
-	
-	void function preInsert()
-	{
-		var timestamp = Now();
-		setCreated( timestamp );
-		setUpdated( timestamp );
-	}
-	
-	void function preUpdate()
-	{
-		setUpdated( Now() );
-	}	
-	
 	// this method was sourced from https://gist.github.com/947636
 	void function populate( required struct memento, boolean trustedSetter=false, string include="", string exclude="", string disallowConversionToNull="" )
 	{

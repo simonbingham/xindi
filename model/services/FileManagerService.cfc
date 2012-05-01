@@ -32,12 +32,10 @@ component accessors="true"
 		if( Len( Trim( arguments.directory ) ) ) 
 		{
 			result.theobject = CreateObject( "java", "java.io.File" ).init( JavaCast( "string", arguments.directory ) );
-			result.success = true;
 			result.messages.success = "The directory &quot;" & arguments.directory & "&quot; has been created.";
 		}
 		else
 		{
-			result.success = false;
 			result.messages.error = "The directory &quot;" & newdirectorypath & "&quot; could not be created.";
 		}
 		return result;
@@ -49,12 +47,10 @@ component accessors="true"
 		if( isFile( arguments.file ) )
 		{
 			getFile( arguments.file ).delete();
-			result.success = true;
 			result.messages.success = "The file &quot;" & arguments.file & "&quot; has been deleted.";
 		}
 		else
 		{
-			result.success = false;
 			result.messages.error = "The file &quot;" & arguments.file & "&quot; could not be deleted.";
 		} 
 		return result;
@@ -78,11 +74,9 @@ component accessors="true"
 	struct function uploadFile( required string file, required string destination, required string allowedextensions )
 	{
 		var result = {};
-		result.success = false;
 		try
 		{
 			result = FileUpload( arguments.destination, arguments.file, "", "MakeUnique" );
-			result.success = true;
 			result.messages.success = "The file &quot;" & result.serverfile & "&quot; has been uploaded.";
 			if( !ListFindNoCase( arguments.allowedextensions, result.serverfileext ) ) deleteFile( result.serverdirectory & "/" & result.serverfile );
 		}

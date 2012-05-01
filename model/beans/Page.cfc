@@ -141,13 +141,11 @@ component extends="Base" persistent="true" table="pages" cacheuse="transactional
 	
 	void function preInsert()
 	{
-		super.preInsert();
 		setUUID();
 	}
 	
 	void function preUpdate()
 	{
-		super.preUpdate();
 		setUUID();
 	}
 

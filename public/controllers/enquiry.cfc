@@ -43,15 +43,15 @@ component accessors="true" extends="abstract"
 		var properties = { firstname=rc.firstname, lastname=rc.lastname, email=rc.email, message=rc.message };
 		var emailtemplatepath = "../../public/views/enquiry/email.cfm";
 		rc.result = variables.EnquiryService.sendEnquiry( properties, application.config, emailtemplatepath );
-		if( rc.result.hasErrors() )
+		rc.messages = rc.result.messages;
+		if( StructKeyExists( rc.messages, "success" ) )
 		{
-			rc.Enquiry = rc.result.getTheObject();
-			rc.messages.error = "Your enquiry could not be sent. Please amend the fields listed below.";
-			variables.fw.redirect( "enquiry", "messages,Enquiry,result" );
+			variables.fw.redirect( "enquiry/thanks" );	
 		}
 		else
 		{
-			variables.fw.redirect( "enquiry/thanks" );	
+			rc.Enquiry = rc.result.getTheObject();
+			variables.fw.redirect( "enquiry", "messages,Enquiry,result" );
 		}		
 	}
 	

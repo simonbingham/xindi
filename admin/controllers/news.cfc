@@ -33,11 +33,8 @@ component accessors="true" extends="abstract"
 
 	void function delete( required struct rc ) {
 		param name="rc.articleid" default="0";
-		rc.messages = variables.NewsService.deleteArticle( Val( rc.articleid ) );
-		/*
-		var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:main/xml", method="get" );
-		refreshsitemap.send();
-		*/		
+		var result = variables.NewsService.deleteArticle( Val( rc.articleid ) );
+		rc.messages = result.messages;
 		variables.fw.redirect( "news", "messages" );
 	}
 	
@@ -57,20 +54,15 @@ component accessors="true" extends="abstract"
 		param name="rc.metakeywords" default="";
 		var properties = { articleid=rc.articleid, title=rc.title, published=rc.published, content=rc.content, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
 		rc.result = variables.NewsService.saveArticle( properties );
-		if( rc.result.hasErrors() )
+		rc.messages = rc.result.messages;
+		if( StructKeyExists( rc.messages, "success" ) )
 		{
-			rc.Article = rc.result.getTheObject();
-			rc.messages.error = "The article could not be saved. Please amend the fields listed below.";
-			variables.fw.redirect( "news/maintain", "messages,Article,articleid,result" );
+			variables.fw.redirect( "news", "messages" );
 		}
 		else
 		{
-			/*
-			var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:main/xml", method="get" );
-			refreshsitemap.send();
-			*/
-			rc.messages.success = "The article has been saved.";
-			variables.fw.redirect( "news", "messages" );	
+			rc.Article = rc.result.getTheObject();
+			variables.fw.redirect( "news/maintain", "messages,Article,articleid,result" );
 		}
 	}
 	

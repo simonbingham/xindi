@@ -30,9 +30,19 @@ component accessors="true"
 	 * Public methods
 	 */
 
-	function deleteCurrentUser()
+	struct function deleteCurrentUser()
 	{
-		if ( hasCurrentUser() ) StructDelete( session, variables.userkey );
+		var result = {};
+		if ( hasCurrentUser() ) 
+		{
+			StructDelete( session, variables.userkey );
+			result.messages.success = "You have been logged out.";	
+		}
+		else
+		{
+			result.messages.error = "You are not logged in.";
+		}
+		return result;
 	}
 
 	function getCurrentUser()
@@ -50,18 +60,17 @@ component accessors="true"
 		var User = variables.UserService.newUser();
 		User.populate( arguments.properties );
 		var result = variables.Validator.validate( User, "login" );
-		if( !result.hasErrors() )
+		User = variables.UserService.getUserByCredentials( arguments.properties );
+		if( !IsNull( User ) )
 		{
-			User = variables.UserService.getUserByCredentials( arguments.properties );
-			if( !IsNull( User ) )
-			{
-				setCurrentUser( User );
-			}
-			else
-			{
-				var failure = { propertyName="username", clientFieldname="username", message="Sorry, your login details have not been recognised." };
-				result.addFailure( failure );				
-			}
+			setCurrentUser( User );
+			result.messages.success = "You have been logged in.";
+		}
+		else
+		{
+			result.messages.error = "Sorry, your login details have not been recognised.";
+			var failure = { propertyName="username", clientFieldname="username", message=result.messages.error };
+			result.addFailure( failure );
 		}
 		return result;
 	}	

@@ -53,7 +53,7 @@ component accessors="true" extends="abstract"
 		var newdirectory = ReReplaceNoCase( Trim( rc.newdirectory ), "[^a-z0-9_\-\.]", "", "all" );
 		var result = variables.FileManagerService.createDirectory( rc.currentdirectory & "/" & newdirectory );
 		rc.messages = result.messages;
-		if( result.theobject.mkdirs() && result.success ) variables.fw.redirect( action="filemanager.default", querystring="subdirectory=#urlSafePath( rc.subdirectory & "/" & newdirectory )#", preserve="messages" );
+		if( result.theobject.mkdirs() && StructKeyExists( result.messages, "success" ) ) variables.fw.redirect( action="filemanager.default", querystring="subdirectory=#urlSafePath( rc.subdirectory & "/" & newdirectory )#", preserve="messages" );
 		else variables.fw.redirect( action="filemanager.default", querystring="subdirectory=#urlSafePath( rc.subdirectory )#", preserve="messages" );
 	} 
 

@@ -33,9 +33,13 @@ component accessors="true" extends="abstract"
 
 	void function delete( required struct rc ) {
 		param name="rc.pageid" default="0";
-		rc.messages = variables.ContentService.deletePage( Val( rc.pageid ) );
-		var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:main/xml", method="get" );
-		refreshsitemap.send();		
+		var result = variables.ContentService.deletePage( Val( rc.pageid ) );
+		rc.messages = result.messages;
+		if( StructKeyExists( result.messages, "success" ) )
+		{
+			var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:main/xml", method="get" );
+			refreshsitemap.send();
+		}
 		variables.fw.redirect( "pages", "messages" );
 	}	
 	
@@ -50,7 +54,8 @@ component accessors="true" extends="abstract"
 	void function move( required struct rc ) {
 		param name="rc.pageid" default="0";
 		param name="rc.direction" default="";
-		rc.messages = variables.ContentService.movePage( Val( rc.pageid ), rc.direction );
+		var result = variables.ContentService.movePage( Val( rc.pageid ), rc.direction );
+		rc.messages = result.messages;
 		variables.fw.redirect( "pages", "messages" );
 	}	
 	
@@ -66,18 +71,17 @@ component accessors="true" extends="abstract"
 		param name="rc.context" default="create";
 		var properties = { pageid=rc.pageid, title=rc.title, navigationtitle=rc.navigationtitle, content=rc.content, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
 		rc.result = variables.ContentService.savePage( properties, rc.ancestorid, rc.context );
-		if( rc.result.hasErrors() )
-		{
-			rc.Page = rc.result.getTheObject();
-			rc.messages.error = "The page could not be saved. Please amend the fields listed below.";
-			variables.fw.redirect( "pages/maintain", "messages,Page,pageid,ancestorid,result" );
-		}
-		else
+		rc.messages = rc.result.messages;
+		if( StructKeyExists( rc.messages, "success" ) )
 		{
 			var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:main/xml", method="get" );
 			refreshsitemap.send();
-			rc.messages.success = "The page has been saved.";
 			variables.fw.redirect( "pages", "messages" );	
+		}
+		else
+		{
+			rc.Page = rc.result.getTheObject();
+			variables.fw.redirect( "pages/maintain", "messages,Page,pageid,ancestorid,result" );
 		}
 	}
 	
