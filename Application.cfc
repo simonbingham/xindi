@@ -1,5 +1,5 @@
 /*
-	Xindi (http://simonbingham.github.com/xindi/) - Version 2012.5.1
+	Xindi (http://simonbingham.github.com/xindi/) - Version 2012.5.1.17
 	
 	Copyright (c) 2012, Simon Bingham (http://www.simonbingham.me.uk/)
 	
@@ -30,11 +30,12 @@ component extends="frameworks.org.corfield.framework"
 	this.datasource = ListLast( this.applicationroot, "\/" );
 	this.ormenabled = true;
 	this.ormsettings = {
-		flushatrequestend = false,
-		automanagesession = false,
-		cfclocation = this.mappings[ "/model" ],
-		dbcreate = "update",
-		eventhandling = true
+		flushatrequestend = false
+		, automanagesession = false
+		, cfclocation = this.mappings[ "/model" ]
+		, dbcreate = "update"
+		, eventhandling = true
+		, eventhandler = "model.aop.GlobalEventHandler"		
 	};
 
 	/**
@@ -42,13 +43,13 @@ component extends="frameworks.org.corfield.framework"
 	*/
 	variables.framework = {
 		cacheFileExists = !this.development
-		,defaultSubsystem = "public"
-		,generateSES = true
-		,maxNumContextsPreserved = 1
-		,password = ""
-		,reloadApplicationOnEveryRequest = this.development
-		,usingSubsystems = true
-		// ,routes = [ { ""="", hint="" } ]
+		, defaultSubsystem = "public"
+		, generateSES = true
+		, maxNumContextsPreserved = 1
+		, password = ""
+		, reloadApplicationOnEveryRequest = this.development
+		, usingSubsystems = true
+		// , routes = [ { ""="", hint="" } ]
 	};
 	
 	/**

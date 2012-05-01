@@ -74,13 +74,11 @@ component extends="Base" persistent="true" table="articles" cacheuse="transactio
 	
 	void function preInsert()
 	{
-		super.preInsert();
 		setUUID();
 	}
 	
 	void function preUpdate()
 	{
-		super.preUpdate();
 		setUUID();
 	}
 
