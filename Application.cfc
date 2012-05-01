@@ -1,5 +1,5 @@
 /*
-	Xindi (http://simonbingham.github.com/xindi/) - Version 2012.5.1.14
+	Xindi (http://simonbingham.github.com/xindi/) - Version 
 	
 	Copyright (c) 2012, Simon Bingham (http://www.simonbingham.me.uk/)
 	
