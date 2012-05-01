@@ -2,6 +2,7 @@ Version 2012.5.1
 -----------
 
 - Renamed Abstract.cfc bean to Base.cfc.
+- Fixed hasRoute method bug.
 
 Version 2012.4.30
 -----------
