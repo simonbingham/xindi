@@ -14,7 +14,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component extends="Abstract" persistent="true" table="articles" cacheuse="transactional"   
+component extends="Base" persistent="true" table="articles" cacheuse="transactional"   
 {
 
 	/*
