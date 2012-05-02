@@ -209,7 +209,7 @@ component extends="Base" persistent="true" table="pages" cacheuse="transactional
 	private void function setUUID()
 	{
 		variables.uuid = ReReplace( LCase( getNavigationTitle() ), "[^a-z0-9]{1,}", "", "all" );
-		while ( !isUUIDUnique() ) variables.uuid &= "_"; 
+		while ( !isUUIDUnique() ) variables.uuid &= "-"; 
 	}
 		
 }

@@ -15,7 +15,7 @@
 --->
 
 <cfoutput>
-	<div class="article-header"><cfif rc.Article.isPersisted()><h1>Edit Article</h1><cfelse><h1>Add Article</h1></cfif></div>
+	<div class="page-header"><cfif rc.Article.isPersisted()><h1>Edit Article</h1><cfelse><h1>Add Article</h1></cfif></div>
 
 	#view( "helpers/messages" )#
 	
