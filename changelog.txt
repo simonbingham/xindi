@@ -1,7 +1,9 @@
-Version 
+Version 2012.5.2
 -----------
 
 - Tweaked setUUID method.
+- Amended news page title styling.
+- Revised documentation.
 
 Version 2012.5.1.14
 -----------
