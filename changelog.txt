@@ -1,3 +1,8 @@
+Version TBC
+-----------
+
+- Amended setup sql script.
+
 Version 2012.5.3.12
 -----------
 

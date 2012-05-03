@@ -1,5 +1,5 @@
 /*
-	Xindi (http://simonbingham.github.com/xindi/) - Version 2012.5.3.12
+	Xindi (http://simonbingham.github.com/xindi/) - Version TBC
 	
 	Copyright (c) 2012, Simon Bingham (http://www.simonbingham.me.uk/)
 	
@@ -22,7 +22,7 @@ component extends="frameworks.org.corfield.framework"
 	/**
 	* application settings
 	*/
-	this.development = ListFind( "localhost,127.0.0.1", CGI.SERVER_NAME );
+	this.development = ListFind( "localhost,127.0.0.1,127.0.0.1:8888", CGI.SERVER_NAME );
 	this.applicationroot = getDirectoryFromPath( getCurrentTemplatePath() );
 	this.sessionmanagement = true;
 	this.mappings[ "/model" ] = this.applicationroot & "model/";
