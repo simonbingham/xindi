@@ -1,5 +1,5 @@
 /*
-	Xindi (http://simonbingham.github.com/xindi/) - Version TBC
+	Xindi (http://simonbingham.github.com/xindi/) - Version 2012.5.3.13
 	
 	Copyright (c) 2012, Simon Bingham (http://www.simonbingham.me.uk/)
 	
