@@ -1,5 +1,5 @@
 /*
-	Xindi (http://simonbingham.github.com/xindi/) - Version 2012.5.2
+	Xindi (http://simonbingham.github.com/xindi/) - Version TBC
 	
 	Copyright (c) 2012, Simon Bingham (http://www.simonbingham.me.uk/)
 	
@@ -33,10 +33,16 @@ component extends="frameworks.org.corfield.framework"
 		flushatrequestend = false
 		, automanagesession = false
 		, cfclocation = this.mappings[ "/model" ]
-		, dbcreate = "update"
 		, eventhandling = true
 		, eventhandler = "model.aop.GlobalEventHandler"		
 	};
+	// create database and populate when the application starts in development environment
+	// you might want to comment out this code after the initial install
+	if( this.development )
+	{
+		this.ormsettings.dbcreate = "dropcreate";
+		this.ormsettings.sqlscript = "_setup/setup.sql";
+	}
 
 	/**
 	* FW/1 framework settings (https://github.com/seancorfield/fw1)
@@ -65,10 +71,6 @@ component extends="frameworks.org.corfield.framework"
 		var ValidateThisConfig = { definitionPath="/model/" };
 		beanFactory.addBean( "Validator", new ValidateThis.ValidateThis( ValidateThisConfig ) );
 		beanFactory.addBean( "MetaData", new model.beans.MetaData() );
-		
-		// setup validation framework
-		var ValidateThisConfig = { definitionPath="/model/" };
-		beanFactory.addBean( "Validator", new ValidateThis.ValidateThis( ValidateThisConfig ) );
 		
 		// define revision identifier
 		application.revision = Hash( Now() );

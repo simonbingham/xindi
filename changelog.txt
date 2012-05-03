@@ -1,3 +1,10 @@
+Version TBC
+-----------
+
+- Amended setup sql script to make it database neutral
+- Removed duplicate ValidateThis instantiation code.
+
+
 Version 2012.5.2
 -----------
 
