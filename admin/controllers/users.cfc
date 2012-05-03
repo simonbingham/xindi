@@ -1,4 +1,6 @@
 /*
+	Xindi (http://simonbingham.github.com/xindi/)
+	
 	Copyright (c) 2012, Simon Bingham (http://www.simonbingham.me.uk/)
 	
 	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
