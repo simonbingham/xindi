@@ -1,4 +1,6 @@
 /*
+	Xindi (http://simonbingham.github.com/xindi/)
+	
 	Copyright (c) 2012, Simon Bingham (http://www.simonbingham.me.uk/)
 	
 	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
@@ -21,6 +23,7 @@ component accessors="true"
 	 * Dependency injection
 	 */	
 	
+	property name="MetaData" getter="false";
 	property name="Validator" getter="false";
 
 	/*
@@ -35,7 +38,7 @@ component accessors="true"
 	struct function deletePage( required numeric pageid )
 	{
 		var Page = getPageByID( arguments.pageid );
-		var messages = {};
+		var result = {};
 		if( Page.isPersisted() )
 		{
 			transaction
@@ -44,14 +47,14 @@ component accessors="true"
 				ORMExecuteQuery( "update Page set leftvalue = leftvalue - 2 where leftvalue > :startvalue", { startvalue=startvalue } );
 				ORMExecuteQuery( "update Page set rightvalue = rightvalue - 2 where rightvalue > :startvalue", { startvalue=startvalue } );
 				EntityDelete( Page );
-				messages.success = "The page has been deleted.";
+				result.messages.success = "The page has been deleted.";
 			}
 		}
 		else
 		{
-			messages.error = "The page could not be deleted.";
+			result.messages.error = "The page could not be deleted.";
 		}
-		return messages;
+		return result;
 	}
 	
 	function getPageByID( required numeric pageid )
@@ -93,8 +96,8 @@ component accessors="true"
 		var previoussibling = "";
 		var previoussiblingdescendentidlist = "";
 		var Page = getPageByID( arguments.pageid );
-		var messages = "";
-		if( !Page.isPersisted() && ListFind( "up,down", Trim( arguments.direction ) ) )
+		var result = {};
+		if( Page.isPersisted() && ListFindNoCase( "up,down", Trim( arguments.direction ) ) )
 		{
 			if( arguments.direction eq "up" )
 			{
@@ -114,7 +117,7 @@ component accessors="true"
 						EntitySave( Page );
 						EntitySave( previoussibling );
 					}
-					messages.success="The page has been moved.";
+					result.messages.success = "The page has been moved.";
 				}
 			}
 			else
@@ -136,24 +139,28 @@ component accessors="true"
 						EntitySave( Page );
 						EntitySave( nextsibling );
 					}
-					messages.success="The page has been moved.";
+					result.messages.success = "The page has been moved.";
 				}
 			}
 		}
 		else
 		{
-			messages.error = "The page could not be moved.";
+			result.messages.error = "The page could not be moved.";
 		}
-		return messages;
+		return result;
 	}
 	
 	function savePage( required struct properties, required numeric ancestorid, required string context )
 	{
 		transaction
 		{
-			var Page = ""; 
+			var Page = "";
 			Page = getPageByID( Val( arguments.properties.pageid ) );
 			Page.populate( arguments.properties );
+			if( IsNull( Page.getContent() ) ) Page.setContent( "" );
+			if( !Page.hasMetaTitle() ) Page.setMetaTitle( Page.getTitle() );
+			if( !Page.hasMetaDescription() ) Page.setMetaDescription( variables.MetaData.generateMetaDescription( Page.getContent() ) );
+			if( !Page.hasMetaKeywords() ) Page.setMetaKeywords( variables.MetaData.generateMetaKeywords( Page.getContent() ) );			
 			var result = variables.Validator.validate( theObject=Page, Context=arguments.context );
 			if( !result.hasErrors() )
 			{
@@ -172,10 +179,12 @@ component accessors="true"
 					EntitySave( Page );
 					transaction action="commit";
 				}
+				result.messages.success = "The page has been saved.";
 			}
 			else
 			{
 				transaction action="rollback";
+				result.messages.error = "Your page could not be saved. Please amend the following:";
 			}
 		}
 		return result;

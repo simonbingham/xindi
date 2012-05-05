@@ -1,4 +1,6 @@
 /*
+	Xindi (http://simonbingham.github.com/xindi/)
+	
 	Copyright (c) 2012, Simon Bingham (http://www.simonbingham.me.uk/)
 	
 	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
@@ -16,22 +18,6 @@
 
 component 
 {
-	
-	/*
-	 * Public methods
-	 */
-	
-	void function preInsert()
-	{
-		var timestamp = Now();
-		setCreated( timestamp );
-		setUpdated( timestamp );
-	}
-	
-	void function preUpdate()
-	{
-		setUpdated( Now() );
-	}	
 	
 	// this method was sourced from https://gist.github.com/947636
 	void function populate( required struct memento, boolean trustedSetter=false, string include="", string exclude="", string disallowConversionToNull="" )

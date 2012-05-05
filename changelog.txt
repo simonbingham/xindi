@@ -1,3 +1,73 @@
+Version 2012.5.3.13
+-----------
+
+- Amended setup sql script.
+
+Version 2012.5.3.12
+-----------
+
+- Amendment to license copy.
+
+Version 2012.5.3
+-----------
+
+- Amended setup sql script to make it database neutral
+- Removed duplicate ValidateThis instantiation code.
+
+
+Version 2012.5.2
+-----------
+
+- Tweaked setUUID method.
+- Amended news page title styling.
+- Revised documentation.
+
+Version 2012.5.1.14
+-----------
+
+- Added global event handler.
+- Improved controller and service code.
+
+Version 2012.5.1
+-----------
+
+- Renamed Abstract.cfc bean to Base.cfc.
+- Fixed hasRoute method bug.
+- Remove HTML5 JavaScript from layout.
+- Amended link to admin in setup sql script.
+- Added RSS feed to news feature.
+
+Version 2012.4.30
+-----------
+
+- Added file manager.
+
+Version 2012.4.29
+-----------
+
+- Correctly defined methods as public and private.
+- Fixed bug in error template preventing display of error in notification email.
+
+Version 2012.4.27.17
+-----------
+
+- Added news feature.
+
+Version 2012.4.27
+-----------
+
+- Added enquiry form.
+
+Version 2012.4.25.17
+-----------
+
+- Added JavaScript to populate navigation title when page title is entered.
+- Improved installation instructions.
+- Fixed meta data generation bug.
+- Fixed text editor conflict with ValidateThis.
+- Fixed page sorting error.
+- Made email addresses in user manager clickable.
+
 Version 2012.4.25
 -----------
 

@@ -1,4 +1,6 @@
 <!---
+	Xindi (http://simonbingham.github.com/xindi/)
+	
 	Copyright (c) 2012, Simon Bingham (http://www.simonbingham.me.uk/)
 	
 	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
@@ -14,6 +16,6 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 --->
 
-<h1>Oops!</h1>
+<h1>Page Not Found</h1>
 
 <p>The page you requested could not be found.</p>

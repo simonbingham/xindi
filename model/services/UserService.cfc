@@ -1,4 +1,6 @@
 /*
+	Xindi (http://simonbingham.github.com/xindi/)
+	
 	Copyright (c) 2012, Simon Bingham (http://www.simonbingham.me.uk/)
 	
 	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
@@ -35,20 +37,20 @@ component accessors="true"
 	struct function deleteUser( required numeric userid )
 	{
 		var User = getUserByID( arguments.userid );
-		var messages = {};
+		var result = {};
 		if( User.isPersisted() )
 		{
 			transaction
 			{
 				EntityDelete( User );
-				messages.success = "The user has been deleted.";
+				result.messages.success = "The user has been deleted.";
 			}
 		}
 		else
 		{
-			messages.error = "The user could not be deleted.";
+			result.messages.error = "The user could not be deleted.";
 		}
-		return messages;
+		return result;
 	}
 	
 	function getUserByID( required numeric userid )
@@ -78,8 +80,9 @@ component accessors="true"
 		return EntityNew( "User" );
 	}		
 	
-	function saveUser( required struct properties, required string context )
+	struct function saveUser( required struct properties, required string context )
 	{
+		var result = {};
 		transaction
 		{
 			var User = ""; 
@@ -88,11 +91,13 @@ component accessors="true"
 			var result = variables.Validator.validate( theObject=User, Context=arguments.context );
 			if( !result.hasErrors() )
 			{
+				result.messages.success = "The user has been saved";
 				EntitySave( User );
 				transaction action="commit";
 			}
 			else
 			{
+				result.messages.error = "The user could not be saved. Please amend the fields listed below.";
 				transaction action="rollback";
 			}
 		}

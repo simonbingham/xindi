@@ -1,5 +1,5 @@
 /*
-	Xindi (http://simonbingham.github.com/xindi/) - Version 2012.4.25
+	Xindi (http://simonbingham.github.com/xindi/) - Version 2012.5.3.13
 	
 	Copyright (c) 2012, Simon Bingham (http://www.simonbingham.me.uk/)
 	
@@ -22,7 +22,7 @@ component extends="frameworks.org.corfield.framework"
 	/**
 	* application settings
 	*/
-	this.development = ListFind( "localhost,127.0.0.1,xindi.localhost", CGI.SERVER_NAME );
+	this.development = ListFind( "localhost,127.0.0.1,127.0.0.1:8888", CGI.SERVER_NAME );
 	this.applicationroot = getDirectoryFromPath( getCurrentTemplatePath() );
 	this.sessionmanagement = true;
 	this.mappings[ "/model" ] = this.applicationroot & "model/";
@@ -30,25 +30,32 @@ component extends="frameworks.org.corfield.framework"
 	this.datasource = ListLast( this.applicationroot, "\/" );
 	this.ormenabled = true;
 	this.ormsettings = {
-		flushatrequestend = false,
-		automanagesession = false,
-		cfclocation = this.mappings[ "/model" ],
-		dbcreate = "update",
-		eventhandling = true
+		flushatrequestend = false
+		, automanagesession = false
+		, cfclocation = this.mappings[ "/model" ]
+		, eventhandling = true
+		, eventhandler = "model.aop.GlobalEventHandler"		
 	};
+	// create database and populate when the application starts in development environment
+	// you might want to comment out this code after the initial install
+	if( this.development && !isNull( url.rebuild ) )
+	{
+		this.ormsettings.dbcreate = "dropcreate";
+		this.ormsettings.sqlscript = "_setup/setup.sql";
+	}
 
 	/**
 	* FW/1 framework settings (https://github.com/seancorfield/fw1)
 	*/
 	variables.framework = {
 		cacheFileExists = !this.development
-		,defaultSubsystem = "public"
-		,generateSES = true
-		,maxNumContextsPreserved = 1
-		,password = ""
-		,reloadApplicationOnEveryRequest = this.development
-		,usingSubsystems = true
-		// ,routes = [ { ""="", hint="" } ]
+		, defaultSubsystem = "public"
+		, generateSES = true
+		, maxNumContextsPreserved = 1
+		, password = ""
+		, reloadApplicationOnEveryRequest = this.development
+		, usingSubsystems = true
+		// , routes = [ { ""="", hint="" } ]
 	};
 	
 	/**
@@ -61,10 +68,9 @@ component extends="frameworks.org.corfield.framework"
 		// setup bean factory
 		var beanfactory = new frameworks.org.corfield.ioc( "/model" );
 		setBeanFactory( beanfactory );
-		
-		// setup validation framework
 		var ValidateThisConfig = { definitionPath="/model/" };
 		beanFactory.addBean( "Validator", new ValidateThis.ValidateThis( ValidateThisConfig ) );
+		beanFactory.addBean( "MetaData", new model.beans.MetaData() );
 		
 		// define revision identifier
 		application.revision = Hash( Now() );
@@ -85,9 +91,6 @@ component extends="frameworks.org.corfield.framework"
 	  	
 	  	// define default meta data
 		rc.MetaData = getBeanFactory().getBean( "MetaData" );
-		rc.MetaData.setMetaTitle( "" ); 
-		rc.MetaData.setMetaDescription( "" );
-		rc.MetaData.setMetaKeywords( "" );
 		
 		// store revision identifier in request context
 		rc.revision = application.revision;
@@ -131,19 +134,31 @@ component extends="frameworks.org.corfield.framework"
 	private struct function getConfig()
 	{
 		var config = {
-			errorsettings = { 
+			enquirysettings = {
+				subject = "Enquiry"
+				, emailto = ""
+			}
+			, filemanagersettings = {
+				allowedextensions = "txt,gif,jpg,png,wav,mpeg3,pdf,zip"
+			}
+			, newssettings = {
+				enabled = true
+				, rsstitle = ""
+				, rssdescription = ""
+			}
+			, errorsettings = { 
 				enabled=true
 				, to=""
 				, from=""
 				, subject="Error Notification (#ListLast( this.applicationroot, '\/' )#)" 
-			},
-			pagesettings = { 
+			}
+			, pagesettings = { 
 				enableadddelete=true 
-			},
-			securitysettings = {
+			}
+			, securitysettings = {
 				whitelist = "^admin:security,^public:"
-			},
-			caching = {
+			}
+			, caching = {
 				timespan = CreateTimeSpan( 0, 0, 5, 0 )
 			}
 		};

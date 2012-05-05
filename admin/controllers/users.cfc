@@ -1,4 +1,6 @@
 /*
+	Xindi (http://simonbingham.github.com/xindi/)
+	
 	Copyright (c) 2012, Simon Bingham (http://www.simonbingham.me.uk/)
 	
 	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
@@ -33,7 +35,8 @@ component accessors="true" extends="abstract"
 
 	void function delete( required struct rc ) {
 		param name="rc.userid" default="0";
-		rc.messages = variables.UserService.deleteUser( Val( rc.userid ) );
+		var result = variables.UserService.deleteUser( Val( rc.userid ) );
+		rc.messages = result.messages;
 		variables.fw.redirect( "users", "messages" );
 	}	
 	
@@ -54,17 +57,16 @@ component accessors="true" extends="abstract"
 		param name="rc.password" default="";
 		param name="rc.context" default="create";
 		var properties = { userid=rc.userid, firstname=rc.firstname, lastname=rc.lastname, email=rc.email, username=rc.username, password=rc.password };
-		rc.result = variables.UserService.saveUser( properties, rc.context );
-		if( rc.result.hasErrors() )
+		var result = variables.UserService.saveUser( properties, rc.context );
+		rc.messages = result.messages;
+		if( StructKeyExists( rc.messages, "success" ) )
 		{
-			rc.User = rc.result.getTheObject();
-			rc.messages.error = "The user could not be saved. Please amend the fields listed below.";
-			variables.fw.redirect( "users/maintain", "messages,User,userid,result" );
+			variables.fw.redirect( "users", "messages" );	
 		}
 		else
 		{
-			rc.messages.success = "The user has been saved.";
-			variables.fw.redirect( "users", "messages" );	
+			rc.User = result.getTheObject();
+			variables.fw.redirect( "users/maintain", "messages,User,userid" );
 		}
 	}
 	

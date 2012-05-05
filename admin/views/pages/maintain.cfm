@@ -1,4 +1,6 @@
 <!---
+	Xindi (http://simonbingham.github.com/xindi/)
+	
 	Copyright (c) 2012, Simon Bingham (http://www.simonbingham.me.uk/)
 	
 	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
@@ -62,11 +64,11 @@
 		
 		<div class="form-actions">
 			<input type="submit" name="submit" id="submit" value="Save Page" class="btn btn-primary">
-			<input type="hidden" name="context" id="context" value="#rc.context#">
 		</div>
 		
 		<input type="hidden" name="pageid" id="pageid" value="#HtmlEditFormat( rc.Page.getPageID() )#">
-		<cfif StructKeyExists( rc, "ancestorid" )><input type="hidden" name="ancestorid" id="ancestorid" value="#HtmlEditFormat( rc.ancestorid )#"></cfif>		
+		<cfif StructKeyExists( rc, "ancestorid" )><input type="hidden" name="ancestorid" id="ancestorid" value="#HtmlEditFormat( rc.ancestorid )#"></cfif>
+		<input type="hidden" name="context" id="context" value="#HtmlEditFormat( rc.context )#">			
 	</form>
 	
 	<p>* this field is required</p>
@@ -77,6 +79,14 @@
 			errorClass: 'error', 
 			errorElement: 'span'
 		});
+		
+		$( "form" ).bind( "submit", function(){
+			if( typeof CKEDITOR != "undefined" ){
+				for( instance in CKEDITOR.instances ){
+					CKEDITOR.instances[ instance ].updateElement();
+				}
+			}
+		});		
 	});
 	</script>		
 	

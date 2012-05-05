@@ -1,4 +1,6 @@
 /*
+	Xindi (http://simonbingham.github.com/xindi/)
+	
 	Copyright (c) 2012, Simon Bingham (http://www.simonbingham.me.uk/)
 	
 	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
@@ -29,10 +31,10 @@ component accessors="true" extends="abstract"
 	
 	void function default( required struct rc ) {
 		param name="rc.searchterm" default="";
+		if( Len( Trim( rc.searchterm ) ) ) rc.pages = variables.ContentService.getPages( rc.searchterm );
 		rc.MetaData.setMetaTitle( "Search Results" ); 
 		rc.MetaData.setMetaDescription( "" );
 		rc.MetaData.setMetaKeywords( "" );
-		if( Len( Trim( rc.searchterm ) ) ) rc.pages = variables.ContentService.getPages( rc.searchterm );
 	}
 	
 }

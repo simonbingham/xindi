@@ -1,4 +1,6 @@
 /*
+	Xindi (http://simonbingham.github.com/xindi/)
+	
 	Copyright (c) 2012, Simon Bingham (http://www.simonbingham.me.uk/)
 	
 	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
@@ -14,7 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component extends="Abstract" persistent="true" table="pages" cacheuse="transactional"   
+component extends="Base" persistent="true" table="pages" cacheuse="transactional"   
 {
 
 	/*
@@ -44,16 +46,6 @@ component extends="Abstract" persistent="true" table="pages" cacheuse="transacti
 		return this;
 	}
 	
-	function getAncestor()
-	{
-		return ORMExecuteQuery( "from Page where leftvalue < :leftvalue and rightvalue > :rightvalue order by leftvalue desc", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue }, { maxresults=1 } );
-	}	
-	
-	numeric function getDescendentCount()
-	{
-		return ( variables.rightvalue - variables.leftvalue - 1 ) / 2;
-	}
-
 	string function getDescendentPageIDList()
 	{
 		var pageidlist = "";
@@ -63,21 +55,6 @@ component extends="Abstract" persistent="true" table="pages" cacheuse="transacti
 		return pageidlist; 
 	}
 
-	array function getDescendents()
-	{
-		return ORMExecuteQuery( "from Page where leftvalue > :leftvalue and rightvalue < :rightvalue", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue } );
-	}
-
-	array function getFirstChild()
-	{
-		return ORMExecuteQuery( "from Page where leftvalue = :leftvalue", { leftvalue=variables.leftvalue + 1 } );
-	}	
-
-	array function getLastChild()
-	{
-		return ORMExecuteQuery( "from Page where rightvalue = :rightvalue", { rightvalue=variables.rightvalue - 1 } );
-	}	
-	
 	function getLevel()
 	{
 		return ORMExecuteQuery( "select Count( pageSubQuery ) from Page as pageSubQuery where pageSubQuery.leftvalue < :leftvalue and pageSubQuery.rightvalue > :rightvalue", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue } )[ 1 ];
@@ -114,25 +91,9 @@ component extends="Abstract" persistent="true" table="pages" cacheuse="transacti
 	
 	string function getSummary()
 	{
-		var MetaData = CreateObject( "component", "model.beans.MetaData" );
-		return Left( MetaData.stripHTML( getContent() ), 500 ) & "...";
+		return Left( REReplaceNoCase( Trim( getContent() ), "<[^>]{1,}>", " ", "all" ), 500 ) & "...";
 	}
 	
-	boolean function hasChild()
-	{
-		return ArrayLen( getFirstChild() );
-	}
-
-	boolean function hasContent()
-	{
-		return Len( Trim( getContent() ) );
-	}
-
-	boolean function hasDescendents()
-	{
-		return ArrayLen( getDescendents() );
-	}
-
 	boolean function hasNextSibling()
 	{
 		return !IsNull( getNextSibling() );
@@ -161,17 +122,10 @@ component extends="Abstract" persistent="true" table="pages" cacheuse="transacti
 	boolean function hasRoute( array routes=[] )
 	{
 		for( var route in arguments.routes )
-		{
-			if( StructKeyExists( route, getSlug() ) ) return true;
-		}
+			if( StructKeyExists( route, "/" & getSlug() ) ) return true;
 		return false;
 	}
 	
-	boolean function isChild()
-	{
-		return getLevel() != 0;
-	}	
-
 	boolean function isLeaf()
 	{
 		return getDescendentCount() == 0;
@@ -187,50 +141,77 @@ component extends="Abstract" persistent="true" table="pages" cacheuse="transacti
 		return getLevel() == 0;
 	}
 	
-	boolean function isUUIDUnique()
-	{
-		var matches = []; 
-		if( isPersisted() ) matches = ORMExecuteQuery( "from Page where pageid <> :pageid and uuid = :uuid", { pageid=getPageID(), uuid=getUUID()} );
-		else matches = ORMExecuteQuery( "from Page where uuid=:uuid", { uuid=getUUID() } );
-		return !ArrayLen( matches );
-	}	
-
 	void function preInsert()
 	{
-		super.preInsert();
 		setUUID();
 	}
 	
 	void function preUpdate()
 	{
-		super.preUpdate();
 		setUUID();
 	}
 
-	void function setMetaDescription( string metadescription="" )
+	/*
+	 * Private methods
+	 */	
+	
+	private function getAncestor()
 	{
-		var MetaData = CreateObject( "component", "model.beans.MetaData" );
-		if( !Len( Trim( arguments.metadescription ) ) && hasContent() ) variables.metadescription = MetaData.generateMetaDescription( getContent() );
-		else variables.metadescription = arguments.metadescription;
+		return ORMExecuteQuery( "from Page where leftvalue < :leftvalue and rightvalue > :rightvalue order by leftvalue desc", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue }, { maxresults=1 } );
+	}	
+	
+	private numeric function getDescendentCount()
+	{
+		return ( variables.rightvalue - variables.leftvalue - 1 ) / 2;
+	}
+	
+	private array function getDescendents()
+	{
+		return ORMExecuteQuery( "from Page where leftvalue > :leftvalue and rightvalue < :rightvalue", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue } );
 	}
 
-	void function setMetaKeywords( string metakeywords="" )
+	private array function getFirstChild()
 	{
-		var MetaData = CreateObject( "component", "model.beans.MetaData" );
-		if( !hasMetaKeywords() && hasContent() ) variables.metakeywords = MetaData.generateMetaKeywords( getContent() );
-		else variables.metakeywords = arguments.metakeywords;
+		return ORMExecuteQuery( "from Page where leftvalue = :leftvalue", { leftvalue=variables.leftvalue + 1 } );
+	}	
+
+	private array function getLastChild()
+	{
+		return ORMExecuteQuery( "from Page where rightvalue = :rightvalue", { rightvalue=variables.rightvalue - 1 } );
+	}		
+	
+	private boolean function hasChild()
+	{
+		return ArrayLen( getFirstChild() );
 	}
 
-	void function setMetaTitle( string metatitle="" )
+	private boolean function hasContent()
 	{
-		if( !Len( Trim( arguments.metatitle ) ) ) variables.metatitle = getTitle();
-		else variables.metatitle = arguments.metatitle;
+		return Len( Trim( getContent() ) );
 	}
 
-	void function setUUID()
+	private boolean function hasDescendents()
+	{
+		return ArrayLen( getDescendents() );
+	}	
+	
+	private boolean function isChild()
+	{
+		return getLevel() != 0;
+	}	
+	
+	private boolean function isUUIDUnique()
+	{
+		var matches = []; 
+		if( isPersisted() ) matches = ORMExecuteQuery( "from Page where pageid <> :pageid and uuid = :uuid", { pageid=getPageID(), uuid=getUUID()} );
+		else matches = ORMExecuteQuery( "from Page where uuid=:uuid", { uuid=getUUID() } );
+		return !ArrayLen( matches );
+	}
+	
+	private void function setUUID()
 	{
 		variables.uuid = ReReplace( LCase( getNavigationTitle() ), "[^a-z0-9]{1,}", "", "all" );
-		while ( !isUUIDUnique() ) variables.uuid &= "_"; 
+		while ( !isUUIDUnique() ) variables.uuid &= "-"; 
 	}
 		
 }

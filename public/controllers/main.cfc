@@ -1,4 +1,6 @@
 /*
+	Xindi (http://simonbingham.github.com/xindi/)
+	
 	Copyright (c) 2012, Simon Bingham (http://www.simonbingham.me.uk/)
 	
 	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
@@ -29,13 +31,16 @@ component accessors="true" extends="abstract"
 	
 	void function default( required struct rc ) {
 		rc.Page = variables.ContentService.getRoot();
+		rc.MetaData.setMetaTitle( rc.Page.getMetaTitle() ); 
+		rc.MetaData.setMetaDescription( rc.Page.getMetaDescription() );
+		rc.MetaData.setMetaKeywords( rc.Page.getMetaKeywords() );		
 	}
 	
-	void function sitemap( required struct rc ) {
+	void function map( required struct rc ) {
+		rc.pages = variables.ContentService.getPages();
 		rc.MetaData.setMetaTitle( "Site Map" ); 
 		rc.MetaData.setMetaDescription( "" );
 		rc.MetaData.setMetaKeywords( "" );		
-		rc.pages = variables.ContentService.getPages();
 	}
 	
 	void function xml( required struct rc ) {

@@ -1,4 +1,6 @@
 /*
+	Xindi (http://simonbingham.github.com/xindi/)
+	
 	Copyright (c) 2012, Simon Bingham (http://www.simonbingham.me.uk/)
 	
 	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
@@ -52,23 +54,17 @@ component accessors="true"
 		param name="rc.username" default="";
 		param name="rc.password" default="";
 		var properties = { username=rc.username, password=rc.password };
-		rc.result = variables.SecurityService.loginUser( properties );
-		if( rc.result.hasErrors() )
-		{
-			variables.fw.redirect( "security", "result" );
-		}
-		else
-		{
-			rc.messages.success = "You have been logged in.";
-			variables.fw.redirect( "main", "messages" );	
-		}
+		var result = variables.SecurityService.loginUser( properties );
+		rc.messages = result.messages;
+		if( StructKeyExists( rc.messages, "success" ) ) variables.fw.redirect( "main", "messages" );
+		else variables.fw.redirect( "security", "messages" );
 	}
 
 	void function logout( required rc )
 	{
-		variables.SecurityService.deleteCurrentUser();
-		rc.message = "You have been logged out.";
-		variables.fw.redirect( "login", "messages" );
+		var result = variables.SecurityService.deleteCurrentUser();
+		rc.messages = result.messages;
+		variables.fw.redirect( "security", "messages" );
 	}
 
 }
