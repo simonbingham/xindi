@@ -27,7 +27,7 @@ component extends="Abstract" persistent="true" table="users" cacheuse="transacti
 	property name="lastname" ormtype="string" length="50" column="user_lastname" default="";
 	property name="email" ormtype="string" length="150" column="user_email" default="";
 	property name="username" ormtype="string" length="50" column="user_username";
-	property name="password" ormtype="string" length="50" column="user_password";
+	property name="password" ormtype="string" length="50" column="user_password" setter="false";
 	property name="created" ormtype="timestamp" column="user_created";
 	property name="updated" ormtype="timestamp" column="user_updated";
 	
@@ -68,6 +68,21 @@ component extends="Abstract" persistent="true" table="users" cacheuse="transacti
 	boolean function isPersisted()
 	{
 		return !IsNull( variables.userid );
+	}
+	
+	/**
+	* I override the implicit setter to include hashing of the password
+	*/
+	string function setPassword( required password )
+	{
+		if ( argument.password != "" )
+		{
+			variables.password = argument.password;
+			// to help prevent rainbow attacks hash several times
+			for ( var i=0; i<50; i++ ) {			
+				variables.password = Hash( variables.password, "SHA-256" );
+			}
+		}
 	}
 	
 }

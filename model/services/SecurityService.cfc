@@ -52,7 +52,7 @@ component accessors="true"
 		var result = variables.Validator.validate( User, "login" );
 		if( !result.hasErrors() )
 		{
-			User = variables.UserService.getUserByCredentials( arguments.properties );
+			User = variables.UserService.getUserByCredentials( User );
 			if( !IsNull( User ) )
 			{
 				setCurrentUser( User );

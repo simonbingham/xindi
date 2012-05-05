@@ -58,9 +58,9 @@ component accessors="true"
 		return User;
 	}
 
-	function getUserByCredentials( required struct properties )
+	function getUserByCredentials( required user User )
 	{
-		return EntityLoad( "User", arguments.properties, true );
+		return EntityLoadByExample( arguments.User, true );
 	}
 
 	array function getUsers()
