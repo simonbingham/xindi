@@ -87,7 +87,7 @@ component accessors="true"
 		{
 			var User = ""; 
 			User = getUserByID( Val( arguments.properties.userid ) );
-			User.populate( memento=arguments.properties, disallowConversionToNull="PASSWORD" );
+			User.populate( arguments.properties );
 			var result = variables.Validator.validate( theObject=User, Context=arguments.context );
 			if( !result.hasErrors() )
 			{
