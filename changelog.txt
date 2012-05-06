@@ -1,4 +1,4 @@
-Version TBC
+Version 2012.5.6
 -----------
 
 - Amendment to license copy. 

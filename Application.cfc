@@ -1,5 +1,5 @@
 /*
-	Xindi - http://www.getxindi.com/ - Version TBC
+	Xindi - http://www.getxindi.com/ - Version 2012.5.6
 	Copyright (c) 2012, Simon Bingham
 	
 	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
