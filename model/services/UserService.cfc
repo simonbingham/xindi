@@ -60,9 +60,9 @@ component accessors="true"
 		return User;
 	}
 
-	function getUserByCredentials( required user User )
+	function getUserByCredentials( required User )
 	{
-		return EntityLoadByExample( arguments.User, true );
+		return ORMExecuteQuery( " from User where username=:username and password=:password ", {username=arguments.User.getUsername(), password=arguments.User.getPassword()}, true );
 	}
 
 	array function getUsers()
@@ -87,7 +87,7 @@ component accessors="true"
 		{
 			var User = ""; 
 			User = getUserByID( Val( arguments.properties.userid ) );
-			User.populate( arguments.properties );
+			User.populate( memento=arguments.properties, disallowConversionToNull="PASSWORD" );
 			var result = variables.Validator.validate( theObject=User, Context=arguments.context );
 			if( !result.hasErrors() )
 			{
@@ -97,7 +97,7 @@ component accessors="true"
 			}
 			else
 			{
-				result.messages.error = "The user could not be saved. Please amend the fields listed below.";
+				result.messages.error = "The user could not be saved. " & result.getFailuresAsString();
 				transaction action="rollback";
 			}
 		}

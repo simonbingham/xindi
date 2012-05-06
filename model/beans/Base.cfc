@@ -20,7 +20,7 @@ component
 {
 	
 	// this method was sourced from https://gist.github.com/947636
-	void function populate( required struct memento, boolean trustedSetter=false, string include="", string exclude="", string disallowConversionToNull="" )
+	void function populate( required struct memento, boolean trustedSetter=false, string include="", string exclude="" )
 	{
 		var object = this;
 		var key = "";
@@ -34,15 +34,7 @@ component
 			{
 				if( StructKeyExists( object, "set" & key ) || arguments.trustedSetter )
 				{
-					if( IsSimpleValue( arguments.memento[ key ] ) && Trim( arguments.memento[ key ] ) == "" )
-					{
-						if( Len( arguments.disallowConversionToNull ) && !ListFindNoCase( arguments.disallowConversionToNull, key ) ) Evaluate( "object.set#key#(arguments.memento[key])" );
-						else Evaluate( 'object.set#key#(javacast("null",""))' );
-					}
-					else 
-					{
-						Evaluate( "object.set#key#(arguments.memento[key])" );
-					}
+					Evaluate( "object.set#key#(arguments.memento[key])" );
 				}
 			}
 		}
