@@ -1,4 +1,4 @@
-# [Xindi] (http://simonbingham.github.com/xindi/)
+# [Xindi] (http://www.getxindi.com/)
 
 ## Introduction
 
