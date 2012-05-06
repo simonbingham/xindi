@@ -62,7 +62,7 @@ component accessors="true"
 		var User = variables.UserService.newUser();
 		User.populate( arguments.properties );
 		var result = variables.Validator.validate( User, "login" );
-		User = variables.UserService.getUserByCredentials( arguments.properties );
+		User = variables.UserService.getUserByCredentials( User );
 		if( !IsNull( User ) )
 		{
 			setCurrentUser( User );
