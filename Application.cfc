@@ -1,7 +1,6 @@
 /*
-	Xindi (http://simonbingham.github.com/xindi/) - Version 2012.5.3.13
-	
-	Copyright (c) 2012, Simon Bingham (http://www.simonbingham.me.uk/)
+	Xindi - http://www.getxindi.com/ - Version 2012.5.6
+	Copyright (c) 2012, Simon Bingham
 	
 	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
 	files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, 
