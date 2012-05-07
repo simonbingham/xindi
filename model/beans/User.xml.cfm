@@ -34,9 +34,6 @@
 		</property>
 		<property name="password" desc="password">
 			<rule type="required" contexts="create,login" />
-			<rule type="maxLength" contexts="create,update">
-				<param name="maxLength" value="50" />
-			</rule>
 		</property>
 	</objectProperties>
 </validateThis>
