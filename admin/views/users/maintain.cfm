@@ -47,7 +47,7 @@
 
 			<div class="control-group">
 				<label class="control-label" for="password">Password <cfif rc.Validator.propertyIsRequired( "password", rc.context )>*</cfif></label>
-				<div class="controls"><input class="input-xlarge" type="password" name="password" id="password" value="#HtmlEditFormat( rc.User.getPassword() )#" maxlength="50"></div>
+				<div class="controls"><input class="input-xlarge" type="password" name="password" id="password" value="" maxlength="50"></div>
 			</div>			
 		</fieldset>
 		

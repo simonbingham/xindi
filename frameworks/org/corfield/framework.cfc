@@ -1,6 +1,6 @@
 component {
 /*
-	Copyright (c) 2009-2011, Sean Corfield, Ryan Cogswell
+	Copyright (c) 2009-2012, Sean Corfield, Ryan Cogswell
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -561,8 +561,20 @@ component {
 			if ( !structKeyExists( request, 'context' ) ) {
 			    request.context = { };
 			}
-			
-
+			if ( !structKeyExists( request, 'base' ) ) {
+				if ( structKeyExists( variables, 'framework' ) && structKeyExists( variables.framework, 'base' ) ) {
+					request.base = variables.framework.base;
+				} else {
+					request.base = '';
+				}
+			}
+			if ( !structKeyExists( request, 'cfcbase' ) ) {
+				if ( structKeyExists( variables, 'framework' ) && structKeyExists( variables.framework, 'cfcbase' ) ) {
+					request.cfcbase = variables.framework.cfcbase;
+				} else {
+					request.cfcbase = '';
+				}
+			}
 			
 			setupRequestWrapper( false );
 			onRequest( '' );
@@ -1039,7 +1051,7 @@ component {
 		// view and layout setup - used to be in setupRequestWrapper():
 		request.view = parseViewOrLayoutPath( subsystem & variables.framework.subsystemDelimiter &
 													section & '/' & item, 'view' );
-		if ( !cachedFileExists( expandPath( request.view ) ) ) {
+		if ( !cachedFileExists( request.view ) ) {
 			request.missingView = request.view;
 			// ensures original view not re-invoked for onError() case:
 			structDelete( request, 'view' );
@@ -1059,20 +1071,20 @@ component {
 		// look for item-specific layout:
 		testLayout = parseViewOrLayoutPath( subsystem & variables.framework.subsystemDelimiter &
 													section & '/' & item, 'layout' );
-		if ( cachedFileExists( expandPath( testLayout ) ) ) {
+		if ( cachedFileExists( testLayout ) ) {
 			arrayAppend( request.layouts, testLayout );
 		}
 		// look for section-specific layout:
 		testLayout = parseViewOrLayoutPath( subsystem & variables.framework.subsystemDelimiter &
 													section, 'layout' );
-		if ( cachedFileExists( expandPath( testLayout ) ) ) {
+		if ( cachedFileExists( testLayout ) ) {
 			arrayAppend( request.layouts, testLayout );
 		}
 		// look for subsystem-specific layout (site-wide layout if not using subsystems):
 		if ( request.section != 'default' ) {
 			testLayout = parseViewOrLayoutPath( subsystem & variables.framework.subsystemDelimiter &
 														'default', 'layout' );
-			if ( cachedFileExists( expandPath( testLayout ) ) ) {
+			if ( cachedFileExists( testLayout ) ) {
 				arrayAppend( request.layouts, testLayout );
 			}
 		}
@@ -1080,23 +1092,25 @@ component {
 		if ( usingSubsystems() && siteWideLayoutBase != subsystembase ) {
 			testLayout = parseViewOrLayoutPath( variables.framework.siteWideLayoutSubsystem & variables.framework.subsystemDelimiter &
 														'default', 'layout' );
-			if ( cachedFileExists( expandPath( testLayout ) ) ) {
+			if ( cachedFileExists( testLayout ) ) {
 				arrayAppend( request.layouts, testLayout );
 			}
 		}
 	}
 
+
 	private boolean function cachedFileExists( string filePath ) {
 		var cache = application[ variables.framework.applicationKey ].cache;
 		if ( !variables.framework.cacheFileExists ) {
-			return fileExists( filePath );
+			return fileExists( expandPath( filePath) );
 		}
 		param name="cache.fileExists" default="#{ }#";
 		if ( !structKeyExists( cache.fileExists, filePath ) ) {
-			cache.fileExists[ filePath ] = fileExists( filePath );
+			cache.fileExists[ filePath ] = fileExists( expandPath( filePath ) );
 		}
 		return cache.fileExists[ filePath ];
 	}
+	
 	
 	private string function cfcFilePath( string dottedPath ) {
 		if ( dottedPath == '' ) {
@@ -1241,7 +1255,7 @@ component {
 						if ( type == 'controller' && section == variables.magicApplicationController ) {
 							// treat this (Application.cfc) as a controller:
 							cfc = this;
-						} else if ( cachedFileExists( expandPath( cfcFilePath( request.cfcbase ) & subsystemDir & types & '/' & section & '.cfc' ) ) ) {
+						} else if ( cachedFileExists( cfcFilePath( request.cfcbase ) & subsystemDir & types & '/' & section & '.cfc' ) ) {
 							// we call createObject() rather than new so we can control initialization:
 							if ( request.cfcbase == '' ) {
 								cfc = createObject( 'component', subsystemDot & types & '.' & section );
@@ -1704,7 +1718,7 @@ component {
 		if ( !structKeyExists( variables.framework, 'subsystems' ) ) {
 			variables.framework.subsystems = { };
 		}
-		variables.framework.version = '2.0.1';
+		variables.framework.version = '2.1_pre_2';
 	}
 
 	private void function setupRequestDefaults() {

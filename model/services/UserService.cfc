@@ -60,14 +60,14 @@ component accessors="true"
 		return User;
 	}
 
-	function getUserByCredentials( required struct properties )
+	function getUserByCredentials( required User )
 	{
-		return EntityLoad( "User", arguments.properties, true );
+		return ORMExecuteQuery( " from User where username=:username and password=:password ", { username=arguments.User.getUsername(), password=arguments.User.getPassword() }, true );
 	}
 
 	array function getUsers()
 	{
-		return EntityLoad( "User", {}, "firstname" );		
+		return EntityLoad( "User", {}, "firstname" );	
 	}
 		
 	function getValidator( required any User )
@@ -97,7 +97,7 @@ component accessors="true"
 			}
 			else
 			{
-				result.messages.error = "The user could not be saved. Please amend the fields listed below.";
+				result.messages.error = "The user could not be saved. " & result.getFailuresAsString();
 				transaction action="rollback";
 			}
 		}

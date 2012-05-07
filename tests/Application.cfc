@@ -18,26 +18,19 @@
 
 component 
 {
-	
-	// this method was sourced from https://gist.github.com/947636
-	void function populate( required struct memento, boolean trustedSetter=false, string include="", string exclude="" )
-	{
-		var object = this;
-		var key = "";
-		var populate = true;
-		for( key in arguments.memento )
-		{
-			populate = true;
-			if( Len( arguments.include ) && !ListFindNoCase( arguments.include, key ) ) populate = false;
-			if( Len( arguments.exclude ) && ListFindNoCase( arguments.exclude, key ) ) populate = false;
-			if( populate )
-			{
-				if( StructKeyExists( object, "set" & key ) || arguments.trustedSetter )
-				{
-					Evaluate( "object.set#key#(arguments.memento[key])" );
-				}
-			}
-		}
-	}
-		
+	this.applicationroot = ReReplace( getDirectoryFromPath( getCurrentTemplatePath() ), "tests.$", "", "all" );
+
+	this.name = ReReplace( "[^W]", this.applicationroot & "tests", "", "all" );
+	this.sessionmanagement = true;
+	this.mappings[ "/model" ] = this.applicationroot & "model/";
+	this.datasource = "xindi_testsuite";
+	this.ormenabled = true;
+	this.ormsettings = {
+		flushatrequestend = false
+		, automanagesession = false
+		, cfclocation = this.mappings[ "/model" ]
+		, eventhandling = true
+		, eventhandler = "model.aop.GlobalEventHandler"
+		, dbcreate = "update"		
+	};
 }

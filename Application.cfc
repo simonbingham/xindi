@@ -1,5 +1,6 @@
 /*
-	Xindi - http://www.getxindi.com/ - Version 2012.5.6
+	Xindi - http://www.getxindi.com/ - Version 2012.5.7
+	
 	Copyright (c) 2012, Simon Bingham
 	
 	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
@@ -17,7 +18,6 @@
 
 component extends="frameworks.org.corfield.framework"
 {
-	
 	/**
 	* application settings
 	*/
