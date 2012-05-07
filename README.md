@@ -55,9 +55,7 @@ The frameworks listed above have their own licenses which you should review befo
 
 ## Contributing
 
-Xindi is authored by [Simon Bingham] (https://twitter.com/#!/simonbingham), but anyone and everyone is welcome to contribute. 
-
-Special thanks go to [John Whish] (https://twitter.com/#!/aliaspooryorik) for his contributions to the project.
+Xindi is authored by [Simon Bingham] (https://twitter.com/#!/simonbingham), [John Whish] (https://twitter.com/#!/aliaspooryorik) and [Andy Beer] (https://twitter.com/#!/squirrelfactory) but anyone and everyone is welcome to contribute. 
 
 ## Problems
 
