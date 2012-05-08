@@ -1,5 +1,5 @@
 /*
-	Xindi - http://www.getxindi.com/ - Version 2012.5.7
+	Xindi - http://www.getxindi.com/ - Version 2012.5.8
 	
 	Copyright (c) 2012, Simon Bingham
 	
@@ -157,11 +157,7 @@ component extends="frameworks.org.corfield.framework"
 			, securitysettings = {
 				whitelist = "^admin:security,^public:"
 			}
-			, caching = {
-				timespan = CreateTimeSpan( 0, 0, 5, 0 )
-			}
 		};
-		if( this.development ) config.caching.timespan = CreateTimeSpan( 0, 0, 0, 0 );
 		return config;
 	}	
 
