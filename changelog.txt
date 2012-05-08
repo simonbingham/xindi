@@ -1,7 +1,7 @@
 Version TBC
 -----------
 
-- Remove caching of navigation and site map.
+- Removed caching of navigation and site map.
 
 Version 2012.5.7
 
