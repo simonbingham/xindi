@@ -46,7 +46,7 @@
 				</form>
 			</div>
 			
-			<div id="navigation">#view( "main/navigation", { pages=rc.navigation, cachetimespan=application.config.caching.timespan } )#</div> 
+			<div id="navigation">#view( "main/navigation", { pages=rc.navigation } )#</div> 
 			
 			<div id="content">#body#</div>
 			
