@@ -1,7 +1,7 @@
-Version TBC
+Version 2012.5.8
 -----------
 
-- Removed caching of navigation and site map.
+- Removed caching of navigation and site map - was preventing Xindi from running on Railo.
 
 Version 2012.5.7
 
