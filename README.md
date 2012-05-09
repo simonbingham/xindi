@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Xindi is a completely free, open source CFML content management system that uses ORM and the [nested set model] (http://en.wikipedia.org/wiki/Nested_set_model).
+Xindi is a completely free, open source CFML content management system.
 
 ## Features
 
