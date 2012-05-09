@@ -85,6 +85,12 @@ component accessors="true"
 		{
 			var Article = ""; 
 			Article = getArticleByID( Val( arguments.properties.articleid ) );
+			try{
+				arguments.properties.published = CreateDate( ListGetAt( arguments.properties.published, 3, "/" ), ListGetAt( arguments.properties.published, 2, "/" ), ListGetAt( arguments.properties.published, 1, "/" ) );
+			}
+			catch(any e){
+				arguments.properties.published = "";
+			}
 			Article.populate( arguments.properties );
 			if( IsNull( Article.getContent() ) ) Article.setContent( "" );
 			if( !Article.hasMetaTitle() ) Article.setMetaTitle( Article.getTitle() );

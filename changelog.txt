@@ -1,3 +1,12 @@
+Version 2012.5.9
+-----------
+
+- Rearranged navigation views.
+- Fixed displayMessage method in Enquiry bean.
+- Further development of test suite.
+- Added preview links to page and news article listings.
+- Fixed issue with news article published date not being persisted correctly.
+
 Version 2012.5.8
 -----------
 

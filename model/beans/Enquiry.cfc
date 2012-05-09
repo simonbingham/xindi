@@ -39,7 +39,7 @@ component extends="Base" persistent="false" accessors="true"
 	
 	string function getDisplayMessage()
 	{
-		return REReplace( variables.message, "\r+\n\r+\n", "<br /><br />", "ALL" );
+		return REReplace( variables.message, "[\r\n]+", "<br /><br />", "ALL" );
 	}	
 	
 	string function getFullName()

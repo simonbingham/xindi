@@ -26,7 +26,7 @@
 <cfhtmlhead text="#local.canonicalurl#">
 
 <cfoutput>
-	#view( "main/breadcrumbs", { Page=rc.Page } )#
+	#view( "navigation/breadcrumbs", { Page=rc.Page } )#
 	
 	<h1>#rc.Page.getTitle()#</h1>
 	
