@@ -8,6 +8,7 @@ td.chevron-right{ background:url("../img/ico-chevron-right.gif") no-repeat; }
 .error{ color:#B94A48; }
 .inline{ margin:0; }
 .inline li{ display:inline-block; margin-right:10px; }
+.center{ text-align:center !important; }
 
 @media ( max-width:979px ) {
 	#container{ padding-top:0; }
