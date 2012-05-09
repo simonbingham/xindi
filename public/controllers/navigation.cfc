@@ -30,7 +30,6 @@ component accessors="true" extends="abstract"
 	 */		
 	
 	void function map( required struct rc ) {
-		rc.pages = variables.ContentService.getPages();
 		rc.MetaData.setMetaTitle( "Site Map" ); 
 		rc.MetaData.setMetaDescription( "" );
 		rc.MetaData.setMetaKeywords( "" );		
