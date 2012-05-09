@@ -29,10 +29,18 @@ component extends="mxunit.framework.TestCase"
 		is
 		
 		a" );
-		debug( var=Enquiry );
+
 		assertTrue( FindNoCase( "<br />", Enquiry.getDisplayMessage() ) );
 	}
 	 
+	function testHTMLisEscaped()
+	{
+		var Enquiry = new model.beans.Enquiry();
+		Enquiry.setMessage( "<script>alert('hack');</script>" );
+
+		assertEquals( "&lt;script&gt;alert('hack');&lt;/script&gt;", Enquiry.getDisplayMessage() );
+	}
+
 	function testGetFullName()
 	{
 		var Enquiry = new model.beans.Enquiry();
