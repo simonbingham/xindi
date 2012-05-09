@@ -2,6 +2,7 @@ Version TBC
 -----------
 
 - Amended setup.sql script.
+- Added navigation controller.
 
 Version 2012.5.9
 -----------
