@@ -3,13 +3,11 @@ component extends="mxunit.framework.TestCase"
 	// ------------------------ TESTS ------------------------ // 
 	function testGetUserByCredentialsReturnsUserForCorrectCredentials()
 	{
-		// Note: mocking for overriden sythesized methods is broken in MXUnit?
-		//var LoginUser = mock( "model.beans.User", "typeSafe" );
-		var LoginUser = new model.beans.User();
-		LoginUser.setUsername( "aliaspooryorik" );
-		LoginUser.setPassword( "admin" );
+		var $LoginUser = mock( "model.beans.User" );
+		$LoginUser.getUsername().returns( "aliaspooryorik" );
+		$LoginUser.getPassword().returns( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB" );
 		
-		UserResult = CUT.getUserByCredentials( LoginUser );
+		UserResult = CUT.getUserByCredentials( $LoginUser );
 		
 		assertEquals( false, IsNull( UserResult ) );
 		assertEquals( "foo@bar.moo", UserResult.getEmail() );
@@ -17,13 +15,10 @@ component extends="mxunit.framework.TestCase"
 
 	function testGetUserByCredentialsReturnsNullForInCorrectCredentials()
 	{
-		// Note: mocking for overriden sythesized methods is broken in MXUnit?
-		//var LoginUser = User = mock( "model.beans.User", "typeSafe" );
-		var LoginUser = new model.beans.User();
-		LoginUser.setUsername( "aliaspooryorik" );
-		LoginUser.setPassword( "jsdkjskdfjsd" );
-		
-		UserResult = CUT.getUserByCredentials( LoginUser );
+		var $LoginUser = mock( "model.beans.User" );
+		$LoginUser.getUsername().returns( "aliaspooryorik" );
+		$LoginUser.getPassword().returns( "1111111111111111111111111111111111111111111111111111111111111111" );		
+		UserResult = CUT.getUserByCredentials( $LoginUser );
 		
 		assertEquals( true, IsNull( UserResult ) );
 	}
