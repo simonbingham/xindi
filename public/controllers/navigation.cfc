@@ -29,11 +29,16 @@ component accessors="true" extends="abstract"
 	 * Public methods
 	 */		
 	
-	void function default( required struct rc ) {
-		rc.Page = variables.ContentService.getRoot();
-		rc.MetaData.setMetaTitle( rc.Page.getMetaTitle() ); 
-		rc.MetaData.setMetaDescription( rc.Page.getMetaDescription() );
-		rc.MetaData.setMetaKeywords( rc.Page.getMetaKeywords() );		
+	void function map( required struct rc ) {
+		rc.pages = variables.ContentService.getPages();
+		rc.MetaData.setMetaTitle( "Site Map" ); 
+		rc.MetaData.setMetaDescription( "" );
+		rc.MetaData.setMetaKeywords( "" );		
 	}
+	
+	void function xml( required struct rc ) {
+		rc.sesomitindex = variables.fw.getConfig().sesomitindex;
+		rc.pages = variables.ContentService.getPages();
+	}		
 	
 }
