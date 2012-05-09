@@ -21,7 +21,7 @@ component extends="frameworks.org.corfield.framework"
 	/**
 	* application settings
 	*/
-	this.development = ListFind( "localhost,127.0.0.1", CGI.SERVER_NAME );
+	this.development = ListFind( "localhost,127.0.0.1,127.0.0.1:8888", CGI.SERVER_NAME ) != 0;
 	this.applicationroot = getDirectoryFromPath( getCurrentTemplatePath() );
 	this.sessionmanagement = true;
 	this.mappings[ "/model" ] = this.applicationroot & "model/";
