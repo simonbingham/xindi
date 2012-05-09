@@ -26,7 +26,7 @@
 <cfhtmlhead text="#local.canonicalurl#">
 
 <cfoutput>
-	#view( "main/breadcrumbs", { Page=rc.Page, cachetimespan=application.config.caching.timespan } )#
+	#view( "navigation/breadcrumbs", { Page=rc.Page } )#
 	
 	<h1>#rc.Page.getTitle()#</h1>
 	

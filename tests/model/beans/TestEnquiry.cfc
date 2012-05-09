@@ -1,4 +1,4 @@
-<!---
+/*
 	Xindi - http://www.getxindi.com/
 	
 	Copyright (c) 2012, Simon Bingham
@@ -14,38 +14,53 @@
 	OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE 
 	LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
---->
+*/
 
-<cfoutput>
-	<div class="page-header"><h1>Users</h1></div>
+component extends="mxunit.framework.TestCase"
+{
+	// ------------------------ TESTS ------------------------ //
+	 
+	function testLineFeedAndCarriageReturnReplace()
+	{
+		var Enquiry = new model.beans.Enquiry();
+		Enquiry.setMessage( "
+		This
+		
+		is
+		
+		a" );
+		debug( var=Enquiry );
+		assertTrue( FindNoCase( "<br />", Enquiry.getDisplayMessage() ) );
+	}
+	 
+	function testGetFullName()
+	{
+		var Enquiry = new model.beans.Enquiry();
+		Enquiry.setFirstName( "simon" );
+		Enquiry.setLastName( "bingham" );
+		assertEquals( "simon bingham", Enquiry.getFullname() );
+	}
 	
-	<p><a href="#buildURL( 'users.maintain' )#"><i class="icon-plus"></i> Add User</a></p>
+	// ------------------------ IMPLICIT ------------------------ // 
 	
-	#view( "helpers/messages" )#
+	/**
+	* this will run before every single test in this test case
+	*/
+	function setUp(){}
 	
-	<cfif ArrayLen( rc.users )>
-		<table class="table table-striped table-bordered table-condensed">
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>Email</th>
-					<th>Created</th>
-					<th class="center">Delete</th>
-				</tr>
-			</thead>
-			
-			<tbody>
-				<cfloop array="#rc.users#" index="local.User">
-					<tr>
-						<td><a href="#buildURL( action='users.maintain', querystring='userid/#local.User.getUserID()#' )#" title="Edit #local.User.getFullName()#">#local.User.getFullName()#</a></td>
-						<td><a href="mailto:#local.User.getEmail()#">#local.User.getEmail()#</a></td>
-						<td>#DateFormat( local.User.getCreated(), "full" )#</td>
-						<td class="center"><a href="#buildURL( 'users.delete' )#/userid/#local.User.getUserID()#" title="Delete"><i class="icon-remove"></i></a></td>
-					</tr>
-				</cfloop>
-			</tbody>
-		</table>
-	<cfelse>
-		<p>There are no user accounts.</p>
-	</cfif>
-</cfoutput>
+	/**
+	* this will run after every single test in this test case
+	*/
+	function tearDown(){}
+	
+	/**
+	* this will run once after initialization and before setUp()
+	*/
+	function beforeTests(){}
+	
+	/**
+	* this will run once after all tests have been run
+	*/
+	function afterTests(){}
+	
+}

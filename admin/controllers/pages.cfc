@@ -39,7 +39,7 @@ component accessors="true" extends="abstract"
 		rc.messages = result.messages;
 		if( StructKeyExists( result.messages, "success" ) )
 		{
-			var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:main/xml", method="get" );
+			var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:navigation/xml", method="get" );
 			refreshsitemap.send();
 		}
 		variables.fw.redirect( "pages", "messages" );
@@ -76,7 +76,7 @@ component accessors="true" extends="abstract"
 		rc.messages = rc.result.messages;
 		if( StructKeyExists( rc.messages, "success" ) )
 		{
-			var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:main/xml", method="get" );
+			var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:navigation/xml", method="get" );
 			refreshsitemap.send();
 			variables.fw.redirect( "pages", "messages" );	
 		}

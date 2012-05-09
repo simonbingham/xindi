@@ -1,3 +1,27 @@
+Version 2012.5.9.17
+-----------
+
+- Amended setup.sql script.
+- Added navigation controller.
+
+Version 2012.5.9
+-----------
+
+- Rearranged navigation views.
+- Fixed displayMessage method in Enquiry bean.
+- Further development of test suite.
+- Added preview links to page and news article listings.
+- Fixed issue with news article published date not being persisted correctly.
+
+Version 2012.5.8
+-----------
+
+- Removed caching of navigation and site map - was preventing Xindi from running on Railo.
+
+Version 2012.5.7
+
+- Implemented hashed passwords with unit tests.
+
 Version 2012.5.6
 -----------
 

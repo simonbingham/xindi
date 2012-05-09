@@ -20,7 +20,7 @@ Xindi is a completely free, open source CFML content management system that uses
 
 ## Minimum Requirements
 
-* Adobe ColdFusion 9.0.1
+* Adobe ColdFusion 9.0.1 or Railo 3.3
 * MySQL 5
 
 ## Quick Start
@@ -53,16 +53,10 @@ Xindi is licensed under the [MIT License (MIT)] (http://www.opensource.org/licen
 
 The frameworks listed above have their own licenses which you should review before using Xindi.
 
-## Contributing
+## Contributors
 
-Xindi is authored by [Simon Bingham] (https://twitter.com/#!/simonbingham), but anyone and everyone is welcome to contribute. 
-
-Special thanks go to [John Whish] (https://twitter.com/#!/aliaspooryorik) for his contributions to the project.
+Xindi is authored by [Simon Bingham] (https://twitter.com/#!/simonbingham), [John Whish] (https://twitter.com/#!/aliaspooryorik) and [Andy Beer] (https://twitter.com/#!/squirrelfactory) but anyone and everyone is welcome to contribute. 
 
 ## Problems
 
 If you experience any problems with Xindi please either amend the source code yourself and submit a pull request or [report the issue] (https://github.com/simonbingham/xindi/issues).
-
-## Wishlist
-
-If you like Xindi and would like to say "thank you" with a gift [you'll find Simon's Amazon wishlist here] (http://www.amazon.co.uk/registry/wishlist/5NCOEAWSRYHU).

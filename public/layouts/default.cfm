@@ -46,13 +46,13 @@
 				</form>
 			</div>
 			
-			<div id="navigation">#view( "main/navigation", { pages=rc.navigation, cachetimespan=application.config.caching.timespan } )#</div> 
+			#view( "navigation/menu" )# 
 			
 			<div id="content">#body#</div>
 			
 			<div id="footer">
 				<ul>
-					<li><a href="#buildURL( 'main/map' )#">Site Map</a></li>
+					<li><a href="#buildURL( 'navigation/map' )#">Site Map</a></li>
 				</ul>
 			</div>
 		</body>

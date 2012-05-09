@@ -1,4 +1,4 @@
-<!---
+/*
 	Xindi - http://www.getxindi.com/
 	
 	Copyright (c) 2012, Simon Bingham
@@ -14,10 +14,30 @@
 	OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE 
 	LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
---->
+*/
 
-<cfoutput>
-	<h1>Site Map</h1>
+component accessors="true" extends="abstract"  
+{
+
+	/*
+	 * Dependency injection
+	 */	
+
+	property name="ContentService" setter="true" getter="false";
 	
-	#view( "main/navigation", { navigation=rc.navigation, cachetimespan=application.config.caching.timespan } )#
-</cfoutput>
+	/*
+	 * Public methods
+	 */		
+	
+	void function map( required struct rc ) {
+		rc.MetaData.setMetaTitle( "Site Map" ); 
+		rc.MetaData.setMetaDescription( "" );
+		rc.MetaData.setMetaKeywords( "" );		
+	}
+	
+	void function xml( required struct rc ) {
+		rc.sesomitindex = variables.fw.getConfig().sesomitindex;
+		rc.pages = variables.ContentService.getPages();
+	}		
+	
+}

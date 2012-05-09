@@ -72,7 +72,12 @@ component extends="Base" persistent="true" table="articles" cacheuse="transactio
 	boolean function isPersisted()
 	{
 		return !IsNull( variables.articleid );
-	}			
+	}
+	
+	boolean function isPublished()
+	{
+		return variables.published < Now();
+	}
 	
 	void function preInsert()
 	{

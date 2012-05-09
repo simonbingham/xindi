@@ -36,16 +36,4 @@ component accessors="true" extends="abstract"
 		rc.MetaData.setMetaKeywords( rc.Page.getMetaKeywords() );		
 	}
 	
-	void function map( required struct rc ) {
-		rc.pages = variables.ContentService.getPages();
-		rc.MetaData.setMetaTitle( "Site Map" ); 
-		rc.MetaData.setMetaDescription( "" );
-		rc.MetaData.setMetaKeywords( "" );		
-	}
-	
-	void function xml( required struct rc ) {
-		rc.sesomitindex = variables.fw.getConfig().sesomitindex;
-		rc.pages = variables.ContentService.getPages();
-	}		
-	
 }
