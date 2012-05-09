@@ -62,11 +62,7 @@ component accessors="true"
 
 	function getUserByCredentials( required User )
 	{
-<<<<<<< HEAD
-		return ORMExecuteQuery( " from User where username=:username and password=:password ", {username=arguments.User.getUsername(), password=arguments.User.getPassword()}, true );
-=======
 		return ORMExecuteQuery( " from User where username=:username and password=:password ", { username=arguments.User.getUsername(), password=arguments.User.getPassword() }, true );
->>>>>>> 757b0b8820b439d4f12f808e736d272587bfd9cd
 	}
 
 	array function getUsers()
