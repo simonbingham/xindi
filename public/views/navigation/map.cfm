@@ -19,5 +19,5 @@
 <cfoutput>
 	<h1>Site Map</h1>
 	
-	#view( "navigation/menu", { navigation=rc.navigation } )#
+	#view( "navigation/menu", { navigation=rc.pages } )#
 </cfoutput>
