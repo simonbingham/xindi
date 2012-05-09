@@ -51,7 +51,11 @@ component extends="Base" persistent="true" table="articles" cacheuse="transactio
 
 	string function getSummary()
 	{
-		return Left( REReplaceNoCase( Trim( getContent() ), "<[^>]{1,}>", " ", "all" ), 500 ) & "...";
+		var plaintext = Trim( ReReplace( REReplaceNoCase( Trim( getContent() ), "<[^>]{1,}>", " ", "all" ), " +", " ", "all" ) );
+		if ( Len( plaintext ) > 500 ) {
+			return Left( plaintext, 500 ) & "...";
+		}
+		return plaintext;
 	}
 
 	boolean function hasMetaDescription()

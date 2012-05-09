@@ -85,6 +85,6 @@ component extends="Base" persistent="true" table="users" cacheuse="transactional
 				variables.password = Hash( variables.password, "SHA-256" );
 			}
 		}
-	}	
+	}
 	
 }
