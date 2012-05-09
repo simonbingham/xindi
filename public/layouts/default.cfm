@@ -46,7 +46,7 @@
 				</form>
 			</div>
 			
-			#view( "navigation/menu", { pages=rc.navigation } )# 
+			#view( "navigation/menu" )# 
 			
 			<div id="content">#body#</div>
 			

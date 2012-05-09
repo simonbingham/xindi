@@ -1,3 +1,9 @@
+Version 2012.5.9.17
+-----------
+
+- Amended setup.sql script.
+- Added navigation controller.
+
 Version 2012.5.9
 -----------
 
