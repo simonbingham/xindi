@@ -18,40 +18,49 @@
 
 component extends="mxunit.framework.TestCase"
 {
-	// ------------------------ TESTS ------------------------ // 
+	// ------------------------ TESTS ------------------------ //
+	 
+	function testLineFeedAndCarriageReturnReplace()
+	{
+		var Enquiry = new model.beans.Enquiry();
+		Enquiry.setMessage( "
+		This
+		
+		is
+		
+		a" );
+		debug( var=Enquiry );
+		assertTrue( FindNoCase( "<br />", Enquiry.getDisplayMessage() ) );
+	}
+	 
 	function testGetFullName()
 	{
-		var Enquiry = new model.beans.Enquiry();;
+		var Enquiry = new model.beans.Enquiry();
 		Enquiry.setFirstName( "simon" );
 		Enquiry.setLastName( "bingham" );
-		
 		assertEquals( "simon bingham", Enquiry.getFullname() );
 	}
 	
 	// ------------------------ IMPLICIT ------------------------ // 
+	
 	/**
 	* this will run before every single test in this test case
 	*/
-	function setUp()
-	{
-	}
+	function setUp(){}
+	
 	/**
 	* this will run after every single test in this test case
 	*/
-	function tearDown()
-	{
-	}
+	function tearDown(){}
+	
 	/**
 	* this will run once after initialization and before setUp()
 	*/
-	function beforeTests()
-	{
-	}
+	function beforeTests(){}
+	
 	/**
 	* this will run once after all tests have been run
 	*/
-	function afterTests()
-	{
-	}
+	function afterTests(){}
 	
 }
