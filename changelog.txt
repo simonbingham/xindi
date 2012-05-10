@@ -1,7 +1,9 @@
-Version TBC
+Version 2012.5.10
 -----------
 
-- Mocks added to tests
+- Further development of test suite.
+- Added Application.cfm file to '_clientfiles' directory to prevent malicious script uploads.
+- Amended news article summary.
 
 Version 2012.5.9.17
 -----------
