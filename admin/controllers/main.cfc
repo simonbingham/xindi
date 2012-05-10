@@ -24,6 +24,7 @@ component accessors="true"
 	 */	
 	 	
 	property name="SecurityService" setter="true" getter="false";
+	property name="config" setter="true" getter="false";
 	
 	/*
 	 * Public methods
@@ -37,7 +38,7 @@ component accessors="true"
 	void function default( required rc )
 	{
 		var securearea = true; 
-		var whitelist = application.config.securitysettings.whitelist;
+		var whitelist = variables.config.securitysettings.whitelist;
 		rc.loggedin = variables.SecurityService.hasCurrentUser();
 		if ( !rc.loggedin )
 		{

@@ -44,11 +44,11 @@
 
 			<link href="assets/css/bootstrap.min.css" rel="stylesheet">
 			<link href="assets/css/bootstrap-responsive.min.css" rel="stylesheet">
-			<link href="assets/css/core.css?r=#rc.revision#" rel="stylesheet">
+			<link href="assets/css/core.css?r=#rc.config.revision#" rel="stylesheet">
 
 			<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 			<script src="assets/js/bootstrap.min.js"></script>
-			<script src="assets/js/core.js?r=#rc.revision#"></script>
+			<script src="assets/js/core.js?r=#rc.config.revision#"></script>
 			
 			<link rel="shortcut icon" href="assets/ico/favicon.ico">
 			<link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">

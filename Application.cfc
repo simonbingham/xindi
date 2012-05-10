@@ -1,5 +1,5 @@
 /*
-	Xindi - http://www.getxindi.com/ - Version 2012.5.9.17
+	Xindi - http://www.getxindi.com/ - Version 2012.5.10
 	
 	Copyright (c) 2012, Simon Bingham
 	
@@ -21,7 +21,7 @@ component extends="frameworks.org.corfield.framework"
 	/**
 	* application settings
 	*/
-	this.development = ListFind( "localhost,127.0.0.1", CGI.SERVER_NAME );
+	this.development = ListFind( "localhost,127.0.0.1,127.0.0.1:8888", CGI.SERVER_NAME ) != 0;
 	this.applicationroot = getDirectoryFromPath( getCurrentTemplatePath() );
 	this.sessionmanagement = true;
 	this.mappings[ "/model" ] = this.applicationroot & "model/";
@@ -70,12 +70,7 @@ component extends="frameworks.org.corfield.framework"
 		var ValidateThisConfig = { definitionPath="/model/" };
 		beanFactory.addBean( "Validator", new ValidateThis.ValidateThis( ValidateThisConfig ) );
 		beanFactory.addBean( "MetaData", new model.beans.MetaData() );
-		
-		// define revision identifier
-		application.revision = Hash( Now() );
-		
-		// get configuration
-		application.config = getConfig();
+		beanFactory.addBean( "config", getConfig() );
 	}
 	
 	/**
@@ -91,8 +86,8 @@ component extends="frameworks.org.corfield.framework"
 	  	// define default meta data
 		rc.MetaData = getBeanFactory().getBean( "MetaData" );
 		
-		// store revision identifier in request context
-		rc.revision = application.revision;
+		// store config in request context
+		rc.config = getBeanFactory().getBean( "Config" );
 		
 		// call admin on every request (used for security)
 		controller( "admin:main.default" );		 
@@ -157,6 +152,7 @@ component extends="frameworks.org.corfield.framework"
 			, securitysettings = {
 				whitelist = "^admin:security,^public:"
 			}
+			, revision = Hash( Now() )
 		};
 		return config;
 	}	

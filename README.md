@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Xindi is a completely free, open source CFML content management system that uses ORM and the [nested set model] (http://en.wikipedia.org/wiki/Nested_set_model).
+Xindi is a completely free, open source CFML content management system.
 
 ## Features
 
@@ -51,7 +51,7 @@ Xindi uses the frameworks listed below.
 
 Xindi is licensed under the [MIT License (MIT)] (http://www.opensource.org/licenses/mit-license.php). 
 
-The frameworks listed above have their own licenses which you should review before using Xindi.
+However, the frameworks listed above have their own licenses which you should review before using Xindi.
 
 ## Contributors
 
@@ -60,3 +60,9 @@ Xindi is authored by [Simon Bingham] (https://twitter.com/#!/simonbingham), [Joh
 ## Problems
 
 If you experience any problems with Xindi please either amend the source code yourself and submit a pull request or [report the issue] (https://github.com/simonbingham/xindi/issues).
+
+## Contact
+
+If you would like to get in touch you can email us at [enquiries@getxindi.com] (mailto:enquiries@getxindi.com).
+
+Alternatively, you can find us on [Twitter] (https://twitter.com/#!/getxindi), [Facebook] (http://www.facebook.com/getxindi) and [Google+] (https://plus.google.com/112798469896267857099).

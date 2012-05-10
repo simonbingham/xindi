@@ -24,6 +24,7 @@ component accessors="true" extends="abstract"
 	 */		
 
 	property name="FileManagerService" setter="true" getter="false";
+	property name="config" setter="true" getter="false";
 
 	/*
 	 * Public methods
@@ -61,7 +62,7 @@ component accessors="true" extends="abstract"
 
 	void function default( required struct rc )
 	{
-		rc.listing = variables.FileManagerService.getDirectoryList( rc.currentdirectory );
+		rc.listing = variables.FileManagerService.getDirectoryList( rc.currentdirectory, variables.config.filemanagersettings.allowedextensions );
 	}
 
 	void function delete( required struct rc )
@@ -75,7 +76,7 @@ component accessors="true" extends="abstract"
 	void function upload( required struct rc )
 	{
 		param name="rc.file" default="";
-		var result = variables.FileManagerService.uploadFile( "file", rc.currentdirectory, application.config.filemanagersettings.allowedextensions );
+		var result = variables.FileManagerService.uploadFile( "file", rc.currentdirectory, variables.config.filemanagersettings.allowedextensions );
 		rc.messages = result.messages;
 		variables.fw.redirect( action="filemanager.default", querystring="subdirectory=#urlSafePath( rc.subdirectory )#", preserve="messages" );
 	}

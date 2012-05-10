@@ -25,9 +25,9 @@ component extends="Base" persistent="true" table="users" cacheuse="transactional
 	
 	property name="userid" fieldtype="id" setter="false" generator="native" column="user_id";
 
-	property name="firstname" ormtype="string" length="50" column="user_firstname" default="";
-	property name="lastname" ormtype="string" length="50" column="user_lastname" default="";
-	property name="email" ormtype="string" length="150" column="user_email" default="";
+	property name="firstname" ormtype="string" length="50" column="user_firstname";
+	property name="lastname" ormtype="string" length="50" column="user_lastname";
+	property name="email" ormtype="string" length="150" column="user_email";
 	property name="username" ormtype="string" length="50" column="user_username";
 	property name="password" ormtype="string" length="65" column="user_password" setter="false";
 	property name="created" ormtype="timestamp" column="user_created";
@@ -85,6 +85,6 @@ component extends="Base" persistent="true" table="users" cacheuse="transactional
 				variables.password = Hash( variables.password, "SHA-256" );
 			}
 		}
-	}	
+	}
 	
 }
