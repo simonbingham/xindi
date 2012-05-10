@@ -30,11 +30,6 @@ component accessors="true"
 	 * Public methods
 	 */
 	 	
-	function init()
-	{
-		return this;
-	}
-	
 	struct function deleteArticle( required numeric articleid )
 	{
 		var Article = getArticleByID( arguments.articleid );

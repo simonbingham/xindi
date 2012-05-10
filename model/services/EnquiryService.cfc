@@ -29,11 +29,6 @@ component accessors="true"
 	 * Public methods
 	 */
 	 	
-	function init()
-	{
-		return this;
-	}
-	
 	function getValidator( required any Enquiry )
 	{
 		return variables.Validator.getValidator( theObject=arguments.Enquiry );

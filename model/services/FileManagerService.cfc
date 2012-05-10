@@ -23,11 +23,6 @@ component accessors="true"
 	 * Public methods
 	 */
 	 	
-	function init()
-	{
-		return this;
-	}
-	
 	struct function createDirectory( required string directory )
 	{
 		var result = {};
