@@ -4,6 +4,7 @@ Version 2012.5.10
 - Further development of test suite.
 - Added Application.cfm file to '_clientfiles' directory to prevent malicious script uploads.
 - Amended news article summary.
+- Removed unrequired init methods.
 
 Version 2012.5.9.17
 -----------
