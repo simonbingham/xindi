@@ -53,9 +53,9 @@ component accessors="true"
 		return result;
 	}	
 	
-	query function getDirectoryList( required string directory )
+	query function getDirectoryList( required string directory, required string allowedextensions )
 	{
-		var listing = DirectoryList( arguments.directory, false, "query" );
+		var listing = DirectoryList( arguments.directory, false, "query", "*." & Replace( arguments.allowedextensions, ",", "|*.", "all" ) );
 		var queryobject = new query();
 		queryobject.setDBType( "query" );
 		queryobject.setAttributes( sourceQuery=listing );

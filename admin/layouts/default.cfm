@@ -34,7 +34,7 @@
 			<link href="assets/css/bootstrap.min.css" rel="stylesheet">
 			<link href="assets/css/bootstrap-responsive.min.css" rel="stylesheet">
 			<link href="assets/css/smoothness/jquery-ui-1.8.19.custom.css" rel="stylesheet">
-			<link href="assets/css/core.css?r=#rc.revision#" rel="stylesheet">
+			<link href="assets/css/core.css?r=#rc.config.revision#" rel="stylesheet">
 
 			<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 			<script src="assets/js/jquery-ui-1.8.19.custom.min.js"></script>
@@ -42,7 +42,7 @@
 			<script src="assets/js/jquery.field.min.js"></script>
 			<script src="assets/js/bootstrap.min.js"></script>
 			<script src="assets/ckeditor/ckeditor.js"></script>
-			<script src="assets/js/core.js?r=#rc.revision#"></script>
+			<script src="assets/js/core.js?r=#rc.config.revision#"></script>
 			
 			<link rel="shortcut icon" href="assets/ico/favicon.ico">
 			<link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
@@ -66,7 +66,7 @@
 							<ul class="nav pull-right">
 								<cfif rc.loggedin>
 									<li><a href="#buildURL( 'pages' )#">Pages</a></li>
-									<cfif application.config.newssettings.enabled><li><a href="#buildURL( 'news' )#">News</a></li></cfif>
+									<cfif rc.config.newssettings.enabled><li><a href="#buildURL( 'news' )#">News</a></li></cfif>
 									<li><a href="#buildURL( 'users' )#">Users</a></li>
 									<li><a href="#buildURL( 'security/logout' )#">Logout</a></li>
 								</cfif>

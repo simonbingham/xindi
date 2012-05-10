@@ -24,6 +24,7 @@ component accessors="true" extends="abstract"
 	 */	
 
 	property name="EnquiryService" setter="true" getter="false";
+	property name="config" setter="true" getter="false";
 	
 	/*
 	 * Public methods
@@ -44,7 +45,7 @@ component accessors="true" extends="abstract"
  		param name="rc.message" default="";
 		var properties = { firstname=rc.firstname, lastname=rc.lastname, email=rc.email, message=rc.message };
 		var emailtemplatepath = "../../public/views/enquiry/email.cfm";
-		rc.result = variables.EnquiryService.sendEnquiry( properties, application.config, emailtemplatepath );
+		rc.result = variables.EnquiryService.sendEnquiry( properties, variables.config, emailtemplatepath );
 		rc.messages = rc.result.messages;
 		if( StructKeyExists( rc.messages, "success" ) )
 		{

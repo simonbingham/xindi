@@ -31,11 +31,11 @@
 			
 			<base href="#rc.basehref#">
 			
-			<cfif application.config.newssettings.enabled><link rel="alternate" type="application/rss+xml" href="#buildURL( 'news.rss' )#"></cfif>
+			<cfif rc.config.newssettings.enabled><link rel="alternate" type="application/rss+xml" href="#buildURL( 'news.rss' )#"></cfif>
 			
-			<link href="assets/css/core.css?r=#rc.revision#" rel="stylesheet">
+			<link href="assets/css/core.css?r=#rc.config.revision#" rel="stylesheet">
 			
-			<script src="assets/js/core.js?r=#rc.revision#"></script>			
+			<script src="assets/js/core.js?r=#rc.config.revision#"></script>			
 		</head>
 
 		<body>
