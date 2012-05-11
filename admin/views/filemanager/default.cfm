@@ -48,6 +48,7 @@
 
 			<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 			<script src="assets/js/bootstrap.min.js"></script>
+			<script src="assets/ckeditor/ckeditor.js"></script>
 			<script src="assets/js/core.js?r=#rc.config.revision#"></script>
 			
 			<link rel="shortcut icon" href="assets/ico/favicon.ico">
@@ -111,16 +112,20 @@
 												</tr>
 											</cfif>
 										<cfelse>
+											<cfset local.relativepathtofile = rc.basehref & rc.clientfilesdirectory & rc.subdirectory & "/" & rc.listing.name>
+											
 											<tr>
 												<td><i class="icon-file"></i></td>
-												<td><a href="##" onclick="return sendToEditor( '#rc.listing.name#' )">#rc.listing.name#</a></td>
-												<td>#NumberFormat( rc.listing.size / 1024 )# kb</td>
+												<td><a href="##" onclick="return sendToEditor( '#rc.listing.name#' )" <cfif IsImageFile( local.relativepathtofile )>class="image-preview" rel="#local.relativepathtofile#"</cfif>>#rc.listing.name#</a></td>
+												<td <cfif rc.listing.size gt 15360>class="error"</cfif>>#NumberFormat( rc.listing.size / 1024 )# kb</td>
 												<td><a href="#buildURL( action='filemanager.delete', querystring='subdirectory=*#urlSafePath( rc.subdirectory )#&delete=#rc.listing.name#' )#" title="Delete"><i class="icon-remove"></i></a></td>
 											</tr>
 										</cfif>
 									</cfloop>
 								</tbody>
 							</table>
+							
+							<p class="error">Large files are highlighted and will be slow to download.</p>
 						<cfelse>
 							<hr />
 							
@@ -128,7 +133,7 @@
 						</cfif>
 
 						<script>
-						function sendToEditor(fileUrl){
+						function sendToEditor( fileUrl ){
 							window.opener.CKEDITOR.tools.callFunction( #session.CKEditorFuncNum#, "#rc.clientfilesdirectory##rc.subdirectory#/" + fileUrl );
 							window.close();
 							return false;
@@ -139,6 +144,37 @@
 							window.location.href = url + "/newdirectory/" + newdirectory;
 							return false;
 						}
+
+						// method to display image preview on mouse over in file manager
+						this.imagePreview = function(){	
+							xOffset = 10;
+							yOffset = 30;
+							$( "a.image-preview" ).hover( function( e ){
+								this.t = this.title;
+								this.title = "";	
+								var c = ( this.t != "" ) ? "<br/>" + this.t : "";
+								$( "body" ).append( "<p id='image-preview'><img src='"+ this.rel +"' alt='url preview' />"+ c +"</p>" );								 
+								$( "##image-preview" )
+									.css( "top",( e.pageY - xOffset ) + "px" )
+									.css( "left", (e.pageX + yOffset) + "px" )
+									.css( "width", "300px" )
+									.fadeIn( "fast" );
+							},
+							function(){
+								this.title = this.t;	
+								$( "##image-preview" ).remove();
+							});	
+							$( "a.image-preview" ).mousemove( function( e ){
+								$( "##image-preview" )
+									.css( "top", ( e.pageY - xOffset ) + "px" )
+									.css( "left", ( e.pageX + yOffset ) + "px" )
+									.css( "width", "300px" );
+							});
+						};
+						
+						$( function() {
+							imagePreview();
+						});
 						</script>
 					</div>
 				</div>
