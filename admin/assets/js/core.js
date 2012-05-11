@@ -1,4 +1,4 @@
-$(function() {
+$( function() {
 
 	// return to top of page
 	$( "#top-of-page" ).click(function(e){
@@ -71,5 +71,4 @@ $(function() {
 	CKEDITOR.config[ "filebrowserImageUploadUrl" ] = "";
 	CKEDITOR.config[ "filebrowserFlashUploadUrl" ] = "";
 	
-	
-});
+} );

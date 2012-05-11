@@ -9,6 +9,7 @@ td.chevron-right{ background:url("../img/ico-chevron-right.gif") no-repeat; }
 .inline{ margin:0; }
 .inline li{ display:inline-block; margin-right:10px; }
 .center{ text-align:center !important; }
+#image-preview{ background:#333; border:1px solid #ccc; color:#fff; display:none; padding:5px; position:absolute; }
 
 @media ( max-width:979px ) {
 	#container{ padding-top:0; }

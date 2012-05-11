@@ -21,43 +21,45 @@
 <cfset local.previouslevel = -1>
 
 <cfoutput>
-	<cfif ArrayLen( rc.navigation )>
-		<cfloop array="#rc.navigation#" index="local.Page">
-			<cfsavecontent variable="local.link">
-				<a href="#buildURL( local.Page.getSlug() )#">#local.Page.getNavigationTitle()#</a>
-			</cfsavecontent>		
-			
-			<cfif local.Page.getLevel() gt local.previouslevel>
-				<ul><li>
-					
-				#local.link#
-			<cfelseif local.Page.getLevel() lt local.previouslevel>
-				<cfset local.temporary = local.previouslevel>
+	<cfcache action="content" timespan="#rc.config.caching.timespan#">
+		<cfif ArrayLen( rc.navigation )>
+			<cfloop array="#rc.navigation#" index="local.Page">
+				<cfsavecontent variable="local.link">
+					<a href="#buildURL( local.Page.getSlug() )#">#local.Page.getNavigationTitle()#</a>
+				</cfsavecontent>		
 				
-				<cfloop condition="local.temporary gt local.Page.getLevel()">
-	 				</li></ul>
-		
-					<cfset local.temporary = local.temporary - 1>
-				</cfloop>
-			
-				</li><li>
-	
-				#local.link#
-			<cfelse>
-				</li><li>
+				<cfif local.Page.getLevel() gt local.previouslevel>
+					<ul><li>
+						
+					#local.link#
+				<cfelseif local.Page.getLevel() lt local.previouslevel>
+					<cfset local.temporary = local.previouslevel>
 					
-				#local.link#
-			</cfif>
+					<cfloop condition="local.temporary gt local.Page.getLevel()">
+		 				</li></ul>
 			
-			<cfset local.previouslevel = local.Page.getLevel()>
-		</cfloop>
-	
-		<cfset local.temporary = local.Page.getLevel()>
-	
-		<cfloop condition="local.temporary ge 0">
-			</li></ul>
-			
-			<cfset local.temporary = local.temporary - 1>
-		</cfloop>
-	</cfif>
+						<cfset local.temporary = local.temporary - 1>
+					</cfloop>
+				
+					</li><li>
+		
+					#local.link#
+				<cfelse>
+					</li><li>
+						
+					#local.link#
+				</cfif>
+				
+				<cfset local.previouslevel = local.Page.getLevel()>
+			</cfloop>
+		
+			<cfset local.temporary = local.Page.getLevel()>
+		
+			<cfloop condition="local.temporary ge 0">
+				</li></ul>
+				
+				<cfset local.temporary = local.temporary - 1>
+			</cfloop>
+		</cfif>
+	</cfcache>
 </cfoutput>
