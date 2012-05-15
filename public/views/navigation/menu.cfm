@@ -21,7 +21,7 @@
 <cfset local.previouslevel = -1>
 
 <cfoutput>
-	<cfcache action="content" timespan="#rc.config.caching.timespan#">
+	<cfcache timespan="#rc.config.caching.timespan#">
 		<cfif ArrayLen( rc.navigation )>
 			<cfloop array="#rc.navigation#" index="local.Page">
 				<cfsavecontent variable="local.link">

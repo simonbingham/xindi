@@ -18,7 +18,7 @@
 
 <cfoutput>
 	<cfif !IsNull( rc.Page ) and !rc.Page.isRoot()>
-		<cfcache action="content" timespan="#rc.config.caching.timespan#">
+		<cfcache timespan="#rc.config.caching.timespan#">
 			<div>	
 				<cfloop array="#rc.Page.getPath()#" index="local.Page">
 					<a href="#buildURL( local.Page.getSlug() )#">#local.Page.getNavigationTitle()#</a> &raquo;
