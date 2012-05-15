@@ -40,7 +40,7 @@ component extends="frameworks.org.corfield.framework"
 	if( this.development && !isNull( url.rebuild ) )
 	{
 		this.ormsettings.dbcreate = "dropcreate";
-		this.ormsettings.sqlscript = "_setup/setup.sql";
+		this.ormsettings.sqlscript = "_install/setup.sql";
 	}
 
 	/**

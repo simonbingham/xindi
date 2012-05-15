@@ -1,0 +1,1 @@
+Please follow the installation instructions at https://github.com/simonbingham/xindi/wiki/1.-Installation.
