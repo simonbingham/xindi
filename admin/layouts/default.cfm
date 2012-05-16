@@ -31,8 +31,8 @@
 
 			<title>Xindi</title>
 
-			<link href="assets/css/bootstrap.min.css" rel="stylesheet">
-			<link href="assets/css/bootstrap-responsive.min.css" rel="stylesheet">
+			<link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+			<link href="assets/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
 			<link href="assets/css/smoothness/jquery-ui-1.8.19.custom.css" rel="stylesheet">
 			<link href="assets/css/core.css?r=#rc.config.revision#" rel="stylesheet">
 
@@ -40,7 +40,7 @@
 			<script src="assets/js/jquery-ui-1.8.19.custom.min.js"></script>
 			<script src="assets/js/jquery.validate.pack.js"></script>	
 			<script src="assets/js/jquery.field.min.js"></script>
-			<script src="assets/js/bootstrap.min.js"></script>
+			<script src="assets/bootstrap/js/bootstrap.min.js"></script>
 			<script src="assets/ckeditor/ckeditor.js"></script>
 			<script src="assets/js/core.js?r=#rc.config.revision#"></script>
 			
