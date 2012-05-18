@@ -28,9 +28,9 @@ component extends="Base" persistent="true" table="articles" cacheuse="transactio
 	property name="uuid" column="article_uuid" ormtype="string" length="150";
 	property name="title" column="article_title" ormtype="string" length="150";
 	property name="content" column="article_content" ormtype="text";
-	property name="metatitle" column="article_metatitle" ormtype="string" length="200";
-	property name="metadescription" column="article_metadescription" ormtype="string" length="200";
-	property name="metakeywords" column="article_metakeywords" ormtype="string" length="200";
+	property name="metatitle" column="article_metatitle" ormtype="string" length="69";
+	property name="metadescription" column="article_metadescription" ormtype="string" length="169";
+	property name="metakeywords" column="article_metakeywords" ormtype="string" length="169";
 	property name="published" column="article_published" ormtype="timestamp";
 	property name="created" column="article_created" ormtype="timestamp";
 	property name="updated" column="article_updated" ormtype="timestamp";

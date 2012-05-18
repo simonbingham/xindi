@@ -1,5 +1,5 @@
 /*
-	Xindi - http://www.getxindi.com/ - Version 2012.5.15
+	Xindi - http://www.getxindi.com/ - Version 2012.5.18
 	
 	Copyright (c) 2012, Simon Bingham
 	
@@ -40,7 +40,7 @@ component extends="frameworks.org.corfield.framework"
 	if( this.development && !isNull( url.rebuild ) )
 	{
 		this.ormsettings.dbcreate = "dropcreate";
-		this.ormsettings.sqlscript = "_setup/setup.sql";
+		this.ormsettings.sqlscript = "_install/setup.sql";
 	}
 
 	/**
