@@ -41,41 +41,55 @@ component accessors="true"
 
 	string function generateMetaDescription( required string description )
 	{
-		return Left( Trim( REReplaceNoCase( REReplaceNoCase( stripHTML( arguments.description ), "([#Chr(09)#-#Chr(30)#])", " ", "all" ), "( ){2,}", " ", "all" ) ), 200 );
+		return Left( Trim( replaceMultipleSpacesWithSingleSpace( removeUnrequiredCharacters( stripHTML( arguments.description ) ) ) ), 169 );
 	}
-		
+
 	string function generateMetaKeywords( required string keywords )
 	{
-		return Left( Trim( listDeleteDuplicatesNoCase( ListChangeDelims( metaExclude( arguments.keywords ), ",", " ." ) ) ), 200 );
+		return Left( replaceMultipleSpacesWithSingleSpace( removeUnrequiredCharacters( listDeleteDuplicatesNoCase( ListChangeDelims( removeNonKeywords( stripHTML( arguments.keywords ) ), ",", " ." ) ) ) ), 169 );
 	}
-	
-	/*
-	 * Private methods
-	 */
 
-	private string function listDeleteDuplicatesNoCase( required string list ) {
-		var local = StructNew();
-		if( ArrayLen( arguments ) eq 2 ) local.delimiter = arguments[ 2 ];
-		else local.delimiter = ",";
-		local.elements = ListToArray( arguments.list, local.delimiter );
-		local.listnoduplicates = "";
-		for( local.i=1; local.i lte ArrayLen( local.elements ); local.i=local.i+1 ) 
+	string function generatePageTitle( required string websitetitle, required string pagetitle )
+	{
+		return Left( stripHTML( arguments.pagetitle ) & " | " & stripHTML( arguments.websitetitle ), 69 );
+	}
+
+	string function listDeleteDuplicatesNoCase( required string thelist, string delimiter="," ) {
+		var elements = ListToArray( arguments.thelist, arguments.delimiter );
+		var listnoduplicates = "";
+		for( element in elements ) 
 		{
-			if( !ListFindNoCase( local.listnoduplicates, local.elements[ local.i ], local.delimiter ) )
+			if( !ListFindNoCase( listnoduplicates, element, arguments.delimiter ) )
 			{
-				if( Len( local.listnoduplicates ) ) local.listnoduplicates = local.listnoduplicates & local.delimiter & local.elements[ local.i ];
-				else local.listnoduplicates = local.elements[ local.i ];
-			}
+				listnoduplicates = ListAppend( listnoduplicates, element, arguments.delimiter );
+			} 
 		}
-		return Trim( local.listnoduplicates );
+		return Trim( Replace( listnoduplicates, ".", "", "all" ) );
+	}
+
+	string function removeNonKeywords( required string thestring ) {
+		var elements = ListToArray( arguments.thestring, " " );
+		var newstring = "";
+		for( element in elements ) 
+		{
+			if( !ListFindNoCase( "&,a,an,and,are,as,i,if,in,is,it,that,the,this,it,to,of,on,or,us,we", element ) ) 
+			{
+				newstring = ListAppend( newstring, element, " " );
+			} 
+		}
+		return Trim( Replace( newstring, ".", "", "all" ) );
 	}
 	
-	private string function metaExclude( required string thestring ) {
-		return Trim( REReplaceNoCase(" " & REReplace( stripHTML( arguments.thestring ), "[ *]{1,}", "  ", "all"), "[ ]{1}(a|an|and|is|it|that|the|this|to|or)[ ]{1}", " ", "all" ) );
-	}
-	
-	private string function stripHTML( required string thestring ) {
-		return REReplaceNoCase( Trim( arguments.thestring ), "<[^>]{1,}>", " ", "all" );
+	string function removeUnrequiredCharacters( required string thestring ) {
+		return Trim( REReplaceNoCase( arguments.thestring, "([#Chr(09)#-#Chr(30)#])", " ", "all" ) );
 	}	
+
+	string function replaceMultipleSpacesWithSingleSpace( required string thestring ) {
+		return Trim( REReplaceNoCase( arguments.thestring, "\s{2,}", " ", "all" ) );
+	}
+	
+	string function stripHTML( required string thestring ) {
+		return Trim( replaceMultipleSpacesWithSingleSpace( REReplaceNoCase( arguments.thestring, "<[^>]{1,}>", " ", "all" ) ) );
+	}
 	
 }
