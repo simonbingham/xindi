@@ -42,7 +42,7 @@
 		
 			<div class="control-group">
 				<label class="control-label" for="message">Message <cfif rc.Validator.propertyIsRequired( "message" )>*</cfif></label>
-				<div class="controls"><textarea class="input-xlarge ckeditor" name="message" id="message">#HtmlEditFormat( rc.Enquiry.getMessage() )#</textarea></div>
+				<div class="controls"><textarea class="input-xlarge" name="message" id="message">#HtmlEditFormat( rc.Enquiry.getMessage() )#</textarea></div>
 			</div>
 		</fieldset>                        
 		
