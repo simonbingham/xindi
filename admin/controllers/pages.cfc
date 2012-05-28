@@ -65,13 +65,12 @@ component accessors="true" extends="abstract"
 		param name="rc.pageid" default="0";
 		param name="rc.ancestorid" default="0";
 		param name="rc.title" default="";
-		param name="rc.navigationtitle" default="";
 		param name="rc.content" default="";
 		param name="rc.metatitle" default="";
 		param name="rc.metadescription" default="";
 		param name="rc.metakeywords" default="";
 		param name="rc.context" default="create";
-		var properties = { pageid=rc.pageid, title=rc.title, navigationtitle=rc.navigationtitle, content=rc.content, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
+		var properties = { pageid=rc.pageid, title=rc.title, content=rc.content, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
 		rc.result = variables.ContentService.savePage( properties, rc.ancestorid, rc.context );
 		rc.messages = rc.result.messages;
 		if( StructKeyExists( rc.messages, "success" ) )

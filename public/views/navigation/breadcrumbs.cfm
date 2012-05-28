@@ -18,14 +18,12 @@
 
 <cfoutput>
 	<cfif !IsNull( rc.Page ) and !rc.Page.isRoot()>
-		<cfcache timespan="#rc.config.caching.timespan#">
-			<div>	
-				<cfloop array="#rc.Page.getPath()#" index="local.Page">
-					<a href="#buildURL( local.Page.getSlug() )#">#local.Page.getNavigationTitle()#</a> &raquo;
-				</cfloop>
-				
-				#rc.Page.getNavigationTitle()#
-			</div>
-		</cfcache>
+		<div>	
+			<cfloop array="#rc.Page.getPath()#" index="local.Page">
+				<a href="#buildURL( local.Page.getSlug() )#">#local.Page.getTitle()#</a> &raquo;
+			</cfloop>
+			
+			#rc.Page.getTitle()#
+		</div>
 	</cfif>
 </cfoutput>

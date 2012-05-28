@@ -23,7 +23,7 @@
 		<p>#ArrayLen( rc.pages )# <cfif ArrayLen( rc.pages ) eq 1>record was<cfelse>records were</cfif> found matching &quot;#rc.searchterm#&quot;.</p>
 		
 		<cfloop array="#rc.pages#" index="local.Page">
-			<h2><a href="#buildURL( local.Page.getSlug() )#">#local.Page.getNavigationTitle()#</a></h2>
+			<h2><a href="#buildURL( local.Page.getSlug() )#">#local.Page.getTitle()#</a></h2>
 			<p>#local.Page.getSummary()#</p>
 		</cfloop>
 	<cfelseif StructKeyExists( rc, "pages" )>

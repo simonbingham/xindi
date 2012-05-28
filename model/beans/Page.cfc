@@ -29,7 +29,6 @@ component extends="Base" persistent="true" table="pages" cacheuse="transactional
 	property name="leftvalue" column="page_left" ormtype="int";
 	property name="rightvalue" column="page_right" ormtype="int";
 	property name="title" column="page_title" ormtype="string" length="150";
-	property name="navigationtitle" column="page_navigationtitle" ormtype="string" length="150";
 	property name="content" column="page_content" ormtype="text";
 	property name="metatitle" column="page_metatitle" ormtype="string" length="69";
 	property name="metadescription" column="page_metadescription" ormtype="string" length="169";
@@ -210,7 +209,7 @@ component extends="Base" persistent="true" table="pages" cacheuse="transactional
 	
 	private void function setUUID()
 	{
-		variables.uuid = ReReplace( LCase( getNavigationTitle() ), "[^a-z0-9]{1,}", "", "all" );
+		variables.uuid = ReReplace( LCase( getTitle() ), "[^a-z0-9]{1,}", "", "all" );
 		while ( !isUUIDUnique() ) variables.uuid &= "-"; 
 	}
 		

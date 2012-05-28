@@ -68,7 +68,7 @@ component accessors="true"
 
 	array function getPages( string searchterm="" )
 	{
-		if( Len( Trim( arguments.searchterm ) ) ) return ORMExecuteQuery( "from Page where lower( title ) like :searchterm or lower( navigationtitle ) like :searchterm or lower( content ) like :searchterm", { searchterm="%#Lcase( arguments.searchterm )#%" } );
+		if( Len( Trim( arguments.searchterm ) ) ) return ORMExecuteQuery( "from Page where lower( title ) like :searchterm or lower( content ) like :searchterm", { searchterm="%#Lcase( arguments.searchterm )#%" } );
 		else return EntityLoad( "Page", {}, "leftvalue" );
 	}
 		
