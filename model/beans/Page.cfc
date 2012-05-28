@@ -144,11 +144,6 @@ component extends="Base" persistent="true" table="pages" cacheuse="transactional
 	{
 		setUUID();
 	}
-	
-	void function preUpdate()
-	{
-		setUUID();
-	}
 
 	/*
 	 * Private methods
