@@ -41,9 +41,9 @@
 				<tr>
 					<td <cfif !local.Page.isRoot()>class="chevron-right" style="padding-left:#( ( Page.getLevel()-1 ) * 26 ) + 26#px; background-position:#( ( local.Page.getLevel() - 1 ) * 26 ) + 5#px 50%"</cfif>>
 						<cfif !local.Page.hasRoute( local.routes )>
-							<a href="#buildURL( action='pages.maintain', querystring='pageid/#local.Page.getPageID()#' )#" title="Edit #local.Page.getTitle()#">#local.Page.getNavigationTitle()#</a>
+							<a href="#buildURL( action='pages.maintain', querystring='pageid/#local.Page.getPageID()#' )#" title="Edit #local.Page.getTitle()#">#local.Page.getTitle()#</a>
 						<cfelse>
-							#local.Page.getNavigationTitle()# *
+							#local.Page.getTitle()# *
 						</cfif>							
 					</td>
 					<td>#DateFormat( local.Page.getCreated(), "full" )#</td>

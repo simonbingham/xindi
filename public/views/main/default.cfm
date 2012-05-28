@@ -28,7 +28,5 @@
 <cfoutput>
 	#view( "navigation/breadcrumbs", { Page=rc.Page } )#
 	
-	<h1>#rc.Page.getTitle()#</h1>
-	
 	#rc.Page.getContent()#
 </cfoutput>

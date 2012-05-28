@@ -11,10 +11,10 @@ $( function() {
 		return confirm( "Delete this item?" );
 	});
 
-	// populate navigation title when page title is entered
+	// populate title when page title is entered
 	$( "#page-form input#title" ).blur(function(){
-		var navigationtitle = $( "input#navigationtitle" )
-		if( navigationtitle.val().length==0 ) navigationtitle.val( $( this ).val() );
+		var title = $( "input#title" )
+		if( title.val().length==0 ) title.val( $( this ).val() );
 	});
 	
 	// text editor configuration

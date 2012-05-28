@@ -31,11 +31,6 @@
 			</div>
 			
 			<div class="control-group">
-				<label class="control-label" for="navigationtitle">Navigation Title <cfif rc.Validator.propertyIsRequired( "navigationtitle", rc.context )>*</cfif></label>
-				<div class="controls"><input class="input-xlarge" type="text" name="navigationtitle" id="navigationtitle" value="#HtmlEditFormat( rc.Page.getNavigationTitle() )#" maxlength="100"></div>
-			</div>			
-		
-			<div class="control-group">
 				<label class="control-label" for="page-content">Content <cfif rc.Validator.propertyIsRequired( "content", rc.context )>*</cfif></label>
 				<div class="controls"><textarea class="input-xlarge ckeditor" name="content" id="page-content">#HtmlEditFormat( rc.Page.getContent() )#</textarea></div>
 			</div>

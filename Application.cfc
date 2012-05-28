@@ -1,5 +1,5 @@
 /*
-	Xindi - http://www.getxindi.com/ - Version 2012.5.18
+	Xindi - http://www.getxindi.com/ - Version 2012.5.28
 	
 	Copyright (c) 2012, Simon Bingham
 	
@@ -128,16 +128,7 @@ component extends="frameworks.org.corfield.framework"
 	private struct function getConfig()
 	{
 		var config = {
-			// if using caching in Railo you will need to add action="content" to the CFCACHE tags
-			// see http://wiki.getrailo.org/wiki/3-1-Tags:CFCache (including comments) for more information
-			
-			// if using caching in ColdFusion you may wish to add usecache="#rc.config.caching.enabled#"
-			// to the CFCACHE tags although it is not required
-			caching = {
-				enabled = false
-				, timespan = CreateTimeSpan( 0, 0, 5, 0 )
-			}
-			,enquirysettings = {
+			enquirysettings = {
 				subject = "Enquiry"
 				, emailto = ""
 			}

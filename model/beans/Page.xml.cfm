@@ -7,12 +7,6 @@
 				<param name="maxLength" value="150" />
 			</rule>				
 		</property>
-		<property name="navigationtitle" desc="navigation title">
-			<rule type="required" contexts="create,update" />
-			<rule type="maxLength" contexts="create,update">
-				<param name="maxLength" value="150" />
-			</rule>				
-		</property>		
 		<property name="content" desc="content">
 			<rule type="required" contexts="create,update" />
 		</property>	
