@@ -17,7 +17,7 @@
 --->
 
 <cfoutput>
-	<h1>Oops!</h1>
+	<div class="page-header"><h1>Oops!</h1></div>
 
 	<cfsavecontent variable="local.error">
 		<p>An error has occurred.</p>

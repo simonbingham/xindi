@@ -17,7 +17,7 @@
 --->
 
 <cfoutput>
-	<h1>Search Results</h1>
+	<div class="page-header"><h1>Search Results</h1></div>
 	
 	<cfif StructKeyExists( rc, "pages" ) and ArrayLen( rc.pages )>
 		<p>#ArrayLen( rc.pages )# <cfif ArrayLen( rc.pages ) eq 1>record was<cfelse>records were</cfif> found matching &quot;#rc.searchterm#&quot;.</p>

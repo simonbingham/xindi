@@ -26,7 +26,7 @@
 <cfhtmlhead text="#local.canonicalurl#">
 
 <cfoutput>
-	<h1>#rc.Article.getTitle()#</h1>
+	<div class="page-header"><h1>#rc.Article.getTitle()#</h1></div>
 	
 	<p>Published: #DateFormat( rc.Article.getPublished(), "full" )#</p>
 	

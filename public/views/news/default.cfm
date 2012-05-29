@@ -17,7 +17,7 @@
 --->
 
 <cfoutput>
-	<h1>News</h1>
+	<div class="page-header"><h1>News</h1></div>
 	
 	<cfif ArrayLen( rc.articles )>
 		<cfloop array="#rc.articles#" index="local.Article">

@@ -26,34 +26,54 @@
 			<meta charset="utf-8">
 			<meta name="description" content="#rc.MetaData.getMetaDescription()#">
 			<meta name="keywords" content="#rc.MetaData.getMetaKeywords()#">
-			
-			<title>#rc.MetaData.getMetaTitle()#</title>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
 			
 			<base href="#rc.basehref#">
-			
-			<cfif rc.config.newssettings.enabled><link rel="alternate" type="application/rss+xml" href="#buildURL( 'news.rss' )#"></cfif>
-			
-			<link href="assets/css/core.css?r=#rc.config.revision#" rel="stylesheet">
-			
-			<script src="assets/js/core.js?r=#rc.config.revision#"></script>			
-		</head>
 
+			<title>#rc.MetaData.getMetaTitle()#</title>
+
+			<link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+			<link href="assets/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+			<link href="assets/css/superfish.css" rel="stylesheet">
+			<link href="assets/css/superfish-vertical.css" rel="stylesheet">
+			<link href="assets/css/core.css?r=#rc.config.revision#" rel="stylesheet">
+
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+			<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+			<script src="assets/js/jquery.hoverIntent.js"></script>
+			<script src="assets/js/jquery.superfish.js"></script>			
+			<script src="assets/js/core.js?r=#rc.config.revision#"></script>
+			
+			<link rel="shortcut icon" href="assets/ico/favicon.ico">
+			<link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
+			<link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
+			<link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
+			
+			<cfif rc.config.newssettings.enabled><link rel="alternate" type="application/rss+xml" href="#buildURL( 'news.rss' )#"></cfif>			
+		</head>		
+		
 		<body>
-			<div id="search">
-				<form action="#buildURL( 'search' )#" method="post">
-					<input type="text" name="searchterm" id="searchterm" placeholder="Enter keywords" />
-					<input type="submit" name="searchbutton" id="searchbutton" value="Search" />
-				</form>
-			</div>
-			
-			#view( "navigation/menu" )# 
-			
-			<div id="content">#body#</div>
-			
-			<div id="footer">
-				<ul>
-					<li><a href="#buildURL( 'navigation/map' )#">Site Map</a></li>
-				</ul>
+			<div class="container">
+				<div class="row">
+					<div class="span12">
+						<form action="#buildURL( 'search' )#" method="post" class="form-search pull-right">
+							<input type="text" name="searchterm" id="searchterm" placeholder="Enter keywords" class="input-medium search-query" />
+							<input type="submit" name="searchbutton" id="searchbutton" value="Search" class="btn btn-primary" />
+						</form>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="span3">#view( "navigation/menu" )#</div> 
+				
+					<div class="span9">#body#</div>
+				</div>
+
+				<div class="row">
+					<div class="span12">
+						<p style="text-align:right;"><a href="#buildURL( 'navigation/map' )#">Site Map</a></p>
+					</div>
+				</div>
 			</div>
 		</body>
 	</html>
