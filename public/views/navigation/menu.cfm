@@ -18,9 +18,9 @@
 
 <!--- here's lots of code that renders an indented list of pages - could probably be improved! --->
 
-<cfset local.previouslevel = -1>
-
 <cfoutput>
+	<cfset local.previouslevel = -1>
+
 	<cfif ArrayLen( rc.navigation )>
 		<cfloop array="#rc.navigation#" index="local.Page">
 			<cfsavecontent variable="local.link">
@@ -28,7 +28,13 @@
 			</cfsavecontent>		
 			
 			<cfif local.Page.getLevel() gt local.previouslevel>
-				<ul><li>
+				<cfif local.Page.isRoot()>
+					<ul class="sf-menu sf-vertical">
+				<cfelseif local.Page.getLevel() gt 1>
+					<ul>
+				</cfif>
+				
+					<li>
 					
 				#local.link#
 			<cfelseif local.Page.getLevel() lt local.previouslevel>
@@ -54,7 +60,7 @@
 	
 		<cfset local.temporary = local.Page.getLevel()>
 	
-		<cfloop condition="local.temporary ge 0">
+		<cfloop condition="local.temporary ge 1">
 			</li></ul>
 			
 			<cfset local.temporary = local.temporary - 1>

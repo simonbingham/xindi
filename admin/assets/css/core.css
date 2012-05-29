@@ -3,13 +3,15 @@ input, select, textarea{ margin-right:10px; }
 td.chevron-right{ background:url("../img/ico-chevron-right.gif") no-repeat; }
 #container{ padding-top:60px; }
 #footer{ background:#F5F5F5; border-top:solid 1px #e9e9e9; margin-top:20px; padding:40px 0; width:100%; }
+#image-preview{ background:#333; border:1px solid #ccc; color:#fff; display:none; padding:5px; position:absolute; }
 .append-bottom{ margin-bottom:30px; }
 .hide{ display:none; }
 .error{ color:#B94A48; }
 .inline{ margin:0; }
 .inline li{ display:inline-block; margin-right:10px; }
 .center{ text-align:center !important; }
-#image-preview{ background:#333; border:1px solid #ccc; color:#fff; display:none; padding:5px; position:absolute; }
+.navbar-inner{ background-color: #01324A; background-image: -moz-linear-gradient(center top , #01324a, #012638); }
+.navbar .nav > li > a { color:#fff; }
 
 @media ( max-width:979px ) {
 	#container{ padding-top:0; }

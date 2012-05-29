@@ -17,18 +17,18 @@
 --->
 
 <cfoutput>
-	<h1>Search Results</h1>
+	<div class="page-header"><h1>Search Results</h1></div>
 	
 	<cfif StructKeyExists( rc, "pages" ) and ArrayLen( rc.pages )>
-		<p>#ArrayLen( rc.pages )# <cfif ArrayLen( rc.pages ) eq 1>record was<cfelse>records were</cfif> found matching &quot;#rc.searchterm#&quot;.</p>
+		<div class="alert alert-success">#ArrayLen( rc.pages )# <cfif ArrayLen( rc.pages ) eq 1>record was<cfelse>records were</cfif> found matching &quot;#rc.searchterm#&quot;.</div>
 		
 		<cfloop array="#rc.pages#" index="local.Page">
 			<h2><a href="#buildURL( local.Page.getSlug() )#">#local.Page.getTitle()#</a></h2>
 			<p>#local.Page.getSummary()#</p>
 		</cfloop>
 	<cfelseif StructKeyExists( rc, "pages" )>
-		<p>No records were found matching &quot;#rc.searchterm#&quot;.</p>
+		<div class="alert alert-info">No records were found matching &quot;#rc.searchterm#&quot;.</div>
 	<cfelse>
-		<p>Please enter a search team.</p>
+		<div class="alert alert-error">Please enter a search team.</div>
 	</cfif>
 </cfoutput>

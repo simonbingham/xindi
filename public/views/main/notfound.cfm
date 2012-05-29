@@ -16,6 +16,6 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 --->
 
-<h1>Page Not Found</h1>
+<div class="page-header"><h1>Page Not Found</h1></div>
 
 <p>The page you requested could not be found.</p>

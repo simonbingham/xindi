@@ -35,7 +35,7 @@ component accessors="true" extends="abstract"
 		rc.webrootdirectory = GetDirectoryFromPath( CGI.CF_TEMPLATE_PATH );
 		rc.clientfilesdirectory = "_clientfiles";
 		rc.subdirectory = "";
-		if ( !IsNull( rc.subdirectory ) ) rc.subdirectory = Replace( ReReplace( Replace( rc.subdirectory, "*", "", "all" ), "(\.){2,}", "", "all" ), ":", "/", "all" );
+		if ( !IsNull( rc.subdirectory ) ) rc.subdirectory = Replace( ReReplace( Replace( rc.subdirectory, "*", "", "all" ), "(\.){2,}", "", "all" ), ":", "\", "all" );
 		rc.currentdirectory = rc.webrootdirectory & rc.clientfilesdirectory & rc.subdirectory;
 		if ( !variables.FileManagerService.isDirectory( rc.currentdirectory ) ) rc.message.error = "Sorry, the requested " & rc.subdirectory & " is not valid.";
 	}
@@ -54,9 +54,9 @@ component accessors="true" extends="abstract"
 	{
 		param name="rc.newdirectory" default="";
 		var newdirectory = ReReplaceNoCase( Trim( rc.newdirectory ), "[^a-z0-9_\-\.]", "", "all" );
-		var result = variables.FileManagerService.createDirectory( rc.currentdirectory & "/" & newdirectory );
+		var result = variables.FileManagerService.createDirectory( rc.currentdirectory & "\" & newdirectory );
 		rc.messages = result.messages;
-		if( result.theobject.mkdirs() && StructKeyExists( result.messages, "success" ) ) variables.fw.redirect( action="filemanager.default", querystring="subdirectory=#urlSafePath( rc.subdirectory & "/" & newdirectory )#", preserve="messages" );
+		if( result.theobject.mkdirs() && StructKeyExists( result.messages, "success" ) ) variables.fw.redirect( action="filemanager.default", querystring="subdirectory=#urlSafePath( rc.subdirectory & "\" & newdirectory )#", preserve="messages" );
 		else variables.fw.redirect( action="filemanager.default", querystring="subdirectory=#urlSafePath( rc.subdirectory )#", preserve="messages" );
 	} 
 
@@ -68,7 +68,7 @@ component accessors="true" extends="abstract"
 	void function delete( required struct rc )
 	{
 		param name="rc.delete" default="";
-		var result = variables.FileManagerService.deleteFile( rc.currentdirectory  & "/" & rc.delete );
+		var result = variables.FileManagerService.deleteFile( rc.currentdirectory  & "\" & rc.delete );
 		rc.messages = result.messages;
 		variables.fw.redirect( action="filemanager.default", querystring="subdirectory=#urlSafePath( rc.subdirectory )#", preserve="messages" );
 	}
@@ -87,7 +87,7 @@ component accessors="true" extends="abstract"
 	
 	private string function urlSafePath( required string path )
 	{
-		var result = Replace( arguments.path, "/", ":", "all" );
+		var result = Replace( arguments.path, "\", ":", "all" );
 		if ( !Len( Trim( result ) ) ) result = "*";
 		return result;
 	}

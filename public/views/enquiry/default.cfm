@@ -17,7 +17,7 @@
 --->
 
 <cfoutput>
-	<h1>Contact Us</h1>
+	<div class="page-header"><h1>Contact Us</h1></div>
 
 	#view( "helpers/messages" )#
 	
@@ -50,8 +50,6 @@
 			<input type="submit" name="submit" id="submit" value="Send" class="btn btn-primary">
 		</div>
 	</form>
-	
-	<p>* this field is required</p>
 	
 	<script>
 	$(document).ready(function(){

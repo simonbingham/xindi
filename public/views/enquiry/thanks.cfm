@@ -16,6 +16,6 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 --->
 
-<h1>Thank You</h1>
+<div class="page-header"><h1>Thank You</h1></div>
 
 <p>Your enquiry has been received.</p>

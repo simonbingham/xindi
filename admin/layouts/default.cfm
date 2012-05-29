@@ -60,7 +60,7 @@
 							<span class="icon-bar"></span>
 						</a>
 						
-						<a class="brand" href="#rc.basehref##request.subsystem#/" title="Return to home page">Xindi</a>
+						<a class="brand" href="#rc.basehref##request.subsystem#/" title="Return to home page"><img src="assets/img/xindi-logo.png" alt="Xindi logo" /></a>
 						
 						<div class="nav-collapse">
 							<ul class="nav pull-right">
