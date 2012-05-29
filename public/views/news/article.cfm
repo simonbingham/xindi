@@ -61,9 +61,13 @@
 <cfhtmlhead text="#local.canonicalurl#">
 
 <cfoutput>
-	<div class="page-header"><h1>#rc.Article.getTitle()#</h1></div>
-	
-	<p>Published: #DateFormat( rc.Article.getPublished(), "full" )#</p>
+	<div class="page-header">
+		<h1>
+			#rc.Article.getTitle()#
+			
+			<small>#DateFormat( rc.Article.getPublished(), "full" )#</small>
+		</h1>
+	</div>
 	
 	#rc.Article.getContent()#
 >>>>>>> origin/develop

@@ -58,15 +58,17 @@
 	<cfif ArrayLen( rc.articles )>
 		<cfloop array="#rc.articles#" index="local.Article">
 			<div>
-				<h2><a href="#buildURL( action='news.article', querystring='uuid=#local.Article.getUUID()#' )#">#local.Article.getTitle()#</a></h2>
-				
-				<p>Published: #DateFormat( local.Article.getPublished(), "full" )#</p>
+				<h2>
+					<a href="#buildURL( action='news.article', querystring='uuid=#local.Article.getUUID()#' )#">#local.Article.getTitle()#</a>
+					
+					<small>#DateFormat( local.Article.getPublished(), "full" )#</small>
+				</h2>
 				
 				#local.Article.getSummary()#
 			</div>
 		</cfloop>
 	<cfelse>
-		<p>There are currently no news stories.</p>
+		<div class="alert alert-info">There are currently no news stories.</div>
 	</cfif>
 >>>>>>> origin/develop
 </cfoutput>

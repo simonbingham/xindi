@@ -128,8 +128,6 @@
 		</div>
 	</form>
 	
-	<p>* this field is required</p>
-	
 	<script>
 	$(document).ready(function(){
 		$.validator.setDefaults({

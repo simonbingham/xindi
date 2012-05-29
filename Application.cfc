@@ -1,5 +1,5 @@
 /*
-	Xindi - http://www.getxindi.com/ - Version 2012.5.29
+	Xindi - http://www.getxindi.com/ - Version 2012.5.29.21
 	
 	Copyright (c) 2012, Simon Bingham
 	
@@ -54,7 +54,7 @@ component extends="frameworks.org.corfield.framework"
 		, password = ""
 		, reloadApplicationOnEveryRequest = this.development
 		, usingSubsystems = true
-		// , routes = [ { ""="", hint="" } ]
+		, routes = [ { ""="", hint="" } ]
 	};
 	
 	/**
