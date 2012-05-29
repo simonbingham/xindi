@@ -18,12 +18,13 @@
 
 <cfoutput>
 	<cfif !IsNull( rc.Page ) and !rc.Page.isRoot()>
-		<div>	
-			<cfloop array="#rc.Page.getPath()#" index="local.Page">
-				<a href="#buildURL( local.Page.getSlug() )#">#local.Page.getTitle()#</a> &raquo;
-			</cfloop>
-			
-			#rc.Page.getTitle()#
-		</div>
+	    <ul class="breadcrumb">
+	    	<li>
+	    		<cfloop array="#rc.Page.getPath()#" index="local.Page">
+	    			<a href="#buildURL( local.Page.getSlug() )#">#local.Page.getTitle()#</a> <span class="divider">/</span>
+				</cfloop>
+	    	</li>
+		    <li class="active">#rc.Page.getTitle()#</li>
+	    </ul>		
 	</cfif>
 </cfoutput>
