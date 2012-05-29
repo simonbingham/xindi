@@ -79,6 +79,7 @@ ul.sf-menu li li li.sfHover ul {
 .sf-menu a:focus, .sf-menu a:hover, .sf-menu a:active {
 	background:		#f1f1f1;
 	outline:		0;
+	text-decoration:none;
 }
 
 /*** arrows **/

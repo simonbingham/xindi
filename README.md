@@ -2,13 +2,15 @@
 
 ## Introduction
 
-Xindi is a completely free, open source CFML content management system.
+Xindi is a small, lightweight and flexible CFML content management system. It's great for web developers looking for a simple way to make site content editable by their clients.
+
+Open source, free and flexible, Xindi is a great choice for your next web project.
 
 ## Features
 
 * Password protected
-* Page management
-* User account management
+* Page manager
+* User account manager
 * News feature with RSS feed
 * Enquiry form
 * Text editor (with file manager)
@@ -21,7 +23,7 @@ Xindi is a completely free, open source CFML content management system.
 ## Minimum Requirements
 
 * Adobe ColdFusion 9.0.1 or Railo 3.3
-* MySQL 5
+* MySQL 5, MSSQL
 
 ## Quick Start
 
