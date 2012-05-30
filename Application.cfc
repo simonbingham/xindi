@@ -1,5 +1,5 @@
 /* 
-	Xindi - http://www.getxindi.com/ - Version 2012.5.29.21
+	Xindi - http://www.getxindi.com/ - Version 2012.5.30
 	
 	Copyright (c) 2012, Simon Bingham
 	

@@ -23,7 +23,7 @@ Open source, free and flexible, Xindi is a great choice for your next web projec
 ## Minimum Requirements
 
 * Adobe ColdFusion 9.0.1 or Railo 3.3
-* MySQL 5, MSSQL
+* MySQL 5 or MSSQL
 
 ## Quick Start
 
@@ -57,7 +57,7 @@ However, the frameworks listed above have their own licenses which you should re
 
 ## Contributors
 
-Xindi is authored by [Simon Bingham] (https://twitter.com/#!/simonbingham), [John Whish] (https://twitter.com/#!/aliaspooryorik) and [Andy Beer] (https://twitter.com/#!/squirrelfactory) but anyone and everyone is welcome to contribute. 
+Xindi is authored by [Simon Bingham] (https://twitter.com/#!/simonbingham) with support from [John Whish] (https://twitter.com/#!/aliaspooryorik) and [Andy Beer] (https://twitter.com/#!/squirrelfactory) but anyone and everyone is welcome to contribute. 
 
 ## Problems
 
