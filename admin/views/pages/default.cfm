@@ -28,6 +28,7 @@
 			<tr>
 				<th>Title</th>
 				<th>Published</th>
+				<th>Last Modified</th>
 				<th class="center">View</th>
 				<cfif rc.config.pagesettings.enableadddelete><th class="center">Add Page</th></cfif>
 				<th class="center">Move Up</th>
@@ -47,6 +48,7 @@
 						</cfif>							
 					</td>
 					<td>#DateFormat( local.Page.getCreated(), "full" )#</td>
+					<td>#DateFormat( local.Page.getUpdated(), "full" )#</td>
 					<td class="center"><a href="#buildURL( action="public:" & local.Page.getSlug() )#" title="View" target="_blank"><i class="icon-eye-open"></i></a></td>
 					<cfif rc.config.pagesettings.enableadddelete><td class="center"><a href="#buildURL( action='pages.maintain', querystring='ancestorid/#local.Page.getPageID()#' )#" title="Add Page"><i class="icon-plus-sign"></i></a></td></cfif>
 					<td class="center"><cfif local.Page.hasPreviousSibling()><a href="#buildURL( action='pages.move', querystring='pageid/#local.Page.getPageID()#/direction/up' )#" title="Move Up"><i class="icon-chevron-up"></i></a></cfif></td>
