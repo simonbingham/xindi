@@ -3,4 +3,5 @@ Disallow: /admin/
 Disallow: /frameworks/
 Disallow: /model/
 Disallow: /public/
+Disallow: /tests/
 Allow: /

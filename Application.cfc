@@ -102,7 +102,7 @@ component extends="frameworks.org.corfield.framework"
 	}	
 	
 	/**
-     * called if view is missing
+     * called if view is missing - used for (almost) all Xindi page requests
 	 */	
 	any function onMissingView( required rc )
 	{
@@ -128,37 +128,39 @@ component extends="frameworks.org.corfield.framework"
 	private struct function getConfig()
 	{
 		var config = {
+			// enquiry form settings
 			enquirysettings = {
 				subject = "Enquiry"
 				, emailto = ""
 			}
+			// error handler settings
 			, errorsettings = { 
 				enabled=true
 				, to=""
 				, from=""
 				, subject="Error Notification (#ListLast( this.applicationroot, '\/' )#)" 
 			}
+			// file manager settings
 			, filemanagersettings = {
 				allowedextensions = "txt,gif,jpg,png,wav,mpeg3,pdf,zip"
 			}
+			// news feature settings
 			, newssettings = {
 				enabled = true
 				, rsstitle = ""
 				, rssdescription = ""
 			}
+			// page manager settings
 			, pagesettings = { 
 				enableadddelete=true 
 			}
-			, revision = Hash( Now() ) // used to force latest versions of css and js files to load in browser
+			// appended to regularly updated css and js urls to force reload
+			, revision = Hash( Now() )
+			// list of unsecure actions
 			, securitysettings = {
 				whitelist = "^admin:security,^public:"
 			}
 		};
-		if( this.development || !config.caching.enabled )
-		{
-			config.caching.enabled = false;
-			config.caching.timespan = 0;
-		} 			
 		return config;
 	}	
 
