@@ -1,5 +1,5 @@
 /* 
-	Xindi - http://www.getxindi.com/ - Version 2012.5.29.21
+	Xindi - http://www.getxindi.com/ - Version 2012.5.30
 	
 	Copyright (c) 2012, Simon Bingham
 	
@@ -54,7 +54,7 @@ component extends="frameworks.org.corfield.framework"
 		, password = ""
 		, reloadApplicationOnEveryRequest = this.development
 		, usingSubsystems = true
-		, routes = [ { ""="", hint="" } ]
+		//, routes = [ { ""="", hint="" } ]
 	};
 	
 	/**
@@ -102,23 +102,23 @@ component extends="frameworks.org.corfield.framework"
 	}	
 	
 	/**
-     * called if view is missing
+     * called if view is missing - used for (almost) all Xindi page requests
 	 */	
 	any function onMissingView( required rc )
 	{
 		rc.Page = getBeanFactory().getBean( "ContentService" ).getPageBySlug( ListLast( CGI.PATH_INFO, "/" ) );
-		if ( rc.Page.isPersisted() )
-		{
-			rc.MetaData.setMetaTitle( rc.Page.getMetaTitle() ); 
-			rc.MetaData.setMetaDescription( rc.Page.getMetaDescription() );
-			rc.MetaData.setMetaKeywords( rc.Page.getMetaKeywords() );			
-			return view( "public:main/default" );
-		}
-		else
+		if( !rc.Page.isPersisted() || ( rc.Page.hasChild() && !rc.Page.isRoot() and getConfig().pagesettings.suppressancestorpages ) )
 		{
 			var pagecontext = getPageContext().getResponse();
 			pagecontext.getResponse().setStatus( 404 );
 			return view( "public:main/notfound" );
+		}
+		else
+		{
+			rc.MetaData.setMetaTitle( rc.Page.getMetaTitle() ); 
+			rc.MetaData.setMetaDescription( rc.Page.getMetaDescription() );
+			rc.MetaData.setMetaKeywords( rc.Page.getMetaKeywords() );
+			return view( "public:main/default" );
 		}
 	}
 	
@@ -128,37 +128,41 @@ component extends="frameworks.org.corfield.framework"
 	private struct function getConfig()
 	{
 		var config = {
+			// enquiry form settings
 			enquirysettings = {
 				subject = "Enquiry"
 				, emailto = ""
 			}
+			// error handler settings
 			, errorsettings = { 
 				enabled=true
 				, to=""
 				, from=""
 				, subject="Error Notification (#ListLast( this.applicationroot, '\/' )#)" 
 			}
+			// file manager settings
 			, filemanagersettings = {
 				allowedextensions = "txt,gif,jpg,png,wav,mpeg3,pdf,zip"
 			}
+			// news feature settings
 			, newssettings = {
 				enabled = true
 				, rsstitle = ""
 				, rssdescription = ""
 			}
+			// page manager settings
 			, pagesettings = { 
-				enableadddelete=true 
+				enableadddelete = true
+				, levellimit = 2 // number of page tiers that can be added - Bootstrap dropdown menu only supports 2
+				, suppressancestorpages = true // set to true to use ancestor pages a navigation links to access child pages (ancestor pages will not have content)
 			}
-			, revision = Hash( Now() ) // used to force latest versions of css and js files to load in browser
+			// appended to regularly updated css and js urls to force reload
+			, revision = Hash( Now() )
+			// list of unsecure actions
 			, securitysettings = {
 				whitelist = "^admin:security,^public:"
 			}
 		};
-		if( this.development || !config.caching.enabled )
-		{
-			config.caching.enabled = false;
-			config.caching.timespan = 0;
-		} 			
 		return config;
 	}	
 

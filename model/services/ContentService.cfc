@@ -66,9 +66,10 @@ component accessors="true"
 		return Page;
 	}
 
-	array function getPages( string searchterm="" )
+	array function getPages( string searchterm="", boolean suppressancestorpages=false )
 	{
-		if( Len( Trim( arguments.searchterm ) ) ) return ORMExecuteQuery( "from Page where lower( title ) like :searchterm or lower( content ) like :searchterm", { searchterm="%#Lcase( arguments.searchterm )#%" } );
+		if( Len( Trim( arguments.searchterm ) ) && !suppressancestorpages ) return ORMExecuteQuery( "from Page where lower( title ) like :searchterm or lower( content ) like :searchterm", { searchterm="%#Lcase( arguments.searchterm )#%" } );
+		else if( Len( Trim( arguments.searchterm ) ) && suppressancestorpages ) return ORMExecuteQuery( "from Page where ( rightvalue-leftvalue = 1 or pageid = 1 ) and ( lower( title ) like :searchterm or lower( content ) like :searchterm )", { searchterm="%#Lcase( arguments.searchterm )#%" } );
 		else return EntityLoad( "Page", {}, "leftvalue" );
 	}
 		

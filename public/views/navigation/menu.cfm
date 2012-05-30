@@ -16,25 +16,27 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 --->
 
-<!--- here's lots of code that renders an indented list of pages - could probably be improved! --->
-
 <cfoutput>
 	<cfset local.previouslevel = -1>
-
+	
 	<cfif ArrayLen( rc.navigation )>
 		<cfloop array="#rc.navigation#" index="local.Page">
 			<cfsavecontent variable="local.link">
-				<a href="#buildURL( local.Page.getSlug() )#">#local.Page.getTitle()#</a>
+				<cfif local.Page.hasChild() and rc.config.pagesettings.suppressancestorpages and !local.Page.isRoot()>
+					<a href="#buildURL( local.Page.getSlug() )#" class="dropdown-toggle" data-toggle="dropdown">#local.Page.getTitle()#</a>
+				<cfelse>
+					<a href="#buildURL( local.Page.getSlug() )#">#local.Page.getTitle()#</a>	
+				</cfif>
 			</cfsavecontent>		
 			
 			<cfif local.Page.getLevel() gt local.previouslevel>
 				<cfif local.Page.isRoot()>
-					<ul class="sf-menu sf-vertical">
+					<ul class="nav nav-pills">
 				<cfelseif local.Page.getLevel() gt 1>
-					<ul>
+					<ul class="dropdown-menu">
 				</cfif>
 				
-					<li>
+				<li <cfif IsDefined( "rc.Page" ) and rc.Page.getPageID() eq local.Page.getPageID()>class="active"</cfif>>
 					
 				#local.link#
 			<cfelseif local.Page.getLevel() lt local.previouslevel>
@@ -46,11 +48,11 @@
 					<cfset local.temporary = local.temporary - 1>
 				</cfloop>
 			
-				</li><li>
+				</li><li <cfif IsDefined( "rc.Page" ) and rc.Page.getPageID() eq local.Page.getPageID()>class="active"</cfif>>
 	
 				#local.link#
 			<cfelse>
-				</li><li>
+				</li><li <cfif IsDefined( "rc.Page" ) and rc.Page.getPageID() eq local.Page.getPageID()>class="active"</cfif>>
 					
 				#local.link#
 			</cfif>

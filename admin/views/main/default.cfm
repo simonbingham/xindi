@@ -21,5 +21,12 @@
 
 	#view( "helpers/messages" )#
 
-	<p>Please use the options above to manage your website.</p>
+	<p>Please use the options below to manage your website.</p>
+	
+	<ul>
+		<li><a href="#buildURL( 'pages' )#">Pages</a></li>
+		<cfif rc.config.newssettings.enabled><li><a href="#buildURL( 'news' )#">News</a></li></cfif>
+		<li><a href="#buildURL( 'users' )#">Users</a></li>
+		<li><a href="#buildURL( 'security/logout' )#">Logout</a></li>
+	</ul>	
 </cfoutput>

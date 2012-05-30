@@ -23,7 +23,7 @@ Open source, free and flexible, Xindi is a great choice for your next web projec
 ## Minimum Requirements
 
 * Adobe ColdFusion 9.0.1 or Railo 3.3
-* MySQL 5, MSSQL
+* MySQL 5 or MSSQL
 
 ## Quick Start
 
@@ -57,14 +57,18 @@ However, the frameworks listed above have their own licenses which you should re
 
 ## Contributors
 
-Xindi is authored by [Simon Bingham] (https://twitter.com/#!/simonbingham), [John Whish] (https://twitter.com/#!/aliaspooryorik) and [Andy Beer] (https://twitter.com/#!/squirrelfactory) but anyone and everyone is welcome to contribute. 
+Xindi is authored by [Simon Bingham] (https://twitter.com/#!/simonbingham) with support from [John Whish] (https://twitter.com/#!/aliaspooryorik) and [Andy Beer] (https://twitter.com/#!/squirrelfactory) but anyone and everyone is welcome to contribute. 
 
 ## Problems
 
-If you experience any problems with Xindi please either amend the source code yourself and submit a pull request or [report the issue] (https://github.com/simonbingham/xindi/issues).
+If you experience any problems with Xindi please:
+
+* [visit our Google Group for help and advice] (https://groups.google.com/forum/?hl=en&fromgroups#!forum/getxindi)
+* [submit a ticket to our issue tracker] (https://github.com/simonbingham/xindi/issues).
+* fix the error yourself and send us a pull request
 
 ## Contact
 
-If you would like to get in touch you can email us at [enquiries@getxindi.com] (mailto:enquiries@getxindi.com).
+To get in touch please email us at [enquiries@getxindi.com] (mailto:enquiries@getxindi.com).
 
 Alternatively, you can find us on [Twitter] (https://twitter.com/#!/getxindi), [Facebook] (http://www.facebook.com/getxindi) and [Google+] (https://plus.google.com/112798469896267857099).

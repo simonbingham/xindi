@@ -31,6 +31,8 @@
 			#rc.Article.getTitle()#
 			
 			<small>#DateFormat( rc.Article.getPublished(), "full" )#</small>
+			
+			<cfif rc.Article.isNew()><span class="label label-info">new</span></cfif>
 		</h1>
 	</div>
 	
