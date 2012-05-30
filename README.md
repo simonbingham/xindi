@@ -61,10 +61,14 @@ Xindi is authored by [Simon Bingham] (https://twitter.com/#!/simonbingham), [Joh
 
 ## Problems
 
-If you experience any problems with Xindi please either amend the source code yourself and submit a pull request or [report the issue] (https://github.com/simonbingham/xindi/issues).
+If you experience any problems with Xindi please:
+
+* [visit our Google Group for help and advice] (https://groups.google.com/forum/?hl=en&fromgroups#!forum/getxindi)
+* [submit a ticket to our issue tracker] (https://github.com/simonbingham/xindi/issues).
+* fix the error yourself and send us a pull request
 
 ## Contact
 
-If you would like to get in touch you can email us at [enquiries@getxindi.com] (mailto:enquiries@getxindi.com).
+To get in touch please email us at [enquiries@getxindi.com] (mailto:enquiries@getxindi.com).
 
 Alternatively, you can find us on [Twitter] (https://twitter.com/#!/getxindi), [Facebook] (http://www.facebook.com/getxindi) and [Google+] (https://plus.google.com/112798469896267857099).
