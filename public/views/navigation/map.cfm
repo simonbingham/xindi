@@ -24,7 +24,11 @@
 	<cfif ArrayLen( rc.navigation )>
 		<cfloop array="#rc.navigation#" index="local.Page">
 			<cfsavecontent variable="local.link">
-				<a href="#buildURL( local.Page.getSlug() )#">#local.Page.getTitle()#</a>
+				<cfif local.Page.hasChild() and rc.config.pagesettings.suppressancestorpages and !local.Page.isRoot()>
+					#local.Page.getTitle()#
+				<cfelse>
+					<a href="#buildURL( local.Page.getSlug() )#">#local.Page.getTitle()#</a>
+				</cfif>
 			</cfsavecontent>		
 			
 			<cfif local.Page.getLevel() gt local.previouslevel>

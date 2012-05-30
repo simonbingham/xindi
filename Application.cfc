@@ -54,7 +54,7 @@ component extends="frameworks.org.corfield.framework"
 		, password = ""
 		, reloadApplicationOnEveryRequest = this.development
 		, usingSubsystems = true
-		, routes = [ { ""="", hint="" } ]
+		//, routes = [ { ""="", hint="" } ]
 	};
 	
 	/**
@@ -107,18 +107,18 @@ component extends="frameworks.org.corfield.framework"
 	any function onMissingView( required rc )
 	{
 		rc.Page = getBeanFactory().getBean( "ContentService" ).getPageBySlug( ListLast( CGI.PATH_INFO, "/" ) );
-		if ( rc.Page.isPersisted() )
-		{
-			rc.MetaData.setMetaTitle( rc.Page.getMetaTitle() ); 
-			rc.MetaData.setMetaDescription( rc.Page.getMetaDescription() );
-			rc.MetaData.setMetaKeywords( rc.Page.getMetaKeywords() );			
-			return view( "public:main/default" );
-		}
-		else
+		if( !rc.Page.isPersisted() || ( rc.Page.hasChild() && !rc.Page.isRoot() and getConfig().pagesettings.suppressancestorpages ) )
 		{
 			var pagecontext = getPageContext().getResponse();
 			pagecontext.getResponse().setStatus( 404 );
 			return view( "public:main/notfound" );
+		}
+		else
+		{
+			rc.MetaData.setMetaTitle( rc.Page.getMetaTitle() ); 
+			rc.MetaData.setMetaDescription( rc.Page.getMetaDescription() );
+			rc.MetaData.setMetaKeywords( rc.Page.getMetaKeywords() );
+			return view( "public:main/default" );
 		}
 	}
 	
@@ -152,7 +152,9 @@ component extends="frameworks.org.corfield.framework"
 			}
 			// page manager settings
 			, pagesettings = { 
-				enableadddelete=true 
+				enableadddelete = true
+				, levellimit = 2 // number of page tiers that can be added - Bootstrap dropdown menu only supports 2
+				, suppressancestorpages = true // set to true to use ancestor pages a navigation links to access child pages (ancestor pages will not have content)
 			}
 			// appended to regularly updated css and js urls to force reload
 			, revision = Hash( Now() )

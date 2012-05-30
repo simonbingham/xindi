@@ -2,6 +2,6 @@
 
 $(function(){
 	
-	$( "ul.sf-menu" ).superfish();
+	$( ".dropdown-toggle" ).dropdown();
 	
 });

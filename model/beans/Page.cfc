@@ -93,6 +93,11 @@ component extends="Base" persistent="true" table="pages" cacheuse="transactional
 		return Left( REReplaceNoCase( Trim( getContent() ), "<[^>]{1,}>", " ", "all" ), 500 ) & "...";
 	}
 	
+	boolean function hasChild()
+	{
+		return ArrayLen( getFirstChild() );
+	}	
+	
 	boolean function hasNextSibling()
 	{
 		return !IsNull( getNextSibling() );
@@ -174,11 +179,6 @@ component extends="Base" persistent="true" table="pages" cacheuse="transactional
 		return ORMExecuteQuery( "from Page where rightvalue = :rightvalue", { rightvalue=variables.rightvalue - 1 } );
 	}		
 	
-	private boolean function hasChild()
-	{
-		return ArrayLen( getFirstChild() );
-	}
-
 	private boolean function hasContent()
 	{
 		return Len( Trim( getContent() ) );

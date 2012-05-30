@@ -21,7 +21,11 @@
 	    <ul class="breadcrumb">
 	    	<li>
 	    		<cfloop array="#rc.Page.getPath()#" index="local.Page">
-	    			<a href="#buildURL( local.Page.getSlug() )#">#local.Page.getTitle()#</a> <span class="divider">/</span>
+	    			<cfif local.Page.hasChild() and rc.config.pagesettings.suppressancestorpages and !local.Page.isRoot()>
+						#local.Page.getTitle()# <span class="divider">/</span>
+					<cfelse>
+	    				<a href="#buildURL( local.Page.getSlug() )#">#local.Page.getTitle()#</a> <span class="divider">/</span>
+					</cfif>
 				</cfloop>
 	    	</li>
 		    <li class="active">#rc.Page.getTitle()#</li>

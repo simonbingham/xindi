@@ -26,6 +26,8 @@
 					<a href="#buildURL( action='news.article', querystring='uuid=#local.Article.getUUID()#' )#">#local.Article.getTitle()#</a>
 					
 					<small>#DateFormat( local.Article.getPublished(), "full" )#</small>
+					
+					<cfif local.Article.isNew()><span class="label label-info">new</span></cfif>
 				</h2>
 				
 				#local.Article.getSummary()#

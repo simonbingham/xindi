@@ -32,14 +32,11 @@
 
 			<title>#rc.MetaData.getMetaTitle()#</title>
 
-			<link href="assets/css/superfish.css" rel="stylesheet">
-			<link href="assets/css/superfish-vertical.css" rel="stylesheet">
 			<link href="assets/css/core.css?r=#rc.config.revision#" rel="stylesheet">
 
 			<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 			<script src="assets/bootstrap/js/bootstrap.min.js"></script>
-			<script src="assets/js/jquery.hoverIntent.js"></script>
-			<script src="assets/js/jquery.superfish.js"></script>			
+			<script src="assets/js/bootstrap-dropdown.js"></script>
 			<script src="assets/js/core.js?r=#rc.config.revision#"></script>
 			
 			<link rel="shortcut icon" href="favicon.ico">
@@ -64,22 +61,12 @@
 			</div>			
 			
 			<div id="container" class="container">
-				<div class="row">
-					<div class="span3">#view( "navigation/menu" )#</div> 
+				#view( "navigation/menu" )#
 				
-					<div class="span9">#body#</div>
-				</div>
+				<div id="content" class="row">#body#</div>
+
+				<div id="footer" class="row"><a href="#buildURL( 'navigation/map' )#">Site Map</a></div>
 			</div>
-			
-			<div id="footer">
-				<div class="container">			
-					<div class="row">
-						<div class="span12">
-							<a href="#buildURL( 'navigation/map' )#">Site Map</a>
-						</div>
-					</div>
-				</div>
-			</div>	
 		</body>
 	</html>
 </cfoutput>

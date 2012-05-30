@@ -72,6 +72,11 @@ component extends="Base" persistent="true" table="articles" cacheuse="transactio
 	{
 		return Len( Trim( getMetaTitle() ) );		
 	}
+
+	boolean function isNew()
+	{
+		return DateDiff( "ww", getPublished(), Now() ) < 1;
+	}
 	
 	boolean function isPersisted()
 	{
