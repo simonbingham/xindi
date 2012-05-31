@@ -46,7 +46,8 @@
 			<link href="assets/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
 			<link href="assets/css/core.css?r=#rc.config.revision#" rel="stylesheet">
 
-			<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+			<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js" type="text/javascript"></script>
 			<script src="assets/bootstrap/js/bootstrap.min.js"></script>
 			<script src="assets/ckeditor/ckeditor.js"></script>
 			<script src="assets/js/core.js?r=#rc.config.revision#"></script>
@@ -144,36 +145,24 @@
 							window.location.href = url + "/newdirectory/" + newdirectory;
 							return false;
 						}
-
-						// method to display image preview on mouse over in file manager
-						this.imagePreview = function(){	
-							xOffset = 10;
-							yOffset = 30;
-							$( "a.image-preview" ).hover( function( e ){
-								this.t = this.title;
-								this.title = "";	
-								var c = ( this.t != "" ) ? "<br/>" + this.t : "";
-								$( "body" ).append( "<p id='image-preview'><img src='"+ this.rel +"' alt='url preview' />"+ c +"</p>" );								 
-								$( "##image-preview" )
-									.css( "top",( e.pageY - xOffset ) + "px" )
-									.css( "left", (e.pageX + yOffset) + "px" )
-									.css( "width", "300px" )
-									.fadeIn( "fast" );
-							},
-							function(){
-								this.title = this.t;	
-								$( "##image-preview" ).remove();
-							});	
-							$( "a.image-preview" ).mousemove( function( e ){
-								$( "##image-preview" )
-									.css( "top", ( e.pageY - xOffset ) + "px" )
-									.css( "left", ( e.pageX + yOffset ) + "px" )
-									.css( "width", "300px" );
-							});
-						};
 						
-						$( function() {
-							imagePreview();
+						jQuery( function($) {
+							$imagePreview = $('<img id="preview-image" style="position:absolute;top:10px;right:10px;" alt="image preview" />').hide().appendTo('body');
+							
+							$('a.image-preview').hover(
+								function(){
+									var $this = $(this);
+									var offset = $this.offset();
+									$imagePreview
+										.attr('src', $this.attr('rel'))
+										.css({'top':offset.top+20+'px'})
+										.show();
+								},
+								function(){
+									$imagePreview.attr('src','assets/images/icons/ajax-loader.gif').hide();
+								}
+							);
+							
 						});
 						</script>
 					</div>

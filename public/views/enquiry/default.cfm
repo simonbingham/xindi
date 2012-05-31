@@ -51,20 +51,13 @@
 		</div>
 	</form>
 	
+	<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js" type="text/javascript"></script>
 	<script>
-	$(document).ready(function(){
+	jQuery(function($){
 		$.validator.setDefaults({
 			errorClass: 'error', 
 			errorElement: 'span'
 		});
-		
-		$( "form" ).bind( "submit", function(){
-			if( typeof CKEDITOR != "undefined" ){
-				for( instance in CKEDITOR.instances ){
-					CKEDITOR.instances[ instance ].updateElement();
-				}
-			}
-		});		
 	});
 	</script>		
 	

@@ -55,11 +55,19 @@ component accessors="true"
 	
 	query function getDirectoryList( required string directory, required string allowedextensions )
 	{
-		var listing = DirectoryList( arguments.directory, false, "query", "*." & Replace( arguments.allowedextensions, ",", "|*.", "all" ) );
+		var fileListing = DirectoryList( arguments.directory, false, "query", "*." & Replace( arguments.allowedextensions, ",", "|*.", "all" ) );
+		var fullListing = DirectoryList( arguments.directory, false, "query" );
+		
 		var queryobject = new query();
 		queryobject.setDBType( "query" );
-		queryobject.setAttributes( sourceQuery=listing );
-		queryobject.setSQL( "select * from sourceQuery where name not like '.%' order by type" );
+		queryobject.setAttributes( fileListing=fileListing );
+		queryobject.setAttributes( fullListing=fullListing );
+		queryobject.setSQL( "
+			select * from fileListing where name not like '.%'
+			union
+			select * from fullListing where type = 'Dir' 
+			order by type, name " 
+		);
 		return queryobject.execute().getResult();
 	}	
 	
