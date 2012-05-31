@@ -28,7 +28,7 @@
 				<cfsavecontent variable="local.link">
 					<!--- if the current page is not the root, has a child and ancestor pages are suppressed we need to make it into a Twitter Bootstrap dropdown --->
 					<cfif local.Page.hasChild() and rc.config.pagesettings.suppressancestorpages and !local.Page.isRoot()>
-						<a href="#buildURL( local.Page.getSlug() )#" class="dropdown-toggle" data-toggle="dropdown">#local.Page.getTitle()#</a>
+						<a href="#buildURL( local.Page.getSlug() )#" class="dropdown-toggle" data-toggle="dropdown">#local.Page.getTitle()# <b class="caret"></b></a>
 					<cfelse>
 						<a href="#buildURL( local.Page.getSlug() )#">#local.Page.getTitle()#</a>	
 					</cfif>
