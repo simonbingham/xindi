@@ -68,23 +68,6 @@
 	
 	<p>* this field is required</p>
 	
-	<script>
-	$(document).ready(function(){
-		$.validator.setDefaults({
-			errorClass: 'error', 
-			errorElement: 'span'
-		});
-		
-		$( "form" ).bind( "submit", function(){
-			if( typeof CKEDITOR != "undefined" ){
-				for( instance in CKEDITOR.instances ){
-					CKEDITOR.instances[ instance ].updateElement();
-				}
-			}
-		});		
-	});
-	</script>		
-	
 	#rc.Validator.getInitializationScript()#
 
 	#rc.Validator.getValidationScript( formName="page-form", context=rc.context )#	

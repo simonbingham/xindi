@@ -34,8 +34,12 @@ component accessors="true" extends="abstract"
 	{
 		rc.webrootdirectory = GetDirectoryFromPath( CGI.CF_TEMPLATE_PATH );
 		rc.clientfilesdirectory = "_clientfiles";
-		rc.subdirectory = "";
-		if ( !IsNull( rc.subdirectory ) ) rc.subdirectory = Replace( ReReplace( Replace( rc.subdirectory, "*", "", "all" ), "(\.){2,}", "", "all" ), ":", "/", "all" );
+		if ( !IsNull( rc.subdirectory ) ) {
+			rc.subdirectory = Replace( ReReplace( Replace( rc.subdirectory, "*", "", "all" ), "(\.){2,}", "", "all" ), ":", "/", "all" );
+		}
+		else {
+			rc.subdirectory = "";
+		}
 		rc.currentdirectory = rc.webrootdirectory & rc.clientfilesdirectory & rc.subdirectory;
 		if ( !variables.FileManagerService.isDirectory( rc.currentdirectory ) ) rc.message.error = "Sorry, the requested " & rc.subdirectory & " is not valid.";
 	}
