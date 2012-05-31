@@ -41,15 +41,6 @@
 		</fieldset>
 	</form>
 	
-	<script>
-	$(document).ready(function(){
-		$.validator.setDefaults({
-			errorClass: 'help-inline error', 
-			errorElement: 'span'
-		});
-	});
-	</script>		
-	
 	#rc.Validator.getInitializationScript()#
 
 	#rc.Validator.getValidationScript( formName="login-form", context="login" )#

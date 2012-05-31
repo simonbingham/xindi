@@ -57,16 +57,7 @@
 		
 		<input type="hidden" name="userid" id="userid" value="#HtmlEditFormat( rc.User.getUserID() )#">
 		<input type="hidden" name="context" id="context" value="#rc.context#">
-	</form>
-	
-	<script>
-	$(document).ready(function(){
-		$.validator.setDefaults({
-			errorClass: 'error', 
-			errorElement: 'span'
-		});
-	});
-	</script>		
+	</form>	
 	
 	#rc.Validator.getInitializationScript()#
 
