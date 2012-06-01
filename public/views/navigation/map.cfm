@@ -39,6 +39,7 @@
 				<!--- if the current page level is greater than the previous page level initiate a new tier in the menu --->
 				<cfif local.Page.getLevel() gt local.previouslevel>
 					<ul><li>#local.link#
+					<cfif local.Page.isRoot()></li></cfif>
 				<!--- if the current page level is less than the previous page level we need to go up a tier in the menu --->
 				<cfelseif local.Page.getLevel() lt local.previouslevel>
 					<cfset local.temporary = local.previouslevel>

@@ -43,6 +43,7 @@
 					</cfif>
 					<!--- if the current page is the page being viewed apply 'active' class --->
 					<li <cfif IsDefined( "rc.Page" ) and rc.Page.getPageID() eq local.Page.getPageID()>class="active"</cfif>>#local.link#
+					<cfif local.Page.isRoot()></li></cfif>
 				<!--- if the current page level is less than the previous page level we need to go up a tier in the menu --->
 				<cfelseif local.Page.getLevel() lt local.previouslevel>
 					<cfset local.temporary = local.previouslevel>
