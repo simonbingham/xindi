@@ -23,7 +23,7 @@
 
 	<h2>Recent Activity</h2>
 	
-	<cfif ArrayLen( rc.pages )>
+	<cfif ArrayLen( rc.updatedpages )>
 		<hr />
 		
 		<p class="pull-right"><a href="#buildURL( 'pages' )#" class="btn btn-primary">Manage Pages <i class="icon-chevron-right icon-white"></i></a></p>
@@ -40,7 +40,7 @@
 			</thead>
 			
 			<tbody>
-				<cfloop array="#rc.pages#" index="local.Page">
+				<cfloop array="#rc.updatedpages#" index="local.Page">
 					<tr>
 						<th>#local.Page.getTitle()#</th>
 						<td>#DateFormat( local.Page.getUpdated(), "full" )#</td>
@@ -51,7 +51,7 @@
 		</table>
 	</cfif>	
 
-	<cfif rc.config.newssettings.enabled and ArrayLen( rc.articles )>
+	<cfif rc.config.newssettings.enabled and ArrayLen( rc.updatedarticles )>
 		<hr />
 		
 		<p class="pull-right"><a href="#buildURL( 'news' )#" class="btn btn-primary">Manage News <i class="icon-chevron-right icon-white"></i></a></p>
@@ -68,7 +68,7 @@
 			</thead>
 			
 			<tbody>
-				<cfloop array="#rc.articles#" index="local.Article">
+				<cfloop array="#rc.updatedarticles#" index="local.Article">
 					<tr>
 						<th>#local.Article.getTitle()#</th>
 						<td>#DateFormat( local.Article.getUpdated(), "full" )#</td>

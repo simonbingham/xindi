@@ -17,13 +17,13 @@
 --->
 
 <cfcomponent output="false">
-	<cffunction name="getPages" output="false" returntype="Array">
+	<cffunction name="getArticles" output="false" returntype="Array">
 		<cfargument name="searchterm" type="string" required="false" default="">
-		<cfargument name="suppressancestorpages" type="boolean" required="false" default="false">
-		<cfargument name="sortorder" type="string" required="false" default="leftvalue">
+		<cfargument name="sortorder" type="string" required="false" default="published desc">
+		<cfargument name="published" type="boolean" required="false" default="false">
 		<cfargument name="maxresults" type="numeric" required="false" default="0">
 		
-		<cfset var qPages = "">
+		<cfset var qArticles = "">
 		<cfset var thesearchterm = Trim( arguments.searchterm )>
 		<cfset var ormoptions = {}>
 		
@@ -31,9 +31,12 @@
 			<cfset ormoptions.maxresults = arguments.maxresults>
 		</cfif>
 		
-		<cfquery name="qPages" dbtype="hql" ormoptions="#ormoptions#">
-			from Page
+		<cfquery name="qArticles" dbtype="hql" ormoptions="#ormoptions#">
+			from Article
 			where 1=1
+			<cfif arguments.published>
+				and published < <cfqueryparam cfsqltype="cf_sql_date" value="#Now()#">
+			</cfif>
 			<cfif Len( thesearchterm )>
 				and 
 				(	
@@ -41,12 +44,9 @@
 				 	or lower( content ) like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#thesearchterm#%">
 				) 
 			</cfif>
-			<cfif arguments.suppressancestorpages>
-				 and ( rightvalue-leftvalue = 1 or pageid = 1 )
-			</cfif>
 			order by #arguments.sortorder#
 		</cfquery>
 		
-		<cfreturn qPages>
+		<cfreturn qArticles>
 	</cffunction> 
 </cfcomponent>

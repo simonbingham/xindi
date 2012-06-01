@@ -56,8 +56,8 @@ component accessors="true"
 		}
 		else
 		{
-			rc.pages = variables.ContentService.getPages( suppressancestorpages=rc.config.pagesettings.suppressancestorpages, sortorder="updated desc", maxresults=10 );
-			rc.articles = variables.NewsService.getArticles( sortorder="updated desc", maxresults=10 );
+			rc.updatedpages = variables.ContentService.getPages( suppressancestorpages=rc.config.pagesettings.suppressancestorpages, sortorder="updated desc", maxresults=10 );
+			rc.updatedarticles = variables.NewsService.getArticles( sortorder="updated desc", maxresults=10 );
 		}
 	}
   

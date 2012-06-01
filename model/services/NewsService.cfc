@@ -24,6 +24,7 @@ component accessors="true"
 	 */	
 	
 	property name="MetaData" getter="false";
+	property name="NewsGateway" getter="false";
 	property name="Validator" getter="false";
 
 	/*
@@ -63,12 +64,9 @@ component accessors="true"
 		return Article;
 	}
 
-	array function getArticles( boolean published=false, numeric maxresults="0" )
+	array function getArticles( string searchterm="", string sortorder="published desc", boolean published=false, numeric maxresults="0" )
 	{
-		var queryoptions = {};
-		if( arguments.maxresults ) queryoptions = { maxresults=arguments.maxresults };		
-		if( arguments.published ) return ORMExecuteQuery( "from Article where published <= :published order by published desc", { published=Now() }, false, queryoptions );
-		return EntityLoad( "Article", {}, "published desc", queryoptions );
+		return variables.NewsGateway.getArticles( argumentCollection=arguments );
 	}
 		
 	function getValidator( required any Article )
