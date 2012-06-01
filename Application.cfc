@@ -1,5 +1,5 @@
 /* 
-	Xindi - http://www.getxindi.com/ - Version 2012.5.30
+	Xindi - http://www.getxindi.com/ - Version 2012.6.1
 	
 	Copyright (c) 2012, Simon Bingham
 	
@@ -67,7 +67,7 @@ component extends="frameworks.org.corfield.framework"
 		// setup bean factory
 		var beanfactory = new frameworks.org.corfield.ioc( "/model" );
 		setBeanFactory( beanfactory );
-		var ValidateThisConfig = { definitionPath="/model/" };
+		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
 		beanFactory.addBean( "Validator", new ValidateThis.ValidateThis( ValidateThisConfig ) );
 		beanFactory.addBean( "MetaData", new model.beans.MetaData() );
 		beanFactory.addBean( "config", getConfig() );

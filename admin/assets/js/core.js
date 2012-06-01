@@ -1,4 +1,9 @@
-$( function() {
+jQuery( function($) {
+
+	$.validator.setDefaults({
+		errorClass: 'error', 
+		errorElement: 'span'
+	});
 
 	// return to top of page
 	$( "#top-of-page" ).click(function(e){
@@ -16,6 +21,15 @@ $( function() {
 		var title = $( "input#title" )
 		if( title.val().length==0 ) title.val( $( this ).val() );
 	});
+	
+	$( "form" ).bind( "submit", function(){
+		if( typeof CKEDITOR != "undefined" ){
+			for( instance in CKEDITOR.instances ){
+				CKEDITOR.instances[ instance ].updateElement();
+			}
+		}
+	});
+	
 	
 	// text editor configuration
 	var currentURI = document.location.href;
