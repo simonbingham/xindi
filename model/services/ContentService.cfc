@@ -23,6 +23,7 @@ component accessors="true"
 	 * Dependency injection
 	 */	
 	
+	property name="ContentGateway" getter="false";
 	property name="MetaData" getter="false";
 	property name="Validator" getter="false";
 
@@ -66,11 +67,9 @@ component accessors="true"
 		return Page;
 	}
 
-	array function getPages( string searchterm="", boolean suppressancestorpages=false )
+	array function getPages( string searchterm="", boolean suppressancestorpages=false, sortorder="leftvalue", numeric maxresults="0" )
 	{
-		if( Len( Trim( arguments.searchterm ) ) && !suppressancestorpages ) return ORMExecuteQuery( "from Page where lower( title ) like :searchterm or lower( content ) like :searchterm", { searchterm="%#Lcase( arguments.searchterm )#%" } );
-		else if( Len( Trim( arguments.searchterm ) ) && suppressancestorpages ) return ORMExecuteQuery( "from Page where ( rightvalue-leftvalue = 1 or pageid = 1 ) and ( lower( title ) like :searchterm or lower( content ) like :searchterm )", { searchterm="%#Lcase( arguments.searchterm )#%" } );
-		else return EntityLoad( "Page", {}, "leftvalue" );
+		return variables.ContentGateway.getPages( argumentCollection=arguments );
 	}
 		
 	function getRoot()

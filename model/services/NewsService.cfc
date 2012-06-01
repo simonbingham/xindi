@@ -63,10 +63,12 @@ component accessors="true"
 		return Article;
 	}
 
-	array function getArticles( boolean published=false )
+	array function getArticles( boolean published=false, numeric maxresults="0" )
 	{
-		if( arguments.published ) return ORMExecuteQuery( "from Article where published <= :published order by published desc", { published=Now() } );
-		return EntityLoad( "Article", {}, "published desc" );
+		var queryoptions = {};
+		if( arguments.maxresults ) queryoptions = { maxresults=arguments.maxresults };		
+		if( arguments.published ) return ORMExecuteQuery( "from Article where published <= :published order by published desc", { published=Now() }, false, queryoptions );
+		return EntityLoad( "Article", {}, "published desc", queryoptions );
 	}
 		
 	function getValidator( required any Article )

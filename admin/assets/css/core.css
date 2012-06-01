@@ -12,6 +12,7 @@ td.chevron-right{ background:url("../img/ico-chevron-right.gif") no-repeat; }
 .center{ text-align:center !important; }
 .navbar-inner{ background-color: #01324A; background-image: -moz-linear-gradient(center top , #01324a, #012638); }
 .navbar .nav > li > a { color:#fff; }
+.faded{ color:#888; font-style:italic; }
 
 @media ( max-width:979px ) {
 	#container{ padding-top:0; }

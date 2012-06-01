@@ -79,6 +79,8 @@
 			<div id="container" class="container">
 				<div class="row">
 					<div id="content" class="span12">
+						<cfif StructKeyExists( rc, "CurrentUser" )><p class="pull-right">Logged in: <a href="mailto:#rc.CurrentUser.getEmail()#">#rc.CurrentUser.getFullName()#</a></p></cfif>
+						
 						#body#
 						
 						<div class="clearfix append-bottom"></div>
