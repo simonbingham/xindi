@@ -17,16 +17,65 @@
 --->
 
 <cfoutput>
-	<div class="page-header"><h1>Welcome</h1></div>
+	<div class="page-header"><h1>Dashboard</h1></div>
 
 	#view( "helpers/messages" )#
 
-	<p>Please use the options below to manage your website.</p>
+	<h2>Recent Activity</h2>
 	
-	<ul>
-		<li><a href="#buildURL( 'pages' )#">Pages</a></li>
-		<cfif rc.config.newssettings.enabled><li><a href="#buildURL( 'news' )#">News</a></li></cfif>
-		<li><a href="#buildURL( 'users' )#">Users</a></li>
-		<li><a href="#buildURL( 'security/logout' )#">Logout</a></li>
-	</ul>	
+	<cfif ArrayLen( rc.pages )>
+		<hr />
+		
+		<p class="pull-right"><a href="#buildURL( 'pages' )#" class="btn btn-primary">Manage Pages <i class="icon-chevron-right icon-white"></i></a></p>
+		
+		<h3>Pages</h3>
+		
+		<table class="table table-striped table-bordered table-condensed">
+			<thead>
+				<tr>
+					<th>Title</th>
+					<th style="width:25%;">Last Updated</th>
+					<th style="width:25%;" class="center">View</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<cfloop array="#rc.pages#" index="local.Page">
+					<tr>
+						<th>#local.Page.getTitle()#</th>
+						<td>#DateFormat( local.Page.getUpdated(), "full" )#</td>
+						<td class="center"><a href="#buildURL( action="public:" & local.Page.getSlug() )#" title="View" target="_blank"><i class="icon-eye-open"></i></a></td>
+					</tr>
+				</cfloop>
+			</tbody>
+		</table>
+	</cfif>	
+
+	<cfif rc.config.newssettings.enabled and ArrayLen( rc.articles )>
+		<hr />
+		
+		<p class="pull-right"><a href="#buildURL( 'news' )#" class="btn btn-primary">Manage News <i class="icon-chevron-right icon-white"></i></a></p>
+		
+		<h3>News</h3>
+		
+		<table class="table table-striped table-bordered table-condensed">
+			<thead>
+				<tr>
+					<th>Title</th>
+					<th style="width:25%;">Last Updated</th>
+					<th style="width:25%;" class="center">View</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<cfloop array="#rc.articles#" index="local.Article">
+					<tr>
+						<th>#local.Article.getTitle()#</th>
+						<td>#DateFormat( local.Article.getUpdated(), "full" )#</td>
+						<td class="center"><a href="#buildURL( action='public:news.article', querystring='uuid=#local.Article.getUUID()#' )#" title="View" target="_blank"><i class="icon-eye-open"></i></a></td>
+					</tr>
+				</cfloop>
+			</tbody>
+		</table>
+	</cfif>	
 </cfoutput>

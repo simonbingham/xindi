@@ -66,7 +66,7 @@ component accessors="true"
 		if( !IsNull( User ) )
 		{
 			setCurrentUser( User );
-			result.messages.success = "You have been logged in.";
+			result.messages.success = "Welcome #User.getFirstName()#. You have been logged in.";
 		}
 		else
 		{

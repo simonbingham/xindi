@@ -99,6 +99,8 @@ component extends="frameworks.org.corfield.framework"
 	void function setupView()
 	{
 		rc.navigation = getBeanFactory().getBean( "ContentService" ).getPages();
+		
+		if( StructKeyExists( session, "userid" ) ) rc.CurrentUser = getBeanFactory().getBean( "UserService" ).getUserByID( session.userid );
 	}	
 	
 	/**
@@ -142,7 +144,7 @@ component extends="frameworks.org.corfield.framework"
 			}
 			// file manager settings
 			, filemanagersettings = {
-				allowedextensions = "txt,gif,jpg,png,wav,mpeg3,pdf,zip"
+				allowedextensions = "txt,gif,jpg,png,wav,mpeg3,pdf,zip,mp3,jpeg"
 			}
 			// news feature settings
 			, newssettings = {

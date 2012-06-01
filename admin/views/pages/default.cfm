@@ -65,9 +65,9 @@
 		</tbody>
 	</table>
 	
-	<p>You can add up to #NumberFormat( rc.config.pagesettings.levellimit )# tiers of pages.</p>
+	<p class="faded">You can add up to #NumberFormat( rc.config.pagesettings.levellimit )# tiers of pages.</p>
 	
-	<cfif ArrayLen( local.routes )><p>* You cannot edit or delete this page because it redirects to another website feature.</p></cfif>
+	<cfif ArrayLen( local.routes )><p class="faded">* You cannot edit or delete this page because it redirects to another website feature.</p></cfif>
 	
-	<cfif rc.config.pagesettings.suppressancestorpages><p>** You cannot add content to this page because it has associated child pages.</p></cfif>
+	<cfif rc.config.pagesettings.suppressancestorpages><p class="faded">** You cannot add content to this page because it has associated child pages.</p></cfif>
 </cfoutput>
