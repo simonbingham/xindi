@@ -40,7 +40,7 @@ component accessors="true"
 			transaction
 			{
 				EntityDelete( Article );
-				result.messages.success = "The article has been deleted.";
+				result.messages.success = "The article &quot;#Article.getTitle()#&quot; has been deleted.";
 			}
 		}
 		else
@@ -96,7 +96,7 @@ component accessors="true"
 			{
 				EntitySave( Article );
 				transaction action="commit";
-				result.messages.success = "The article has been saved.";
+				result.messages.success = "The article &quot;#Article.getTitle()#&quot; has been saved.";
 			}
 			else
 			{

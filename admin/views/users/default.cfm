@@ -19,7 +19,7 @@
 <cfoutput>
 	<div class="page-header"><h1>Users</h1></div>
 	
-	<p class="pull-right"><a href="#buildURL( 'users.maintain' )#" class="btn btn-primary">Add User <i class="icon-chevron-right icon-white"></i></a></p>
+	<p><a href="#buildURL( 'users.maintain' )#" class="btn btn-primary">Add User <i class="icon-chevron-right icon-white"></i></a></p>
 	
 	#view( "helpers/messages" )#
 	

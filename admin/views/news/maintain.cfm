@@ -66,7 +66,8 @@
 		</fieldset>
 		
 		<div class="form-actions">
-			<input type="submit" name="submit" id="submit" value="Save Article" class="btn btn-primary">
+			<input type="submit" name="submit" value="Save &amp; Continue" class="btn">
+			<input type="submit" name="submit" value="Save &amp; Exit" class="btn btn-primary">
 		</div>
 		
 		<input type="hidden" name="articleid" id="articleid" value="#HtmlEditFormat( rc.Article.getArticleID() )#">

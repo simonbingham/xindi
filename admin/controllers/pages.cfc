@@ -70,18 +70,20 @@ component accessors="true" extends="abstract"
 		param name="rc.metadescription" default="";
 		param name="rc.metakeywords" default="";
 		param name="rc.context" default="create";
+		param name="rc.submit" default="Save & Exit";
 		var properties = { pageid=rc.pageid, title=rc.title, content=rc.content, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
 		rc.result = variables.ContentService.savePage( properties, rc.ancestorid, rc.context );
 		rc.messages = rc.result.messages;
+		rc.Page = rc.result.getTheObject();
 		if( StructKeyExists( rc.messages, "success" ) )
 		{
 			var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:navigation/xml", method="get" );
 			refreshsitemap.send();
-			variables.fw.redirect( "pages", "messages" );	
+			if( rc.submit == "Save & Continue" )  variables.fw.redirect( "pages/maintain", "messages,Page,pageid,ancestorid" );
+			else variables.fw.redirect( "pages", "messages" );
 		}
 		else
 		{
-			rc.Page = rc.result.getTheObject();
 			variables.fw.redirect( "pages/maintain", "messages,Page,pageid,ancestorid,result" );
 		}
 	}

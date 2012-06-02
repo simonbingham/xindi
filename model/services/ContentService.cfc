@@ -43,7 +43,7 @@ component accessors="true"
 				ORMExecuteQuery( "update Page set leftvalue = leftvalue - 2 where leftvalue > :startvalue", { startvalue=startvalue } );
 				ORMExecuteQuery( "update Page set rightvalue = rightvalue - 2 where rightvalue > :startvalue", { startvalue=startvalue } );
 				EntityDelete( Page );
-				result.messages.success = "The page has been deleted.";
+				result.messages.success = "The page &quot;#Page.getTitle()#&quot; has been deleted.";
 			}
 		}
 		else
@@ -112,7 +112,7 @@ component accessors="true"
 						EntitySave( Page );
 						EntitySave( previoussibling );
 					}
-					result.messages.success = "The page has been moved.";
+					result.messages.success = "The page &quot;#Page.getTitle()#&quot; has been moved.";
 				}
 			}
 			else
@@ -134,7 +134,7 @@ component accessors="true"
 						EntitySave( Page );
 						EntitySave( nextsibling );
 					}
-					result.messages.success = "The page has been moved.";
+					result.messages.success = "The page &quot;#Page.getTitle()#&quot; has been moved.";
 				}
 			}
 		}
@@ -174,7 +174,7 @@ component accessors="true"
 					EntitySave( Page );
 					transaction action="commit";
 				}
-				result.messages.success = "The page has been saved.";
+				result.messages.success = "The page &quot;#Page.getTitle()#&quot; has been saved.";
 			}
 			else
 			{

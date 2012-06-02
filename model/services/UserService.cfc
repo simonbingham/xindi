@@ -38,7 +38,7 @@ component accessors="true"
 			transaction
 			{
 				EntityDelete( User );
-				result.messages.success = "The user has been deleted.";
+				result.messages.success = "The user &quot;#User.getFullName()#&quot; has been deleted.";
 			}
 		}
 		else
@@ -86,7 +86,7 @@ component accessors="true"
 			var result = variables.Validator.validate( theObject=User, Context=arguments.context );
 			if( !result.hasErrors() )
 			{
-				result.messages.success = "The user has been saved";
+				result.messages.success = "The user &quot;#User.getFullName()#&quot; has been saved";
 				EntitySave( User );
 				transaction action="commit";
 			}

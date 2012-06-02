@@ -58,7 +58,8 @@
 		</fieldset>
 		
 		<div class="form-actions">
-			<input type="submit" name="submit" id="submit" value="Save Page" class="btn btn-primary">
+			<input type="submit" name="submit" value="Save &amp; Continue" class="btn">
+			<input type="submit" name="submit" value="Save &amp; Exit" class="btn btn-primary">
 		</div>
 		
 		<input type="hidden" name="pageid" id="pageid" value="#HtmlEditFormat( rc.Page.getPageID() )#">
