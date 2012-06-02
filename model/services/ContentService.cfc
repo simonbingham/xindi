@@ -67,7 +67,7 @@ component accessors="true"
 		return Page;
 	}
 
-	array function getPages( string searchterm="", boolean suppressancestorpages=false, sortorder="leftvalue", numeric maxresults="0" )
+	array function getPages( string searchterm="", sortorder="leftvalue", numeric maxresults="0" )
 	{
 		return variables.ContentGateway.getPages( argumentCollection=arguments );
 	}

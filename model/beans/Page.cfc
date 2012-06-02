@@ -45,6 +45,11 @@ component extends="Base" persistent="true" table="pages" cacheuse="transactional
 		return this;
 	}
 	
+	function getAncestor()
+	{
+		return ORMExecuteQuery( "from Page where leftvalue < :leftvalue and rightvalue > :rightvalue order by leftvalue desc", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue }, { maxresults=1 } );
+	}	
+	
 	string function getDescendentPageIDList()
 	{
 		var pageidlist = "";
@@ -153,11 +158,6 @@ component extends="Base" persistent="true" table="pages" cacheuse="transactional
 	/*
 	 * Private methods
 	 */	
-	
-	private function getAncestor()
-	{
-		return ORMExecuteQuery( "from Page where leftvalue < :leftvalue and rightvalue > :rightvalue order by leftvalue desc", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue }, { maxresults=1 } );
-	}	
 	
 	private numeric function getDescendentCount()
 	{

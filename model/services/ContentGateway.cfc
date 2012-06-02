@@ -19,7 +19,6 @@
 <cfcomponent output="false">
 	<cffunction name="getPages" output="false" returntype="Array">
 		<cfargument name="searchterm" type="string" required="false" default="">
-		<cfargument name="suppressancestorpages" type="boolean" required="false" default="false">
 		<cfargument name="sortorder" type="string" required="false" default="leftvalue">
 		<cfargument name="maxresults" type="numeric" required="false" default="0">
 		
@@ -40,9 +39,6 @@
 				 	lower( title ) like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#thesearchterm#%"> 
 				 	or lower( content ) like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#thesearchterm#%">
 				) 
-			</cfif>
-			<cfif arguments.suppressancestorpages>
-				 and ( rightvalue-leftvalue = 1 or pageid = 1 )
 			</cfif>
 			order by #arguments.sortorder#
 		</cfquery>

@@ -28,12 +28,8 @@
 			<cfloop array="#rc.navigation#" index="local.Page">
 				<!--- create page link --->
 				<cfsavecontent variable="local.link">
-					<!--- if the current page is not the root, has a child and ancestor pages are suppressed just display the page title --->
-					<cfif !local.Page.isRoot() and local.Page.hasChild() and rc.config.pagesettings.suppressancestorpages>
-						#local.Page.getTitle()#
-					<cfelse>
-						<a href="#buildURL( local.Page.getSlug() )#">#local.Page.getTitle()#</a>
-					</cfif>
+					<!--- build url --->
+					<a href="#buildURL( local.Page.getSlug() )#">#local.Page.getTitle()#</a>
 				</cfsavecontent>		
 				
 				<!--- if the current page level is greater than the previous page level initiate a new tier in the menu --->

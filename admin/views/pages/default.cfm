@@ -42,20 +42,12 @@
 					<td <cfif !local.Page.isRoot()>class="chevron-right" style="padding-left:#( ( Page.getLevel()-1 ) * 26 ) + 26#px; background-position:#( ( local.Page.getLevel() - 1 ) * 26 ) + 5#px 50%"</cfif>>
 						<cfif local.Page.hasRoute( local.routes )>
 							#local.Page.getTitle()# *
-						<cfelseif local.Page.hasChild() and rc.config.pagesettings.suppressancestorpages and !local.Page.isRoot()>
-							#local.Page.getTitle()# **
 						<cfelse>
 							<a href="#buildURL( action='pages.maintain', querystring='pageid/#local.Page.getPageID()#' )#" title="Edit #local.Page.getTitle()#">#local.Page.getTitle()#</a>
 						</cfif>							
 					</td>
 					<td>#DateFormat( local.Page.getCreated(), "full" )#</td>
-					<td class="center">
-						<cfif ( local.Page.hasChild() and rc.config.pagesettings.suppressancestorpages and !local.Page.isRoot() )>
-							<!--- don't display view link --->
-						<cfelse>
-							<a href="#buildURL( action="public:" & local.Page.getSlug() )#" title="View" target="_blank"><i class="icon-eye-open"></i></a>
-						</cfif>
-					</td>
+					<td class="center"><a href="#buildURL( action="public:" & local.Page.getSlug() )#" title="View" target="_blank"><i class="icon-eye-open"></i></a></td>
 					<cfif rc.config.pagesettings.enableadddelete><td class="center"><cfif local.Page.getLevel() lt rc.config.pagesettings.levellimit><a href="#buildURL( action='pages.maintain', querystring='ancestorid/#local.Page.getPageID()#' )#" title="Add Page"><i class="icon-plus-sign"></i></a></cfif></td></cfif>
 					<td class="center"><cfif local.Page.hasPreviousSibling()><a href="#buildURL( action='pages.move', querystring='pageid/#local.Page.getPageID()#/direction/up' )#" title="Move Up"><i class="icon-chevron-up"></i></a></cfif></td>
 					<td class="center"><cfif local.Page.hasNextSibling()><a href="#buildURL( action='pages.move', querystring='pageid/#local.Page.getPageID()#/direction/down' )#" title="Move Down"><i class="icon-chevron-down"></i></a></cfif></td>
@@ -66,6 +58,4 @@
 	</table>
 	
 	<cfif ArrayLen( local.routes )><p class="faded">* You cannot edit or delete this page because it redirects to another website feature.</p></cfif>
-	
-	<cfif rc.config.pagesettings.suppressancestorpages><p class="faded">** You cannot add content to this page because it has associated child pages.</p></cfif>
 </cfoutput>
