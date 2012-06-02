@@ -42,7 +42,7 @@
 			<tbody>
 				<cfloop array="#rc.updatedpages#" index="local.Page">
 					<tr>
-						<th>#local.Page.getTitle()#</th>
+						<td>#local.Page.getTitle()#</td>
 						<td>#DateFormat( local.Page.getUpdated(), "full" )#</td>
 						<td class="center"><a href="#buildURL( action="public:" & local.Page.getSlug() )#" title="View" target="_blank"><i class="icon-eye-open"></i></a></td>
 					</tr>
@@ -70,7 +70,7 @@
 			<tbody>
 				<cfloop array="#rc.updatedarticles#" index="local.Article">
 					<tr>
-						<th>#local.Article.getTitle()#</th>
+						<td>#local.Article.getTitle()#</td>
 						<td>#DateFormat( local.Article.getUpdated(), "full" )#</td>
 						<td class="center"><a href="#buildURL( action='public:news.article', querystring='uuid=#local.Article.getUUID()#' )#" title="View" target="_blank"><i class="icon-eye-open"></i></a></td>
 					</tr>
