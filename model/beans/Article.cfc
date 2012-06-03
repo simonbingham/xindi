@@ -22,7 +22,7 @@ component extends="Base" persistent="true" table="articles" cacheuse="transactio
 	 * Properties
 	 */
 
-	property name="articleid" fieldtype="id" setter="false" generator="native" column="article_id";
+	property name="articleid" column="article_id" fieldtype="id" setter="false" generator="native";
 	
 	property name="uuid" column="article_uuid" ormtype="string" length="150";
 	property name="title" column="article_title" ormtype="string" length="150";

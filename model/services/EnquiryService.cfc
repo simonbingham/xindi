@@ -27,6 +27,34 @@ component accessors="true" {
 	/*
 	 * Public methods
 	 */
+
+	struct function deleteEnquiry( required numeric enquiryid ) {
+		var Enquiry = getEnquiryByID( arguments.enquiryid );
+		var result = {};
+		if( !IsNull( Enquiry ) ) { 
+			transaction {
+				EntityDelete( Enquiry );
+				result.messages.success = "The enquiry from &quot;#Enquiry.getFullName()#&quot; has been deleted.";
+			}
+		} else {
+			result.messages.error = "The enquiry could not be deleted.";
+		}
+		return result;
+	}
+
+	function getEnquiryByID( required numeric enquiryid ) {
+		return EntityLoadByPK( "Enquiry", arguments.enquiryid );
+	}
+
+	array function getEnquiries( numeric maxresults=0 ) {
+		var ormoptions = {};
+		if( arguments.maxresults ) ormoptions.maxresults = arguments.maxresults;	
+		return EntityLoad( "Enquiry", {}, "unread DESC, created DESC", ormoptions );
+	}
+	
+	numeric function getUnreadEnquiryCount() {
+		return Val( ORMExecuteQuery( "select count( * ) from Enquiry where unread = true", true ) );
+	}	
 	 	
 	function getValidator( required any Enquiry ) {
 		return variables.Validator.getValidator( theObject=arguments.Enquiry );
@@ -37,25 +65,41 @@ component accessors="true" {
 	}
 	
 	struct function sendEnquiry( required struct properties, required struct enquiryconfig, required string emailtemplatepath ){
-		var emailtemplate = "";
-		var Enquiry = newEnquiry(); 
-		Enquiry.populate( arguments.properties );
-		var result = variables.Validator.validate( theObject=Enquiry );
-		result.messages = {};
-		if( !result.hasErrors() ) {
-			savecontent variable="emailtemplate" { include arguments.emailtemplatepath; }
-			var Email = new mail();
-		    Email.setSubject( arguments.enquiryconfig.subject );
-	    	Email.setTo( arguments.enquiryconfig.emailto );
-	    	Email.setFrom( Enquiry.getEmail() );
-	    	Email.setBody( emailtemplate );
-	    	Email.setType( "html" );
-	        Email.send();
-	        result.messages.success = "Your enquiry has been sent.";
-		} else {
-			result.messages.error = "Your enquiry could not be sent. Please amend the following:";
+		transaction{
+			var emailtemplate = "";
+			var Enquiry = newEnquiry(); 
+			Enquiry.populate( arguments.properties );
+			var result = variables.Validator.validate( theObject=Enquiry );
+			result.messages = {};
+			if( !result.hasErrors() ) {
+				savecontent variable="emailtemplate" { include arguments.emailtemplatepath; }
+				var Email = new mail();
+			    Email.setSubject( arguments.enquiryconfig.subject );
+		    	Email.setTo( arguments.enquiryconfig.emailto );
+		    	Email.setFrom( Enquiry.getEmail() );
+		    	Email.setBody( emailtemplate );
+		    	Email.setType( "html" );
+		        Email.send();
+		        EntitySave( Enquiry );
+		        transaction action="commit";
+		        result.messages.success = "Your enquiry has been sent.";
+			} else {
+				transaction action="rollback";
+				result.messages.error = "Your enquiry could not be sent. Please amend the following:";
+			}
+			return result;
 		}
-		return result;
 	}
+	
+	void function setEnquiryAsRead( required numeric enquiryid ) {
+		var Enquiry = getEnquiryByID( arguments.enquiryid );
+		var result = {};
+		if( !IsNull( Enquiry ) ) { 
+			transaction {
+				Enquiry.setRead();
+				EntitySave( Enquiry );
+			}
+		}
+	}	
 	
 }

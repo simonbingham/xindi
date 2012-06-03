@@ -22,15 +22,15 @@ component extends="Base" persistent="true" table="users" cacheuse="transactional
 	 * Properties
 	 */	
 	
-	property name="userid" fieldtype="id" setter="false" generator="native" column="user_id";
+	property name="userid" column="user_id" fieldtype="id" setter="false" generator="native";
 
-	property name="firstname" ormtype="string" length="50" column="user_firstname";
-	property name="lastname" ormtype="string" length="50" column="user_lastname";
-	property name="email" ormtype="string" length="150" column="user_email";
-	property name="username" ormtype="string" length="50" column="user_username";
-	property name="password" ormtype="string" length="65" column="user_password" setter="false";
-	property name="created" ormtype="timestamp" column="user_created";
-	property name="updated" ormtype="timestamp" column="user_updated";
+	property name="firstname" column="user_firstname" ormtype="string" length="50";
+	property name="lastname" column="user_lastname" ormtype="string" length="50";
+	property name="email" column="user_email" ormtype="string" length="150";
+	property name="username" column="user_username" ormtype="string" length="50";
+	property name="password" column="user_password" ormtype="string" length="65" setter="false";
+	property name="created" column="user_created" ormtype="timestamp";
+	property name="updated" column="user_updated" ormtype="timestamp";
 	
 	/*
 	 * Public methods

@@ -78,4 +78,34 @@
 			</tbody>
 		</table>
 	</cfif>	
+	
+	<cfif ArrayLen( rc.unreadenquiries )>
+		<hr />
+		
+		<p class="pull-right"><a href="#buildURL( 'enquiries' )#" class="btn btn-primary">View Enquiries <i class="icon-chevron-right icon-white"></i></a></p>
+		
+		<h3>Enquiries</h3>
+		
+		<table class="table table-striped table-bordered table-condensed">
+			<thead>
+				<tr>
+					<th style="width:5%;">&nbsp;</th>
+					<th>Name</th>
+					<th style="width:25%;">Received</th>
+					<th style="width:25%;" class="center">View</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<cfloop array="#rc.unreadenquiries#" index="local.Enquiry">
+					<tr>
+						<td class="center"><cfif local.Enquiry.isUnread()><span class="label label-info">new</span></cfif></td>
+						<td>#local.Enquiry.getFullName()#</td>
+						<td>#DateFormat( local.Enquiry.getCreated(), "full" )# #TimeFormat( local.Enquiry.getCreated(), "full" )#</td>
+						<td class="center"><a href="#buildURL( action='enquiries.enquiry', querystring='enquiryid=#local.Enquiry.getEnquiryID()#' )#" title="View Enquiry"><i class="icon-eye-open"></i></a></td>
+					</tr>
+				</cfloop>
+			</tbody>
+		</table>
+	</cfif>		
 </cfoutput>

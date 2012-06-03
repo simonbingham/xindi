@@ -22,7 +22,7 @@ component extends="Base" persistent="true" table="pages" cacheuse="transactional
 	 * Properties
 	 */
 
-	property name="pageid" fieldtype="id" setter="false" generator="native" column="page_id";
+	property name="pageid" column="page_id" fieldtype="id" setter="false" generator="native";
 	
 	property name="uuid" column="page_uuid" ormtype="string" length="150";
 	property name="leftvalue" column="page_left" ormtype="int";

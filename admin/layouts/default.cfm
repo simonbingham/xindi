@@ -67,6 +67,7 @@
 								<cfif rc.loggedin>
 									<li><a href="#buildURL( 'pages' )#">Pages</a></li>
 									<cfif rc.config.newsconfig.enabled><li><a href="#buildURL( 'news' )#">News</a></li></cfif>
+									<cfif rc.config.enquiryconfig.enabled><li><a href="#buildURL( 'enquiries' )#">Enquiries<cfif rc.unreadenquirycount> <span class="badge badge-info">#NumberFormat( rc.unreadenquirycount )#</span></cfif></a></li></cfif>
 									<li><a href="#buildURL( 'users' )#">Users</a></li>
 									<li><a href="#buildURL( 'security/logout' )#">Logout</a></li>
 								</cfif>

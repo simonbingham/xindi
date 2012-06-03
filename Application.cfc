@@ -121,8 +121,9 @@ component extends="frameworks.org.corfield.framework" {
 	private struct function getConfig() {
 		var config = {
 			enquiryconfig = {
-				subject = "Enquiry"
-				, emailto = ""
+				enabled = true
+				, subject = "Enquiry"
+				, emailto = "smnbin@gmail.com"
 			}
 			, errorhanderconfig = { 
 				enabled=true
