@@ -19,6 +19,10 @@
 <cfoutput>
 	<div class="page-header"><h1>Enquiries</h1></div>
 	
+	<cfif rc.unreadenquirycount>
+		<p><a href="#buildURL( 'enquiries.markallread' )#" class="btn btn-primary">Mark All Read <i class="icon-chevron-right icon-white"></i></a></p>
+	</cfif>
+	
 	#view( "helpers/messages" )#
 	
 	<cfif ArrayLen( rc.enquiries )>
@@ -38,7 +42,7 @@
 					<tr>
 						<td class="center"><cfif local.Enquiry.isUnread()><span class="label label-info">new</span></cfif></td>
 						<td>#local.Enquiry.getFullName()#</td>
-						<td>#DateFormat( local.Enquiry.getCreated(), "full" )# #TimeFormat( local.Enquiry.getCreated(), "full" )#</td>
+						<td>#DateFormat( local.Enquiry.getCreated(), "full" )# at #TimeFormat( local.Enquiry.getCreated(), "full" )#</td>
 						<td class="center"><a href="#buildURL( action='enquiries.enquiry', querystring='enquiryid=#local.Enquiry.getEnquiryID()#' )#" title="View Enquiry"><i class="icon-eye-open"></i></a></td>
 						<td class="center"><a href="#buildURL( 'enquiries.delete' )#/enquiryid/#local.Enquiry.getEnquiryID()#" title="Delete"><i class="icon-remove"></i></a></td>
 					</tr>

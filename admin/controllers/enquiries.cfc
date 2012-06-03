@@ -30,6 +30,7 @@ component accessors="true" extends="abstract" {
 
 	void function default( required struct rc ) {
 		rc.enquiries = variables.EnquiryService.getEnquiries();
+		rc.unreadenquirycount = variables.EnquiryService.getUnreadEnquiryCount();
 	}
 	
 	void function delete( required struct rc ) {
@@ -43,10 +44,16 @@ component accessors="true" extends="abstract" {
 		param name="rc.enquiryid" default="0";
 		rc.Enquiry = variables.EnquiryService.getEnquiryByID( Val( rc.enquiryid ) );
 		if( !IsNull( rc.Enquiry ) ){
-			variables.EnquiryService.setEnquiryAsRead( Val( rc.Enquiry.getEnquiryID() ) );
+			variables.EnquiryService.markRead( Val( rc.Enquiry.getEnquiryID() ) );
 		} else {
 			variables.fw.redirect( "main/notfound" );
-		}			
+		}
 	}
+	
+	void function markallread( required struct rc ) {
+		var result = variables.EnquiryService.markAllRead();
+		rc.messages = result.messages;
+		variables.fw.redirect( "enquiries", "messages" );
+	}	
 	
 }

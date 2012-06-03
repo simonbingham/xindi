@@ -80,7 +80,7 @@
 			<div id="container" class="container">
 				<div class="row">
 					<div id="content" class="span12">
-						<cfif StructKeyExists( rc, "CurrentUser" )><p class="pull-right">Logged in: <a href="mailto:#rc.CurrentUser.getEmail()#">#rc.CurrentUser.getFullName()#</a></p></cfif>
+						<h2 class="pull-right"><cfif StructKeyExists( rc, "CurrentUser" )><small class="pull-right">#rc.CurrentUser.getFullName()#</small></cfif></h2>
 						
 						#body#
 						

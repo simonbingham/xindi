@@ -41,23 +41,43 @@ component accessors="true" {
 		}
 		return result;
 	}
+	
+	array function getEnquiries( numeric maxresults=0 ) {
+		var ormoptions = {};
+		if( arguments.maxresults ) ormoptions.maxresults = arguments.maxresults;	
+		return EntityLoad( "Enquiry", {}, "unread DESC, created DESC", ormoptions );
+	}	
 
 	function getEnquiryByID( required numeric enquiryid ) {
 		return EntityLoadByPK( "Enquiry", arguments.enquiryid );
 	}
 
-	array function getEnquiries( numeric maxresults=0 ) {
-		var ormoptions = {};
-		if( arguments.maxresults ) ormoptions.maxresults = arguments.maxresults;	
-		return EntityLoad( "Enquiry", {}, "unread DESC, created DESC", ormoptions );
-	}
-	
 	numeric function getUnreadEnquiryCount() {
 		return Val( ORMExecuteQuery( "select count( * ) from Enquiry where unread = true", true ) );
 	}	
 	 	
 	function getValidator( required any Enquiry ) {
 		return variables.Validator.getValidator( theObject=arguments.Enquiry );
+	}	
+	
+	struct function markAllRead() {
+		transaction{
+			var result = {};
+			result.messages.success = "All messages have been marked as read.";
+			ORMExecuteQuery( "update Enquiry set unread=false" );
+		}
+		return result;
+	}
+
+	void function markRead( required numeric enquiryid ) {
+		var Enquiry = getEnquiryByID( arguments.enquiryid );
+		var result = {};
+		if( !IsNull( Enquiry ) ) { 
+			transaction {
+				Enquiry.setRead();
+				EntitySave( Enquiry );
+			}
+		}
 	}	
 	
 	function newEnquiry(){
@@ -90,16 +110,5 @@ component accessors="true" {
 			return result;
 		}
 	}
-	
-	void function setEnquiryAsRead( required numeric enquiryid ) {
-		var Enquiry = getEnquiryByID( arguments.enquiryid );
-		var result = {};
-		if( !IsNull( Enquiry ) ) { 
-			transaction {
-				Enquiry.setRead();
-				EntitySave( Enquiry );
-			}
-		}
-	}	
 	
 }

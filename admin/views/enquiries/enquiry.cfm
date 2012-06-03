@@ -17,9 +17,12 @@
 --->
 
 <cfoutput>
-	<div class="page-header"><h1>#rc.Enquiry.getFullName()# <small>#DateFormat( rc.Enquiry.getCreated(), "full" )# #TimeFormat( rc.Enquiry.getCreated(), "full" )#</small></h1></div>
+	<div class="page-header"><h1>#rc.Enquiry.getFullName()# <small>#DateFormat( rc.Enquiry.getCreated(), "full" )# at #TimeFormat( rc.Enquiry.getCreated(), "full" )#</small></h1></div>
 
-	<p><a href="mailto:#rc.Enquiry.getEmail()#" class="btn btn-primary"><i class="icon-envelope icon-white"></i> Email #rc.Enquiry.getFullName()#</a></p>
-	
+	<p>
+		<a href="#buildURL( 'enquiries' )#" class="btn btn-primary"><i class="icon-chevron-left icon-white"></i> Return to Enquiries</a>
+		<a href="mailto:#rc.Enquiry.getEmail()#" class="btn btn-primary">Reply to Enquiry <i class="icon-chevron-right icon-white"></i></a>
+	</p>
+
 	#rc.Enquiry.getDisplayMessage()#
 </cfoutput>
