@@ -63,8 +63,13 @@ component accessors="true"
 		if( IsNull( Article ) ) Article = newArticle();
 		return Article;
 	}
+	
+	numeric function getArticleCount()
+	{
+		return Val( ORMExecuteQuery( "select count( * ) from Article", true ) );
+	}
 
-	array function getArticles( string searchterm="", string sortorder="published desc", boolean published=false, numeric maxresults="0" )
+	array function getArticles( string searchterm="", string sortorder="published desc", boolean published=false, numeric maxresults=0, numeric offset=0 )
 	{
 		return variables.NewsGateway.getArticles( argumentCollection=arguments );
 	}

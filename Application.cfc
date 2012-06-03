@@ -145,6 +145,7 @@ component extends="frameworks.org.corfield.framework"
 			}
 			, newsconfig = {
 				enabled = true
+				, recordsperpage = 10
 				, rsstitle = ""
 				, rssdescription = ""
 			}

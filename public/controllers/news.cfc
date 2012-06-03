@@ -45,10 +45,13 @@ component accessors="true" extends="abstract"
 	}
 	
 	void function default( required struct rc ) {
-		rc.articles = variables.NewsService.getArticles( published=true );
-		rc.MetaData.setMetaTitle( "News" ); 
+		param name="rc.maxresults" default=rc.config.newsconfig.recordsperpage;
+		param name="rc.offset" default="0";	
+		rc.articles = variables.NewsService.getArticles( published=true, maxresults=rc.maxresults, offset=rc.offset );
+		rc.articlecount = variables.NewsService.getArticleCount();
+		rc.MetaData.setMetaTitle( "News" );
 		rc.MetaData.setMetaDescription( "" );
-		rc.MetaData.setMetaKeywords( "" );		
+		rc.MetaData.setMetaKeywords( "" );
 	}
 	
 	void function rss( required struct rc ) {

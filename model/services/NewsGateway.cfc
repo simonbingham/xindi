@@ -22,6 +22,7 @@
 		<cfargument name="sortorder" type="string" required="false" default="published desc">
 		<cfargument name="published" type="boolean" required="false" default="false">
 		<cfargument name="maxresults" type="numeric" required="false" default="0">
+		<cfargument name="offset" type="numeric" required="false" default="0">
 		
 		<cfset var qArticles = "">
 		<cfset var thesearchterm = Trim( arguments.searchterm )>
@@ -29,6 +30,10 @@
 		
 		<cfif arguments.maxresults>
 			<cfset ormoptions.maxresults = arguments.maxresults>
+		</cfif>
+
+		<cfif arguments.offset>
+			<cfset ormoptions.offset = arguments.offset>
 		</cfif>
 		
 		<cfquery name="qArticles" dbtype="hql" ormoptions="#ormoptions#">
