@@ -30,7 +30,7 @@
 						if the current page is not the root, has a child page and ancestor page links 
 						are used to toggle dropdowns we need to initiate a Bootstrap dropdown 
 					--->
-					<cfif local.Page.hasChild() and rc.config.pagesettings.ancestorlinkstoggledropdown and !local.Page.isRoot()>
+					<cfif local.Page.hasChild() and rc.config.pageconfig.touchscreenfriendlynavigation and !local.Page.isRoot()>
 						<a href="#buildURL( local.Page.getSlug() )#" class="dropdown-toggle" data-toggle="dropdown">#local.Page.getTitle()# <b class="caret"></b></a>
 					<cfelse>
 						<a href="#buildURL( local.Page.getSlug() )#">#local.Page.getTitle()#</a>	
@@ -47,7 +47,7 @@
 							if ancestor page links are used to toggle dropdowns we need to display a duplicated 
 							ancestor page link in the sub menu so the page remains accessible 
 						--->
-						<cfif rc.config.pagesettings.ancestorlinkstoggledropdown>
+						<cfif rc.config.pageconfig.touchscreenfriendlynavigation>
 							<cfset local.Ancestor = local.Page.getAncestor()[ 1 ] />
 							<li><a href="#buildURL( local.Ancestor.getSlug() )#">#local.Ancestor.getTitle()#</a></li> 
 						</cfif>

@@ -130,38 +130,32 @@ component extends="frameworks.org.corfield.framework"
 	private struct function getConfig()
 	{
 		var config = {
-			// enquiry form settings
-			enquirysettings = {
+			enquiryconfig = {
 				subject = "Enquiry"
 				, emailto = ""
 			}
-			// error handler settings
-			, errorsettings = { 
+			, errorhanderconfig = { 
 				enabled=true
 				, to=""
 				, from=""
 				, subject="Error Notification (#ListLast( this.applicationroot, '\/' )#)" 
 			}
-			// file manager settings
-			, filemanagersettings = {
+			, filemanagerconfig = {
 				allowedextensions = "txt,gif,jpg,png,wav,mpeg3,pdf,zip,mp3,jpeg"
 			}
-			// news feature settings
-			, newssettings = {
+			, newsconfig = {
 				enabled = true
 				, rsstitle = ""
 				, rssdescription = ""
 			}
-			// page manager settings
-			, pagesettings = { 
+			, pageconfig = { 
 				enableadddelete = true
-				, levellimit = 2 // number of page tiers that can be added - Bootstrap dropdown menu only supports 2
-				, ancestorlinkstoggledropdown = true // ancestor page links trigger dropdown - duplicated ancestor page links will appear in sub menu
+				, levellimit = 2 // number of page tiers that can be added - Bootstrap dropdown only supports two tiers
+				, touchscreenfriendlynavigation = true // ancestor page links trigger dropdown - duplicated ancestor page links appear in sub menu
 			}
-			// appended to regularly updated css and js urls to force reload
 			, revision = Hash( Now() )
-			// list of unsecure actions
-			, securitysettings = {
+			// list of unsecure sub systems and actions - all other requests are password protected
+			, securityconfig = {
 				whitelist = "^admin:security,^public:"
 			}
 		};

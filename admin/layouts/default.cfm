@@ -66,7 +66,7 @@
 							<ul class="nav pull-right">
 								<cfif rc.loggedin>
 									<li><a href="#buildURL( 'pages' )#">Pages</a></li>
-									<cfif rc.config.newssettings.enabled><li><a href="#buildURL( 'news' )#">News</a></li></cfif>
+									<cfif rc.config.newsconfig.enabled><li><a href="#buildURL( 'news' )#">News</a></li></cfif>
 									<li><a href="#buildURL( 'users' )#">Users</a></li>
 									<li><a href="#buildURL( 'security/logout' )#">Logout</a></li>
 								</cfif>

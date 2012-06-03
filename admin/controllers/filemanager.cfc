@@ -66,7 +66,7 @@ component accessors="true" extends="abstract"
 
 	void function default( required struct rc )
 	{
-		rc.listing = variables.FileManagerService.getDirectoryList( rc.currentdirectory, variables.config.filemanagersettings.allowedextensions );
+		rc.listing = variables.FileManagerService.getDirectoryList( rc.currentdirectory, variables.config.filemanagerconfig.allowedextensions );
 	}
 
 	void function delete( required struct rc )
@@ -80,7 +80,7 @@ component accessors="true" extends="abstract"
 	void function upload( required struct rc )
 	{
 		param name="rc.file" default="";
-		var result = variables.FileManagerService.uploadFile( "file", rc.currentdirectory, variables.config.filemanagersettings.allowedextensions );
+		var result = variables.FileManagerService.uploadFile( "file", rc.currentdirectory, variables.config.filemanagerconfig.allowedextensions );
 		rc.messages = result.messages;
 		variables.fw.redirect( action="filemanager.default", querystring="subdirectory=#urlSafePath( rc.subdirectory )#", preserve="messages" );
 	}

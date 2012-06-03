@@ -40,7 +40,7 @@ component accessors="true"
 	void function default( required rc )
 	{
 		var securearea = true; 
-		var whitelist = variables.config.securitysettings.whitelist;
+		var whitelist = variables.config.securityconfig.whitelist;
 		rc.loggedin = variables.SecurityService.hasCurrentUser();
 		if ( !rc.loggedin )
 		{

@@ -38,7 +38,7 @@ component accessors="true"
 		return new model.beans.Enquiry();
 	}
 	
-	struct function sendEnquiry( required struct properties, required struct enquirysettings, required string emailtemplatepath ){
+	struct function sendEnquiry( required struct properties, required struct enquiryconfig, required string emailtemplatepath ){
 		var emailtemplate = "";
 		var Enquiry = newEnquiry(); 
 		Enquiry.populate( arguments.properties );
@@ -48,8 +48,8 @@ component accessors="true"
 		{
 			savecontent variable="emailtemplate" { include arguments.emailtemplatepath; }
 			var Email = new mail();
-		    Email.setSubject( arguments.enquirysettings.subject );
-	    	Email.setTo( arguments.enquirysettings.emailto );
+		    Email.setSubject( arguments.enquiryconfig.subject );
+	    	Email.setTo( arguments.enquiryconfig.emailto );
 	    	Email.setFrom( Enquiry.getEmail() );
 	    	Email.setBody( emailtemplate );
 	    	Email.setType( "html" );
