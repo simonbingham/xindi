@@ -16,8 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true" 
-{
+component accessors="true" {
 	
 	/*
 	 * Properties
@@ -31,36 +30,30 @@ component accessors="true"
 	 * Public methods
 	 */
 	 	
-	function init()
-	{
+	function init() {
 		variables.metatitle = "";
 		variables.metakeywords = "";
 		variables.metadescription = "";
 		return this;
 	}
 
-	string function generateMetaDescription( required string description )
-	{
+	string function generateMetaDescription( required string description ) {
 		return Left( Trim( replaceMultipleSpacesWithSingleSpace( removeUnrequiredCharacters( stripHTML( arguments.description ) ) ) ), 169 );
 	}
 
-	string function generateMetaKeywords( required string keywords )
-	{
+	string function generateMetaKeywords( required string keywords ) {
 		return Left( replaceMultipleSpacesWithSingleSpace( removeUnrequiredCharacters( listDeleteDuplicatesNoCase( ListChangeDelims( removeNonKeywords( stripHTML( arguments.keywords ) ), ",", " ." ) ) ) ), 169 );
 	}
 
-	string function generatePageTitle( required string websitetitle, required string pagetitle )
-	{
+	string function generatePageTitle( required string websitetitle, required string pagetitle ) {
 		return Left( stripHTML( arguments.pagetitle ) & " | " & stripHTML( arguments.websitetitle ), 69 );
 	}
 
 	string function listDeleteDuplicatesNoCase( required string thelist, string delimiter="," ) {
 		var elements = ListToArray( arguments.thelist, arguments.delimiter );
 		var listnoduplicates = "";
-		for( element in elements ) 
-		{
-			if( !ListFindNoCase( listnoduplicates, element, arguments.delimiter ) )
-			{
+		for( element in elements ) {
+			if( !ListFindNoCase( listnoduplicates, element, arguments.delimiter ) ) {
 				listnoduplicates = ListAppend( listnoduplicates, element, arguments.delimiter );
 			} 
 		}
@@ -70,10 +63,8 @@ component accessors="true"
 	string function removeNonKeywords( required string thestring ) {
 		var elements = ListToArray( arguments.thestring, " " );
 		var newstring = "";
-		for( element in elements ) 
-		{
-			if( !ListFindNoCase( "&,a,an,and,are,as,i,if,in,is,it,that,the,this,it,to,of,on,or,us,we", element ) ) 
-			{
+		for( element in elements ) {
+			if( !ListFindNoCase( "&,a,an,and,are,as,i,if,in,is,it,that,the,this,it,to,of,on,or,us,we", element ) ) {
 				newstring = ListAppend( newstring, element, " " );
 			} 
 		}

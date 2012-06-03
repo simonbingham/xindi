@@ -16,8 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true"
-{
+component accessors="true" {
 
 	/*
 	 * Dependency injection
@@ -29,8 +28,7 @@ component accessors="true"
 	 * Public methods
 	 */
 	 	
-	function getValidator( required any Enquiry )
-	{
+	function getValidator( required any Enquiry ) {
 		return variables.Validator.getValidator( theObject=arguments.Enquiry );
 	}	
 	
@@ -44,8 +42,7 @@ component accessors="true"
 		Enquiry.populate( arguments.properties );
 		var result = variables.Validator.validate( theObject=Enquiry );
 		result.messages = {};
-		if( !result.hasErrors() )
-		{
+		if( !result.hasErrors() ) {
 			savecontent variable="emailtemplate" { include arguments.emailtemplatepath; }
 			var Email = new mail();
 		    Email.setSubject( arguments.enquiryconfig.subject );
@@ -55,9 +52,7 @@ component accessors="true"
 	    	Email.setType( "html" );
 	        Email.send();
 	        result.messages.success = "Your enquiry has been sent.";
-		}
-		else
-		{
+		} else {
 			result.messages.error = "Your enquiry could not be sent. Please amend the following:";
 		}
 		return result;

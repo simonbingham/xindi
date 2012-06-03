@@ -16,4 +16,4 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component extends="mxunit.framework.RemoteFacade" wsversion="1"{}
+component extends="mxunit.framework.RemoteFacade" wsversion="1" {}

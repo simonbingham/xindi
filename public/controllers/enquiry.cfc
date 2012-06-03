@@ -16,8 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true" extends="abstract"  
-{
+component accessors="true" extends="abstract" {
 
 	/*
 	 * Dependency injection
@@ -47,12 +46,9 @@ component accessors="true" extends="abstract"
 		var emailtemplatepath = "../../public/views/enquiry/email.cfm";
 		rc.result = variables.EnquiryService.sendEnquiry( properties, variables.config.enquiryconfig, emailtemplatepath );
 		rc.messages = rc.result.messages;
-		if( StructKeyExists( rc.messages, "success" ) )
-		{
+		if( StructKeyExists( rc.messages, "success" ) ) {
 			variables.fw.redirect( "enquiry/thanks" );	
-		}
-		else
-		{
+		} else {
 			rc.Enquiry = rc.result.getTheObject();
 			variables.fw.redirect( "enquiry", "messages,Enquiry,result" );
 		}		

@@ -16,8 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true" extends="abstract"  
-{
+component accessors="true" extends="abstract" {
 
 	/*
 	 * Dependency injection
@@ -32,14 +31,11 @@ component accessors="true" extends="abstract"
 	void function article( required struct rc ) {
 		param name="rc.uuid" default="";
 		rc.Article = variables.NewsService.getArticleByUUID( rc.uuid );
-		if( rc.Article.isPersisted() )
-		{
+		if( rc.Article.isPersisted() ) {
 			rc.MetaData.setMetaTitle( rc.Article.getMetaTitle() ); 
 			rc.MetaData.setMetaDescription( rc.Article.getMetaDescription() );
 			rc.MetaData.setMetaKeywords( rc.Article.getMetaKeywords() );
-		}
-		else
-		{
+		} else {
 			variables.fw.redirect( "main/notfound" );
 		}		
 	}

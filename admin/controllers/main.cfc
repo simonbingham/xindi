@@ -16,8 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true"
-{
+component accessors="true" {
 	
 	/*
 	 * Dependency injection
@@ -32,30 +31,23 @@ component accessors="true"
 	 * Public methods
 	 */		
 	
-	void function init( required any fw )
-	{
+	void function init( required any fw ) {
 		variables.fw = arguments.fw;
 	}
 
-	void function default( required rc )
-	{
+	void function default( required rc ) {
 		var securearea = true; 
 		var whitelist = variables.config.securityconfig.whitelist;
 		rc.loggedin = variables.SecurityService.hasCurrentUser();
-		if ( !rc.loggedin )
-		{
-			for ( var unsecured in ListToArray( whitelist ) )
-			{
-				if ( ReFindNoCase( unsecured, variables.fw.getFullyQualifiedAction() ) )
-				{
+		if ( !rc.loggedin ) {
+			for ( var unsecured in ListToArray( whitelist ) ) {
+				if ( ReFindNoCase( unsecured, variables.fw.getFullyQualifiedAction() ) ) {
 					securearea = false;
 					break;
 				}
 			}
 			if ( securearea ) variables.fw.redirect( "admin:security" );
-		}
-		else
-		{
+		} else {
 			rc.updatedpages = variables.ContentService.getPages( sortorder="updated desc", maxresults=10 );
 			rc.updatedarticles = variables.NewsService.getArticles( sortorder="updated desc", maxresults=10 );
 		}

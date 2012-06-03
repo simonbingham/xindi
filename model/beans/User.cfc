@@ -16,8 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component extends="Base" persistent="true" table="users" cacheuse="transactional"
-{
+component extends="Base" persistent="true" table="users" cacheuse="transactional" {
 
 	/*
 	 * Properties
@@ -37,18 +36,15 @@ component extends="Base" persistent="true" table="users" cacheuse="transactional
 	 * Public methods
 	 */	
 	
-	function init()
-	{
+	function init() {
 		return this;
 	}
 	
-	string function getFullName()
-	{
+	string function getFullName() {
 		return getFirstName() & " " & getLastName();
 	}
 	
-	struct function isEmailUnique()
-	{
+	struct function isEmailUnique() {
 		var matches = []; 
 		var result = { issuccess=false, failuremessage="The email address '#getEmail()#' is registered to an existing account." };
 		if( isPersisted() ) matches = ORMExecuteQuery( "from User where userid <> :userid and email = :email", { userid=getUserID(), email=getEmail()} );
@@ -57,8 +53,7 @@ component extends="Base" persistent="true" table="users" cacheuse="transactional
 		return result;
 	}
 
-	struct function isUsernameUnique()
-	{
+	struct function isUsernameUnique() {
 		var matches = []; 
 		var result = { issuccess = false, failuremessage = "The username '#getUsername()#' is registered to an existing account." };
 		if( isPersisted() ) matches = ORMExecuteQuery( "from User where userid <> :userid and username = :username", { userid=getUserID(), username=getUsername()} );
@@ -67,18 +62,15 @@ component extends="Base" persistent="true" table="users" cacheuse="transactional
 		return result;
 	}	
 
-	boolean function isPersisted()
-	{
+	boolean function isPersisted() {
 		return !IsNull( variables.userid );
 	}
 	
 	/**
 	* I override the implicit setter to include hashing of the password
 	*/
-	string function setPassword( required password )
-	{
-		if ( arguments.password != "" )
-		{
+	string function setPassword( required password ) {
+		if ( arguments.password != "" ) {
 			variables.password = arguments.password;
 			// to help prevent rainbow attacks hash several times
 			for ( var i=0; i<50; i++ ) {			

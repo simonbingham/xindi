@@ -16,8 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true" extends="abstract"   
-{
+component accessors="true" extends="abstract" {
 	
 	/*
 	 * Dependency injection
@@ -59,13 +58,10 @@ component accessors="true" extends="abstract"
 		rc.result = variables.NewsService.saveArticle( properties );
 		rc.messages = rc.result.messages;
 		rc.Article = rc.result.getTheObject();
-		if( StructKeyExists( rc.messages, "success" ) )
-		{
+		if( StructKeyExists( rc.messages, "success" ) ) {
 			if( rc.submit == "Save & Continue" )  variables.fw.redirect( "news/maintain", "messages,Article,articleid" );
 			else variables.fw.redirect( "news", "messages" );
-		}
-		else
-		{
+		} else {
 			variables.fw.redirect( "news/maintain", "messages,Article,articleid,result" );
 		}
 	}

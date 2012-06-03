@@ -16,8 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true" extends="abstract"  
-{
+component accessors="true" extends="abstract" {
 
 	/*
 	 * Dependency injection

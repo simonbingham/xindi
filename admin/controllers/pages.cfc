@@ -16,8 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true" extends="abstract"   
-{
+component accessors="true" extends="abstract" {
 	
 	/*
 	 * Dependency injection
@@ -37,8 +36,7 @@ component accessors="true" extends="abstract"
 		param name="rc.pageid" default="0";
 		var result = variables.ContentService.deletePage( Val( rc.pageid ) );
 		rc.messages = result.messages;
-		if( StructKeyExists( result.messages, "success" ) )
-		{
+		if( StructKeyExists( result.messages, "success" ) ) {
 			var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:navigation/xml", method="get" );
 			refreshsitemap.send();
 		}
@@ -75,15 +73,12 @@ component accessors="true" extends="abstract"
 		rc.result = variables.ContentService.savePage( properties, rc.ancestorid, rc.context );
 		rc.messages = rc.result.messages;
 		rc.Page = rc.result.getTheObject();
-		if( StructKeyExists( rc.messages, "success" ) )
-		{
+		if( StructKeyExists( rc.messages, "success" ) ) {
 			var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:navigation/xml", method="get" );
 			refreshsitemap.send();
 			if( rc.submit == "Save & Continue" )  variables.fw.redirect( "pages/maintain", "messages,Page,pageid,ancestorid" );
 			else variables.fw.redirect( "pages", "messages" );
-		}
-		else
-		{
+		} else {
 			variables.fw.redirect( "pages/maintain", "messages,Page,pageid,ancestorid,result" );
 		}
 	}

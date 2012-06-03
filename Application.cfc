@@ -16,8 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component extends="frameworks.org.corfield.framework"
-{
+component extends="frameworks.org.corfield.framework" {
 	/**
 	* application settings
 	*/
@@ -37,8 +36,7 @@ component extends="frameworks.org.corfield.framework"
 	};
 	// create database and populate when the application starts in development environment
 	// you might want to comment out this code after the initial install
-	if( this.development && !isNull( url.rebuild ) )
-	{
+	if( this.development && !isNull( url.rebuild ) ) {
 		this.ormsettings.dbcreate = "dropcreate";
 		this.ormsettings.sqlscript = "_install/setup.sql";
 	}
@@ -60,8 +58,7 @@ component extends="frameworks.org.corfield.framework"
 	/**
      * called when application starts
 	 */	
-	void function setupApplication()
-	{
+	void function setupApplication() {
 		ORMReload();
 		
 		// setup bean factory
@@ -76,8 +73,7 @@ component extends="frameworks.org.corfield.framework"
 	/**
      * called when page request starts
 	 */	
-	void function setupRequest()
-	{
+	void function setupRequest() {
 		// define base url
 		if ( CGI.HTTPS eq "on" ) rc.basehref = "https://";
 		else rc.basehref = "http://";
@@ -96,8 +92,7 @@ component extends="frameworks.org.corfield.framework"
 	/**
      * called when view rendering begins
 	 */		
-	void function setupView()
-	{
+	void function setupView() {
 		rc.navigation = getBeanFactory().getBean( "ContentService" ).getPages();
 		
 		if( StructKeyExists( session, "userid" ) ) rc.CurrentUser = getBeanFactory().getBean( "UserService" ).getUserByID( session.userid );
@@ -106,17 +101,13 @@ component extends="frameworks.org.corfield.framework"
 	/**
      * called if view is missing - used for (almost) all Xindi page requests
 	 */	
-	any function onMissingView( required rc )
-	{
+	any function onMissingView( required rc ) {
 		rc.Page = getBeanFactory().getBean( "ContentService" ).getPageBySlug( ListLast( CGI.PATH_INFO, "/" ) );
-		if( !rc.Page.isPersisted() )
-		{
+		if( !rc.Page.isPersisted() ) {
 			var pagecontext = getPageContext().getResponse();
 			pagecontext.getResponse().setStatus( 404 );
 			return view( "public:main/notfound" );
-		}
-		else
-		{
+		}else{
 			rc.MetaData.setMetaTitle( rc.Page.getMetaTitle() ); 
 			rc.MetaData.setMetaDescription( rc.Page.getMetaDescription() );
 			rc.MetaData.setMetaKeywords( rc.Page.getMetaKeywords() );
@@ -127,8 +118,7 @@ component extends="frameworks.org.corfield.framework"
 	/**
      * configuration
 	 */		
-	private struct function getConfig()
-	{
+	private struct function getConfig() {
 		var config = {
 			enquiryconfig = {
 				subject = "Enquiry"

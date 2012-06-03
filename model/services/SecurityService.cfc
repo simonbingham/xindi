@@ -16,8 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true"
-{
+component accessors="true" {
 	
 	/*
 	 * Dependency injection
@@ -32,44 +31,34 @@ component accessors="true"
 	 * Public methods
 	 */
 
-	struct function deleteCurrentUser()
-	{
+	struct function deleteCurrentUser() {
 		var result = {};
-		if ( hasCurrentUser() ) 
-		{
+		if ( hasCurrentUser() ) {
 			StructDelete( session, variables.userkey );
 			result.messages.success = "You have been logged out.";	
-		}
-		else
-		{
+		} else {
 			result.messages.error = "You are not logged in.";
 		}
 		return result;
 	}
 
-	function getCurrentUser()
-	{
+	function getCurrentUser() {
 		if ( hasCurrentUser() ) return variables.UserService.getUserByID( session[ variables.userkey ] ).isPersisted();
 	}
 		
-	boolean function hasCurrentUser()
-	{
+	boolean function hasCurrentUser() {
 		return StructKeyExists( session, variables.userkey );
 	}
 
-	function loginUser( required struct properties )
-	{
+	function loginUser( required struct properties ) {
 		var User = variables.UserService.newUser();
 		User.populate( arguments.properties );
 		var result = variables.Validator.validate( User, "login" );
 		User = variables.UserService.getUserByCredentials( User );
-		if( !IsNull( User ) )
-		{
+		if( !IsNull( User ) ) {
 			setCurrentUser( User );
 			result.messages.success = "Welcome #User.getFirstName()#. You have been logged in.";
-		}
-		else
-		{
+		} else {
 			result.messages.error = "Sorry, your login details have not been recognised.";
 			var failure = { propertyName="username", clientFieldname="username", message=result.messages.error };
 			result.addFailure( failure );
@@ -77,8 +66,7 @@ component accessors="true"
 		return result;
 	}	
 	
-	function setCurrentUser( required any User )
-	{
+	function setCurrentUser( required any User ) {
 		session[ variables.userkey ] = arguments.User.getUserID();
 	}
 	

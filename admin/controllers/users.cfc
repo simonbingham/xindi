@@ -16,8 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true" extends="abstract"   
-{
+component accessors="true" extends="abstract" {
 
 	/*
 	 * Dependency injection
@@ -59,12 +58,9 @@ component accessors="true" extends="abstract"
 		var properties = { userid=rc.userid, firstname=rc.firstname, lastname=rc.lastname, email=rc.email, username=rc.username, password=rc.password };
 		var result = variables.UserService.saveUser( properties, rc.context );
 		rc.messages = result.messages;
-		if( StructKeyExists( rc.messages, "success" ) )
-		{
+		if( StructKeyExists( rc.messages, "success" ) ) {
 			variables.fw.redirect( "users", "messages" );	
-		}
-		else
-		{
+		} else {
 			rc.User = result.getTheObject();
 			variables.fw.redirect( "users/maintain", "messages,User,userid" );
 		}

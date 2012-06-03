@@ -16,8 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component extends="Base" persistent="false" accessors="true"
-{
+component extends="Base" persistent="false" accessors="true" {
 	
 	/*
 	 * Properties
@@ -32,18 +31,15 @@ component extends="Base" persistent="false" accessors="true"
 	 * Public methods
 	 */
 	 	
-	Enquiry function init()
-	{
+	Enquiry function init() {
 		return this;
 	}
 	
-	string function getDisplayMessage()
-	{
+	string function getDisplayMessage() {
 		return REReplace( HTMLEditFormat( variables.message ), "[\r\n]+", "<br /><br />", "ALL" );
 	}	
 	
-	string function getFullName()
-	{
+	string function getFullName() {
 		return variables.firstname & " " & variables.lastname;
 	}
 

@@ -16,15 +16,13 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true"
-{
+component accessors="true" {
 
 	/*
 	 * Public methods
 	 */	
 
-	void function init( required any fw )
-	{
+	void function init( required any fw ) {
 		variables.fw = arguments.fw;
 	}
 
