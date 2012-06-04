@@ -55,13 +55,15 @@ component accessors="true" extends="abstract" {
 		param name="rc.username" default="";
 		param name="rc.password" default="";
 		param name="rc.context" default="create";
+		param name="rc.submit" default="Save & exit";
 		var properties = { userid=rc.userid, firstname=rc.firstname, lastname=rc.lastname, email=rc.email, username=rc.username, password=rc.password };
 		var result = variables.UserService.saveUser( properties, rc.context );
 		rc.messages = result.messages;
+		rc.User = result.getTheObject();
 		if( StructKeyExists( rc.messages, "success" ) ) {
-			variables.fw.redirect( "users", "messages" );	
+			if( rc.submit == "Save & Continue" )  variables.fw.redirect( "users/maintain", "messages,User,userid" );
+			else variables.fw.redirect( "users", "messages" );
 		} else {
-			rc.User = result.getTheObject();
 			variables.fw.redirect( "users/maintain", "messages,User,userid" );
 		}
 	}

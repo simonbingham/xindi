@@ -26,7 +26,7 @@
 	<cfif ArrayLen( rc.updatedpages )>
 		<hr />
 		
-		<p class="pull-right"><a href="#buildURL( 'pages' )#" class="btn btn-primary">Manage Pages <i class="icon-chevron-right icon-white"></i></a></p>
+		<p class="pull-right"><a href="#buildURL( 'pages' )#" class="btn btn-primary">Manage pages <i class="icon-chevron-right icon-white"></i></a></p>
 		
 		<h3>Pages</h3>
 		
@@ -54,7 +54,7 @@
 	<cfif rc.config.newsconfig.enabled and ArrayLen( rc.updatedarticles )>
 		<hr />
 		
-		<p class="pull-right"><a href="#buildURL( 'news' )#" class="btn btn-primary">Manage News <i class="icon-chevron-right icon-white"></i></a></p>
+		<p class="pull-right"><a href="#buildURL( 'news' )#" class="btn btn-primary">Manage news <i class="icon-chevron-right icon-white"></i></a></p>
 		
 		<h3>News</h3>
 		
@@ -82,7 +82,7 @@
 	<cfif ArrayLen( rc.unreadenquiries )>
 		<hr />
 		
-		<p class="pull-right"><a href="#buildURL( 'enquiries' )#" class="btn btn-primary">View Enquiries <i class="icon-chevron-right icon-white"></i></a></p>
+		<p class="pull-right"><a href="#buildURL( 'enquiries' )#" class="btn btn-primary">View enquiries <i class="icon-chevron-right icon-white"></i></a></p>
 		
 		<h3>Enquiries</h3>
 		

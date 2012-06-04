@@ -68,7 +68,7 @@ component accessors="true" extends="abstract" {
 		param name="rc.metadescription" default="";
 		param name="rc.metakeywords" default="";
 		param name="rc.context" default="create";
-		param name="rc.submit" default="Save & Exit";
+		param name="rc.submit" default="Save & exit";
 		var properties = { pageid=rc.pageid, title=rc.title, content=rc.content, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
 		rc.result = variables.ContentService.savePage( properties, rc.ancestorid, rc.context );
 		rc.messages = rc.result.messages;

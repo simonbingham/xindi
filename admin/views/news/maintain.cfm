@@ -19,6 +19,8 @@
 <cfoutput>
 	<div class="page-header"><cfif rc.Article.isPersisted()><h1>Edit Article</h1><cfelse><h1>Add Article</h1></cfif></div>
 
+	<p><a href="#buildURL( 'news' )#" class="btn"><i class="icon-chevron-left"></i> Back to articles</a></p>
+
 	#view( "helpers/messages" )#
 	
 	<form action="#buildURL( 'news.save' )#" method="post" class="form-horizontal" id="article-form">
@@ -66,8 +68,9 @@
 		</fieldset>
 		
 		<div class="form-actions">
-			<input type="submit" name="submit" value="Save &amp; Continue" class="btn">
-			<input type="submit" name="submit" value="Save &amp; Exit" class="btn btn-primary">
+			<input type="submit" name="submit" value="Save &amp; continue" class="btn btn-primary">
+			<input type="submit" name="submit" value="Save &amp; exit" class="btn btn-primary">
+			<a href="#buildURL( 'news' )#" class="btn cancel">Cancel</a>
 		</div>
 		
 		<input type="hidden" name="articleid" id="articleid" value="#HtmlEditFormat( rc.Article.getArticleID() )#">

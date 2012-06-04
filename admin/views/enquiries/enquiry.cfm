@@ -20,9 +20,11 @@
 	<div class="page-header"><h1>#rc.Enquiry.getFullName()# <small>#DateFormat( rc.Enquiry.getCreated(), "full" )# at #TimeFormat( rc.Enquiry.getCreated(), "full" )#</small></h1></div>
 
 	<p>
-		<a href="#buildURL( 'enquiries' )#" class="btn btn-primary"><i class="icon-chevron-left icon-white"></i> Return to Enquiries</a>
-		<a href="mailto:#rc.Enquiry.getEmail()#" class="btn btn-primary">Reply to Enquiry <i class="icon-chevron-right icon-white"></i></a>
+		<a href="#buildURL( 'enquiries' )#" class="btn"><i class="icon-chevron-left"></i> Back to enquiries</a>
+		<a href="mailto:#rc.Enquiry.getEmail()#" class="btn btn-primary"><i class="icon-envelope icon-white"></i> Reply</a>
 	</p>
 
-	#rc.Enquiry.getDisplayMessage()#
+	<hr>
+
+	<blockquote>#rc.Enquiry.getDisplayMessage()#</blockquote>
 </cfoutput>

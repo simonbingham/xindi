@@ -19,6 +19,8 @@
 <cfoutput>
 	<div class="page-header"><cfif rc.Page.isPersisted()><h1>Edit Page</h1><cfelse><h1>Add Page</h1></cfif></div>
 
+	<p><a href="#buildURL( 'pages' )#" class="btn"><i class="icon-chevron-left"></i> Back to pages</a></p>
+
 	#view( "helpers/messages" )#
 	
 	<form action="#buildURL( 'pages.save' )#" method="post" class="form-horizontal" id="page-form">
@@ -58,8 +60,9 @@
 		</fieldset>
 		
 		<div class="form-actions">
-			<input type="submit" name="submit" value="Save &amp; Continue" class="btn">
-			<input type="submit" name="submit" value="Save &amp; Exit" class="btn btn-primary">
+			<input type="submit" name="submit" value="Save &amp; continue" class="btn btn-primary">
+			<input type="submit" name="submit" value="Save &amp; exit" class="btn btn-primary">
+			<a href="#buildURL( 'pages' )#" class="btn cancel">Cancel</a>
 		</div>
 		
 		<input type="hidden" name="pageid" id="pageid" value="#HtmlEditFormat( rc.Page.getPageID() )#">

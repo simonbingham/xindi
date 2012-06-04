@@ -18,6 +18,8 @@
 
 <cfoutput>
 	<div class="page-header"><cfif rc.User.isPersisted()><h1>Edit User</h1><cfelse><h1>Add User</h1></cfif></div>
+	
+	<p><a href="#buildURL( 'users' )#" class="btn"><i class="icon-chevron-left"></i> Back to users</a></p>
 
 	#view( "helpers/messages" )#
 	
@@ -52,7 +54,9 @@
 		</fieldset>
 		
 		<div class="form-actions">
-			<input type="submit" name="submit" id="submit" value="Save User" class="btn btn-primary">
+			<input type="submit" name="submit" value="Save &amp; continue" class="btn btn-primary">
+			<input type="submit" name="submit" id="submit" value="Save &amp; exit" class="btn btn-primary">
+			<a href="#buildURL( 'news' )#" class="btn cancel">Cancel</a>
 		</div>
 		
 		<input type="hidden" name="userid" id="userid" value="#HtmlEditFormat( rc.User.getUserID() )#">

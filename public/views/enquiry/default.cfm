@@ -55,8 +55,15 @@
 	<script>
 	jQuery(function($){
 		$.validator.setDefaults({
+			errorElement: 'span',
 			errorClass: 'error', 
-			errorElement: 'span'
+			validClass: 'success',
+			success: function(element) {
+          		$(element).parent().parent().addClass("success").removeClass( "error" );
+        	},
+		    highlight: function(element) {
+		        $(element).parent().parent().addClass("error").removeClass("success");
+		    }			
 		});
 	});
 	</script>		
