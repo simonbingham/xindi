@@ -1,4 +1,4 @@
-/* 
+/*
 	Xindi - http://www.getxindi.com/ - Version TBC
 	
 	Copyright (c) 2012, Simon Bingham
