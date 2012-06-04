@@ -3,7 +3,13 @@ jQuery( function($) {
 	// validator defaults
 	$.validator.setDefaults({
 		errorClass: 'error', 
-		errorElement: 'span'
+		errorElement: 'span',
+	    highlight: function(element) {
+	        $(element).parent().parent().addClass("error");
+	    },
+	    unhighlight: function(element) {
+	        $(element).parent().parent().removeClass("error");
+	    }
 	});
 
 	// return to top of page
