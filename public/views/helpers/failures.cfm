@@ -17,11 +17,11 @@
 --->
 
 <cfoutput>
-	<div class="page-header"><h1>#rc.Enquiry.getFullName()# <small>#DateFormat( rc.Enquiry.getCreated(), "full" )# at #TimeFormat( rc.Enquiry.getCreated(), "full" )#</small></h1></div>
-
-	<p><a href="mailto:#rc.Enquiry.getEmail()#" class="btn btn-primary"><i class="icon-envelope icon-white"></i> Reply</a></p>
-
-	<hr>
-
-	<blockquote>#rc.Enquiry.getDisplayMessage()#</blockquote>
+	<cfif StructKeyExists( rc.result.getFailureMessagesByProperty(), local.property )>
+		<span class="error">
+			<cfloop array="#rc.result.getFailureMessagesByProperty()[ local.property ]#" index="local.message">
+				#local.message#
+			</cfloop> 
+		</span>
+	</cfif>
 </cfoutput>

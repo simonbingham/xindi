@@ -19,30 +19,35 @@
 <cfoutput>
 	<div class="page-header"><cfif rc.Article.isPersisted()><h1>Edit Article</h1><cfelse><h1>Add Article</h1></cfif></div>
 
-	<p><a href="#buildURL( 'news' )#" class="btn"><i class="icon-chevron-left"></i> Back to articles</a></p>
-
 	#view( "helpers/messages" )#
 	
 	<form action="#buildURL( 'news.save' )#" method="post" class="form-horizontal" id="article-form">
 		<fieldset>
 			<legend>Article Content</legend>	
 	
-			<div class="control-group">
+			<div class="control-group <cfif rc.result.hasErrors( 'title' )>error</cfif>">
 				<label class="control-label" for="title">Title <cfif rc.Validator.propertyIsRequired( "title" )>*</cfif></label>
-				<div class="controls"><input class="input-xlarge" type="text" name="title" id="title" value="#HtmlEditFormat( rc.Article.getTitle() )#" maxlength="100"></div>
+				<div class="controls">
+					<input class="input-xlarge" type="text" name="title" id="title" value="#HtmlEditFormat( rc.Article.getTitle() )#" maxlength="100">
+					#view( "helpers/failures", { property="title" } )#
+				</div>
 			</div>
 
-			<div class="control-group">
+			<div class="control-group <cfif rc.result.hasErrors( 'published' )>error</cfif>">
 				<label class="control-label" for="published">Date <cfif rc.Validator.propertyIsRequired( "published" )>*</cfif></label>
 				<div class="controls">
 					<input class="input-xlarge datepicker" type="text" name="published" id="published" value="<cfif IsDate( rc.Article.getPublished() )>#HtmlEditFormat( DateFormat( rc.Article.getPublished(), 'dd/mm/yyyy' ) )#</cfif>" title="The date the article is to be published">
+					#view( "helpers/failures", { property="published" } )#
 					<noscript><p class="help-block">Enter in 'dd/mm/yyyy' format.</p></noscript>
 				</div>
 			</div>
 			
-			<div class="control-group">
+			<div class="control-group <cfif rc.result.hasErrors( 'content' )>error</cfif>">
 				<label class="control-label" for="article-content">Content <cfif rc.Validator.propertyIsRequired( "content" )>*</cfif></label>
-				<div class="controls"><textarea class="input-xlarge ckeditor" name="content" id="article-content">#HtmlEditFormat( rc.Article.getContent() )#</textarea></div>
+				<div class="controls">
+					<textarea class="input-xlarge ckeditor" name="content" id="article-content">#HtmlEditFormat( rc.Article.getContent() )#</textarea>
+					#view( "helpers/failures", { property="content" } )#
+				</div>
 			</div>
 		</fieldset>                        
 
@@ -51,19 +56,28 @@
 		
 	    	<div class="alert alert-info">If you leave these fields empty the meta tags will be generated automatically.</div>		
 		
-			<div class="control-group">
+			<div class="control-group <cfif rc.result.hasErrors( 'metatitle' )>error</cfif>">
 				<label class="control-label" for="metatitle">Title <cfif rc.Validator.propertyIsRequired( "metatitle" )>*</cfif></label>
-				<div class="controls"><input class="input-xlarge" type="text" name="metatitle" id="metatitle" value="#HtmlEditFormat( rc.Article.getMetaTitle() )#" maxlength="100"></div>
+				<div class="controls">
+					<input class="input-xlarge" type="text" name="metatitle" id="metatitle" value="#HtmlEditFormat( rc.Article.getMetaTitle() )#" maxlength="100">
+					#view( "helpers/failures", { property="metatitle" } )#
+				</div>
 			</div>
 			
-			<div class="control-group">
+			<div class="control-group <cfif rc.result.hasErrors( 'metadescription' )>error</cfif>">
 				<label class="control-label" for="metadescription">Description <cfif rc.Validator.propertyIsRequired( "metadescription" )>*</cfif></label>
-				<div class="controls"><input class="input-xlarge" type="text" name="metadescription" id="metadescription" value="#HtmlEditFormat( rc.Article.getMetaDescription() )#" maxlength="200"></div>
+				<div class="controls">
+					<input class="input-xlarge" type="text" name="metadescription" id="metadescription" value="#HtmlEditFormat( rc.Article.getMetaDescription() )#" maxlength="200">
+					#view( "helpers/failures", { property="metadescription" } )#
+				</div>
 			</div>
 			
-			<div class="control-group">
+			<div class="control-group <cfif rc.result.hasErrors( 'metakeywords' )>error</cfif>">
 				<label class="control-label" for="metakeywords">Keywords <cfif rc.Validator.propertyIsRequired( "metakeywords" )>*</cfif></label>
-				<div class="controls"><input class="input-xlarge" type="text" name="metakeywords" id="metakeywords" value="#HtmlEditFormat( rc.Article.getMetaKeywords() )#" maxlength="200"></div>
+				<div class="controls">
+					<input class="input-xlarge" type="text" name="metakeywords" id="metakeywords" value="#HtmlEditFormat( rc.Article.getMetaKeywords() )#" maxlength="200">
+					#view( "helpers/failures", { property="metakeywords" } )#
+				</div>
 			</div>
 		</fieldset>
 		

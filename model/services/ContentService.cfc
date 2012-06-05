@@ -150,7 +150,7 @@ component accessors="true" {
 				result.messages.success = "The page &quot;#Page.getTitle()#&quot; has been saved.";
 			} else {
 				transaction action="rollback";
-				result.messages.error = "Your page could not be saved. Please amend the following:";
+				result.messages.error = "Your page could not be saved. Please amend the highlighted fields.";
 			}
 		}
 		return result;

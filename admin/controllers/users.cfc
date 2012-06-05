@@ -45,6 +45,7 @@ component accessors="true" extends="abstract" {
 		if( !StructKeyExists( rc, "User" ) ) rc.User = variables.UserService.getUserByID( Val( rc.userid ) );
 		if( rc.User.isPersisted() ) rc.context = "update";
 		rc.Validator = variables.UserService.getValidator( rc.User );
+		if( !StructKeyExists( rc, "result" ) ) rc.result = rc.Validator.newResult();
 	}	
 	
 	void function save( required struct rc ) {
@@ -57,14 +58,14 @@ component accessors="true" extends="abstract" {
 		param name="rc.context" default="create";
 		param name="rc.submit" default="Save & exit";
 		var properties = { userid=rc.userid, firstname=rc.firstname, lastname=rc.lastname, email=rc.email, username=rc.username, password=rc.password };
-		var result = variables.UserService.saveUser( properties, rc.context );
-		rc.messages = result.messages;
-		rc.User = result.getTheObject();
+		rc.result = variables.UserService.saveUser( properties, rc.context );
+		rc.messages = rc.result.messages;
+		rc.User = rc.result.getTheObject();
 		if( StructKeyExists( rc.messages, "success" ) ) {
 			if( rc.submit == "Save & Continue" )  variables.fw.redirect( "users/maintain", "messages,User,userid" );
 			else variables.fw.redirect( "users", "messages" );
 		} else {
-			variables.fw.redirect( "users/maintain", "messages,User,userid" );
+			variables.fw.redirect( "users/maintain", "messages,User,userid,result" );
 		}
 	}
 	

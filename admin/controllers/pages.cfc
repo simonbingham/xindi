@@ -49,6 +49,7 @@ component accessors="true" extends="abstract" {
 		if( !StructKeyExists( rc, "Page" ) ) rc.Page = variables.ContentService.getPageByID( Val( rc.pageid ) );
 		if( rc.Page.isPersisted() && !rc.Page.hasRoute( variables.fw.getRoutes() ) ) rc.context = "update";
 		rc.Validator = variables.ContentService.getValidator( rc.Page );
+		if( !StructKeyExists( rc, "result" ) ) rc.result = rc.Validator.newResult();
 	}	
 	
 	void function move( required struct rc ) {

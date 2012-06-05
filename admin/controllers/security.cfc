@@ -40,6 +40,7 @@ component accessors="true" {
 		} else {
 			rc.User = variables.UserService.newUser();
 			rc.Validator = variables.UserService.getValidator( rc.User );
+			if( !StructKeyExists( rc, "result" ) ) rc.result = rc.Validator.newResult();
 		}
 	}
 	

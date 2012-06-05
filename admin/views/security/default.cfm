@@ -25,14 +25,20 @@
 			
 			#view( "helpers/messages" )#
 			
-			<div class="control-group">
+			<div class="control-group <cfif rc.result.hasErrors( 'username' )>error</cfif>">
 				<label class="control-label" for="username">Username</label>
-				<div class="controls"><input class="input-xlarge" type="text" name="username" id="username"></div>
+				<div class="controls">
+					<input class="input-xlarge" type="text" name="username" id="username">
+					#view( "helpers/failures", { property="username" } )#
+				</div>
 			</div>
 			
-			<div class="control-group">
+			<div class="control-group <cfif rc.result.hasErrors( 'password' )>error</cfif>">
 				<label class="control-label" for="password">Password</label>
-				<div class="controls"><input class="input-xlarge" type="password" name="password" id="password"></div>
+				<div class="controls">
+					<input class="input-xlarge" type="password" name="password" id="password">
+					#view( "helpers/failures", { property="password" } )#
+				</div>
 			</div>
 			
 			<div class="form-actions">

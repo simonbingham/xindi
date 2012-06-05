@@ -105,7 +105,7 @@ component accessors="true" {
 		        result.messages.success = "Your enquiry has been sent.";
 			} else {
 				transaction action="rollback";
-				result.messages.error = "Your enquiry could not be sent. Please amend the following:";
+				result.messages.error = "Your enquiry could not be sent. Please amend the highlighted fields.";
 			}
 			return result;
 		}

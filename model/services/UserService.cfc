@@ -76,7 +76,7 @@ component accessors="true" {
 				EntitySave( User );
 				transaction action="commit";
 			} else {
-				result.messages.error = "The user could not be saved. " & result.getFailuresAsString();
+				result.messages.error = "The user could not be saved. Please amend the highlighted fields.";
 				transaction action="rollback";
 			}
 		}

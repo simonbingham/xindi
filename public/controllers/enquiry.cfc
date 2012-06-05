@@ -32,6 +32,7 @@ component accessors="true" extends="abstract" {
 	void function default( required struct rc ) {
 		if( !StructKeyExists( rc, "Enquiry" ) ) rc.Enquiry = variables.EnquiryService.newEnquiry();
 		rc.Validator = variables.EnquiryService.getValidator( rc.Enquiry );
+		if( !StructKeyExists( rc, "result" ) ) rc.result = rc.Validator.newResult();
 		rc.MetaData.setMetaTitle( "Contact Us" ); 
 		rc.MetaData.setMetaDescription( "" );
 		rc.MetaData.setMetaKeywords( "" );		

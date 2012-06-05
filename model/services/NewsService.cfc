@@ -90,7 +90,7 @@ component accessors="true" {
 				result.messages.success = "The article &quot;#Article.getTitle()#&quot; has been saved.";
 			} else {
 				transaction action="rollback";
-				result.messages.error = "Your article could not be saved. Please amend the following:";
+				result.messages.error = "Your article could not be saved. Please amend the highlighted fields.";
 			}
 		}
 		return result;
