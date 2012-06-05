@@ -21,13 +21,11 @@
 	
 	<cfif ArrayLen( rc.articles )>
 		<cfloop array="#rc.articles#" index="local.Article">
-			<div>
+			<div class="well">
 				<h2>
 					<a href="#buildURL( action='news.article', querystring='uuid=#local.Article.getUUID()#' )#">#local.Article.getTitle()#</a>
 					
-					<small>#DateFormat( local.Article.getPublished(), "full" )#</small>
-					
-					<cfif local.Article.isNew()><span class="label label-info">new</span></cfif>
+					<small class="pull-right">#DateFormat( local.Article.getPublished(), "full" )#</small>
 				</h2>
 				
 				#local.Article.getSummary()#

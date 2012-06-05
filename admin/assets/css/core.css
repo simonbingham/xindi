@@ -14,6 +14,7 @@ td.chevron-right{ background:url("../img/ico-chevron-right.gif") no-repeat; }
 
 .append-bottom{ margin-bottom:30px; }
 .center{ text-align:center !important; }
+.clear{ clear:both; }
 .error{ color:#B94A48; }
 .faded{ color:#888; font-style:italic; }
 .hide{ display:none; }

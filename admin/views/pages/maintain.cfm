@@ -17,7 +17,7 @@
 --->
 
 <cfoutput>
-	<div class="page-header"><cfif rc.Page.isPersisted()><h1>Edit Page</h1><cfelse><h1>Add Page</h1></cfif></div>
+	<div class="page-header clear"><cfif rc.Page.isPersisted()><h1>Edit Page</h1><cfelse><h1>Add Page</h1></cfif></div>
 
 	#view( "helpers/messages" )#
 	

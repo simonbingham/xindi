@@ -19,7 +19,7 @@
 <cfset local.routes = variables.framework.routes />
 
 <cfoutput>
-	<div class="page-header"><h1>Pages</h1></div>
+	<div class="page-header clear"><h1>Pages</h1></div>
 	
 	#view( "helpers/messages" )#
 	

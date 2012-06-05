@@ -30,9 +30,7 @@
 		<h1>
 			#rc.Article.getTitle()#
 			
-			<small>#DateFormat( rc.Article.getPublished(), "full" )#</small>
-			
-			<cfif rc.Article.isNew()><span class="label label-info">new</span></cfif>
+			<small class="pull-right">#DateFormat( rc.Article.getPublished(), "full" )#</small>
 		</h1>
 	</div>
 	
