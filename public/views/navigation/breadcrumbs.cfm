@@ -18,7 +18,7 @@
 
 <cfoutput>
 	<cfif !IsNull( rc.Page ) and !rc.Page.isRoot()>
-	    <ul class="breadcrumbs">
+	    <ul class="breadcrumb">
 	    	<li>
 	    		<cfloop array="#rc.Page.getPath()#" index="local.Page">
     				<a href="#buildURL( local.Page.getSlug() )#">#local.Page.getTitle()#</a> <span class="divider">/</span>
