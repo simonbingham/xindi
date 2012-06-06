@@ -16,7 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true" extends="abstract" {
+component accessors="true" extends="abstract"{
 	
 	/*
 	 * Dependency injection
@@ -28,29 +28,29 @@ component accessors="true" extends="abstract" {
 	 * Public methods
 	 */	
 
-	void function default( required struct rc ) {
+	void function default( required struct rc ){
 		rc.enquiries = variables.EnquiryService.getEnquiries();
 		rc.unreadenquirycount = variables.EnquiryService.getUnreadEnquiryCount();
 	}
 	
-	void function delete( required struct rc ) {
+	void function delete( required struct rc ){
 		param name="rc.enquiryid" default="0";
 		var result = variables.EnquiryService.deleteEnquiry( Val( rc.enquiryid ) );
 		rc.messages = result.messages;
 		variables.fw.redirect( "enquiries", "messages" );
 	}	
 	
-	void function enquiry( required struct rc ) {
+	void function enquiry( required struct rc ){
 		param name="rc.enquiryid" default="0";
 		rc.Enquiry = variables.EnquiryService.getEnquiryByID( Val( rc.enquiryid ) );
 		if( !IsNull( rc.Enquiry ) ){
 			variables.EnquiryService.markRead( Val( rc.Enquiry.getEnquiryID() ) );
-		} else {
+		}else{
 			variables.fw.redirect( "main/notfound" );
 		}
 	}
 	
-	void function markallread( required struct rc ) {
+	void function markallread( required struct rc ){
 		var result = variables.EnquiryService.markAllRead();
 		rc.messages = result.messages;
 		variables.fw.redirect( "enquiries", "messages" );

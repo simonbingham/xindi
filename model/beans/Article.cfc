@@ -16,7 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component extends="Base" persistent="true" table="articles" cacheuse="transactional" {
+component extends="Base" persistent="true" table="articles" cacheuse="transactional"{
 
 	/*
 	 * Properties
@@ -38,51 +38,51 @@ component extends="Base" persistent="true" table="articles" cacheuse="transactio
 	 * Public methods
 	 */
 
-	Article function init() {
+	Article function init(){
 		return this;
 	}
 
-	string function getRSSSummary()  {
+	string function getRSSSummary() {
 		return XMLFormat( getSummary() );
 	}
 
-	string function getSummary() {
+	string function getSummary(){
 		var plaintext = Trim( ReReplace( REReplaceNoCase( Trim( getContent() ), "<[^>]{1,}>", " ", "all" ), " +", " ", "all" ) );
-		if ( Len( plaintext ) > 500 ) {
+		if( Len( plaintext ) > 500 ){
 			return Left( plaintext, 500 ) & "...";
 		}
 		return plaintext;
 	}
 
-	boolean function hasMetaDescription() {
+	boolean function hasMetaDescription(){
 		return Len( Trim( getMetaDescription() ) );	
 	}
 	
-	boolean function hasMetaKeywords() {
+	boolean function hasMetaKeywords(){
 		return Len( Trim( getMetaKeywords() ) );
 	}
 
-	boolean function hasMetaTitle() {
+	boolean function hasMetaTitle(){
 		return Len( Trim( getMetaTitle() ) );		
 	}
 
-	boolean function isNew() {
+	boolean function isNew(){
 		return DateDiff( "ww", getPublished(), Now() ) < 1;
 	}
 	
-	boolean function isPersisted() {
+	boolean function isPersisted(){
 		return !IsNull( variables.articleid );
 	}
 	
-	boolean function isPublished() {
+	boolean function isPublished(){
 		return variables.published < Now();
 	}
 	
-	void function preInsert() {
+	void function preInsert(){
 		setUUID();
 	}
 	
-	void function preUpdate() {
+	void function preUpdate(){
 		setUUID();
 	}
 
@@ -90,14 +90,14 @@ component extends="Base" persistent="true" table="articles" cacheuse="transactio
 	 * Private methods
 	 */
 
-	private boolean function isUUIDUnique() {
+	private boolean function isUUIDUnique(){
 		var matches = []; 
-		if( isPersisted() ) matches = ORMExecuteQuery( "from Article where articleid <> :articleid and uuid = :uuid", { articleid=getArticleID(), uuid=getUUID()} );
-		else matches = ORMExecuteQuery( "from Article where uuid=:uuid", { uuid=getUUID() } );
+		if( isPersisted() ) matches = ORMExecuteQuery( "from Article where articleid <> :articleid and uuid = :uuid",{ articleid=getArticleID(), uuid=getUUID()});
+		else matches = ORMExecuteQuery( "from Article where uuid=:uuid",{ uuid=getUUID() });
 		return !ArrayLen( matches );
 	}
 
-	private void function setUUID() {
+	private void function setUUID(){
 		variables.uuid = ReReplace( LCase( getTitle() ), "[^a-z0-9]{1,}", "", "all" );
 		while ( !isUUIDUnique() ) variables.uuid &= "-"; 
 	}

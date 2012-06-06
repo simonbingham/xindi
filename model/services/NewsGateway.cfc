@@ -26,7 +26,7 @@
 		
 		<cfset var qArticles = "">
 		<cfset var thesearchterm = Trim( arguments.searchterm )>
-		<cfset var ormoptions = {}>
+		<cfset var ormoptions ={}>
 		
 		<cfif arguments.maxresults>
 			<cfset ormoptions.maxresults = arguments.maxresults>

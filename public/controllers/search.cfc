@@ -16,7 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true" extends="abstract" {
+component accessors="true" extends="abstract"{
 
 	/*
 	 * Dependency injection
@@ -28,7 +28,7 @@ component accessors="true" extends="abstract" {
 	 * Public methods
 	 */		
 	
-	void function default( required struct rc ) {
+	void function default( required struct rc ){
 		param name="rc.searchterm" default="";
 		if( Len( Trim( rc.searchterm ) ) ) rc.pages = variables.ContentService.getPages( searchterm=rc.searchterm );
 		rc.MetaData.setMetaTitle( "Search Results" ); 

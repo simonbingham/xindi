@@ -29,7 +29,7 @@
 				<label class="control-label" for="firstname">First Name <cfif rc.Validator.propertyIsRequired( "firstname" )>*</cfif></label>
 				<div class="controls">
 					<input class="input-xlarge" type="text" name="firstname" id="firstname" value="#HtmlEditFormat( rc.Enquiry.getFirstName() )#" maxlength="50">
-					#view( "helpers/failures", { property="firstname" } )#
+					#view( "helpers/failures",{ property="firstname" })#
 				</div>
 			</div>
 
@@ -37,7 +37,7 @@
 				<label class="control-label" for="lastname">Last Name <cfif rc.Validator.propertyIsRequired( "lastname" )>*</cfif></label>
 				<div class="controls">
 					<input class="input-xlarge" type="text" name="lastname" id="lastname" value="#HtmlEditFormat( rc.Enquiry.getLastName() )#" maxlength="50">
-					#view( "helpers/failures", { property="lastname" } )#
+					#view( "helpers/failures",{ property="lastname" })#
 				</div>
 			</div>
 
@@ -45,7 +45,7 @@
 				<label class="control-label" for="email">Email Address <cfif rc.Validator.propertyIsRequired( "email" )>*</cfif></label>
 				<div class="controls">
 					<input class="input-xlarge" type="text" name="email" id="email" value="#HtmlEditFormat( rc.Enquiry.getEmail() )#" maxlength="150">
-					#view( "helpers/failures", { property="email" } )#
+					#view( "helpers/failures",{ property="email" })#
 				</div>
 			</div>
 		
@@ -53,7 +53,7 @@
 				<label class="control-label" for="message">Message <cfif rc.Validator.propertyIsRequired( "message" )>*</cfif></label>
 				<div class="controls">
 					<textarea class="input-xlarge" name="message" id="message">#HtmlEditFormat( rc.Enquiry.getMessage() )#</textarea>
-					#view( "helpers/failures", { property="message" } )#
+					#view( "helpers/failures",{ property="message" })#
 				</div>
 			</div>
 		</fieldset>                        
@@ -70,10 +70,10 @@
 			errorElement: 'span',
 			errorClass: 'error', 
 			validClass: 'success',
-			success: function(element) {
+			success: function(element){
           		$(element).parent().parent().addClass("success").removeClass( "error" );
         	},
-		    highlight: function(element) {
+		    highlight: function(element){
 		        $(element).parent().parent().addClass("error").removeClass("success");
 		    }			
 		});

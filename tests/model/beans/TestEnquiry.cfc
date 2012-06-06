@@ -16,10 +16,10 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component extends="mxunit.framework.TestCase" {
+component extends="mxunit.framework.TestCase"{
 	// ------------------------ TESTS ------------------------ //
 	 
-	function testLineFeedAndCarriageReturnReplace() {
+	function testLineFeedAndCarriageReturnReplace(){
 		var Enquiry = new model.beans.Enquiry();
 		Enquiry.setMessage( "
 		This
@@ -30,13 +30,13 @@ component extends="mxunit.framework.TestCase" {
 		assertTrue( FindNoCase( "<br />", Enquiry.getDisplayMessage() ) );
 	}
 	 
-	function testHTMLisEscaped() {
+	function testHTMLisEscaped(){
 		var Enquiry = new model.beans.Enquiry();
 		Enquiry.setMessage( "<script>alert('hack');</script>" );
 		assertEquals( "&lt;script&gt;alert('hack');&lt;/script&gt;", Enquiry.getDisplayMessage() );
 	}
 
-	function testGetFullName() {
+	function testGetFullName(){
 		var Enquiry = new model.beans.Enquiry();
 		Enquiry.setFirstName( "simon" );
 		Enquiry.setLastName( "bingham" );
@@ -48,21 +48,21 @@ component extends="mxunit.framework.TestCase" {
 	/**
 	* this will run before every single test in this test case
 	*/
-	function setUp() {}
+	function setUp(){}
 	
 	/**
 	* this will run after every single test in this test case
 	*/
-	function tearDown() {}
+	function tearDown(){}
 	
 	/**
 	* this will run once after initialization and before setUp()
 	*/
-	function beforeTests() {}
+	function beforeTests(){}
 	
 	/**
 	* this will run once after all tests have been run
 	*/
-	function afterTests() {}
+	function afterTests(){}
 	
 }

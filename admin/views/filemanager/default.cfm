@@ -146,7 +146,7 @@
 							return false;
 						}
 						
-						jQuery( function($) {
+						jQuery( function($){
 							$imagePreview = $('<img id="preview-image" style="position:absolute;top:10px;right:10px;" alt="image preview" />').hide().appendTo('body');
 							
 							$('a.image-preview').hover(

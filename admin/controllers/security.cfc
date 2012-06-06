@@ -16,7 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true" {
+component accessors="true"{
 	
 	/*
 	 * Dependency injection
@@ -29,32 +29,32 @@ component accessors="true" {
 	 * Public methods
 	 */	
 	 
-	void function init( required any fw ) {
+	void function init( required any fw ){
 		variables.fw = arguments.fw;
 	}
 
-	void function default( required rc ) {
+	void function default( required rc ){
 		rc.loggedin = variables.SecurityService.hasCurrentUser();
-		if( rc.loggedin ) {
+		if( rc.loggedin ){
 			variables.fw.redirect( "main" );
-		} else {
+		}else{
 			rc.User = variables.UserService.newUser();
 			rc.Validator = variables.UserService.getValidator( rc.User );
 			if( !StructKeyExists( rc, "result" ) ) rc.result = rc.Validator.newResult();
 		}
 	}
 	
-	void function login( required rc ) {
+	void function login( required rc ){
 		param name="rc.username" default="";
 		param name="rc.password" default="";
-		var properties = { username=rc.username, password=rc.password };
+		var properties ={ username=rc.username, password=rc.password };
 		var result = variables.SecurityService.loginUser( properties );
 		rc.messages = result.messages;
 		if( StructKeyExists( rc.messages, "success" ) ) variables.fw.redirect( "main", "messages" );
 		else variables.fw.redirect( "security", "messages" );
 	}
 
-	void function logout( required rc ) {
+	void function logout( required rc ){
 		var result = variables.SecurityService.deleteCurrentUser();
 		rc.messages = result.messages;
 		variables.fw.redirect( "security", "messages" );

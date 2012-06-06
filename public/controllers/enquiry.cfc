@@ -16,7 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true" extends="abstract" {
+component accessors="true" extends="abstract"{
 
 	/*
 	 * Dependency injection
@@ -29,7 +29,7 @@ component accessors="true" extends="abstract" {
 	 * Public methods
 	 */		
 	
-	void function default( required struct rc ) {
+	void function default( required struct rc ){
 		if( !StructKeyExists( rc, "Enquiry" ) ) rc.Enquiry = variables.EnquiryService.newEnquiry();
 		rc.Validator = variables.EnquiryService.getValidator( rc.Enquiry );
 		if( !StructKeyExists( rc, "result" ) ) rc.result = rc.Validator.newResult();
@@ -38,18 +38,18 @@ component accessors="true" extends="abstract" {
 		rc.MetaData.setMetaKeywords( "" );		
 	}
 	
-	void function send( required struct rc ) {
+	void function send( required struct rc ){
 		param name="rc.firstname" default="";
  		param name="rc.lastname" default="";
  		param name="rc.email" default="";
  		param name="rc.message" default="";
-		var properties = { firstname=rc.firstname, lastname=rc.lastname, email=rc.email, message=rc.message };
+		var properties ={ firstname=rc.firstname, lastname=rc.lastname, email=rc.email, message=rc.message };
 		var emailtemplatepath = "../../public/views/enquiry/email.cfm";
 		rc.result = variables.EnquiryService.sendEnquiry( properties, variables.config.enquiryconfig, emailtemplatepath );
 		rc.messages = rc.result.messages;
-		if( StructKeyExists( rc.messages, "success" ) ) {
+		if( StructKeyExists( rc.messages, "success" ) ){
 			variables.fw.redirect( "enquiry/thanks" );	
-		} else {
+		}else{
 			rc.Enquiry = rc.result.getTheObject();
 			variables.fw.redirect( "enquiry", "messages,Enquiry,result" );
 		}		

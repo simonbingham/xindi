@@ -16,7 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component extends="Base" persistent="true" table="enquiries" cacheuse="transactional" {
+component extends="Base" persistent="true" table="enquiries" cacheuse="transactional"{
 	
 	/*
 	 * Properties
@@ -35,7 +35,7 @@ component extends="Base" persistent="true" table="enquiries" cacheuse="transacti
 	 * Public methods
 	 */
 	 	
-	Enquiry function init() {
+	Enquiry function init(){
 		variables.firstname = "";
 		variables.lastname = "";
 		variables.email = "";
@@ -44,19 +44,19 @@ component extends="Base" persistent="true" table="enquiries" cacheuse="transacti
 		return this;
 	}
 	
-	string function getDisplayMessage() {
+	string function getDisplayMessage(){
 		return REReplace( HTMLEditFormat( variables.message ), "[\r\n]+", "<br /><br />", "ALL" );
 	}	
 	
-	string function getFullName() {
+	string function getFullName(){
 		return variables.firstname & " " & variables.lastname;
 	}
 	
-	boolean function isUnread() {
+	boolean function isUnread(){
 		return getUnread();
 	}	
 	
-	string function setRead() {
+	string function setRead(){
 		setUnread( false );
 	}
 

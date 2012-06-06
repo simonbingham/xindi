@@ -16,7 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component {
+component{
 
 	this.applicationroot = ReReplace( getDirectoryFromPath( getCurrentTemplatePath() ), "tests.$", "", "all" );
 	this.name = ReReplace( "[^W]", this.applicationroot & "tests", "", "all" );
@@ -24,7 +24,7 @@ component {
 	this.mappings[ "/model" ] = this.applicationroot & "model/";
 	this.datasource = "xindi_testsuite";
 	this.ormenabled = true;
-	this.ormsettings = {
+	this.ormsettings ={
 		flushatrequestend = false
 		, automanagesession = false
 		, cfclocation = this.mappings[ "/model" ]

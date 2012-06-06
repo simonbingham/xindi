@@ -16,7 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true" {
+component accessors="true"{
 
 	/*
 	 * Dependency injection
@@ -28,52 +28,52 @@ component accessors="true" {
 	 * Public methods
 	 */
 
-	struct function deleteEnquiry( required numeric enquiryid ) {
+	struct function deleteEnquiry( required numeric enquiryid ){
 		var Enquiry = getEnquiryByID( arguments.enquiryid );
-		var result = {};
-		if( !IsNull( Enquiry ) ) { 
-			transaction {
+		var result ={};
+		if( !IsNull( Enquiry ) ){ 
+			transaction{
 				EntityDelete( Enquiry );
 				result.messages.success = "The enquiry from &quot;#Enquiry.getFullName()#&quot; has been deleted.";
 			}
-		} else {
+		}else{
 			result.messages.error = "The enquiry could not be deleted.";
 		}
 		return result;
 	}
 	
-	array function getEnquiries( numeric maxresults=0 ) {
-		var ormoptions = {};
+	array function getEnquiries( numeric maxresults=0 ){
+		var ormoptions ={};
 		if( arguments.maxresults ) ormoptions.maxresults = arguments.maxresults;	
-		return EntityLoad( "Enquiry", {}, "unread DESC, created DESC", ormoptions );
+		return EntityLoad( "Enquiry",{}, "unread DESC, created DESC", ormoptions );
 	}	
 
-	function getEnquiryByID( required numeric enquiryid ) {
+	function getEnquiryByID( required numeric enquiryid ){
 		return EntityLoadByPK( "Enquiry", arguments.enquiryid );
 	}
 
-	numeric function getUnreadEnquiryCount() {
+	numeric function getUnreadEnquiryCount(){
 		return Val( ORMExecuteQuery( "select count( * ) from Enquiry where unread = true", true ) );
 	}	
 	 	
-	function getValidator( required any Enquiry ) {
+	function getValidator( required any Enquiry ){
 		return variables.Validator.getValidator( theObject=arguments.Enquiry );
 	}	
 	
-	struct function markAllRead() {
+	struct function markAllRead(){
 		transaction{
-			var result = {};
+			var result ={};
 			result.messages.success = "All messages have been marked as read.";
 			ORMExecuteQuery( "update Enquiry set unread=false" );
 		}
 		return result;
 	}
 
-	void function markRead( required numeric enquiryid ) {
+	void function markRead( required numeric enquiryid ){
 		var Enquiry = getEnquiryByID( arguments.enquiryid );
-		var result = {};
-		if( !IsNull( Enquiry ) ) { 
-			transaction {
+		var result ={};
+		if( !IsNull( Enquiry ) ){ 
+			transaction{
 				Enquiry.setRead();
 				EntitySave( Enquiry );
 			}
@@ -90,9 +90,9 @@ component accessors="true" {
 			var Enquiry = newEnquiry(); 
 			Enquiry.populate( arguments.properties );
 			var result = variables.Validator.validate( theObject=Enquiry );
-			result.messages = {};
-			if( !result.hasErrors() ) {
-				savecontent variable="emailtemplate" { include arguments.emailtemplatepath; }
+			result.messages ={};
+			if( !result.hasErrors() ){
+				savecontent variable="emailtemplate"{ include arguments.emailtemplatepath; }
 				var Email = new mail();
 			    Email.setSubject( arguments.enquiryconfig.subject );
 		    	Email.setTo( arguments.enquiryconfig.emailto );
@@ -103,7 +103,7 @@ component accessors="true" {
 		        EntitySave( Enquiry );
 		        transaction action="commit";
 		        result.messages.success = "Your enquiry has been sent.";
-			} else {
+			}else{
 				transaction action="rollback";
 				result.messages.error = "Your enquiry could not be sent. Please amend the highlighted fields.";
 			}

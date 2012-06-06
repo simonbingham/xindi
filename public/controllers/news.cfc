@@ -16,7 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true" extends="abstract" {
+component accessors="true" extends="abstract"{
 
 	/*
 	 * Dependency injection
@@ -28,19 +28,19 @@ component accessors="true" extends="abstract" {
 	 * Public methods
 	 */		
 
-	void function article( required struct rc ) {
+	void function article( required struct rc ){
 		param name="rc.uuid" default="";
 		rc.Article = variables.NewsService.getArticleByUUID( rc.uuid );
-		if( rc.Article.isPersisted() ) {
+		if( rc.Article.isPersisted() ){
 			rc.MetaData.setMetaTitle( rc.Article.getMetaTitle() ); 
 			rc.MetaData.setMetaDescription( rc.Article.getMetaDescription() );
 			rc.MetaData.setMetaKeywords( rc.Article.getMetaKeywords() );
-		} else {
+		}else{
 			variables.fw.redirect( "main/notfound" );
 		}		
 	}
 	
-	void function default( required struct rc ) {
+	void function default( required struct rc ){
 		param name="rc.maxresults" default=rc.config.newsconfig.recordsperpage;
 		param name="rc.offset" default="0";	
 		rc.articles = variables.NewsService.getArticles( published=true, maxresults=rc.maxresults, offset=rc.offset );
@@ -50,7 +50,7 @@ component accessors="true" extends="abstract" {
 		rc.MetaData.setMetaKeywords( "" );
 	}
 	
-	void function rss( required struct rc ) {
+	void function rss( required struct rc ){
 		rc.articles = variables.NewsService.getArticles( published=true );
 	}	
 

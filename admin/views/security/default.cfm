@@ -29,7 +29,7 @@
 				<label class="control-label" for="username">Username</label>
 				<div class="controls">
 					<input class="input-xlarge" type="text" name="username" id="username">
-					#view( "helpers/failures", { property="username" } )#
+					#view( "helpers/failures",{ property="username" })#
 				</div>
 			</div>
 			
@@ -37,7 +37,7 @@
 				<label class="control-label" for="password">Password</label>
 				<div class="controls">
 					<input class="input-xlarge" type="password" name="password" id="password">
-					#view( "helpers/failures", { property="password" } )#
+					#view( "helpers/failures",{ property="password" })#
 				</div>
 			</div>
 			

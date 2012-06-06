@@ -14,7 +14,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component implements="cfide.orm.IEventHandler" {
+component implements="cfide.orm.IEventHandler"{
 
 	/**
      * called before injecting property values into a newly loaded entity instance.
@@ -29,11 +29,11 @@ component implements="cfide.orm.IEventHandler" {
    /**
     * called before inserting the entity into the database.
     */
-	void function preInsert( any entity ) {
+	void function preInsert( any entity ){
 		var timestamp = now();
-		if ( StructKeyExists( arguments.entity, "setcreated" ) ) arguments.entity.setcreated( timestamp );
-		if ( StructKeyExists( arguments.entity, "setupdated" ) ) arguments.entity.setupdated( timestamp );
-	}    
+		if( StructKeyExists( arguments.entity, "setcreated" ) ) arguments.entity.setcreated( timestamp );
+		if( StructKeyExists( arguments.entity, "setupdated" ) ) arguments.entity.setupdated( timestamp );
+	}   
 	
     /**
      * called after the entity is inserted into the database. 
@@ -43,10 +43,10 @@ component implements="cfide.orm.IEventHandler" {
     /**
      * called before the entity is updated in the database.
      */
-	void function preUpdate( any entity, struct oldData ) {
+	void function preUpdate( any entity, struct oldData ){
 		var timestamp = now();
-		if ( StructKeyExists( arguments.entity, "setupdated" ) ) arguments.entity.setupdated( timestamp );
-	}     
+		if( StructKeyExists( arguments.entity, "setupdated" ) ) arguments.entity.setupdated( timestamp );
+	}    
 	
     /**
      * called after the entity is updated in the database. 

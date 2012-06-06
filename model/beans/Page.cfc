@@ -16,7 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component extends="Base" persistent="true" table="pages" cacheuse="transactional" {
+component extends="Base" persistent="true" table="pages" cacheuse="transactional"{
 
 	/*
 	 * Properties
@@ -39,42 +39,42 @@ component extends="Base" persistent="true" table="pages" cacheuse="transactional
 	 * Public methods
 	 */
 
-	Page function init() {
+	Page function init(){
 		return this;
 	}
 	
-	function getAncestor() {
-		return ORMExecuteQuery( "from Page where leftvalue < :leftvalue and rightvalue > :rightvalue order by leftvalue desc", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue }, { maxresults=1 } );
+	function getAncestor(){
+		return ORMExecuteQuery( "from Page where leftvalue < :leftvalue and rightvalue > :rightvalue order by leftvalue desc",{ leftvalue=variables.leftvalue, rightvalue=variables.rightvalue },{ maxresults=1 });
 	}	
 	
-	string function getDescendentPageIDList() {
+	string function getDescendentPageIDList(){
 		var pageidlist = "";
-		for( var looppage in getDescendents() ) {
+		for( var looppage in getDescendents() ){
 			pageidlist = ListAppend( pageidlist, looppage.getPageID() );
 		}
 		return pageidlist; 
 	}
 
-	function getLevel() {
-		return ORMExecuteQuery( "select Count( pageSubQuery ) from Page as pageSubQuery where pageSubQuery.leftvalue < :leftvalue and pageSubQuery.rightvalue > :rightvalue", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue } )[ 1 ];
+	function getLevel(){
+		return ORMExecuteQuery( "select Count( pageSubQuery ) from Page as pageSubQuery where pageSubQuery.leftvalue < :leftvalue and pageSubQuery.rightvalue > :rightvalue",{ leftvalue=variables.leftvalue, rightvalue=variables.rightvalue })[ 1 ];
 	}
 
-	function getNextSibling() {
-		return ORMExecuteQuery( "from Page where leftvalue = :leftvalue", { leftvalue=variables.rightvalue + 1 }, true );
+	function getNextSibling(){
+		return ORMExecuteQuery( "from Page where leftvalue = :leftvalue",{ leftvalue=variables.rightvalue + 1 }, true );
 	}
 	
-	array function getPath() {
-		return ORMExecuteQuery( "from Page where leftvalue < :leftvalue and rightvalue > :rightvalue", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue } );
+	array function getPath(){
+		return ORMExecuteQuery( "from Page where leftvalue < :leftvalue and rightvalue > :rightvalue",{ leftvalue=variables.leftvalue, rightvalue=variables.rightvalue });
 	}	
 
-	function getPreviousSibling() {
-		return ORMExecuteQuery( "from Page where rightvalue = :rightvalue", { rightvalue=variables.leftvalue - 1 }, true );
+	function getPreviousSibling(){
+		return ORMExecuteQuery( "from Page where rightvalue = :rightvalue",{ rightvalue=variables.leftvalue - 1 }, true );
 	}
 	
-	string function getSlug() {
+	string function getSlug(){
 		var slug = "";
-		if( !isRoot() ) {
-			for( var Page in getPath() ) {
+		if( !isRoot() ){
+			for( var Page in getPath() ){
 				if( !Page.isRoot() ) slug &= Page.getUUID() & "/";
 			}
 			slug &= getUUID();
@@ -82,53 +82,53 @@ component extends="Base" persistent="true" table="pages" cacheuse="transactional
 		return slug;
 	}
 	
-	string function getSummary() {
+	string function getSummary(){
 		return Left( REReplaceNoCase( Trim( getContent() ), "<[^>]{1,}>", " ", "all" ), 500 ) & "...";
 	}
 	
-	boolean function hasChild() {
+	boolean function hasChild(){
 		return ArrayLen( getFirstChild() );
 	}	
 	
-	boolean function hasNextSibling() {
+	boolean function hasNextSibling(){
 		return !IsNull( getNextSibling() );
 	}
 
-	boolean function hasMetaDescription() {
+	boolean function hasMetaDescription(){
 		return Len( Trim( getMetaDescription() ) );	
 	}
 	
-	boolean function hasMetaKeywords() {
+	boolean function hasMetaKeywords(){
 		return Len( Trim( getMetaKeywords() ) );
 	}
 
-	boolean function hasMetaTitle() {
+	boolean function hasMetaTitle(){
 		return Len( Trim( getMetaTitle() ) );		
 	}
 
-	boolean function hasPreviousSibling() {
+	boolean function hasPreviousSibling(){
 		return !IsNull( getPreviousSibling() );
 	}
 			
-	boolean function hasRoute( array routes=[] ) {
+	boolean function hasRoute( array routes=[] ){
 		for( var route in arguments.routes )
 			if( StructKeyExists( route, getSlug() ) ) return true;
 		return false;
 	}
 	
-	boolean function isLeaf() {
+	boolean function isLeaf(){
 		return getDescendentCount() == 0;
 	}	
 
-	boolean function isPersisted() {
+	boolean function isPersisted(){
 		return !IsNull( variables.pageid );
 	}
 	
-	boolean function isRoot() {
+	boolean function isRoot(){
 		return getLevel() == 0;
 	}
 	
-	void function preInsert() {
+	void function preInsert(){
 		setUUID();
 	}
 
@@ -136,42 +136,42 @@ component extends="Base" persistent="true" table="pages" cacheuse="transactional
 	 * Private methods
 	 */	
 	
-	private numeric function getDescendentCount() {
+	private numeric function getDescendentCount(){
 		return ( variables.rightvalue - variables.leftvalue - 1 ) / 2;
 	}
 	
-	private array function getDescendents() {
-		return ORMExecuteQuery( "from Page where leftvalue > :leftvalue and rightvalue < :rightvalue", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue } );
+	private array function getDescendents(){
+		return ORMExecuteQuery( "from Page where leftvalue > :leftvalue and rightvalue < :rightvalue",{ leftvalue=variables.leftvalue, rightvalue=variables.rightvalue });
 	}
 
-	private array function getFirstChild() {
-		return ORMExecuteQuery( "from Page where leftvalue = :leftvalue", { leftvalue=variables.leftvalue + 1 } );
+	private array function getFirstChild(){
+		return ORMExecuteQuery( "from Page where leftvalue = :leftvalue",{ leftvalue=variables.leftvalue + 1 });
 	}	
 
-	private array function getLastChild() {
-		return ORMExecuteQuery( "from Page where rightvalue = :rightvalue", { rightvalue=variables.rightvalue - 1 } );
+	private array function getLastChild(){
+		return ORMExecuteQuery( "from Page where rightvalue = :rightvalue",{ rightvalue=variables.rightvalue - 1 });
 	}		
 	
-	private boolean function hasContent() {
+	private boolean function hasContent(){
 		return Len( Trim( getContent() ) );
 	}
 
-	private boolean function hasDescendents() {
+	private boolean function hasDescendents(){
 		return ArrayLen( getDescendents() );
 	}	
 	
-	private boolean function isChild() {
+	private boolean function isChild(){
 		return getLevel() != 0;
 	}	
 	
-	private boolean function isUUIDUnique() {
+	private boolean function isUUIDUnique(){
 		var matches = []; 
-		if( isPersisted() ) matches = ORMExecuteQuery( "from Page where pageid <> :pageid and uuid = :uuid", { pageid=getPageID(), uuid=getUUID()} );
-		else matches = ORMExecuteQuery( "from Page where uuid=:uuid", { uuid=getUUID() } );
+		if( isPersisted() ) matches = ORMExecuteQuery( "from Page where pageid <> :pageid and uuid = :uuid",{ pageid=getPageID(), uuid=getUUID()});
+		else matches = ORMExecuteQuery( "from Page where uuid=:uuid",{ uuid=getUUID() });
 		return !ArrayLen( matches );
 	}
 	
-	private void function setUUID() {
+	private void function setUUID(){
 		variables.uuid = ReReplace( LCase( getTitle() ), "[^a-z0-9]{1,}", "", "all" );
 		while ( !isUUIDUnique() ) variables.uuid &= "-"; 
 	}
