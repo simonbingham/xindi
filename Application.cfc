@@ -123,7 +123,7 @@ component extends="frameworks.org.corfield.framework"{
 			enquiryconfig ={
 				enabled = true
 				, subject = "Enquiry"
-				, emailto = "smnbin@gmail.com"
+				, emailto = ""
 			}
 			, errorhanderconfig ={ 
 				enabled=true
