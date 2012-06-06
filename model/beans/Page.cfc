@@ -106,6 +106,14 @@ component extends="Base" persistent="true" table="pages" cacheuse="transactional
 		return Len( Trim( getMetaTitle() ) );		
 	}
 
+	boolean function hasPageIDInPath( required string pageidlist ){
+		if( ListFind( arguments.pageidlist, getPageID() ) ) return true;
+		for( var Page in getPath() ){
+			if( ListFind( arguments.pageidlist, Page.getPageID() ) ) return true;
+		}
+		return false;
+	}
+
 	boolean function hasPreviousSibling(){
 		return !IsNull( getPreviousSibling() );
 	}
