@@ -17,29 +17,11 @@
 --->
 
 <cfoutput>
-	<div class="page-header"><h1>Oops!</h1></div>
-
-	<cfsavecontent variable="local.error">
-		<p>An error has occurred.</p>
-
-		<h2>Failed Action</h2>
-		
-		<p>#request.failedAction#</p>
-	
-		<h2>Exception</h2>
-		
-		<cfdump var="#request.exception#">		
-	</cfsavecontent>
-
-	<cfif this.development>
-		#local.error#
-	<cfelse>
-		<p>An error has occurred and the site administrator has been notified.</p>
-		
-		<cfif rc.config.errorhander.enabled>
-			<cfmail to="#rc.config.errorhanderconfig.to#" from="#rc.config.errorhanderconfig.from#" subject="#rc.config.errorhanderconfig.to#" type="html">
-				#local.error#
-			</cfmail>
-		</cfif>
+	<cfif StructKeyExists( rc.result.getFailureMessagesByProperty(), local.property )>
+		<span class="error">
+			<cfloop array="#rc.result.getFailureMessagesByProperty()[ local.property ]#" index="local.message">
+				#local.message#
+			</cfloop> 
+		</span>
 	</cfif>
 </cfoutput>

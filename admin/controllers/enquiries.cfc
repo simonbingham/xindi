@@ -17,42 +17,43 @@
 */
 
 component accessors="true" extends="abstract"{
-
+	
 	/*
 	 * Dependency injection
-	 */	
+	 */		
 
 	property name="EnquiryService" setter="true" getter="false";
-	property name="config" setter="true" getter="false";
-	
+
 	/*
 	 * Public methods
-	 */		
-	
+	 */	
+
 	void function default( required struct rc ){
-		if( !StructKeyExists( rc, "Enquiry" ) ) rc.Enquiry = variables.EnquiryService.newEnquiry();
-		rc.Validator = variables.EnquiryService.getValidator( rc.Enquiry );
-		if( !StructKeyExists( rc, "result" ) ) rc.result = rc.Validator.newResult();
-		rc.MetaData.setMetaTitle( "Contact Us" ); 
-		rc.MetaData.setMetaDescription( "" );
-		rc.MetaData.setMetaKeywords( "" );		
+		rc.enquiries = variables.EnquiryService.getEnquiries();
+		rc.unreadenquirycount = variables.EnquiryService.getUnreadEnquiryCount();
 	}
 	
-	void function send( required struct rc ){
-		param name="rc.firstname" default="";
- 		param name="rc.lastname" default="";
- 		param name="rc.email" default="";
- 		param name="rc.message" default="";
-		var properties ={ firstname=rc.firstname, lastname=rc.lastname, email=rc.email, message=rc.message };
-		var emailtemplatepath = "../../public/views/enquiry/email.cfm";
-		rc.result = variables.EnquiryService.sendEnquiry( properties, variables.config.enquiryconfig, emailtemplatepath );
-		rc.messages = rc.result.messages;
-		if( StructKeyExists( rc.messages, "success" ) ){
-			variables.fw.redirect( "enquiry/thanks" );	
+	void function delete( required struct rc ){
+		param name="rc.enquiryid" default="0";
+		var result = variables.EnquiryService.deleteEnquiry( Val( rc.enquiryid ) );
+		rc.messages = result.messages;
+		variables.fw.redirect( "enquiries", "messages" );
+	}	
+	
+	void function enquiry( required struct rc ){
+		param name="rc.enquiryid" default="0";
+		rc.Enquiry = variables.EnquiryService.getEnquiryByID( Val( rc.enquiryid ) );
+		if( !IsNull( rc.Enquiry ) ){
+			variables.EnquiryService.markRead( Val( rc.Enquiry.getEnquiryID() ) );
 		}else{
-			rc.Enquiry = rc.result.getTheObject();
-			variables.fw.redirect( "enquiry", "messages,Enquiry,result" );
-		}		
+			variables.fw.redirect( "main/notfound" );
+		}
 	}
+	
+	void function markallread( required struct rc ){
+		var result = variables.EnquiryService.markAllRead();
+		rc.messages = result.messages;
+		variables.fw.redirect( "enquiries", "messages" );
+	}	
 	
 }

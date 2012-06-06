@@ -16,68 +16,60 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true"
-{
+component accessors="true"{
 
 	/*
 	 * Dependency injection
 	 */	
 	
 	property name="MetaData" getter="false";
+	property name="NewsGateway" getter="false";
 	property name="Validator" getter="false";
 
 	/*
 	 * Public methods
 	 */
 	 	
-	struct function deleteArticle( required numeric articleid )
-	{
+	struct function deleteArticle( required numeric articleid ){
 		var Article = getArticleByID( arguments.articleid );
-		var result = {};
-		if( Article.isPersisted() )
-		{
-			transaction
-			{
+		var result ={};
+		if( Article.isPersisted() ){ 
+			transaction{
 				EntityDelete( Article );
-				result.messages.success = "The article has been deleted.";
+				result.messages.success = "The article &quot;#Article.getTitle()#&quot; has been deleted.";
 			}
-		}
-		else
-		{
+		}else{
 			result.messages.error = "The article could not be deleted.";
 		}
 		return result;
 	}
 	
-	function getArticleByID( required numeric articleid )
-	{
+	function getArticleByID( required numeric articleid ){
 		var Article = EntityLoadByPK( "Article", arguments.articleid );
 		if( IsNull( Article ) ) Article = newArticle();
 		return Article;
 	}
 	
-	function getArticleByUUID( required string uuid )
-	{
-		var Article = ORMExecuteQuery( "from Article where uuid=:uuid and published<=:published", { uuid=arguments.uuid, published=Now() }, true );
+	function getArticleByUUID( required string uuid ){
+		var Article = ORMExecuteQuery( "from Article where uuid=:uuid and published<=:published",{ uuid=arguments.uuid, published=Now() }, true );
 		if( IsNull( Article ) ) Article = newArticle();
 		return Article;
 	}
+	
+	numeric function getArticleCount(){
+		return Val( ORMExecuteQuery( "select count( * ) from Article", true ) );
+	}
 
-	array function getArticles( boolean published=false )
-	{
-		if( arguments.published ) return ORMExecuteQuery( "from Article where published <= :published order by published desc", { published=Now() } );
-		return EntityLoad( "Article", {}, "published desc" );
+	array function getArticles( string searchterm="", string sortorder="published desc", boolean published=false, numeric maxresults=0, numeric offset=0 ){
+		return variables.NewsGateway.getArticles( argumentCollection=arguments );
 	}
 		
-	function getValidator( required any Article )
-	{
+	function getValidator( required any Article ){
 		return variables.Validator.getValidator( theObject=arguments.Article );
 	}
 	
-	function saveArticle( required struct properties )
-	{
-		transaction
-		{
+	function saveArticle( required struct properties ){
+		transaction{
 			var Article = ""; 
 			Article = getArticleByID( Val( arguments.properties.articleid ) );
 			try{
@@ -92,16 +84,13 @@ component accessors="true"
 			if( !Article.hasMetaDescription() ) Article.setMetaDescription( variables.MetaData.generateMetaDescription( Article.getContent() ) );
 			if( !Article.hasMetaKeywords() ) Article.setMetaKeywords( variables.MetaData.generateMetaKeywords( Article.getContent() ) );
 			var result = variables.Validator.validate( theObject=Article );
-			if( !result.hasErrors() )
-			{
+			if( !result.hasErrors() ){
 				EntitySave( Article );
 				transaction action="commit";
-				result.messages.success = "The article has been saved.";
-			}
-			else
-			{
+				result.messages.success = "The article &quot;#Article.getTitle()#&quot; has been saved.";
+			}else{
 				transaction action="rollback";
-				result.messages.error = "Your article could not be saved. Please amend the following:";
+				result.messages.error = "Your article could not be saved. Please amend the highlighted fields.";
 			}
 		}
 		return result;
@@ -111,8 +100,7 @@ component accessors="true"
 	 * Private methods
 	 */	
 	
-	private function newArticle()
-	{
+	private function newArticle(){
 		return EntityNew( "Article" );
 	}	
 	

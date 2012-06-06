@@ -16,8 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true" extends="abstract"  
-{
+component accessors="true" extends="abstract"{
 
 	/*
 	 * Dependency injection
@@ -29,7 +28,7 @@ component accessors="true" extends="abstract"
 	 * Public methods
 	 */		
 	
-	void function default( required struct rc ) {
+	void function default( required struct rc ){
 		rc.Page = variables.ContentService.getRoot();
 		rc.MetaData.setMetaTitle( rc.Page.getMetaTitle() ); 
 		rc.MetaData.setMetaDescription( rc.Page.getMetaDescription() );

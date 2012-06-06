@@ -16,35 +16,48 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component extends="Base" persistent="false" accessors="true"
-{
+component extends="Base" persistent="true" table="enquiries" cacheuse="transactional"{
 	
 	/*
 	 * Properties
 	 */	
 	
-	property name="firstname";
-	property name="lastname";
-	property name="email";
-	property name="message";
+	property name="enquiryid" column="enquiry_id" fieldtype="id" setter="false" generator="native";
+	
+	property name="firstname" column="enquiry_firstname" ormtype="string" length="50";
+	property name="lastname" column="enquiry_lastname" ormtype="string" length="50";
+	property name="email" column="enquiry_email" ormtype="string" length="150";
+	property name="message" column="enquiry_message" ormtype="text";
+	property name="unread" column="enquiry_unread" ormtype="boolean";
+	property name="created" column="enquiry_created" ormtype="timestamp";
 
 	/*
 	 * Public methods
 	 */
 	 	
-	Enquiry function init()
-	{
+	Enquiry function init(){
+		variables.firstname = "";
+		variables.lastname = "";
+		variables.email = "";
+		variables.message = "";
+		variables.unread = true;
 		return this;
 	}
 	
-	string function getDisplayMessage()
-	{
+	string function getDisplayMessage(){
 		return REReplace( HTMLEditFormat( variables.message ), "[\r\n]+", "<br /><br />", "ALL" );
 	}	
 	
-	string function getFullName()
-	{
+	string function getFullName(){
 		return variables.firstname & " " & variables.lastname;
+	}
+	
+	boolean function isUnread(){
+		return getUnread();
+	}	
+	
+	string function setRead(){
+		setUnread( false );
 	}
 
 }

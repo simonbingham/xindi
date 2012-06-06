@@ -16,8 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true"
-{
+component accessors="true"{
 
 	/*
 	 * Dependency injection
@@ -29,70 +28,55 @@ component accessors="true"
 	 * Public methods
 	 */
 	 	
-	struct function deleteUser( required numeric userid )
-	{
+	struct function deleteUser( required numeric userid ){
 		var User = getUserByID( arguments.userid );
-		var result = {};
-		if( User.isPersisted() )
-		{
-			transaction
-			{
+		var result ={};
+		if( User.isPersisted() ){
+			transaction{
 				EntityDelete( User );
-				result.messages.success = "The user has been deleted.";
+				result.messages.success = "The user &quot;#User.getFullName()#&quot; has been deleted.";
 			}
-		}
-		else
-		{
+		}else{
 			result.messages.error = "The user could not be deleted.";
 		}
 		return result;
 	}
 	
-	function getUserByID( required numeric userid )
-	{
+	function getUserByID( required numeric userid ){
 		var User = EntityLoadByPK( "User", arguments.userid );
 		if( IsNull( User ) ) User = newUser();
 		return User;
 	}
 
-	function getUserByCredentials( required User )
-	{
-		return ORMExecuteQuery( " from User where username=:username and password=:password ", { username=arguments.User.getUsername(), password=arguments.User.getPassword() }, true );
+	function getUserByCredentials( required User ){
+		return ORMExecuteQuery( " from User where username=:username and password=:password ",{ username=arguments.User.getUsername(), password=arguments.User.getPassword() }, true );
 	}
 
-	array function getUsers()
-	{
-		return EntityLoad( "User", {}, "firstname" );	
+	array function getUsers(){
+		return EntityLoad( "User",{}, "firstname" );	
 	}
 		
-	function getValidator( required any User )
-	{
+	function getValidator( required any User ){
 		return variables.Validator.getValidator( theObject=arguments.User );
 	}
 	
-	function newUser()
-	{
+	function newUser(){
 		return EntityNew( "User" );
 	}		
 	
-	struct function saveUser( required struct properties, required string context )
-	{
-		var result = {};
-		transaction
-		{
+	struct function saveUser( required struct properties, required string context ){
+		var result ={};
+		transaction{
 			var User = ""; 
 			User = getUserByID( Val( arguments.properties.userid ) );
 			User.populate( arguments.properties );
 			var result = variables.Validator.validate( theObject=User, Context=arguments.context );
-			if( !result.hasErrors() )
-			{
-				result.messages.success = "The user has been saved";
+			if( !result.hasErrors() ){
+				result.messages.success = "The user &quot;#User.getFullName()#&quot; has been saved";
 				EntitySave( User );
 				transaction action="commit";
-			}
-			else
-			{
-				result.messages.error = "The user could not be saved. " & result.getFailuresAsString();
+			}else{
+				result.messages.error = "The user could not be saved. Please amend the highlighted fields.";
 				transaction action="rollback";
 			}
 		}

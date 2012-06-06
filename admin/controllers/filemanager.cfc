@@ -16,8 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true" extends="abstract"
-{
+component accessors="true" extends="abstract"{
 
 	/*
 	 * Dependency injection
@@ -30,22 +29,19 @@ component accessors="true" extends="abstract"
 	 * Public methods
 	 */	
 
-	void function before( required struct rc )
-	{
+	void function before( required struct rc ){
 		rc.webrootdirectory = GetDirectoryFromPath( CGI.CF_TEMPLATE_PATH );
 		rc.clientfilesdirectory = "_clientfiles";
-		if ( !IsNull( rc.subdirectory ) ) {
+		if( !IsNull( rc.subdirectory ) ){
 			rc.subdirectory = Replace( ReReplace( Replace( rc.subdirectory, "*", "", "all" ), "(\.){2,}", "", "all" ), ":", "/", "all" );
-		}
-		else {
+		}else{
 			rc.subdirectory = "";
 		}
 		rc.currentdirectory = rc.webrootdirectory & rc.clientfilesdirectory & rc.subdirectory;
-		if ( !variables.FileManagerService.isDirectory( rc.currentdirectory ) ) rc.message.error = "Sorry, the requested " & rc.subdirectory & " is not valid.";
+		if( !variables.FileManagerService.isDirectory( rc.currentdirectory ) ) rc.message.error = "Sorry, the requested " & rc.subdirectory & " is not valid.";
 	}
 
-	void function configure( required struct rc )
-	{	
+	void function configure( required struct rc ){	
 		if( StructKeyExists( rc, "editorType" ) ) session.editorType = rc.editorType;
 		if( StructKeyExists( rc, "EDITOR_RESOURCE_TYPE" ) ) session.EDITOR_RESOURCE_TYPE = rc.EDITOR_RESOURCE_TYPE;
 		if( StructKeyExists( rc, "CKEditor" ) ) session.CKEditor = rc.CKEditor;
@@ -54,33 +50,29 @@ component accessors="true" extends="abstract"
 		variables.fw.redirect( "filemanager" );
 	}
 
-	void function createdirectory( required struct rc )
-	{
+	void function createdirectory( required struct rc ){
 		param name="rc.newdirectory" default="";
 		var newdirectory = ReReplaceNoCase( Trim( rc.newdirectory ), "[^a-z0-9_\-\.]", "", "all" );
 		var result = variables.FileManagerService.createDirectory( rc.currentdirectory & "/" & newdirectory );
 		rc.messages = result.messages;
 		if( result.theobject.mkdirs() && StructKeyExists( result.messages, "success" ) ) variables.fw.redirect( action="filemanager.default", querystring="subdirectory=#urlSafePath( rc.subdirectory & "/" & newdirectory )#", preserve="messages" );
 		else variables.fw.redirect( action="filemanager.default", querystring="subdirectory=#urlSafePath( rc.subdirectory )#", preserve="messages" );
-	} 
-
-	void function default( required struct rc )
-	{
-		rc.listing = variables.FileManagerService.getDirectoryList( rc.currentdirectory, variables.config.filemanagersettings.allowedextensions );
 	}
 
-	void function delete( required struct rc )
-	{
+	void function default( required struct rc ){
+		rc.listing = variables.FileManagerService.getDirectoryList( rc.currentdirectory, variables.config.filemanagerconfig.allowedextensions );
+	}
+
+	void function delete( required struct rc ){
 		param name="rc.delete" default="";
 		var result = variables.FileManagerService.deleteFile( rc.currentdirectory  & "/" & rc.delete );
 		rc.messages = result.messages;
 		variables.fw.redirect( action="filemanager.default", querystring="subdirectory=#urlSafePath( rc.subdirectory )#", preserve="messages" );
 	}
 
-	void function upload( required struct rc )
-	{
+	void function upload( required struct rc ){
 		param name="rc.file" default="";
-		var result = variables.FileManagerService.uploadFile( "file", rc.currentdirectory, variables.config.filemanagersettings.allowedextensions );
+		var result = variables.FileManagerService.uploadFile( "file", rc.currentdirectory, variables.config.filemanagerconfig.allowedextensions );
 		rc.messages = result.messages;
 		variables.fw.redirect( action="filemanager.default", querystring="subdirectory=#urlSafePath( rc.subdirectory )#", preserve="messages" );
 	}
@@ -89,10 +81,9 @@ component accessors="true" extends="abstract"
 	 * Private methods
 	 */
 	
-	private string function urlSafePath( required string path )
-	{
+	private string function urlSafePath( required string path ){
 		var result = Replace( arguments.path, "/", ":", "all" );
-		if ( !Len( Trim( result ) ) ) result = "*";
+		if( !Len( Trim( result ) ) ) result = "*";
 		return result;
 	}
 		

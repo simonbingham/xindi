@@ -1,5 +1,5 @@
-/* 
-	Xindi - http://www.getxindi.com/ - Version 2012.6.1
+/*
+	Xindi - http://www.getxindi.com/ - Version 2012.6.6
 	
 	Copyright (c) 2012, Simon Bingham
 	
@@ -16,8 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component extends="frameworks.org.corfield.framework"
-{
+component extends="frameworks.org.corfield.framework"{
 	/**
 	* application settings
 	*/
@@ -28,7 +27,7 @@ component extends="frameworks.org.corfield.framework"
 	this.mappings[ "/ValidateThis" ] = this.applicationroot & "frameworks/ValidateThis/";
 	this.datasource = ListLast( this.applicationroot, "\/" );
 	this.ormenabled = true;
-	this.ormsettings = {
+	this.ormsettings ={
 		flushatrequestend = false
 		, automanagesession = false
 		, cfclocation = this.mappings[ "/model" ]
@@ -37,8 +36,7 @@ component extends="frameworks.org.corfield.framework"
 	};
 	// create database and populate when the application starts in development environment
 	// you might want to comment out this code after the initial install
-	if( this.development && !isNull( url.rebuild ) )
-	{
+	if( this.development && !isNull( url.rebuild ) ){
 		this.ormsettings.dbcreate = "dropcreate";
 		this.ormsettings.sqlscript = "_install/setup.sql";
 	}
@@ -46,7 +44,7 @@ component extends="frameworks.org.corfield.framework"
 	/**
 	* FW/1 framework settings (https://github.com/seancorfield/fw1)
 	*/
-	variables.framework = {
+	variables.framework ={
 		cacheFileExists = !this.development
 		, defaultSubsystem = "public"
 		, generateSES = true
@@ -54,20 +52,19 @@ component extends="frameworks.org.corfield.framework"
 		, password = ""
 		, reloadApplicationOnEveryRequest = this.development
 		, usingSubsystems = true
-		//, routes = [ { ""="", hint="" } ]
+		//, routes = [{ ""="", hint="" }]
 	};
 	
 	/**
      * called when application starts
 	 */	
-	void function setupApplication()
-	{
+	void function setupApplication(){
 		ORMReload();
 		
 		// setup bean factory
 		var beanfactory = new frameworks.org.corfield.ioc( "/model" );
 		setBeanFactory( beanfactory );
-		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
+		var ValidateThisConfig ={ definitionPath="/model/", JSIncludes=false };
 		beanFactory.addBean( "Validator", new ValidateThis.ValidateThis( ValidateThisConfig ) );
 		beanFactory.addBean( "MetaData", new model.beans.MetaData() );
 		beanFactory.addBean( "config", getConfig() );
@@ -76,10 +73,9 @@ component extends="frameworks.org.corfield.framework"
 	/**
      * called when page request starts
 	 */	
-	void function setupRequest()
-	{
+	void function setupRequest(){
 		// define base url
-		if ( CGI.HTTPS eq "on" ) rc.basehref = "https://";
+		if( CGI.HTTPS eq "on" ) rc.basehref = "https://";
 		else rc.basehref = "http://";
 		rc.basehref &= CGI.HTTP_HOST & variables.framework.base;
 	  	
@@ -96,25 +92,22 @@ component extends="frameworks.org.corfield.framework"
 	/**
      * called when view rendering begins
 	 */		
-	void function setupView()
-	{
+	void function setupView(){
 		rc.navigation = getBeanFactory().getBean( "ContentService" ).getPages();
+		
+		if( StructKeyExists( session, "userid" ) ) rc.CurrentUser = getBeanFactory().getBean( "UserService" ).getUserByID( session.userid );
 	}	
 	
 	/**
      * called if view is missing - used for (almost) all Xindi page requests
 	 */	
-	any function onMissingView( required rc )
-	{
+	any function onMissingView( required rc ){
 		rc.Page = getBeanFactory().getBean( "ContentService" ).getPageBySlug( ListLast( CGI.PATH_INFO, "/" ) );
-		if( !rc.Page.isPersisted() || ( rc.Page.hasChild() && !rc.Page.isRoot() and getConfig().pagesettings.suppressancestorpages ) )
-		{
+		if( !rc.Page.isPersisted() ){
 			var pagecontext = getPageContext().getResponse();
 			pagecontext.getResponse().setStatus( 404 );
 			return view( "public:main/notfound" );
-		}
-		else
-		{
+		}else{
 			rc.MetaData.setMetaTitle( rc.Page.getMetaTitle() ); 
 			rc.MetaData.setMetaDescription( rc.Page.getMetaDescription() );
 			rc.MetaData.setMetaKeywords( rc.Page.getMetaKeywords() );
@@ -125,41 +118,36 @@ component extends="frameworks.org.corfield.framework"
 	/**
      * configuration
 	 */		
-	private struct function getConfig()
-	{
-		var config = {
-			// enquiry form settings
-			enquirysettings = {
-				subject = "Enquiry"
-				, emailto = ""
+	private struct function getConfig(){
+		var config ={
+			enquiryconfig ={
+				enabled = true
+				, subject = "Enquiry"
+				, emailto = "smnbin@gmail.com"
 			}
-			// error handler settings
-			, errorsettings = { 
+			, errorhanderconfig ={ 
 				enabled=true
 				, to=""
 				, from=""
 				, subject="Error Notification (#ListLast( this.applicationroot, '\/' )#)" 
 			}
-			// file manager settings
-			, filemanagersettings = {
-				allowedextensions = "txt,gif,jpg,png,wav,mpeg3,pdf,zip"
+			, filemanagerconfig ={
+				allowedextensions = "txt,gif,jpg,png,wav,mpeg3,pdf,zip,mp3,jpeg"
 			}
-			// news feature settings
-			, newssettings = {
+			, newsconfig ={
 				enabled = true
+				, recordsperpage = 10
 				, rsstitle = ""
 				, rssdescription = ""
 			}
-			// page manager settings
-			, pagesettings = { 
+			, pageconfig ={ 
 				enableadddelete = true
-				, levellimit = 2 // number of page tiers that can be added - Bootstrap dropdown menu only supports 2
-				, suppressancestorpages = true // set to true to use ancestor pages a navigation links to access child pages (ancestor pages will not have content)
+				, levellimit = 2 // number of page tiers that can be added - Bootstrap dropdown only supports two tiers
+				, touchscreenfriendlynavigation = true // ancestor page links trigger dropdown - duplicated ancestor page links appear in sub menu
 			}
-			// appended to regularly updated css and js urls to force reload
 			, revision = Hash( Now() )
-			// list of unsecure actions
-			, securitysettings = {
+			// list of unsecure sub systems and actions - all other requests are password protected
+			, securityconfig ={
 				whitelist = "^admin:security,^public:"
 			}
 		};

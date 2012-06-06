@@ -16,8 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true" extends="abstract"  
-{
+component accessors="true" extends="abstract"{
 
 	/*
 	 * Dependency injection
@@ -29,13 +28,13 @@ component accessors="true" extends="abstract"
 	 * Public methods
 	 */		
 	
-	void function map( required struct rc ) {
+	void function map( required struct rc ){
 		rc.MetaData.setMetaTitle( "Site Map" ); 
 		rc.MetaData.setMetaDescription( "" );
 		rc.MetaData.setMetaKeywords( "" );		
 	}
 	
-	void function xml( required struct rc ) {
+	void function xml( required struct rc ){
 		rc.sesomitindex = variables.fw.getConfig().sesomitindex;
 		rc.pages = variables.ContentService.getPages();
 	}		

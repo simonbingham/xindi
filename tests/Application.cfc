@@ -16,16 +16,15 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component 
-{
-	this.applicationroot = ReReplace( getDirectoryFromPath( getCurrentTemplatePath() ), "tests.$", "", "all" );
+component{
 
+	this.applicationroot = ReReplace( getDirectoryFromPath( getCurrentTemplatePath() ), "tests.$", "", "all" );
 	this.name = ReReplace( "[^W]", this.applicationroot & "tests", "", "all" );
 	this.sessionmanagement = true;
 	this.mappings[ "/model" ] = this.applicationroot & "model/";
 	this.datasource = "xindi_testsuite";
 	this.ormenabled = true;
-	this.ormsettings = {
+	this.ormsettings ={
 		flushatrequestend = false
 		, automanagesession = false
 		, cfclocation = this.mappings[ "/model" ]
@@ -33,4 +32,5 @@ component
 		, eventhandler = "model.aop.GlobalEventHandler"
 		, dbcreate = "update"		
 	};
+	
 }

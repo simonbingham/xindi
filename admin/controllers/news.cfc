@@ -16,8 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true" extends="abstract"   
-{
+component accessors="true" extends="abstract"{
 	
 	/*
 	 * Dependency injection
@@ -29,24 +28,25 @@ component accessors="true" extends="abstract"
 	 * Public methods
 	 */	
 
-	void function default( required struct rc ) {
+	void function default( required struct rc ){
 		rc.articles = variables.NewsService.getArticles();
 	}
 
-	void function delete( required struct rc ) {
+	void function delete( required struct rc ){
 		param name="rc.articleid" default="0";
 		var result = variables.NewsService.deleteArticle( Val( rc.articleid ) );
 		rc.messages = result.messages;
 		variables.fw.redirect( "news", "messages" );
 	}
 	
-	void function maintain( required struct rc ) {
+	void function maintain( required struct rc ){
 		param name="rc.articleid" default="0";
 		if( !StructKeyExists( rc, "Article" ) ) rc.Article = variables.NewsService.getArticleByID( Val( rc.articleid ) );
 		rc.Validator = variables.NewsService.getValidator( rc.Article );
+		if( !StructKeyExists( rc, "result" ) ) rc.result = rc.Validator.newResult();
 	}	
 	
-	void function save( required struct rc ) {
+	void function save( required struct rc ){
 		param name="rc.articleid" default="0";
 		param name="rc.title" default="";
 		param name="rc.published" default="";
@@ -54,16 +54,15 @@ component accessors="true" extends="abstract"
 		param name="rc.metatitle" default="";
 		param name="rc.metadescription" default="";
 		param name="rc.metakeywords" default="";
-		var properties = { articleid=rc.articleid, title=rc.title, published=rc.published, content=rc.content, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
+		param name="rc.submit" default="Save & exit";
+		var properties ={ articleid=rc.articleid, title=rc.title, published=rc.published, content=rc.content, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
 		rc.result = variables.NewsService.saveArticle( properties );
 		rc.messages = rc.result.messages;
-		if( StructKeyExists( rc.messages, "success" ) )
-		{
-			variables.fw.redirect( "news", "messages" );
-		}
-		else
-		{
-			rc.Article = rc.result.getTheObject();
+		rc.Article = rc.result.getTheObject();
+		if( StructKeyExists( rc.messages, "success" ) ){
+			if( rc.submit == "Save & Continue" ) variables.fw.redirect( "news/maintain", "messages,Article,articleid" );
+			else variables.fw.redirect( "news", "messages" );
+		}else{
 			variables.fw.redirect( "news/maintain", "messages,Article,articleid,result" );
 		}
 	}

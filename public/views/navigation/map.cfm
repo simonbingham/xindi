@@ -28,17 +28,15 @@
 			<cfloop array="#rc.navigation#" index="local.Page">
 				<!--- create page link --->
 				<cfsavecontent variable="local.link">
-					<!--- if the current page is not the root, has a child and ancestor pages are suppressed just display the page title --->
-					<cfif !local.Page.isRoot() and local.Page.hasChild() and rc.config.pagesettings.suppressancestorpages>
-						#local.Page.getTitle()#
-					<cfelse>
-						<a href="#buildURL( local.Page.getSlug() )#">#local.Page.getTitle()#</a>
-					</cfif>
+					<!--- build url --->
+					<a href="#buildURL( local.Page.getSlug() )#">#local.Page.getTitle()#</a>
 				</cfsavecontent>		
 				
 				<!--- if the current page level is greater than the previous page level initiate a new tier in the menu --->
 				<cfif local.Page.getLevel() gt local.previouslevel>
-					<ul><li>#local.link#
+					<cfif local.Page.getLevel() neq 1><ul></cfif>
+					<li>#local.link#
+					<cfif local.Page.isRoot()></li></cfif>
 				<!--- if the current page level is less than the previous page level we need to go up a tier in the menu --->
 				<cfelseif local.Page.getLevel() lt local.previouslevel>
 					<cfset local.temporary = local.previouslevel>
@@ -58,7 +56,7 @@
 			<!--- finally we need to ensure our nested menu is closed correctly --->
 			<!--- keep going up a tier whilst the previous page level is greater than or equal to zero --->
 			<cfset local.temporary = local.Page.getLevel()>
-			<cfloop condition="local.temporary ge 0">
+			<cfloop condition="local.temporary ge 1">
 				</li></ul>
 				<cfset local.temporary = local.temporary - 1>
 			</cfloop>

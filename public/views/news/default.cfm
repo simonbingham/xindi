@@ -21,19 +21,39 @@
 	
 	<cfif ArrayLen( rc.articles )>
 		<cfloop array="#rc.articles#" index="local.Article">
-			<div>
+			<div class="well">
 				<h2>
 					<a href="#buildURL( action='news.article', querystring='uuid=#local.Article.getUUID()#' )#">#local.Article.getTitle()#</a>
 					
-					<small>#DateFormat( local.Article.getPublished(), "full" )#</small>
-					
-					<cfif local.Article.isNew()><span class="label label-info">new</span></cfif>
+					<small class="pull-right">#DateFormat( local.Article.getPublished(), "full" )#</small>
 				</h2>
 				
 				#local.Article.getSummary()#
 			</div>
 		</cfloop>
+		
+		<ul class="pager append-top">
+			<cfif rc.offset>
+				<li class="previous"><a href="#buildURL( action='news', querystring='offset=#rc.offset-rc.maxresults#' )#">&larr; Newer</a></li>
+			<cfelse>
+				<li class="previous disabled"><a href="">&larr; Newer</a></li>
+			</cfif>
+			 
+			<cfif rc.maxresults + rc.offset lt rc.articlecount>
+				<li class="next"><a href="#buildURL( action='news', querystring='offset=#rc.offset+rc.maxresults#' )#">Older &rarr;</a></li>
+			<cfelse>
+				<li class="next disabled"><a href="">Older &rarr;</a></li>
+			</cfif>
+		</ul>
 	<cfelse>
 		<div class="alert alert-info">There are currently no news stories.</div>
 	</cfif>
+	
+	<script>
+	jQuery(function($){
+		$(".previous.disabled,.next.disabled").click(function(e){
+			e.preventDefault();
+		});
+	});
+	</script>	
 </cfoutput>

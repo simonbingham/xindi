@@ -17,16 +17,95 @@
 --->
 
 <cfoutput>
-	<div class="page-header"><h1>Welcome</h1></div>
+	<div class="page-header clear"><h1>Dashboard</h1></div>
 
 	#view( "helpers/messages" )#
 
-	<p>Please use the options below to manage your website.</p>
+	<h2>Recent Activity</h2>
 	
-	<ul>
-		<li><a href="#buildURL( 'pages' )#">Pages</a></li>
-		<cfif rc.config.newssettings.enabled><li><a href="#buildURL( 'news' )#">News</a></li></cfif>
-		<li><a href="#buildURL( 'users' )#">Users</a></li>
-		<li><a href="#buildURL( 'security/logout' )#">Logout</a></li>
-	</ul>	
+	<cfif ArrayLen( rc.updatedpages )>
+		<hr />
+		
+		<p class="pull-right"><a href="#buildURL( 'pages' )#" class="btn btn-primary">Manage pages <i class="icon-chevron-right icon-white"></i></a></p>
+		
+		<h3>Pages</h3>
+		
+		<table class="table table-striped table-bordered table-condensed">
+			<thead>
+				<tr>
+					<th>Title</th>
+					<th style="width:25%;">Last Updated</th>
+					<th style="width:25%;" class="center">View</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<cfloop array="#rc.updatedpages#" index="local.Page">
+					<tr>
+						<td>#local.Page.getTitle()#</td>
+						<td>#DateFormat( local.Page.getUpdated(), "full" )#</td>
+						<td class="center"><a href="#buildURL( action="public:" & local.Page.getSlug() )#" title="View" target="_blank"><i class="icon-eye-open"></i></a></td>
+					</tr>
+				</cfloop>
+			</tbody>
+		</table>
+	</cfif>	
+
+	<cfif rc.config.newsconfig.enabled and ArrayLen( rc.updatedarticles )>
+		<hr />
+		
+		<p class="pull-right"><a href="#buildURL( 'news' )#" class="btn btn-primary">Manage news <i class="icon-chevron-right icon-white"></i></a></p>
+		
+		<h3>News</h3>
+		
+		<table class="table table-striped table-bordered table-condensed">
+			<thead>
+				<tr>
+					<th>Title</th>
+					<th style="width:25%;">Last Updated</th>
+					<th style="width:25%;" class="center">View</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<cfloop array="#rc.updatedarticles#" index="local.Article">
+					<tr>
+						<td>#local.Article.getTitle()#</td>
+						<td>#DateFormat( local.Article.getUpdated(), "full" )#</td>
+						<td class="center"><a href="#buildURL( action='public:news.article', querystring='uuid=#local.Article.getUUID()#' )#" title="View" target="_blank"><i class="icon-eye-open"></i></a></td>
+					</tr>
+				</cfloop>
+			</tbody>
+		</table>
+	</cfif>	
+	
+	<cfif ArrayLen( rc.unreadenquiries )>
+		<hr />
+		
+		<p class="pull-right"><a href="#buildURL( 'enquiries' )#" class="btn btn-primary">View enquiries <i class="icon-chevron-right icon-white"></i></a></p>
+		
+		<h3>Enquiries</h3>
+		
+		<table class="table table-striped table-bordered table-condensed">
+			<thead>
+				<tr>
+					<th style="width:5%;">&nbsp;</th>
+					<th>Name</th>
+					<th style="width:25%;">Received</th>
+					<th style="width:25%;" class="center">View</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<cfloop array="#rc.unreadenquiries#" index="local.Enquiry">
+					<tr>
+						<td class="center"><cfif local.Enquiry.isUnread()><span class="label label-info">new</span></cfif></td>
+						<td>#local.Enquiry.getFullName()#</td>
+						<td>#DateFormat( local.Enquiry.getCreated(), "full" )# #TimeFormat( local.Enquiry.getCreated(), "full" )#</td>
+						<td class="center"><a href="#buildURL( action='enquiries.enquiry', querystring='enquiryid=#local.Enquiry.getEnquiryID()#' )#" title="View Enquiry"><i class="icon-eye-open"></i></a></td>
+					</tr>
+				</cfloop>
+			</tbody>
+		</table>
+	</cfif>		
 </cfoutput>

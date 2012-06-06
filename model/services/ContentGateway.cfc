@@ -16,30 +16,33 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 --->
 
-<cfoutput>
-	<div class="page-header"><h1>Oops!</h1></div>
-
-	<cfsavecontent variable="local.error">
-		<p>An error has occurred.</p>
-
-		<h2>Failed Action</h2>
+<cfcomponent output="false">
+	<cffunction name="getPages" output="false" returntype="Array">
+		<cfargument name="searchterm" type="string" required="false" default="">
+		<cfargument name="sortorder" type="string" required="false" default="leftvalue">
+		<cfargument name="maxresults" type="numeric" required="false" default="0">
 		
-		<p>#request.failedAction#</p>
-	
-		<h2>Exception</h2>
+		<cfset var qPages = "">
+		<cfset var thesearchterm = Trim( arguments.searchterm )>
+		<cfset var ormoptions ={}>
 		
-		<cfdump var="#request.exception#">		
-	</cfsavecontent>
-
-	<cfif this.development>
-		#local.error#
-	<cfelse>
-		<p>An error has occurred and the site administrator has been notified.</p>
-		
-		<cfif rc.config.errorhander.enabled>
-			<cfmail to="#rc.config.errorhanderconfig.to#" from="#rc.config.errorhanderconfig.from#" subject="#rc.config.errorhanderconfig.to#" type="html">
-				#local.error#
-			</cfmail>
+		<cfif arguments.maxresults>
+			<cfset ormoptions.maxresults = arguments.maxresults>
 		</cfif>
-	</cfif>
-</cfoutput>
+		
+		<cfquery name="qPages" dbtype="hql" ormoptions="#ormoptions#">
+			from Page
+			where 1=1
+			<cfif Len( thesearchterm )>
+				and 
+				(	
+				 	lower( title ) like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#thesearchterm#%"> 
+				 	or lower( content ) like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#thesearchterm#%">
+				) 
+			</cfif>
+			order by #arguments.sortorder#
+		</cfquery>
+		
+		<cfreturn qPages>
+	</cffunction> 
+</cfcomponent>

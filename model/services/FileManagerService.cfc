@@ -16,8 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true"
-{
+component accessors="true"{
 
 	/*
 	 * Public methods
@@ -25,39 +24,30 @@ component accessors="true"
 	 	
 	struct function createDirectory( required string directory )
 	{
-		var result = {};
-		if( Len( Trim( arguments.directory ) ) ) 
-		{
+		var result ={};
+		if( Len( Trim( arguments.directory ) ) ) {
 			result.theobject = CreateObject( "java", "java.io.File" ).init( JavaCast( "string", arguments.directory ) );
 			result.messages.success = "The directory &quot;" & arguments.directory & "&quot; has been created.";
-		}
-		else
-		{
+		}else{
 			result.messages.error = "The directory &quot;" & newdirectorypath & "&quot; could not be created.";
 		}
 		return result;
 	}
 	
-	struct function deleteFile( required string file )
-	{
-		result = {};
-		if( isFile( arguments.file ) )
-		{
+	struct function deleteFile( required string file ){
+		result ={};
+		if( isFile( arguments.file ) ){
 			getFile( arguments.file ).delete();
 			result.messages.success = "The file &quot;" & arguments.file & "&quot; has been deleted.";
-		}
-		else
-		{
+		}else{
 			result.messages.error = "The file &quot;" & arguments.file & "&quot; could not be deleted.";
-		} 
+		}
 		return result;
 	}	
 	
-	query function getDirectoryList( required string directory, required string allowedextensions )
-	{
+	query function getDirectoryList( required string directory, required string allowedextensions ){
 		var fileListing = DirectoryList( arguments.directory, false, "query", "*." & Replace( arguments.allowedextensions, ",", "|*.", "all" ) );
 		var fullListing = DirectoryList( arguments.directory, false, "query" );
-		
 		var queryobject = new query();
 		queryobject.setDBType( "query" );
 		queryobject.setAttributes( fileListing=fileListing );
@@ -71,22 +61,18 @@ component accessors="true"
 		return queryobject.execute().getResult();
 	}	
 	
-	boolean function isDirectory( required string directory )
-	{
+	boolean function isDirectory( required string directory ){
 		return getFile( arguments.directory ).isDirectory();
 	}
 	
-	struct function uploadFile( required string file, required string destination, required string allowedextensions )
-	{
-		var result = {};
-		try
-		{
+	struct function uploadFile( required string file, required string destination, required string allowedextensions ){
+		var result ={};
+		try{
 			result = FileUpload( arguments.destination, arguments.file, "", "MakeUnique" );
 			result.messages.success = "The file &quot;" & result.serverfile & "&quot; has been uploaded.";
 			if( !ListFindNoCase( arguments.allowedextensions, result.serverfileext ) ) deleteFile( result.serverdirectory & "/" & result.serverfile );
 		}
-		catch( any e )
-		{ 
+		catch( any e ){ 
 			result.messages.error = "Sorry, you are not permitted to upload this type of file.";
 		}
 		return result;
@@ -96,13 +82,11 @@ component accessors="true"
 	 * Private methods
 	 */	
 
-	private function getFile( required string file )
-	{
+	private function getFile( required string file ){
 		return CreateObject( "java", "java.io.File" ).init( JavaCast( "String", arguments.file ) );
 	}	
 	
-	private boolean function isFile( required string file )
-	{
+	private boolean function isFile( required string file ){
 		return getFile( arguments.file ).isFile();
 	}
 	

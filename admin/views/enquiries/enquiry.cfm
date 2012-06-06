@@ -17,29 +17,11 @@
 --->
 
 <cfoutput>
-	<div class="page-header"><h1>Oops!</h1></div>
+	<div class="page-header clear"><h1>#rc.Enquiry.getFullName()# <small class="pull-right">#DateFormat( rc.Enquiry.getCreated(), "full" )# at #TimeFormat( rc.Enquiry.getCreated(), "full" )#</small></h1></div>
 
-	<cfsavecontent variable="local.error">
-		<p>An error has occurred.</p>
+	<p><a href="mailto:#rc.Enquiry.getEmail()#" class="btn btn-primary"><i class="icon-envelope icon-white"></i> Reply</a></p>
 
-		<h2>Failed Action</h2>
-		
-		<p>#request.failedAction#</p>
-	
-		<h2>Exception</h2>
-		
-		<cfdump var="#request.exception#">		
-	</cfsavecontent>
+	<hr>
 
-	<cfif this.development>
-		#local.error#
-	<cfelse>
-		<p>An error has occurred and the site administrator has been notified.</p>
-		
-		<cfif rc.config.errorhander.enabled>
-			<cfmail to="#rc.config.errorhanderconfig.to#" from="#rc.config.errorhanderconfig.from#" subject="#rc.config.errorhanderconfig.to#" type="html">
-				#local.error#
-			</cfmail>
-		</cfif>
-	</cfif>
+	<blockquote>#rc.Enquiry.getDisplayMessage()#</blockquote>
 </cfoutput>

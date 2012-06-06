@@ -16,8 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true" extends="abstract"   
-{
+component accessors="true" extends="abstract"{
 	
 	/*
 	 * Dependency injection
@@ -29,31 +28,31 @@ component accessors="true" extends="abstract"
 	 * Public methods
 	 */	
 
-	void function default( required struct rc ) {
+	void function default( required struct rc ){
 		rc.pages = variables.ContentService.getPages();
 	}
 
-	void function delete( required struct rc ) {
+	void function delete( required struct rc ){
 		param name="rc.pageid" default="0";
 		var result = variables.ContentService.deletePage( Val( rc.pageid ) );
 		rc.messages = result.messages;
-		if( StructKeyExists( result.messages, "success" ) )
-		{
+		if( StructKeyExists( result.messages, "success" ) ){
 			var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:navigation/xml", method="get" );
 			refreshsitemap.send();
 		}
 		variables.fw.redirect( "pages", "messages" );
 	}	
 	
-	void function maintain( required struct rc ) {
+	void function maintain( required struct rc ){
 		param name="rc.pageid" default="0";
 		param name="rc.context" default="create";
 		if( !StructKeyExists( rc, "Page" ) ) rc.Page = variables.ContentService.getPageByID( Val( rc.pageid ) );
 		if( rc.Page.isPersisted() && !rc.Page.hasRoute( variables.fw.getRoutes() ) ) rc.context = "update";
 		rc.Validator = variables.ContentService.getValidator( rc.Page );
+		if( !StructKeyExists( rc, "result" ) ) rc.result = rc.Validator.newResult();
 	}	
 	
-	void function move( required struct rc ) {
+	void function move( required struct rc ){
 		param name="rc.pageid" default="0";
 		param name="rc.direction" default="";
 		var result = variables.ContentService.movePage( Val( rc.pageid ), rc.direction );
@@ -61,7 +60,7 @@ component accessors="true" extends="abstract"
 		variables.fw.redirect( "pages", "messages" );
 	}	
 	
-	void function save( required struct rc ) {
+	void function save( required struct rc ){
 		param name="rc.pageid" default="0";
 		param name="rc.ancestorid" default="0";
 		param name="rc.title" default="";
@@ -70,18 +69,17 @@ component accessors="true" extends="abstract"
 		param name="rc.metadescription" default="";
 		param name="rc.metakeywords" default="";
 		param name="rc.context" default="create";
-		var properties = { pageid=rc.pageid, title=rc.title, content=rc.content, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
+		param name="rc.submit" default="Save & exit";
+		var properties ={ pageid=rc.pageid, title=rc.title, content=rc.content, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
 		rc.result = variables.ContentService.savePage( properties, rc.ancestorid, rc.context );
 		rc.messages = rc.result.messages;
-		if( StructKeyExists( rc.messages, "success" ) )
-		{
+		rc.Page = rc.result.getTheObject();
+		if( StructKeyExists( rc.messages, "success" ) ){
 			var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:navigation/xml", method="get" );
 			refreshsitemap.send();
-			variables.fw.redirect( "pages", "messages" );	
-		}
-		else
-		{
-			rc.Page = rc.result.getTheObject();
+			if( rc.submit == "Save & Continue" )  variables.fw.redirect( "pages/maintain", "messages,Page,pageid,ancestorid" );
+			else variables.fw.redirect( "pages", "messages" );
+		}else{
 			variables.fw.redirect( "pages/maintain", "messages,Page,pageid,ancestorid,result" );
 		}
 	}

@@ -17,9 +17,9 @@
 --->
 
 <cfoutput>
-	<div class="page-header"><h1>News</h1></div>
+	<div class="page-header clear"><h1>News</h1></div>
 	
-	<p><a href="#buildURL( 'news.maintain' )#"><i class="icon-plus"></i> Add Article</a></p>
+	<p><a href="#buildURL( 'news.maintain' )#" class="btn btn-primary">Add article <i class="icon-chevron-right icon-white"></i></a></p>
 	
 	#view( "helpers/messages" )#
 	
