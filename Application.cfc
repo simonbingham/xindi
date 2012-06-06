@@ -142,6 +142,7 @@ component extends="frameworks.org.corfield.framework"{
 			}
 			, pageconfig ={ 
 				enableadddelete = true
+				, excludefromprimarynavigation = "" // ids of pages to exclude from the primary navigation
 				, levellimit = 2 // number of page tiers that can be added - Bootstrap dropdown only supports two tiers
 				, touchscreenfriendlynavigation = true // ancestor page links trigger dropdown - duplicated ancestor page links appear in sub menu
 			}

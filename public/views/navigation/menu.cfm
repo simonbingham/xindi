@@ -24,53 +24,56 @@
 		<cfif ArrayLen( rc.navigation )>
 			<!--- loop through pages --->
 			<cfloop array="#rc.navigation#" index="local.Page">
-				<!--- create page link --->
-				<cfsavecontent variable="local.link">
-					<!--- 
-						if the current page is not the root, has a child page and ancestor page links 
-						are used to toggle dropdowns we need to initiate a Bootstrap dropdown 
-					--->
-					<cfif local.Page.hasChild() and rc.config.pageconfig.touchscreenfriendlynavigation and !local.Page.isRoot()>
-						<a href="#buildURL( local.Page.getSlug() )#" class="dropdown-toggle" data-toggle="dropdown">#local.Page.getTitle()# <b class="caret"></b></a>
-					<cfelse>
-						<a href="#buildURL( local.Page.getSlug() )#">#local.Page.getTitle()#</a>	
-					</cfif>
-				</cfsavecontent>		
-				
-				<!--- if the current page level is greater than the previous page level initiate a new tier in the menu --->
-				<cfif local.Page.getLevel() gt local.previouslevel>
-					<cfif local.Page.isRoot()>
-						<ul class="nav nav-pills">
-					<cfelseif local.Page.getLevel() gt 1>
-						<ul class="dropdown-menu">
+				<!--- check whether current page is excluded from navigation --->
+				<cfif !local.Page.hasPageIDInPath( rc.config.pageconfig.excludefromprimarynavigation )>
+					<!--- create page link --->
+					<cfsavecontent variable="local.link">
 						<!--- 
-							if ancestor page links are used to toggle dropdowns we need to display a duplicated 
-							ancestor page link in the sub menu so the page remains accessible 
+							if the current page is not the root, has a child page and ancestor page links 
+							are used to toggle dropdowns we need to initiate a Bootstrap dropdown 
 						--->
-						<cfif rc.config.pageconfig.touchscreenfriendlynavigation>
-							<cfset local.Ancestor = local.Page.getAncestor()[ 1 ] />
-							<li><a href="#buildURL( local.Ancestor.getSlug() )#">#local.Ancestor.getTitle()#</a></li> 
+						<cfif local.Page.hasChild() and rc.config.pageconfig.touchscreenfriendlynavigation and !local.Page.isRoot()>
+							<a href="#buildURL( local.Page.getSlug() )#" class="dropdown-toggle" data-toggle="dropdown">#local.Page.getTitle()# <b class="caret"></b></a>
+						<cfelse>
+							<a href="#buildURL( local.Page.getSlug() )#">#local.Page.getTitle()#</a>	
 						</cfif>
+					</cfsavecontent>		
+					
+					<!--- if the current page level is greater than the previous page level initiate a new tier in the menu --->
+					<cfif local.Page.getLevel() gt local.previouslevel>
+						<cfif local.Page.isRoot()>
+							<ul class="nav nav-pills">
+						<cfelseif local.Page.getLevel() gt 1>
+							<ul class="dropdown-menu">
+							<!--- 
+								if ancestor page links are used to toggle dropdowns we need to display a duplicated 
+								ancestor page link in the sub menu so the page remains accessible 
+							--->
+							<cfif rc.config.pageconfig.touchscreenfriendlynavigation>
+								<cfset local.Ancestor = local.Page.getAncestor()[ 1 ] />
+								<li><a href="#buildURL( local.Ancestor.getSlug() )#">#local.Ancestor.getTitle()#</a></li> 
+							</cfif>
+						</cfif>
+						<!--- if the current page is the page being viewed apply 'active' class --->
+						<li <cfif IsDefined( "rc.Page" ) and rc.Page.getPageID() eq local.Page.getPageID()>class="active"</cfif>>#local.link#
+						<cfif local.Page.isRoot()></li></cfif>
+					<!--- if the current page level is less than the previous page level we need to go up a tier in the menu --->
+					<cfelseif local.Page.getLevel() lt local.previouslevel>
+						<cfset local.temporary = local.previouslevel>
+						<!--- keep going up a tier whilst the previous page level is greater than the current page level --->		
+						<cfloop condition="local.temporary gt local.Page.getLevel()">
+			 				</li></ul>
+							<cfset local.temporary = local.temporary - 1>
+						</cfloop>
+						<!--- if the current page is the page being viewed apply 'active' class --->
+						</li><li <cfif IsDefined( "rc.Page" ) and rc.Page.getPageID() eq local.Page.getPageID()>class="active"</cfif>>#local.link#
+					<!--- if the current page level is the same as the previous page level just display a link --->
+					<cfelse>
+						<!--- if the current page is the page being viewed apply 'active' class --->
+						</li><li <cfif IsDefined( "rc.Page" ) and rc.Page.getPageID() eq local.Page.getPageID()>class="active"</cfif>>#local.link#
 					</cfif>
-					<!--- if the current page is the page being viewed apply 'active' class --->
-					<li <cfif IsDefined( "rc.Page" ) and rc.Page.getPageID() eq local.Page.getPageID()>class="active"</cfif>>#local.link#
-					<cfif local.Page.isRoot()></li></cfif>
-				<!--- if the current page level is less than the previous page level we need to go up a tier in the menu --->
-				<cfelseif local.Page.getLevel() lt local.previouslevel>
-					<cfset local.temporary = local.previouslevel>
-					<!--- keep going up a tier whilst the previous page level is greater than the current page level --->		
-					<cfloop condition="local.temporary gt local.Page.getLevel()">
-		 				</li></ul>
-						<cfset local.temporary = local.temporary - 1>
-					</cfloop>
-					<!--- if the current page is the page being viewed apply 'active' class --->
-					</li><li <cfif IsDefined( "rc.Page" ) and rc.Page.getPageID() eq local.Page.getPageID()>class="active"</cfif>>#local.link#
-				<!--- if the current page level is the same as the previous page level just display a link --->
-				<cfelse>
-					<!--- if the current page is the page being viewed apply 'active' class --->
-					</li><li <cfif IsDefined( "rc.Page" ) and rc.Page.getPageID() eq local.Page.getPageID()>class="active"</cfif>>#local.link#
+					<cfset local.previouslevel = local.Page.getLevel()>
 				</cfif>
-				<cfset local.previouslevel = local.Page.getLevel()>
 			</cfloop>
 			
 			<!--- finally we need to ensure our nested menu is closed correctly --->
