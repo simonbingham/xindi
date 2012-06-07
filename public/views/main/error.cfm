@@ -36,7 +36,7 @@
 	<cfelse>
 		<p>An error has occurred and the site administrator has been notified.</p>
 		
-		<cfif rc.config.errorhander.enabled>
+		<cfif rc.config.errorhanderconfig.enabled>
 			<cfmail to="#rc.config.errorhanderconfig.to#" from="#rc.config.errorhanderconfig.from#" subject="#rc.config.errorhanderconfig.to#" type="html">
 				#local.error#
 			</cfmail>
