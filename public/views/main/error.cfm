@@ -19,7 +19,7 @@
 <cfoutput>
 	<div class="page-header"><h1>Oops!</h1></div>
 
-	<cfsavecontent variable="local.error">
+	<cfif !rc.config.exceptiontrackerconfig.emailnewexceptions>
 		<p>An error has occurred.</p>
 
 		<h2>Failed Action</h2>
@@ -29,17 +29,7 @@
 		<h2>Exception</h2>
 		
 		<cfdump var="#request.exception#">		
-	</cfsavecontent>
-
-	<cfif this.development>
-		#local.error#
 	<cfelse>
 		<p>An error has occurred and the site administrator has been notified.</p>
-		
-		<cfif rc.config.errorhanderconfig.enabled>
-			<cfmail to="#rc.config.errorhanderconfig.to#" from="#rc.config.errorhanderconfig.from#" subject="#rc.config.errorhanderconfig.to#" type="html">
-				#local.error#
-			</cfmail>
-		</cfif>
 	</cfif>
 </cfoutput>

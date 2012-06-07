@@ -2,6 +2,7 @@ User-Agent: *
 Disallow: /admin/
 Disallow: /common/
 Disallow: /frameworks/
+Disallow: /logs/
 Disallow: /model/
 Disallow: /public/
 Disallow: /tests/
