@@ -42,6 +42,7 @@ Xindi uses the frameworks listed below.
 * [FW/1] (https://github.com/seancorfield/fw1)
 * [DI/1] (https://github.com/seancorfield/di1)
 * [ValidateThis] (https://github.com/bobsilverberg/ValidateThis)
+* [Hoth] (https://github.com/aarongreenlee/Hoth)
 
 ### Frontend
 
