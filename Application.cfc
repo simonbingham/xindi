@@ -1,5 +1,5 @@
 /* 
-	Xindi - http://www.getxindi.com/ - Version TBC
+	Xindi - http://www.getxindi.com/ - Version 2012.6.8
 	
 	Copyright (c) 2012, Simon Bingham
 	
@@ -153,7 +153,7 @@ component extends="frameworks.org.corfield.framework"{
 			, enquiryconfig = {
 				enabled = true
 				, subject = "Enquiry"
-				, emailto = ""
+				, emailto = "smnbin@gmail.com"
 			}
 			, exceptiontrackerconfig = { 
 				emailnewexceptions = true
