@@ -60,6 +60,8 @@
 				</li></ul>
 				<cfset local.temporary = local.temporary - 1>
 			</cfloop>
+			
+			<cfif ArrayLen( rc.navigation ) eq 1></ul></cfif>
 		</cfif>
 	</cfprocessingdirective>
 </cfoutput>
