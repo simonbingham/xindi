@@ -1,5 +1,5 @@
 /*
-	Xindi - http://www.getxindi.com/ - Version 2012.6.8
+	Xindi - http://www.getxindi.com/ - Version TBC
 	
 	Copyright (c) 2012, Simon Bingham
 	
