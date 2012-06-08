@@ -58,19 +58,27 @@ component extends="frameworks.org.corfield.framework"{
 	};
 	
 	/**
-     * called when application starts
-	 */	
+	* called when application starts
+	*/	
 	void function setupApplication(){
 		ORMReload();
 		
 		// setup bean factory
 		var beanfactory = new frameworks.org.corfield.ioc( "/model" );
 		setBeanFactory( beanfactory );
+
+		// add validator bean to factory
 		var ValidateThisConfig ={ definitionPath="/model/", JSIncludes=false };
 		beanFactory.addBean( "Validator", new ValidateThis.ValidateThis( ValidateThisConfig ) );
+
+		// add meta data bean to factory
 		beanFactory.addBean( "MetaData", new model.beans.MetaData() );
+
+		// add config bean to factory
 		var config = getConfig();
 		beanFactory.addBean( "config", config );
+
+		// add exception tracker bean to factory
 		var HothConfig = new hoth.config.HothConfig();
 		HothConfig.setApplicationName( config.applicationname );
 		HothConfig.setLogPath( "logs/hoth" );
@@ -82,8 +90,8 @@ component extends="frameworks.org.corfield.framework"{
 	}
 	
 	/**
-     * called when page request starts
-	 */	
+	* called when page request starts
+	*/	
 	void function setupRequest(){
 		// define base url
 		if( CGI.HTTPS eq "on" ) rc.basehref = "https://";
@@ -101,8 +109,8 @@ component extends="frameworks.org.corfield.framework"{
 	}
 	
 	/**
-     * called when view rendering begins
-	 */		
+	* called when view rendering begins
+	*/		
 	void function setupView(){
 		rc.navigation = getBeanFactory().getBean( "ContentService" ).getPages();
 		
@@ -110,8 +118,8 @@ component extends="frameworks.org.corfield.framework"{
 	}	
 	
 	/**
-     * called when exception occurs
-	 */		
+	* called when exception occurs
+	*/		
 	void function onError( Exception, event )
 	{	
 		var exceptiontracker = getBeanFactory().getBean( "exceptiontracker" );
@@ -121,8 +129,8 @@ component extends="frameworks.org.corfield.framework"{
 	}	
 	
 	/**
-     * called if view is missing - used for (almost) all Xindi page requests
-	 */	
+	* called if view is missing - used for (almost) all Xindi page requests
+	*/	
 	any function onMissingView( required rc ){
 		rc.Page = getBeanFactory().getBean( "ContentService" ).getPageBySlug( ListLast( CGI.PATH_INFO, "/" ) );
 		if( !rc.Page.isPersisted() ){
@@ -138,8 +146,8 @@ component extends="frameworks.org.corfield.framework"{
 	}
 	
 	/**
-     * configuration
-	 */		
+	* configuration
+	*/		
 	private struct function getConfig(){
 		var config ={
 			applicationname = ListLast( this.applicationroot, "\/" )
@@ -150,8 +158,8 @@ component extends="frameworks.org.corfield.framework"{
 			}
 			, exceptiontrackerconfig = { 
 				emailnewexceptions = true
-				, emailnewexceptionsto = "smnbin@gmail.com"
-				, emailnewexceptionsfrom = "smnbin@gmail.com"
+				, emailnewexceptionsto = ""
+				, emailnewexceptionsfrom = ""
 				, emailexceptionsashtml = true
 			}
 			, filemanagerconfig = {
