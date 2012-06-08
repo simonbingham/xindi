@@ -66,11 +66,19 @@ component extends="frameworks.org.corfield.framework"{
 		// setup bean factory
 		var beanfactory = new frameworks.org.corfield.ioc( "/model" );
 		setBeanFactory( beanfactory );
+
+		// add validator bean to factory
 		var ValidateThisConfig ={ definitionPath="/model/", JSIncludes=false };
 		beanFactory.addBean( "Validator", new ValidateThis.ValidateThis( ValidateThisConfig ) );
+
+		// add meta data bean to factory
 		beanFactory.addBean( "MetaData", new model.beans.MetaData() );
+
+		// add config bean to factory
 		var config = getConfig();
 		beanFactory.addBean( "config", config );
+
+		// add exception tracker bean to factory
 		var HothConfig = new hoth.config.HothConfig();
 		HothConfig.setApplicationName( config.applicationname );
 		HothConfig.setLogPath( "logs/hoth" );
@@ -150,8 +158,8 @@ component extends="frameworks.org.corfield.framework"{
 			}
 			, exceptiontrackerconfig = { 
 				emailnewexceptions = true
-				, emailnewexceptionsto = "smnbin@gmail.com"
-				, emailnewexceptionsfrom = "smnbin@gmail.com"
+				, emailnewexceptionsto = ""
+				, emailnewexceptionsfrom = ""
 				, emailexceptionsashtml = true
 			}
 			, filemanagerconfig = {
