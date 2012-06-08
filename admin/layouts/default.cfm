@@ -24,7 +24,6 @@
 	<html lang="en">
 		<head>
 			<meta charset="utf-8">
-			<meta name="author" content="Simon Bingham (http://www.simonbingham.me.uk/)">
 			<meta name="viewport" content="width=device-width, initial-scale=1.0">
 			
 			<base href="#rc.basehref##request.subsystem#/">

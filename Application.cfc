@@ -1,5 +1,5 @@
 /*
-	Xindi - http://www.getxindi.com/ - Version 2012.6.6
+	Xindi - http://www.getxindi.com/ - Version 2012.6.8
 	
 	Copyright (c) 2012, Simon Bingham
 	
@@ -17,12 +17,14 @@
 */
 
 component extends="frameworks.org.corfield.framework"{
+			
 	/**
 	* application settings
 	*/
 	this.development = ListFind( "localhost,127.0.0.1,127.0.0.1:8888", CGI.SERVER_NAME ) != 0;
 	this.applicationroot = getDirectoryFromPath( getCurrentTemplatePath() );
 	this.sessionmanagement = true;
+	this.mappings[ "/hoth" ] = this.applicationroot & "frameworks/hoth/";
 	this.mappings[ "/model" ] = this.applicationroot & "model/";
 	this.mappings[ "/ValidateThis" ] = this.applicationroot & "frameworks/ValidateThis/";
 	this.datasource = ListLast( this.applicationroot, "\/" );
@@ -56,23 +58,40 @@ component extends="frameworks.org.corfield.framework"{
 	};
 	
 	/**
-     * called when application starts
-	 */	
+	* called when application starts
+	*/	
 	void function setupApplication(){
+		// add exception tracker to application scope
+		var HothConfig = new hoth.config.HothConfig();
+		HothConfig.setApplicationName( getConfig().applicationname );
+		HothConfig.setLogPath( "logs/hoth" );
+		HothConfig.setEmailNewExceptions( getConfig().exceptiontrackerconfig.emailnewexceptions );
+		HothConfig.setEmailNewExceptionsTo( getConfig().exceptiontrackerconfig.emailnewexceptionsto );
+		HothConfig.setEmailNewExceptionsFrom( getConfig().exceptiontrackerconfig.emailnewexceptionsfrom );
+		HothConfig.setEmailExceptionsAsHTML( getConfig().exceptiontrackerconfig.emailexceptionsashtml );
+		application.exceptiontracker = new Hoth.HothTracker( HothConfig );
+	
 		ORMReload();
-		
+
 		// setup bean factory
 		var beanfactory = new frameworks.org.corfield.ioc( "/model" );
 		setBeanFactory( beanfactory );
+
+		// add validator bean to factory
 		var ValidateThisConfig ={ definitionPath="/model/", JSIncludes=false };
 		beanFactory.addBean( "Validator", new ValidateThis.ValidateThis( ValidateThisConfig ) );
+
+		// add meta data bean to factory
 		beanFactory.addBean( "MetaData", new model.beans.MetaData() );
-		beanFactory.addBean( "config", getConfig() );
+
+		// add config bean to factory
+		var config = getConfig();
+		beanFactory.addBean( "config", config );
 	}
 	
 	/**
-     * called when page request starts
-	 */	
+	* called when page request starts
+	*/	
 	void function setupRequest(){
 		// define base url
 		if( CGI.HTTPS eq "on" ) rc.basehref = "https://";
@@ -90,8 +109,8 @@ component extends="frameworks.org.corfield.framework"{
 	}
 	
 	/**
-     * called when view rendering begins
-	 */		
+	* called when view rendering begins
+	*/		
 	void function setupView(){
 		rc.navigation = getBeanFactory().getBean( "ContentService" ).getPages();
 		
@@ -99,8 +118,18 @@ component extends="frameworks.org.corfield.framework"{
 	}	
 	
 	/**
-     * called if view is missing - used for (almost) all Xindi page requests
-	 */	
+	* called when exception occurs
+	*/		
+	void function onError( Exception, event )
+	{	
+		var config = getConfig();	
+		if( StructKeyExists( application, "exceptiontracker" ) ) application.exceptiontracker.track( arguments.Exception );
+		super.onError( arguments.Exception, arguments.event );
+	}	
+	
+	/**
+	* called if view is missing - used for (almost) all Xindi page requests
+	*/	
 	any function onMissingView( required rc ){
 		rc.Page = getBeanFactory().getBean( "ContentService" ).getPageBySlug( ListLast( CGI.PATH_INFO, "/" ) );
 		if( !rc.Page.isPersisted() ){
@@ -116,41 +145,44 @@ component extends="frameworks.org.corfield.framework"{
 	}
 	
 	/**
-     * configuration
-	 */		
+	* configuration
+	*/		
 	private struct function getConfig(){
 		var config ={
-			enquiryconfig ={
+			applicationname = ListLast( this.applicationroot, "\/" )
+			, enquiryconfig = {
 				enabled = true
 				, subject = "Enquiry"
 				, emailto = ""
 			}
-			, errorhanderconfig ={ 
-				enabled=true
-				, to=""
-				, from=""
-				, subject="Error Notification (#ListLast( this.applicationroot, '\/' )#)" 
+			, exceptiontrackerconfig = { 
+				emailnewexceptions = true
+				, emailnewexceptionsto = ""
+				, emailnewexceptionsfrom = ""
+				, emailexceptionsashtml = true
 			}
-			, filemanagerconfig ={
+			, filemanagerconfig = {
 				allowedextensions = "txt,gif,jpg,png,wav,mpeg3,pdf,zip,mp3,jpeg"
 			}
-			, newsconfig ={
+			, newsconfig = {
 				enabled = true
 				, recordsperpage = 10
 				, rsstitle = ""
 				, rssdescription = ""
 			}
-			, pageconfig ={ 
+			, pageconfig = { 
 				enableadddelete = true
+				, excludefromprimarynavigation = "" // ids of pages to exclude from the primary navigation
 				, levellimit = 2 // number of page tiers that can be added - Bootstrap dropdown only supports two tiers
 				, touchscreenfriendlynavigation = true // ancestor page links trigger dropdown - duplicated ancestor page links appear in sub menu
 			}
 			, revision = Hash( Now() )
 			// list of unsecure sub systems and actions - all other requests are password protected
-			, securityconfig ={
+			, securityconfig = {
 				whitelist = "^admin:security,^public:"
 			}
 		};
+		if( this.development ) config.exceptiontrackerconfig.emailnewexceptions = false;
 		return config;
 	}	
 

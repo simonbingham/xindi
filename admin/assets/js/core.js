@@ -58,7 +58,7 @@ jQuery( function($) {
 	CKEDITOR.config[ "toolbar" ] = "Custom";
 	CKEDITOR.config[ "height" ] = 400;
 	CKEDITOR.config[ "uiColor" ] = "##ddd"; 
-	CKEDITOR.config[ "contentsCss" ] = CKEDITOR.config[ "baseHref" ] + "assets/css/core.css";
+	CKEDITOR.config[ "contentsCss" ] = CKEDITOR.config[ "baseHref" ] + "assets/css/editor.css";
 	CKEDITOR.config[ "skin" ] = "kama";
 	CKEDITOR.config[ "bodyId" ] = "content";
 	fileBrowserpath = CKEDITOR.config[ "baseHref" ] + "index.cfm?action=admin:filemanager.configure&";
