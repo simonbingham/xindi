@@ -46,7 +46,7 @@
 			</cfif>
 		</ul>
 	<cfelse>
-		<div class="alert alert-info">There are currently no news stories.</div>
+		<p>There are currently no news stories.</p>
 	</cfif>
 	
 	<script>
