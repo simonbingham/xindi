@@ -61,8 +61,18 @@ component extends="frameworks.org.corfield.framework"{
 	* called when application starts
 	*/	
 	void function setupApplication(){
+		// add exception tracker to application scope
+		var HothConfig = new hoth.config.HothConfig();
+		HothConfig.setApplicationName( getConfig().applicationname );
+		HothConfig.setLogPath( "logs/hoth" );
+		HothConfig.setEmailNewExceptions( getConfig().exceptiontrackerconfig.emailnewexceptions );
+		HothConfig.setEmailNewExceptionsTo( getConfig().exceptiontrackerconfig.emailnewexceptionsto );
+		HothConfig.setEmailNewExceptionsFrom( getConfig().exceptiontrackerconfig.emailnewexceptionsfrom );
+		HothConfig.setEmailExceptionsAsHTML( getConfig().exceptiontrackerconfig.emailexceptionsashtml );
+		application.exceptiontracker = new Hoth.HothTracker( HothConfig );
+	
 		ORMReload();
-		
+
 		// setup bean factory
 		var beanfactory = new frameworks.org.corfield.ioc( "/model" );
 		setBeanFactory( beanfactory );
@@ -77,16 +87,6 @@ component extends="frameworks.org.corfield.framework"{
 		// add config bean to factory
 		var config = getConfig();
 		beanFactory.addBean( "config", config );
-
-		// add exception tracker bean to factory
-		var HothConfig = new hoth.config.HothConfig();
-		HothConfig.setApplicationName( config.applicationname );
-		HothConfig.setLogPath( "logs/hoth" );
-		HothConfig.setEmailNewExceptions( config.exceptiontrackerconfig.emailnewexceptions );
-		HothConfig.setEmailNewExceptionsTo( config.exceptiontrackerconfig.emailnewexceptionsto );
-		HothConfig.setEmailNewExceptionsFrom( config.exceptiontrackerconfig.emailnewexceptionsfrom );
-		HothConfig.setEmailExceptionsAsHTML( config.exceptiontrackerconfig.emailexceptionsashtml );
-		beanFactory.addBean( "exceptiontracker", new Hoth.HothTracker( HothConfig ) );		
 	}
 	
 	/**
@@ -122,9 +122,8 @@ component extends="frameworks.org.corfield.framework"{
 	*/		
 	void function onError( Exception, event )
 	{	
-		var exceptiontracker = getBeanFactory().getBean( "exceptiontracker" );
 		var config = getConfig();	
-		if( config.exceptiontrackerconfig.emailnewexceptions ) exceptiontracker.track( arguments.Exception );
+		if( StructKeyExists( application, "exceptiontracker" ) ) application.exceptiontracker.track( arguments.Exception );
 		super.onError( arguments.Exception, arguments.event );
 	}	
 	

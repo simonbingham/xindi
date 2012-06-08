@@ -24,7 +24,7 @@
 </cfsavecontent>
 
 <cfhtmlhead text="#local.canonicalurl#">
-<cfdump var="#1/0#">
+
 <cfoutput>
 	#view( "navigation/breadcrumbs",{ Page=rc.Page })#
 	
