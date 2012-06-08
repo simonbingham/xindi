@@ -51,11 +51,11 @@
 							--->
 							<cfif rc.config.pageconfig.touchscreenfriendlynavigation>
 								<cfset local.Ancestor = local.Page.getAncestor()[ 1 ] />
-								<li><a href="#buildURL( local.Ancestor.getSlug() )#">#local.Ancestor.getTitle()#</a></li> 
+								<li <cfif local.Page.hasChild() and !local.Page.isRoot()>class="dropdown"</cfif>><a href="#buildURL( local.Ancestor.getSlug() )#">#local.Ancestor.getTitle()#</a></li> 
 							</cfif>
 						</cfif>
 						<!--- if the current page is the page being viewed apply 'active' class --->
-						<li <cfif IsDefined( "rc.Page" ) and rc.Page.getPageID() eq local.Page.getPageID()>class="active"</cfif>>#local.link#
+						<li class="<cfif local.Page.hasChild() and !local.Page.isRoot()>dropdown</cfif> <cfif IsDefined( 'rc.Page' ) and rc.Page.getPageID() eq local.Page.getPageID()>active</cfif>">#local.link#
 						<cfif local.Page.isRoot()></li></cfif>
 					<!--- if the current page level is less than the previous page level we need to go up a tier in the menu --->
 					<cfelseif local.Page.getLevel() lt local.previouslevel>
@@ -66,11 +66,11 @@
 							<cfset local.temporary = local.temporary - 1>
 						</cfloop>
 						<!--- if the current page is the page being viewed apply 'active' class --->
-						</li><li <cfif IsDefined( "rc.Page" ) and rc.Page.getPageID() eq local.Page.getPageID()>class="active"</cfif>>#local.link#
+						</li><li class="<cfif local.Page.hasChild() and !local.Page.isRoot()>dropdown</cfif> <cfif IsDefined( 'rc.Page' ) and rc.Page.getPageID() eq local.Page.getPageID()>active</cfif>">#local.link#
 					<!--- if the current page level is the same as the previous page level just display a link --->
 					<cfelse>
 						<!--- if the current page is the page being viewed apply 'active' class --->
-						</li><li <cfif IsDefined( "rc.Page" ) and rc.Page.getPageID() eq local.Page.getPageID()>class="active"</cfif>>#local.link#
+						</li><li class="<cfif local.Page.hasChild() and !local.Page.isRoot()>dropdown</cfif> <cfif IsDefined( 'rc.Page' ) and rc.Page.getPageID() eq local.Page.getPageID()> active</cfif>">#local.link#
 					</cfif>
 					<cfset local.previouslevel = local.Page.getLevel()>
 				</cfif>
