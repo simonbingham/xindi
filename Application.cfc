@@ -67,7 +67,8 @@ component extends="frameworks.org.corfield.framework"{
 		// add exception tracker to application scope
 		var HothConfig = new hoth.config.HothConfig();
 		HothConfig.setApplicationName( getConfig().applicationname );
-		HothConfig.setLogPath( "logs/hoth" );
+		HothConfig.setLogPath( this.applicationroot & "logs/hoth" );
+		HothConfig.setLogPathIsRelative( false );
 		HothConfig.setEmailNewExceptions( getConfig().exceptiontrackerconfig.emailnewexceptions );
 		HothConfig.setEmailNewExceptionsTo( getConfig().exceptiontrackerconfig.emailnewexceptionsto );
 		HothConfig.setEmailNewExceptionsFrom( getConfig().exceptiontrackerconfig.emailnewexceptionsfrom );
