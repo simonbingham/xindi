@@ -24,6 +24,9 @@ component extends="frameworks.org.corfield.framework"{
 	this.development = ListFind( "localhost,127.0.0.1,127.0.0.1:8888", CGI.SERVER_NAME ) != 0;
 	this.applicationroot = getDirectoryFromPath( getCurrentTemplatePath() );
 	this.sessionmanagement = true;
+	// prevent bots creating lots of sessions
+	if ( structKeyExists( cookie, "CFTOKEN" ) ) this.sessiontimeout = createTimeSpan( 0, 0, 20, 0 );
+	else this.sessiontimeout = createTimeSpan( 0, 0, 0, 1 );
 	this.mappings[ "/hoth" ] = this.applicationroot & "frameworks/hoth/";
 	this.mappings[ "/model" ] = this.applicationroot & "model/";
 	this.mappings[ "/ValidateThis" ] = this.applicationroot & "frameworks/ValidateThis/";
