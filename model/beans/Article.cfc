@@ -98,7 +98,7 @@ component extends="Base" persistent="true" table="articles" cacheuse="transactio
 	}
 
 	private void function setUUID(){
-		variables.uuid = ReReplace( LCase( getTitle() ), "[^a-z0-9]{1,}", "", "all" );
+		variables.uuid = ReReplace( LCase( getTitle() ), "[^a-z0-9]{1,}", "-", "all" );
 		while ( !isUUIDUnique() ) variables.uuid &= "-"; 
 	}
 		
