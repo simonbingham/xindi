@@ -55,6 +55,18 @@ jQuery( function($) {
 		{ name: "links", items : [ "Link", "Unlink", "Anchor" ] },
 		{ name: "insert", items : [ "Image", "Flash", "Table", "HorizontalRule", "SpecialChar", "PageBreak", "Iframe" ] }
 	];
+	/*
+	CKEDITOR.addStylesSet( 'mystyleslist',
+		[
+			{ name : 'Image on Right', element : 'img', attributes : { 'class' : 'cms-img-right' } },
+			{ name : 'Image on Left', element : 'img', attributes : { 'class' : 'cms-img-left' } },
+			{ name : 'Image on Right Border', element : 'img', attributes : { 'class' : 'cms-img-border-right' } },
+			{ name : 'Image on Left Border', element : 'img', attributes : { 'class' : 'cms-img-border-left' } },
+			{ name : 'Image with Border', element : 'img', attributes : { 'class' : 'cms-img-border' } }
+		]
+	);	
+	CKEDITOR.config['stylesCombo_stylesSet'] = 'mystyleslist';	
+	*/
 	CKEDITOR.config[ "toolbar" ] = "Custom";
 	CKEDITOR.config[ "height" ] = 400;
 	CKEDITOR.config[ "uiColor" ] = "##ddd"; 
