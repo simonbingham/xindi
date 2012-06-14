@@ -30,6 +30,12 @@ jQuery( function($) {
 		if( title.val().length==0 ) title.val( $( this ).val() );
 	});
 
+	// Toggle meta tag fields
+	$( "#metagenerated" ).click(function(){
+		if( !$(this).attr( "checked" ) ) $( ".metatags" ).slideDown();
+		else $( ".metatags" ).slideUp();
+	});
+
 	// text editor configuration
 	$( "form" ).bind( "submit", function(){
 		if( typeof CKEDITOR != "undefined" ){

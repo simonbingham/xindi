@@ -80,9 +80,11 @@ component accessors="true"{
 			}
 			Article.populate( arguments.properties );
 			if( IsNull( Article.getContent() ) ) Article.setContent( "" );
-			if( !Article.hasMetaTitle() ) Article.setMetaTitle( Article.getTitle() );
-			if( !Article.hasMetaDescription() ) Article.setMetaDescription( variables.MetaData.generateMetaDescription( Article.getContent() ) );
-			if( !Article.hasMetaKeywords() ) Article.setMetaKeywords( variables.MetaData.generateMetaKeywords( Article.getContent() ) );
+			if( Article.isMetaGenerated() ){
+				Article.setMetaTitle( Article.getTitle() );
+				Article.setMetaDescription( variables.MetaData.generateMetaDescription( Article.getContent() ) );
+				Article.setMetaKeywords( variables.MetaData.generateMetaKeywords( Article.getContent() ) );
+			}
 			var result = variables.Validator.validate( theObject=Article );
 			if( !result.hasErrors() ){
 				EntitySave( Article );

@@ -129,10 +129,11 @@ component accessors="true"{
 			var Page = "";
 			Page = getPageByID( Val( arguments.properties.pageid ) );
 			Page.populate( arguments.properties );
-			if( IsNull( Page.getContent() ) ) Page.setContent( "" );
-			if( !Page.hasMetaTitle() ) Page.setMetaTitle( Page.getTitle() );
-			if( !Page.hasMetaDescription() ) Page.setMetaDescription( variables.MetaData.generateMetaDescription( Page.getContent() ) );
-			if( !Page.hasMetaKeywords() ) Page.setMetaKeywords( variables.MetaData.generateMetaKeywords( Page.getContent() ) );			
+			if( Page.isMetaGenerated() ){
+				Page.setMetaTitle( Page.getTitle() );
+				Page.setMetaDescription( variables.MetaData.generateMetaDescription( Page.getContent() ) );
+				Page.setMetaKeywords( variables.MetaData.generateMetaKeywords( Page.getContent() ) );
+			}			
 			var result = variables.Validator.validate( theObject=Page, Context=arguments.context );
 			if( !result.hasErrors() ){
 				if( !Page.isPersisted() && arguments.ancestorid ){

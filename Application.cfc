@@ -176,11 +176,12 @@ component extends="frameworks.org.corfield.framework"{
 			}
 			, pageconfig = { 
 				enableadddelete = true
-				, excludefromprimarynavigation = "" // ids of pages to exclude from the primary navigation
-				, levellimit = 2 // number of page tiers that can be added - Bootstrap dropdown only supports two tiers
-				, suppressadddeletepage = "1" // ids of pages that cannot have child pages added or be deleted
+				, excludefromprimarynavigation = "" // ids of pages to exclude from primary navigation
+				, levellimit = 2 // number of page tiers that can be added - Bootstrap dropdown only supports two
+				, suppressaddpage = "" // ids of pages that cannot have child pages added
+				, suppressdeletepage = "1" // ids of pages that cannot be deleted
 				, suppressmovepage = "" // ids of pages that cannot be moved
-				, touchscreenfriendlynavigation = true // ancestor page links trigger dropdown - duplicated ancestor page links appear in sub menu
+				, touchscreenfriendlynavigation = true // ancestor page links toggle dropdown - duplicated ancestor page links appear in sub menu
 			}
 			, revision = Hash( Now() )
 			// list of unsecure sub systems and actions - all other requests are password protected
