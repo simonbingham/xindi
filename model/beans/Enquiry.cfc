@@ -36,10 +36,6 @@ component extends="Base" persistent="true" table="enquiries" cacheuse="transacti
 	 */
 	 	
 	Enquiry function init(){
-		variables.firstname = "";
-		variables.lastname = "";
-		variables.email = "";
-		variables.message = "";
 		variables.unread = true;
 		return this;
 	}
