@@ -36,7 +36,7 @@ component accessors="true" extends="abstract"{
 			rc.MetaData.setMetaDescription( rc.Article.getMetaDescription() );
 			rc.MetaData.setMetaKeywords( rc.Article.getMetaKeywords() );
 		}else{
-			variables.fw.redirect( "main/notfound" );
+			variables.fw.redirect( "main.notfound" );
 		}		
 	}
 	
