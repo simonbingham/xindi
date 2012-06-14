@@ -60,10 +60,10 @@ component accessors="true" extends="abstract"{
 		rc.messages = rc.result.messages;
 		rc.Article = rc.result.getTheObject();
 		if( StructKeyExists( rc.messages, "success" ) ){
-			if( rc.submit == "Save & Continue" ) variables.fw.redirect( "news/maintain", "messages,Article,articleid" );
+			if( rc.submit == "Save & Continue" ) variables.fw.redirect( "news.maintain", "messages,Article", "articleid" );
 			else variables.fw.redirect( "news", "messages" );
 		}else{
-			variables.fw.redirect( "news/maintain", "messages,Article,articleid,result" );
+			variables.fw.redirect( "news.maintain", "messages,Article,result", "articleid" );
 		}
 	}
 	

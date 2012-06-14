@@ -77,10 +77,10 @@ component accessors="true" extends="abstract"{
 		if( StructKeyExists( rc.messages, "success" ) ){
 			var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:navigation/xml", method="get" );
 			refreshsitemap.send();
-			if( rc.submit == "Save & Continue" )  variables.fw.redirect( "pages/maintain", "messages,Page,pageid,ancestorid" );
+			if( rc.submit == "Save & Continue" )  variables.fw.redirect( "pages.maintain", "messages,Page,ancestorid", "pageid" );
 			else variables.fw.redirect( "pages", "messages" );
 		}else{
-			variables.fw.redirect( "pages/maintain", "messages,Page,pageid,ancestorid,result" );
+			variables.fw.redirect( "pages.maintain", "messages,Page,ancestorid,result", "pageid" );
 		}
 	}
 	
