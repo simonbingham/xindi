@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <validateThis xsi:noNamespaceSchemaLocation="validateThis.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<objectProperties>
-		<property name="title" desc="title">
+		<property name="title">
 			<rule type="required" />
 			<rule type="maxLength">
 				<param name="maxLength" value="150" />
 			</rule>				
 		</property>
-		<property name="published" desc="published">
+		<property name="published">
 			<rule type="required" />
 			<rule type="date" />
 		</property>			
-		<property name="content" desc="content">
+		<property name="content">
 			<rule type="required" />
 		</property>	
 		<property name="metatitle" desc="meta title">

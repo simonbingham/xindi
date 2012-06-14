@@ -23,7 +23,7 @@
 				<param name="maxLength" value="150" />
 			</rule>	
 		</property>
-		<property name="username" desc="username">
+		<property name="username">
 			<rule type="required" contexts="create,update,login" />
 			<rule type="custom" contexts="create,update" failureMessage="The username is registered to an existing account.">
         		<param name="methodname" value="isUsernameUnique" />
@@ -32,7 +32,7 @@
 				<param name="maxLength" value="50" />
 			</rule>	
 		</property>
-		<property name="password" desc="password">
+		<property name="password">
 			<rule type="required" contexts="create,login" />
 		</property>
 	</objectProperties>
