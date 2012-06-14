@@ -48,7 +48,7 @@ component accessors="true" extends="abstract"{
 		rc.result = variables.EnquiryService.sendEnquiry( properties, variables.config.enquiryconfig, emailtemplatepath );
 		rc.messages = rc.result.messages;
 		if( StructKeyExists( rc.messages, "success" ) ){
-			variables.fw.redirect( "enquiry/thanks" );	
+			variables.fw.redirect( "enquiry.thanks" );	
 		}else{
 			rc.Enquiry = rc.result.getTheObject();
 			variables.fw.redirect( "enquiry", "messages,Enquiry,result" );
