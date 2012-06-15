@@ -5,5 +5,6 @@ Disallow: /frameworks/
 Disallow: /logs/
 Disallow: /model/
 Disallow: /public/
+Disallow: /remote/
 Disallow: /tests/
 Allow: /
