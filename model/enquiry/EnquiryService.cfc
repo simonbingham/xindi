@@ -81,10 +81,10 @@ component accessors="true"{
 	}	
 	
 	function newEnquiry(){
-		return new model.beans.Enquiry();
+		return new model.enquiry.Enquiry();
 	}
 	
-	struct function sendEnquiry( required struct properties, required struct enquiryconfig, required string emailtemplatepath ){
+	struct function sendEnquiry( required struct properties, required struct config, required string emailtemplatepath ){
 		transaction{
 			var emailtemplate = "";
 			var Enquiry = newEnquiry(); 
@@ -94,8 +94,8 @@ component accessors="true"{
 			if( !result.hasErrors() ){
 				savecontent variable="emailtemplate"{ include arguments.emailtemplatepath; }
 				var Email = new mail();
-			    Email.setSubject( arguments.enquiryconfig.subject );
-		    	Email.setTo( arguments.enquiryconfig.emailto );
+			    Email.setSubject( arguments.config.subject );
+		    	Email.setTo( arguments.config.emailto );
 		    	Email.setFrom( Enquiry.getEmail() );
 		    	Email.setBody( emailtemplate );
 		    	Email.setType( "html" );

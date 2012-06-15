@@ -65,22 +65,23 @@ component accessors="true" extends="abstract"{
 		param name="rc.ancestorid" default="0";
 		param name="rc.title" default="";
 		param name="rc.content" default="";
+		param name="rc.metagenerated" default="false";
 		param name="rc.metatitle" default="";
 		param name="rc.metadescription" default="";
 		param name="rc.metakeywords" default="";
 		param name="rc.context" default="create";
 		param name="rc.submit" default="Save & exit";
-		var properties ={ pageid=rc.pageid, title=rc.title, content=rc.content, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
+		var properties ={ pageid=rc.pageid, title=rc.title, content=rc.content, metagenerated=rc.metagenerated, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
 		rc.result = variables.ContentService.savePage( properties, rc.ancestorid, rc.context );
 		rc.messages = rc.result.messages;
 		rc.Page = rc.result.getTheObject();
 		if( StructKeyExists( rc.messages, "success" ) ){
 			var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:navigation/xml", method="get" );
 			refreshsitemap.send();
-			if( rc.submit == "Save & Continue" )  variables.fw.redirect( "pages/maintain", "messages,Page,pageid,ancestorid" );
+			if( rc.submit == "Save & Continue" )  variables.fw.redirect( "pages.maintain", "messages,Page,ancestorid", "pageid" );
 			else variables.fw.redirect( "pages", "messages" );
 		}else{
-			variables.fw.redirect( "pages/maintain", "messages,Page,pageid,ancestorid,result" );
+			variables.fw.redirect( "pages.maintain", "messages,Page,ancestorid,result", "pageid" );
 		}
 	}
 	

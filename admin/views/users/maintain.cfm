@@ -69,7 +69,7 @@
 		<div class="form-actions">
 			<input type="submit" name="submit" value="Save &amp; continue" class="btn btn-primary">
 			<input type="submit" name="submit" id="submit" value="Save &amp; exit" class="btn btn-primary">
-			<a href="#buildURL( 'news' )#" class="btn cancel">Cancel</a>
+			<a href="#buildURL( 'users' )#" class="btn cancel">Cancel</a>
 		</div>
 		
 		<input type="hidden" name="userid" id="userid" value="#HtmlEditFormat( rc.User.getUserID() )#">

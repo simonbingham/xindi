@@ -51,19 +51,20 @@ component accessors="true" extends="abstract"{
 		param name="rc.title" default="";
 		param name="rc.published" default="";
 		param name="rc.content" default="";
+		param name="rc.metagenerated" default="false";
 		param name="rc.metatitle" default="";
 		param name="rc.metadescription" default="";
 		param name="rc.metakeywords" default="";
 		param name="rc.submit" default="Save & exit";
-		var properties ={ articleid=rc.articleid, title=rc.title, published=rc.published, content=rc.content, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
+		var properties ={ articleid=rc.articleid, title=rc.title, published=rc.published, content=rc.content, metagenerated=rc.metagenerated, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
 		rc.result = variables.NewsService.saveArticle( properties );
 		rc.messages = rc.result.messages;
 		rc.Article = rc.result.getTheObject();
 		if( StructKeyExists( rc.messages, "success" ) ){
-			if( rc.submit == "Save & Continue" ) variables.fw.redirect( "news/maintain", "messages,Article,articleid" );
+			if( rc.submit == "Save & Continue" ) variables.fw.redirect( "news.maintain", "messages,Article", "articleid" );
 			else variables.fw.redirect( "news", "messages" );
 		}else{
-			variables.fw.redirect( "news/maintain", "messages,Article,articleid,result" );
+			variables.fw.redirect( "news.maintain", "messages,Article,result", "articleid" );
 		}
 	}
 	

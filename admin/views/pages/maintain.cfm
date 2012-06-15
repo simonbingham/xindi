@@ -45,29 +45,40 @@
 		<fieldset>
 			<legend>Meta Tags</legend>		
 		
-	    	<div class="alert alert-info">If you leave these fields empty the meta tags will be generated automatically.</div>		
+			<div class="control-group <cfif rc.result.hasErrors( 'metagenerated' )>error</cfif>">
+				<label class="control-label">&nbsp;</label>
+				<div class="controls">
+					<label class="checkbox">
+						<input type="checkbox" name="metagenerated" id="metagenerated" value="true" <cfif rc.Page.getMetaGenerated()>checked="checked"</cfif>>
+						Generate automatically <cfif rc.Validator.propertyIsRequired( "metagenerated" )>*</cfif>
+						#view( "helpers/failures",{ property="metagenerated" })#
+					</label>
+				</div>
+			</div>		
 		
-			<div class="control-group <cfif rc.result.hasErrors( 'metatitle' )>error</cfif>">
-				<label class="control-label" for="metatitle">Title <cfif rc.Validator.propertyIsRequired( "metatitle", rc.context )>*</cfif></label>
-				<div class="controls">
-					<input class="input-xlarge" type="text" name="metatitle" id="metatitle" value="#HtmlEditFormat( rc.Page.getMetaTitle() )#" maxlength="100">
-					#view( "helpers/failures",{ property="metatitle" })#
+			<div class="metatags">
+				<div class="control-group <cfif rc.result.hasErrors( 'metatitle' )>error</cfif>">
+					<label class="control-label" for="metatitle">Title <cfif rc.Validator.propertyIsRequired( "metatitle", rc.context )>*</cfif></label>
+					<div class="controls">
+						<input class="input-xlarge" type="text" name="metatitle" id="metatitle" value="#HtmlEditFormat( rc.Page.getMetaTitle() )#" maxlength="100">
+						#view( "helpers/failures",{ property="metatitle" })#
+					</div>
 				</div>
-			</div>
-			
-			<div class="control-group <cfif rc.result.hasErrors( 'metadescription' )>error</cfif>">
-				<label class="control-label" for="metadescription">Description <cfif rc.Validator.propertyIsRequired( "metadescription", rc.context )>*</cfif></label>
-				<div class="controls">
-					<input class="input-xlarge" type="text" name="metadescription" id="metadescription" value="#HtmlEditFormat( rc.Page.getMetaDescription() )#" maxlength="200">
-					#view( "helpers/failures",{ property="metadescription" })#
+				
+				<div class="control-group <cfif rc.result.hasErrors( 'metadescription' )>error</cfif>">
+					<label class="control-label" for="metadescription">Description <cfif rc.Validator.propertyIsRequired( "metadescription", rc.context )>*</cfif></label>
+					<div class="controls">
+						<input class="input-xlarge" type="text" name="metadescription" id="metadescription" value="#HtmlEditFormat( rc.Page.getMetaDescription() )#" maxlength="200">
+						#view( "helpers/failures",{ property="metadescription" })#
+					</div>
 				</div>
-			</div>
-			
-			<div class="control-group <cfif rc.result.hasErrors( 'metakeywords' )>error</cfif>">
-				<label class="control-label" for="metakeywords">Keywords <cfif rc.Validator.propertyIsRequired( "metakeywords", rc.context )>*</cfif></label>
-				<div class="controls">
-					<input class="input-xlarge" type="text" name="metakeywords" id="metakeywords" value="#HtmlEditFormat( rc.Page.getMetaKeywords() )#" maxlength="200">
-					#view( "helpers/failures",{ property="metakeywords" })#
+				
+				<div class="control-group <cfif rc.result.hasErrors( 'metakeywords' )>error</cfif>">
+					<label class="control-label" for="metakeywords">Keywords <cfif rc.Validator.propertyIsRequired( "metakeywords", rc.context )>*</cfif></label>
+					<div class="controls">
+						<input class="input-xlarge" type="text" name="metakeywords" id="metakeywords" value="#HtmlEditFormat( rc.Page.getMetaKeywords() )#" maxlength="200">
+						#view( "helpers/failures",{ property="metakeywords" })#
+					</div>
 				</div>
 			</div>
 		</fieldset>

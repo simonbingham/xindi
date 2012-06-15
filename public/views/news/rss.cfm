@@ -21,9 +21,9 @@
 <cfsetting showdebugoutput="no">
 
 <cfset local.myStruct ={}>
-<cfset local.myStruct.title = rc.config.newsconfig.rsstitle> 
+<cfset local.myStruct.title = rc.config.news.rsstitle> 
 <cfset local.myStruct.link = rc.basehref> 
-<cfset local.myStruct.description = rc.config.newsconfig.rssdescription>  
+<cfset local.myStruct.description = rc.config.news.rssdescription>  
 <cfset local.myStruct.pubDate = Now()>  
 <cfset local.myStruct.version = "rss_2.0"> 
 

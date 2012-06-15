@@ -30,6 +30,13 @@ jQuery( function($) {
 		if( title.val().length==0 ) title.val( $( this ).val() );
 	});
 
+	// Toggle meta tag fields
+	$( "#metagenerated" ).click(function(){
+		if( !$(this).attr( "checked" ) ) $( ".metatags" ).slideDown();
+		else $( ".metatags" ).slideUp();
+	});
+	if( $( "#metagenerated" ).is( ":checked" ) ) $( ".metatags" ).hide();
+
 	// text editor configuration
 	$( "form" ).bind( "submit", function(){
 		if( typeof CKEDITOR != "undefined" ){
@@ -55,6 +62,18 @@ jQuery( function($) {
 		{ name: "links", items : [ "Link", "Unlink", "Anchor" ] },
 		{ name: "insert", items : [ "Image", "Flash", "Table", "HorizontalRule", "SpecialChar", "PageBreak", "Iframe" ] }
 	];
+	/*
+	CKEDITOR.addStylesSet( 'mystyleslist',
+		[
+			{ name : 'Image on Right', element : 'img', attributes : { 'class' : 'cms-img-right' } },
+			{ name : 'Image on Left', element : 'img', attributes : { 'class' : 'cms-img-left' } },
+			{ name : 'Image on Right Border', element : 'img', attributes : { 'class' : 'cms-img-border-right' } },
+			{ name : 'Image on Left Border', element : 'img', attributes : { 'class' : 'cms-img-border-left' } },
+			{ name : 'Image with Border', element : 'img', attributes : { 'class' : 'cms-img-border' } }
+		]
+	);	
+	CKEDITOR.config['stylesCombo_stylesSet'] = 'mystyleslist';	
+	*/
 	CKEDITOR.config[ "toolbar" ] = "Custom";
 	CKEDITOR.config[ "height" ] = 400;
 	CKEDITOR.config[ "uiColor" ] = "##ddd"; 

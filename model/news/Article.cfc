@@ -16,7 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component extends="Base" persistent="true" table="articles" cacheuse="transactional"{
+component extends="model.abstract.BaseEntity" persistent="true" table="articles" cacheuse="transactional"{
 
 	/*
 	 * Properties
@@ -27,6 +27,7 @@ component extends="Base" persistent="true" table="articles" cacheuse="transactio
 	property name="uuid" column="article_uuid" ormtype="string" length="150";
 	property name="title" column="article_title" ormtype="string" length="150";
 	property name="content" column="article_content" ormtype="text";
+	property name="metagenerated" column="article_metagenerated" ormtype="boolean";
 	property name="metatitle" column="article_metatitle" ormtype="string" length="69";
 	property name="metadescription" column="article_metadescription" ormtype="string" length="169";
 	property name="metakeywords" column="article_metakeywords" ormtype="string" length="169";
@@ -39,6 +40,7 @@ component extends="Base" persistent="true" table="articles" cacheuse="transactio
 	 */
 
 	Article function init(){
+		variables.metagenerated = true;
 		return this;
 	}
 
@@ -66,10 +68,14 @@ component extends="Base" persistent="true" table="articles" cacheuse="transactio
 		return Len( Trim( getMetaTitle() ) );		
 	}
 
+	boolean function isMetaGenerated(){
+		return getMetaGenerated();
+	}
+
 	boolean function isNew(){
 		return DateDiff( "ww", getPublished(), Now() ) < 1;
 	}
-	
+
 	boolean function isPersisted(){
 		return !IsNull( variables.articleid );
 	}
@@ -98,7 +104,7 @@ component extends="Base" persistent="true" table="articles" cacheuse="transactio
 	}
 
 	private void function setUUID(){
-		variables.uuid = ReReplace( LCase( getTitle() ), "[^a-z0-9]{1,}", "", "all" );
+		variables.uuid = ReReplace( LCase( getTitle() ), "[^a-z0-9]{1,}", "-", "all" );
 		while ( !isUUIDUnique() ) variables.uuid &= "-"; 
 	}
 		

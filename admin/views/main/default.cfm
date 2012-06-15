@@ -51,7 +51,7 @@
 		</table>
 	</cfif>	
 
-	<cfif rc.config.newsconfig.enabled and ArrayLen( rc.updatedarticles )>
+	<cfif rc.config.news.enabled and ArrayLen( rc.updatedarticles )>
 		<hr />
 		
 		<p class="pull-right"><a href="#buildURL( 'news' )#" class="btn btn-primary">Manage news <i class="icon-chevron-right icon-white"></i></a></p>

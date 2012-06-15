@@ -51,6 +51,12 @@ component accessors="true"{
 	}
 
 	function loginUser( required struct properties ){
+		param name="arguments.properties.username" default="";
+		param name="arguments.properties.password" default="";
+		if( IsValid( "email", arguments.properties.username ) ){
+			arguments.properties.email = arguments.properties.username;
+			StructDelete( arguments.properties, "username" );
+		}
 		var User = variables.UserService.newUser();
 		User.populate( arguments.properties );
 		var result = variables.Validator.validate( User, "login" );
@@ -62,6 +68,38 @@ component accessors="true"{
 			result.messages.error = "Sorry, your login details have not been recognised.";
 			var failure ={ propertyName="username", clientFieldname="username", message=result.messages.error };
 			result.addFailure( failure );
+		}
+		return result;
+	}	
+	
+	function resetPassword( required struct properties, required string name, required struct config, required string emailtemplatepath ){
+		transaction{
+			param name="arguments.properties.username" default="";
+			if( IsValid( "email", arguments.properties.username ) ){
+				arguments.properties.email = arguments.properties.username;
+				StructDelete( arguments.properties, "username" );
+			}
+			var User = variables.UserService.newUser();
+			User.populate( arguments.properties );
+			var result = variables.Validator.validate( User, "password" );
+			User = variables.UserService.getUserByEmailOrUsername( User );
+			if( !IsNull( User ) ){
+				var password = Left( CreateUUID(), 8 );
+				User.setPassword( password );
+				savecontent variable="emailtemplate"{ include arguments.emailtemplatepath; }
+				var Email = new mail();
+			    Email.setSubject( arguments.config.resetpasswordemailsubject );
+		    	Email.setTo( User.getEmail() );
+		    	Email.setFrom( arguments.config.resetpasswordemailfrom );
+		    	Email.setBody( emailtemplate );
+		    	Email.setType( "html" );
+		        Email.send();				
+				result.messages.success = "A new password has been sent to #User.getEmail()#.";
+			}else{
+				result.messages.error = "Sorry, your username or email address has not been recognised.";
+				var failure ={ propertyName="username", clientFieldname="username", message=result.messages.error };
+				result.addFailure( failure );
+			}
 		}
 		return result;
 	}	

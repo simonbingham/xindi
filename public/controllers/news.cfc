@@ -36,12 +36,12 @@ component accessors="true" extends="abstract"{
 			rc.MetaData.setMetaDescription( rc.Article.getMetaDescription() );
 			rc.MetaData.setMetaKeywords( rc.Article.getMetaKeywords() );
 		}else{
-			variables.fw.redirect( "main/notfound" );
+			variables.fw.redirect( "main.notfound" );
 		}		
 	}
 	
 	void function default( required struct rc ){
-		param name="rc.maxresults" default=rc.config.newsconfig.recordsperpage;
+		param name="rc.maxresults" default=rc.config.news.recordsperpage;
 		param name="rc.offset" default="0";	
 		rc.articles = variables.NewsService.getArticles( published=true, maxresults=rc.maxresults, offset=rc.offset );
 		rc.articlecount = variables.NewsService.getArticleCount();

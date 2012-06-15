@@ -49,7 +49,11 @@ component accessors="true"{
 	}
 
 	function getUserByCredentials( required User ){
-		return ORMExecuteQuery( " from User where username=:username and password=:password ",{ username=arguments.User.getUsername(), password=arguments.User.getPassword() }, true );
+		return ORMExecuteQuery( " from User where ( username=:username or email=:email ) and password=:password", { username=arguments.User.getUsername(), email=arguments.User.getEmail(), password=arguments.User.getPassword() }, true );
+	}
+
+	function getUserByEmailOrUsername( required User ){
+		return ORMExecuteQuery( " from User where username=:username or email=:email", { username=arguments.User.getUsername(), email=arguments.User.getEmail() }, true );
 	}
 
 	array function getUsers(){
@@ -62,10 +66,10 @@ component accessors="true"{
 	
 	function newUser(){
 		return EntityNew( "User" );
-	}		
+	}
 	
 	struct function saveUser( required struct properties, required string context ){
-		var result ={};
+		var result = {};
 		transaction{
 			var User = ""; 
 			User = getUserByID( Val( arguments.properties.userid ) );

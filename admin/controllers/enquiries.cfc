@@ -46,7 +46,7 @@ component accessors="true" extends="abstract"{
 		if( !IsNull( rc.Enquiry ) ){
 			variables.EnquiryService.markRead( Val( rc.Enquiry.getEnquiryID() ) );
 		}else{
-			variables.fw.redirect( "main/notfound" );
+			variables.fw.redirect( "main.notfound" );
 		}
 	}
 	

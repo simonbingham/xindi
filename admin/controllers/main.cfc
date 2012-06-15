@@ -38,7 +38,7 @@ component accessors="true"{
 
 	void function default( required rc ){
 		var securearea = true; 
-		var whitelist = variables.config.securityconfig.whitelist;
+		var whitelist = variables.config.security.whitelist;
 		rc.loggedin = variables.SecurityService.hasCurrentUser();
 		if( !rc.loggedin ){
 			for ( var unsecured in ListToArray( whitelist ) ){

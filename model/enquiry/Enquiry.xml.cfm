@@ -3,13 +3,22 @@
 	<objectProperties>
 		<property name="firstname" desc="first name">
 			<rule type="required" failuremessage="Enter your first name." />
+			<rule type="maxLength">
+				<param name="maxLength" value="50" />
+			</rule>				
 		</property>
 		<property name="lastname" desc="last name">
 			<rule type="required" failuremessage="Enter your last name."  />
+			<rule type="maxLength">
+				<param name="maxLength" value="50" />
+			</rule>				
 		</property>
 		<property name="email" desc="email address">
 			<rule type="required" failuremessage="Enter your email address."  />
 			<rule type="email" failuremessage="Enter a valid email address." />
+			<rule type="maxLength">
+				<param name="maxLength" value="150" />
+			</rule>				
 		</property>		
 		<property name="message" desc="message">
 			<rule type="required" failuremessage="Enter a message." />

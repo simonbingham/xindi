@@ -17,19 +17,29 @@
 --->
 
 <cfoutput>
-	<div class="page-header"><h1>Oops!</h1></div>
+	<div class="page-header hide"><h1>Reset Password</h1></div>
 
-	<cfif !rc.config.exceptiontracker.emailnewexceptions>
-		<p>An error has occurred.</p>
-
-		<h2>Failed Action</h2>
-		
-		<p>#request.failedAction#</p>
+	<form action="#buildURL( 'security/resetpassword' )#" method="post" class="form-horizontal" id="password-form">
+	    <fieldset>
+	        <legend>Reset Password</legend>
+			
+			#view( "helpers/messages" )#
+			
+			<div class="control-group <cfif rc.result.hasErrors( 'username' )>error</cfif>">
+				<label class="control-label" for="username">Email or Username</label>
+				<div class="controls">
+					<input class="input-xlarge" type="text" name="username" id="username">
+					#view( "helpers/failures",{ property="username" })#
+				</div>
+			</div>
+			
+			<div class="form-actions">
+				<input type="submit" name="submit" id="submit" value="Reset Password" class="btn btn-primary">
+			</div>
+		</fieldset>
+	</form>
 	
-		<h2>Exception</h2>
-		
-		<cfdump var="#request.exception#">		
-	<cfelse>
-		<p>An error has occurred and the site administrator has been notified.</p>
-	</cfif>
+	#rc.Validator.getInitializationScript()#
+
+	#rc.Validator.getValidationScript( formName="password-form", context="password" )#
 </cfoutput>

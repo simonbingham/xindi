@@ -16,20 +16,26 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 --->
 
+<cfset request.layout = false>
+
 <cfoutput>
-	<div class="page-header"><h1>Oops!</h1></div>
-
-	<cfif !rc.config.exceptiontracker.emailnewexceptions>
-		<p>An error has occurred.</p>
-
-		<h2>Failed Action</h2>
-		
-		<p>#request.failedAction#</p>
+	<!DOCTYPE html>
 	
-		<h2>Exception</h2>
+	<html lang="en">
+		<head>
+			<meta charset="utf-8">
+			
+			<title>Reset Password</title>
+		</head>
+
+		<body>
+			<p>Hello,</p>
+			
+			<p>Your new password is &quot;#password#&quot;.</p>
 		
-		<cfdump var="#request.exception#">		
-	<cfelse>
-		<p>An error has occurred and the site administrator has been notified.</p>
-	</cfif>
+			<p>Kind regards,</p>
+			
+			<p>#arguments.name#</p>
+		</body>
+	</html>	
 </cfoutput>
