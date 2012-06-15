@@ -45,9 +45,9 @@ component extends="model.abstract.BaseEntity" persistent="true" table="pages" ca
 		return this;
 	}
 	
-	function getAncestor(){
-		return ORMExecuteQuery( "from Page where leftvalue < :leftvalue and rightvalue > :rightvalue order by leftvalue desc",{ leftvalue=variables.leftvalue, rightvalue=variables.rightvalue },{ maxresults=1 });
-	}	
+	Page function getAncestor(){
+		return ORMExecuteQuery( "from Page where leftvalue < :leftvalue and rightvalue > :rightvalue order by leftvalue desc", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue }, true );
+	}
 	
 	string function getDescendentPageIDList(){
 		var pageidlist = "";
