@@ -21,8 +21,8 @@ component extends="frameworks.org.corfield.framework"{
 	/**
 	* application settings
 	*/
-	this.development = IsLocalHost( CGI.REMOTE_ADDR );
 	this.applicationroot = getDirectoryFromPath( getCurrentTemplatePath() );
+	this.name = ListLast( this.applicationroot, "\/" );
 	this.sessionmanagement = true;
 	// prevent bots creating lots of sessions
 	if ( structKeyExists( cookie, "CFTOKEN" ) ) this.sessiontimeout = createTimeSpan( 0, 0, 20, 0 );
@@ -39,6 +39,7 @@ component extends="frameworks.org.corfield.framework"{
 		, eventhandling = true
 		, eventhandler = "model.aop.GlobalEventHandler"		
 	};
+	this.development = IsLocalHost( CGI.REMOTE_ADDR );
 	// create database and populate when the application starts in development environment
 	// you might want to comment out this code after the initial install
 	if( this.development && !isNull( url.rebuild ) ){
@@ -66,13 +67,13 @@ component extends="frameworks.org.corfield.framework"{
 	void function setupApplication(){
 		// add exception tracker to application scope
 		var HothConfig = new hoth.config.HothConfig();
-		HothConfig.setApplicationName( getConfig().applicationname );
+		HothConfig.setApplicationName( getConfig().name );
 		HothConfig.setLogPath( this.applicationroot & "logs/hoth" );
 		HothConfig.setLogPathIsRelative( false );
-		HothConfig.setEmailNewExceptions( getConfig().exceptiontrackerconfig.emailnewexceptions );
-		HothConfig.setEmailNewExceptionsTo( getConfig().exceptiontrackerconfig.emailnewexceptionsto );
-		HothConfig.setEmailNewExceptionsFrom( getConfig().exceptiontrackerconfig.emailnewexceptionsfrom );
-		HothConfig.setEmailExceptionsAsHTML( getConfig().exceptiontrackerconfig.emailexceptionsashtml );
+		HothConfig.setEmailNewExceptions( getConfig().exceptiontracker.emailnewexceptions );
+		HothConfig.setEmailNewExceptionsTo( getConfig().exceptiontracker.emailnewexceptionsto );
+		HothConfig.setEmailNewExceptionsFrom( getConfig().exceptiontracker.emailnewexceptionsfrom );
+		HothConfig.setEmailExceptionsAsHTML( getConfig().exceptiontracker.emailexceptionsashtml );
 		application.exceptiontracker = new Hoth.HothTracker( HothConfig );
 	
 		ORMReload();
@@ -89,8 +90,7 @@ component extends="frameworks.org.corfield.framework"{
 		beanFactory.addBean( "MetaData", new model.content.MetaData() );
 
 		// add config bean to factory
-		var config = getConfig();
-		beanFactory.addBean( "config", config );
+		beanFactory.addBean( "config", getConfig() );
 	}
 	
 	/**
@@ -132,7 +132,7 @@ component extends="frameworks.org.corfield.framework"{
 	}	
 	
 	/**
-	* called if view is missing - used for (almost) all Xindi page requests
+	* called if view is missing - used for search engine friendly page requests
 	*/	
 	any function onMissingView( required rc ){
 		rc.Page = getBeanFactory().getBean( "ContentService" ).getPageBySlug( ListLast( CGI.PATH_INFO, "/" ) );
@@ -153,29 +153,29 @@ component extends="frameworks.org.corfield.framework"{
 	*/		
 	private struct function getConfig(){
 		var config ={
-			applicationname = ListLast( this.applicationroot, "\/" )
-			, development = this.development
-			, enquiryconfig = {
+			development = this.development
+			, enquiry = {
 				enabled = true
 				, subject = "Enquiry"
 				, emailto = ""
 			}
-			, exceptiontrackerconfig = { 
+			, exceptiontracker = { 
 				emailnewexceptions = true
 				, emailnewexceptionsto = ""
 				, emailnewexceptionsfrom = ""
 				, emailexceptionsashtml = true
 			}
-			, filemanagerconfig = {
+			, filemanager = {
 				allowedextensions = "txt,gif,jpg,png,wav,mpeg3,pdf,zip,mp3,jpeg"
 			}
-			, newsconfig = {
+			, name = this.name
+			, news = {
 				enabled = true
 				, recordsperpage = 10
 				, rsstitle = ""
 				, rssdescription = ""
 			}
-			, pageconfig = { 
+			, page = { 
 				enableadddelete = true
 				, excludefromprimarynavigation = "" // ids of pages to exclude from primary navigation
 				, levellimit = 2 // number of page tiers that can be added - Bootstrap dropdown only supports two
@@ -185,15 +185,15 @@ component extends="frameworks.org.corfield.framework"{
 				, touchscreenfriendlynavigation = true // ancestor page links toggle dropdown - duplicated ancestor page links appear in sub menu
 			}
 			, revision = Hash( Now() )
-			// list of unsecure sub systems and actions - all other requests are password protected
-			, securityconfig = {
+			// list of unsecure sub systems and actions - other requests require authentication
+			, security = {
 				whitelist = "^admin:security,^public:"
 			}
 		};
 		// override config in development mode
 		if( config.development ){
-			config.enquiryconfig.emailto = "";
-			config.exceptiontrackerconfig.emailnewexceptions = false;
+			config.enquiry.emailto = "";
+			config.exceptiontracker.emailnewexceptions = false;
 		} 
 		return config;
 	}	

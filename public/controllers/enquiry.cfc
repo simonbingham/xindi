@@ -45,7 +45,7 @@ component accessors="true" extends="abstract"{
  		param name="rc.message" default="";
 		var properties ={ firstname=rc.firstname, lastname=rc.lastname, email=rc.email, message=rc.message };
 		var emailtemplatepath = "../../public/views/enquiry/email.cfm";
-		rc.result = variables.EnquiryService.sendEnquiry( properties, variables.config.enquiryconfig, emailtemplatepath );
+		rc.result = variables.EnquiryService.sendEnquiry( properties, variables.config.enquiry, emailtemplatepath );
 		rc.messages = rc.result.messages;
 		if( StructKeyExists( rc.messages, "success" ) ){
 			variables.fw.redirect( "enquiry.thanks" );	

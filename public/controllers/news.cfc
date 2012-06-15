@@ -41,7 +41,7 @@ component accessors="true" extends="abstract"{
 	}
 	
 	void function default( required struct rc ){
-		param name="rc.maxresults" default=rc.config.newsconfig.recordsperpage;
+		param name="rc.maxresults" default=rc.config.news.recordsperpage;
 		param name="rc.offset" default="0";	
 		rc.articles = variables.NewsService.getArticles( published=true, maxresults=rc.maxresults, offset=rc.offset );
 		rc.articlecount = variables.NewsService.getArticleCount();
