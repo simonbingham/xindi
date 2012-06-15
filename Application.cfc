@@ -193,9 +193,9 @@ component extends="frameworks.org.corfield.framework"{
 		};
 		// override config in development mode
 		if( config.development ){
-			config.enquiry.emailto = "smnbin@gmail.com";
+			config.enquiry.emailto = "";
 			config.exceptiontracker.emailnewexceptions = false;
-			config.security.resetpasswordemailfrom = "smnbin@gmail.com";
+			config.security.resetpasswordemailfrom = "";
 		} 
 		return config;
 	}	
