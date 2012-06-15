@@ -22,6 +22,7 @@ component extends="mxunit.framework.TestCase"{
 	function testGetUserByCredentialsReturnsUserForCorrectCredentials(){
 		var $LoginUser = mock( "model.user.User" );
 		$LoginUser.getUsername().returns( "aliaspooryorik" );
+		$LoginUser.getEmail().returns( "" );
 		$LoginUser.getPassword().returns( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB" );
 		UserResult = CUT.getUserByCredentials( $LoginUser );
 		assertEquals( false, IsNull( UserResult ) );
@@ -31,6 +32,7 @@ component extends="mxunit.framework.TestCase"{
 	function testGetUserByCredentialsReturnsNullForInCorrectCredentials(){
 		var $LoginUser = mock( "model.user.User" );
 		$LoginUser.getUsername().returns( "aliaspooryorik" );
+		$LoginUser.getEmail().returns( "" );
 		$LoginUser.getPassword().returns( "1111111111111111111111111111111111111111111111111111111111111111" );		
 		UserResult = CUT.getUserByCredentials( $LoginUser );
 		assertEquals( true, IsNull( UserResult ) );
