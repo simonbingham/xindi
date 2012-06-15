@@ -193,7 +193,7 @@ component extends="frameworks.org.corfield.framework"{
 		};
 		// override config in development mode
 		if( config.development ){
-			config.enquiry.emailto = "";
+			config.enquiry.emailto = "smnbin@gmail.com";
 			config.exceptiontracker.emailnewexceptions = false;
 			config.security.resetpasswordemailfrom = "smnbin@gmail.com";
 		} 

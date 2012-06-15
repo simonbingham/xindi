@@ -56,7 +56,7 @@
 				</div>
 			</div>		
 		
-			<div class="metatags <cfif rc.Page.getMetaGenerated()>hide</cfif>">
+			<div class="metatags">
 				<div class="control-group <cfif rc.result.hasErrors( 'metatitle' )>error</cfif>">
 					<label class="control-label" for="metatitle">Title <cfif rc.Validator.propertyIsRequired( "metatitle", rc.context )>*</cfif></label>
 					<div class="controls">

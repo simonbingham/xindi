@@ -35,6 +35,7 @@ jQuery( function($) {
 		if( !$(this).attr( "checked" ) ) $( ".metatags" ).slideDown();
 		else $( ".metatags" ).slideUp();
 	});
+	if( $( "#metagenerated" ).is( ":checked" ) ) $( ".metatags" ).hide();
 
 	// text editor configuration
 	$( "form" ).bind( "submit", function(){

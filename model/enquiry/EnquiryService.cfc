@@ -81,7 +81,7 @@ component accessors="true"{
 	}	
 	
 	function newEnquiry(){
-		return new model.beans.Enquiry();
+		return new model.enquiry.Enquiry();
 	}
 	
 	struct function sendEnquiry( required struct properties, required struct config, required string emailtemplatepath ){
