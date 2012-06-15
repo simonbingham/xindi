@@ -20,7 +20,7 @@
 				<param name="maxLength" value="150" />
 			</rule>				
 		</property>		
-		<property name="message">
+		<property name="message" desc="message">
 			<rule type="required" failuremessage="Enter a message." />
 		</property>	
 	</objectProperties>
