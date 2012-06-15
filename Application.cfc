@@ -168,7 +168,7 @@ component extends="frameworks.org.corfield.framework"{
 			, filemanager = {
 				allowedextensions = "txt,gif,jpg,png,wav,mpeg3,pdf,zip,mp3,jpeg"
 			}
-			, name = this.name
+			, name = ""
 			, news = {
 				enabled = true
 				, recordsperpage = 10
@@ -185,15 +185,17 @@ component extends="frameworks.org.corfield.framework"{
 				, touchscreenfriendlynavigation = true // ancestor page links toggle dropdown - duplicated ancestor page links appear in sub menu
 			}
 			, revision = Hash( Now() )
-			// list of unsecure actions - other requests require authentication
 			, security = {
-				whitelist = "^admin:security,^public:"
+				resetpasswordemailfrom = ""
+				, resetpasswordemailsubject = ""
+				, whitelist = "^admin:security,^public:" // list of unsecure actions - other requests require authentication
 			}
 		};
 		// override config in development mode
 		if( config.development ){
 			config.enquiry.emailto = "";
 			config.exceptiontracker.emailnewexceptions = false;
+			config.security.resetpasswordemailfrom = "smnbin@gmail.com";
 		} 
 		return config;
 	}	

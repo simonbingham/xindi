@@ -38,6 +38,7 @@
 				<div class="controls">
 					<input class="input-xlarge" type="password" name="password" id="password">
 					#view( "helpers/failures",{ property="password" })#
+					<p class="help-block"><a href="#buildURL( 'security/password' )#">Forgotten your password?</a></p>
 				</div>
 			</div>
 			
