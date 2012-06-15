@@ -78,7 +78,7 @@ component extends="frameworks.org.corfield.framework"{
 		ORMReload();
 
 		// setup bean factory
-		var beanfactory = new frameworks.org.corfield.ioc( "/model" );
+		var beanfactory = new frameworks.org.corfield.ioc( "/model", { singletonPattern = "(Service|Gateway)$" } );
 		setBeanFactory( beanfactory );
 
 		// add validator bean to factory
@@ -86,7 +86,7 @@ component extends="frameworks.org.corfield.framework"{
 		beanFactory.addBean( "Validator", new ValidateThis.ValidateThis( ValidateThisConfig ) );
 
 		// add meta data bean to factory
-		beanFactory.addBean( "MetaData", new model.beans.MetaData() );
+		beanFactory.addBean( "MetaData", new model.content.MetaData() );
 
 		// add config bean to factory
 		var config = getConfig();
@@ -189,7 +189,11 @@ component extends="frameworks.org.corfield.framework"{
 				whitelist = "^admin:security,^public:"
 			}
 		};
-		if( this.development ) config.exceptiontrackerconfig.emailnewexceptions = false;
+		// override config in development mode
+		if( this.development ){
+			config.enquiryconfig.emailto = "";
+			config.exceptiontrackerconfig.emailnewexceptions = false;
+		} 
 		return config;
 	}	
 

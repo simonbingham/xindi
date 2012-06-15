@@ -16,7 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component extends="Base" persistent="true" table="enquiries" cacheuse="transactional"{
+component extends="model.abstract.BaseEntity" persistent="true" table="enquiries" cacheuse="transactional"{
 	
 	/*
 	 * Properties
