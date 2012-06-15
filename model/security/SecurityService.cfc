@@ -51,6 +51,12 @@ component accessors="true"{
 	}
 
 	function loginUser( required struct properties ){
+		param name="arguments.properties.username" default="";
+		param name="arguments.properties.password" default="";
+		if( IsValid( "email", arguments.properties.username ) ){
+			arguments.properties.email = arguments.properties.username;
+			StructDelete( arguments.properties, "username" );
+		}
 		var User = variables.UserService.newUser();
 		User.populate( arguments.properties );
 		var result = variables.Validator.validate( User, "login" );

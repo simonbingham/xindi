@@ -26,7 +26,7 @@
 			#view( "helpers/messages" )#
 			
 			<div class="control-group <cfif rc.result.hasErrors( 'username' )>error</cfif>">
-				<label class="control-label" for="username">Username</label>
+				<label class="control-label" for="username">Email or Username</label>
 				<div class="controls">
 					<input class="input-xlarge" type="text" name="username" id="username">
 					#view( "helpers/failures",{ property="username" })#
