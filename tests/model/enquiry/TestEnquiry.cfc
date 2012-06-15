@@ -20,7 +20,7 @@ component extends="mxunit.framework.TestCase"{
 	// ------------------------ TESTS ------------------------ //
 	 
 	function testLineFeedAndCarriageReturnReplace(){
-		var Enquiry = new model.beans.Enquiry();
+		var Enquiry = new model.enquiry.Enquiry();
 		Enquiry.setMessage( "
 		This
 		
@@ -31,13 +31,13 @@ component extends="mxunit.framework.TestCase"{
 	}
 	 
 	function testHTMLisEscaped(){
-		var Enquiry = new model.beans.Enquiry();
+		var Enquiry = new model.enquiry.Enquiry();
 		Enquiry.setMessage( "<script>alert('hack');</script>" );
 		assertEquals( "&lt;script&gt;alert('hack');&lt;/script&gt;", Enquiry.getDisplayMessage() );
 	}
 
 	function testGetFullName(){
-		var Enquiry = new model.beans.Enquiry();
+		var Enquiry = new model.enquiry.Enquiry();
 		Enquiry.setFirstName( "simon" );
 		Enquiry.setLastName( "bingham" );
 		assertEquals( "simon bingham", Enquiry.getFullname() );

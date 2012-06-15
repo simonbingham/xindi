@@ -40,7 +40,7 @@ component extends="mxunit.framework.TestCase"{
 	* this will run before every single test in this test case
 	*/
 	function setUp(){
-		CUT = new model.beans.Article(); 
+		CUT = new model.news.Article(); 
 	}
 	
 	/**
