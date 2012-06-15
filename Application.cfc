@@ -1,5 +1,5 @@
 /*
-	Xindi - http://www.getxindi.com/ - Version 2012.6.8
+	Xindi - http://www.getxindi.com/ - Version 2012.6.15
 	
 	Copyright (c) 2012, Simon Bingham
 	
@@ -21,15 +21,12 @@ component extends="frameworks.org.corfield.framework"{
 	/**
 	* application settings
 	*/
-	this.development = ListFind( "localhost,127.0.0.1,127.0.0.1:8888", CGI.SERVER_NAME ) != 0;
 	this.applicationroot = getDirectoryFromPath( getCurrentTemplatePath() );
+	this.name = ListLast( this.applicationroot, "\/" );
 	this.sessionmanagement = true;
-	if ( structKeyExists( cookie, "CFTOKEN" ) ) {
-		this.sessionTimeout = createTimeSpan( 0, 0, 20, 0 );
-	} 
-	else {
-		this.sessionTimeout = createTimeSpan( 0, 0, 0, 1 );
-	}
+	// prevent bots creating lots of sessions
+	if ( structKeyExists( cookie, "CFTOKEN" ) ) this.sessiontimeout = createTimeSpan( 0, 0, 20, 0 );
+	else this.sessiontimeout = createTimeSpan( 0, 0, 0, 1 );
 	this.mappings[ "/hoth" ] = this.applicationroot & "frameworks/hoth/";
 	this.mappings[ "/model" ] = this.applicationroot & "model/";
 	this.mappings[ "/ValidateThis" ] = this.applicationroot & "frameworks/ValidateThis/";
@@ -42,6 +39,7 @@ component extends="frameworks.org.corfield.framework"{
 		, eventhandling = true
 		, eventhandler = "model.aop.GlobalEventHandler"		
 	};
+	this.development = IsLocalHost( CGI.REMOTE_ADDR );
 	// create database and populate when the application starts in development environment
 	// you might want to comment out this code after the initial install
 	if( this.development && !isNull( url.rebuild ) ){
@@ -69,18 +67,19 @@ component extends="frameworks.org.corfield.framework"{
 	void function setupApplication(){
 		// add exception tracker to application scope
 		var HothConfig = new hoth.config.HothConfig();
-		HothConfig.setApplicationName( getConfig().applicationname );
-		HothConfig.setLogPath( "logs/hoth" );
-		HothConfig.setEmailNewExceptions( getConfig().exceptiontrackerconfig.emailnewexceptions );
-		HothConfig.setEmailNewExceptionsTo( getConfig().exceptiontrackerconfig.emailnewexceptionsto );
-		HothConfig.setEmailNewExceptionsFrom( getConfig().exceptiontrackerconfig.emailnewexceptionsfrom );
-		HothConfig.setEmailExceptionsAsHTML( getConfig().exceptiontrackerconfig.emailexceptionsashtml );
+		HothConfig.setApplicationName( getConfig().name );
+		HothConfig.setLogPath( this.applicationroot & "logs/hoth" );
+		HothConfig.setLogPathIsRelative( false );
+		HothConfig.setEmailNewExceptions( getConfig().exceptiontracker.emailnewexceptions );
+		HothConfig.setEmailNewExceptionsTo( getConfig().exceptiontracker.emailnewexceptionsto );
+		HothConfig.setEmailNewExceptionsFrom( getConfig().exceptiontracker.emailnewexceptionsfrom );
+		HothConfig.setEmailExceptionsAsHTML( getConfig().exceptiontracker.emailexceptionsashtml );
 		application.exceptiontracker = new Hoth.HothTracker( HothConfig );
 	
 		ORMReload();
 
 		// setup bean factory
-		var beanfactory = new frameworks.org.corfield.ioc( "/model" );
+		var beanfactory = new frameworks.org.corfield.ioc( "/model", { singletonPattern = "(Service|Gateway)$" } );
 		setBeanFactory( beanfactory );
 
 		// add validator bean to factory
@@ -88,11 +87,10 @@ component extends="frameworks.org.corfield.framework"{
 		beanFactory.addBean( "Validator", new ValidateThis.ValidateThis( ValidateThisConfig ) );
 
 		// add meta data bean to factory
-		beanFactory.addBean( "MetaData", new model.beans.MetaData() );
+		beanFactory.addBean( "MetaData", new model.content.MetaData() );
 
 		// add config bean to factory
-		var config = getConfig();
-		beanFactory.addBean( "config", config );
+		beanFactory.addBean( "config", getConfig() );
 	}
 	
 	/**
@@ -134,7 +132,7 @@ component extends="frameworks.org.corfield.framework"{
 	}	
 	
 	/**
-	* called if view is missing - used for (almost) all Xindi page requests
+	* called if view is missing - used for search engine friendly page requests
 	*/	
 	any function onMissingView( required rc ){
 		rc.Page = getBeanFactory().getBean( "ContentService" ).getPageBySlug( ListLast( CGI.PATH_INFO, "/" ) );
@@ -155,40 +153,50 @@ component extends="frameworks.org.corfield.framework"{
 	*/		
 	private struct function getConfig(){
 		var config ={
-			applicationname = ListLast( this.applicationroot, "\/" )
-			, enquiryconfig = {
+			development = this.development
+			, enquiry = {
 				enabled = true
 				, subject = "Enquiry"
 				, emailto = ""
 			}
-			, exceptiontrackerconfig = { 
+			, exceptiontracker = { 
 				emailnewexceptions = true
 				, emailnewexceptionsto = ""
 				, emailnewexceptionsfrom = ""
 				, emailexceptionsashtml = true
 			}
-			, filemanagerconfig = {
+			, filemanager = {
 				allowedextensions = "txt,gif,jpg,png,wav,mpeg3,pdf,zip,mp3,jpeg"
 			}
-			, newsconfig = {
+			, name = ""
+			, news = {
 				enabled = true
 				, recordsperpage = 10
 				, rsstitle = ""
 				, rssdescription = ""
 			}
-			, pageconfig = { 
+			, page = { 
 				enableadddelete = true
-				, excludefromprimarynavigation = "" // ids of pages to exclude from the primary navigation
-				, levellimit = 2 // number of page tiers that can be added - Bootstrap dropdown only supports two tiers
-				, touchscreenfriendlynavigation = true // ancestor page links trigger dropdown - duplicated ancestor page links appear in sub menu
+				, excludefromprimarynavigation = "" // comma delimited list of page ids to exclude from primary navigation
+				, levellimit = 2 // number of page tiers that can be added - Bootstrap dropdown only supports 2
+				, suppressaddpage = "" // comma delimited list of page ids for pages that cannot have child pages added
+				, suppressdeletepage = "1" // comma delimited list of page ids for pages that cannot be deleted
+				, suppressmovepage = "" // comma delimited list of page ids for pages that cannot be moved
+				, touchscreenfriendlynavigation = true // ancestor page links toggle dropdown - duplicated ancestor page links appear in sub menu
 			}
 			, revision = Hash( Now() )
-			// list of unsecure sub systems and actions - all other requests are password protected
-			, securityconfig = {
-				whitelist = "^admin:security,^public:"
+			, security = {
+				resetpasswordemailfrom = ""
+				, resetpasswordemailsubject = ""
+				, whitelist = "^admin:security,^public:" // list of unsecure actions - other requests require authentication
 			}
 		};
-		if( this.development ) config.exceptiontrackerconfig.emailnewexceptions = false;
+		// override config in development mode
+		if( config.development ){
+			config.enquiry.emailto = "";
+			config.exceptiontracker.emailnewexceptions = false;
+			config.security.resetpasswordemailfrom = "";
+		} 
 		return config;
 	}	
 
