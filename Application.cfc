@@ -21,7 +21,7 @@ component extends="frameworks.org.corfield.framework"{
 	/**
 	* application settings
 	*/
-	this.development = ListFind( "localhost,127.0.0.1,127.0.0.1:8888", CGI.SERVER_NAME ) != 0;
+	this.development = IsLocalHost( CGI.REMOTE_ADDR );
 	this.applicationroot = getDirectoryFromPath( getCurrentTemplatePath() );
 	this.sessionmanagement = true;
 	// prevent bots creating lots of sessions
@@ -154,6 +154,7 @@ component extends="frameworks.org.corfield.framework"{
 	private struct function getConfig(){
 		var config ={
 			applicationname = ListLast( this.applicationroot, "\/" )
+			, development = this.development
 			, enquiryconfig = {
 				enabled = true
 				, subject = "Enquiry"
@@ -190,7 +191,7 @@ component extends="frameworks.org.corfield.framework"{
 			}
 		};
 		// override config in development mode
-		if( this.development ){
+		if( config.development ){
 			config.enquiryconfig.emailto = "";
 			config.exceptiontrackerconfig.emailnewexceptions = false;
 		} 
