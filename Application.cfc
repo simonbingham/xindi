@@ -37,7 +37,8 @@ component extends="frameworks.org.corfield.framework"{
 		, automanagesession = false
 		, cfclocation = this.mappings[ "/model" ]
 		, eventhandling = true
-		, eventhandler = "model.aop.GlobalEventHandler"		
+		, eventhandler = "model.aop.GlobalEventHandler"
+		, secondarycacheenabled = true 		
 	};
 	this.development = IsLocalHost( CGI.REMOTE_ADDR );
 	// create database and populate when the application starts in development environment
