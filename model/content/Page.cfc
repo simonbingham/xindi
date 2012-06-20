@@ -89,7 +89,7 @@ component extends="model.abstract.BaseEntity" persistent="true" table="pages" ca
 	}
 	
 	boolean function hasChild(){
-		return ArrayLen( getFirstChild() );
+		return !IsNull( getFirstChild() );
 	}	
 	
 	boolean function hasNextSibling(){
