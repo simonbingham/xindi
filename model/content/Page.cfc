@@ -45,8 +45,8 @@ component extends="model.abstract.BaseEntity" persistent="true" table="pages" ca
 		return this;
 	}
 	
-	Page function getAncestor(){
-		return ORMExecuteQuery( "from Page where leftvalue < :leftvalue and rightvalue > :rightvalue order by leftvalue desc", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue }, true );
+	any function getAncestor(){
+		return ORMExecuteQuery( "from Page where leftvalue < :leftvalue and rightvalue > :rightvalue order by leftvalue desc", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue }, true, { maxresults=1 } );
 	}
 	
 	string function getDescendentPageIDList(){
@@ -58,7 +58,7 @@ component extends="model.abstract.BaseEntity" persistent="true" table="pages" ca
 	}
 
 	function getLevel(){
-		return ORMExecuteQuery( "select Count( pageSubQuery ) from Page as pageSubQuery where pageSubQuery.leftvalue < :leftvalue and pageSubQuery.rightvalue > :rightvalue",{ leftvalue=variables.leftvalue, rightvalue=variables.rightvalue })[ 1 ];
+		return ORMExecuteQuery( "select Count( pageSubQuery ) from Page as pageSubQuery where pageSubQuery.leftvalue < :leftvalue and pageSubQuery.rightvalue > :rightvalue",{ leftvalue=variables.leftvalue, rightvalue=variables.rightvalue } )[ 1 ];
 	}
 
 	function getNextSibling(){
@@ -66,7 +66,7 @@ component extends="model.abstract.BaseEntity" persistent="true" table="pages" ca
 	}
 	
 	array function getPath(){
-		return ORMExecuteQuery( "from Page where leftvalue < :leftvalue and rightvalue > :rightvalue",{ leftvalue=variables.leftvalue, rightvalue=variables.rightvalue });
+		return ORMExecuteQuery( "from Page where leftvalue < :leftvalue and rightvalue > :rightvalue",{ leftvalue=variables.leftvalue, rightvalue=variables.rightvalue } );
 	}	
 
 	function getPreviousSibling(){
@@ -85,7 +85,7 @@ component extends="model.abstract.BaseEntity" persistent="true" table="pages" ca
 	}
 	
 	string function getSummary(){
-		return Left( REReplaceNoCase( Trim( getContent() ), "<[^>]{1,}>", " ", "all" ), 500 ) & "...";
+		return Trim( Left( REReplaceNoCase( Trim( getContent() ), "<[^>]{1,}>", " ", "all" ), 500 ) & "..." );
 	}
 	
 	boolean function hasChild(){
@@ -155,15 +155,15 @@ component extends="model.abstract.BaseEntity" persistent="true" table="pages" ca
 	}
 	
 	private array function getDescendents(){
-		return ORMExecuteQuery( "from Page where leftvalue > :leftvalue and rightvalue < :rightvalue",{ leftvalue=variables.leftvalue, rightvalue=variables.rightvalue });
+		return ORMExecuteQuery( "from Page where leftvalue > :leftvalue and rightvalue < :rightvalue",{ leftvalue=variables.leftvalue, rightvalue=variables.rightvalue } );
 	}
 
-	private array function getFirstChild(){
-		return ORMExecuteQuery( "from Page where leftvalue = :leftvalue",{ leftvalue=variables.leftvalue + 1 });
+	private function getFirstChild(){
+		return ORMExecuteQuery( "from Page where leftvalue = :leftvalue",{ leftvalue=variables.leftvalue + 1 }, true );
 	}	
 
-	private array function getLastChild(){
-		return ORMExecuteQuery( "from Page where rightvalue = :rightvalue",{ rightvalue=variables.rightvalue - 1 });
+	private function getLastChild(){
+		return ORMExecuteQuery( "from Page where rightvalue = :rightvalue",{ rightvalue=variables.rightvalue - 1 }, true );
 	}		
 	
 	private boolean function hasContent(){
