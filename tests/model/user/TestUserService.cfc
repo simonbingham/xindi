@@ -18,7 +18,8 @@
 
 component extends="mxunit.framework.TestCase"{
 
-	// ------------------------ TESTS ------------------------ // 
+	// ------------------------ TESTS ------------------------ //
+	
 	function testGetUserByCredentialsReturnsUserForCorrectCredentialsByEmail(){
 		var $LoginUser = mock( "model.user.User" );
 		$LoginUser.getUsername().returns( "" );

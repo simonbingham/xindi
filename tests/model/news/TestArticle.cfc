@@ -17,7 +17,9 @@
 */
 
 component extends="mxunit.framework.TestCase"{
-	// ------------------------ TESTS ------------------------ // 
+			
+	// ------------------------ TESTS ------------------------ //
+	 
 	function testThatSummaryDoesNotAppendHellipIfShort(){
 		CUT.setContent( "<p>short page content</p>" );
 		assertEquals( "short page content", CUT.getSummary() );
@@ -35,7 +37,8 @@ component extends="mxunit.framework.TestCase"{
 		assertEquals( "some page content", CUT.getSummary() );
 	}
 	
-	// ------------------------ IMPLICIT ------------------------ // 
+	// ------------------------ IMPLICIT ------------------------ //
+	
 	/**
 	* this will run before every single test in this test case
 	*/

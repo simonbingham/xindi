@@ -59,7 +59,7 @@ component extends="frameworks.org.corfield.framework"{
 		, password = ""
 		, reloadApplicationOnEveryRequest = this.development
 		, usingSubsystems = true
-		//, routes = [{ ""="", hint="" }]
+		, routes = [{ "foobar"="foobar", hint="" }]
 	};
 	
 	/**

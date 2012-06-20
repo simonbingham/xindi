@@ -18,7 +18,8 @@
 
 component extends="mxunit.framework.TestCase"{
 
-	// ------------------------ TESTS ------------------------ // 
+	// ------------------------ TESTS ------------------------ //
+	
 	function testPasswordHashing(){
 		var User = EntityNew( "User" );
 		User.setPassword( "admin" );
@@ -68,7 +69,7 @@ component extends="mxunit.framework.TestCase"{
 		assertEquals( false, result.issuccess );
 	}
 	
-	// ------------------------ IMPLICIT ------------------------ // 
+	// ------------------------ IMPLICIT ------------------------ //
 
 	/**
 	* this will run before every single test in this test case

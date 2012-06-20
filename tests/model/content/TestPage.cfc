@@ -102,7 +102,6 @@ component extends="mxunit.framework.TestCase"{
 		assertEquals( "integer tincidunt porta ipsum euismod ultricies. maecenas mattis vehicula iaculis. morbi eu risus erat. in nunc ligula, semper venenatis viverra non, viverra in nisl. vivamus at felis turpis. maecenas metus nisl, tincidunt vitae mattis dapibus, tempor eu libero. donec elementum leo vitae neque consectetur elementum. donec semper varius dui, quis ullamcorper enim mollis sed. maecenas ac quam sem. phasellus vitae ante ante. sed urna tellus, aliquet facilisis tempor et; mollis eu nisi. "" aliquam l...", Page.getSummary() );
 	}
 
-	// TODO: fix this
 	function testHasChild(){
 		var Page = EntityLoadByPK( "Page", 1 );
 		assertTrue( Page.hasChild() );
@@ -143,7 +142,12 @@ component extends="mxunit.framework.TestCase"{
 	}
 
 	function testHasPageIDInPath(){
-		fail( "test not yet implemented" );
+		var Page = EntityLoadByPK( "Page", 1 );
+		assertFalse( Page.hasPageIDInPath( 3 ) );
+		Page = EntityLoadByPK( "Page", 3 );
+		assertTrue( Page.hasPageIDInPath( 1 ) );
+		Page = EntityLoadByPK( "Page", 6 );
+		assertTrue( Page.hasPageIDInPath( 2 ) );
 	}
 
 	function testHasPreviousSibling(){
@@ -156,7 +160,13 @@ component extends="mxunit.framework.TestCase"{
 	}
 
 	function testHasRoute(){
-		fail( "test not yet implemented" );
+		var routes = [ { hint="", title="title" } ];
+		var Page = EntityLoadByPK( "Page", 1 );
+		assertFalse( Page.hasRoute( routes ) );
+		Page = EntityLoadByPK( "Page", 2 );
+		assertTrue( Page.hasRoute( routes ) );
+		Page = EntityLoadByPK( "Page", 6 );
+		assertFalse( Page.hasRoute( routes ) );
 	}
 
 	function testIsLeaf(){
@@ -277,7 +287,6 @@ component extends="mxunit.framework.TestCase"{
 		assertTrue( Page.isChild() );
 	}
 	
-	// TODO: amend this test to include persisted entities
 	function testIsUUIDUnique(){
 		var Page = EntityNew( "Page" );
 		makePublic( Page, "isUUIDUnique" );
@@ -287,11 +296,11 @@ component extends="mxunit.framework.TestCase"{
 		assertTrue( Page.isUUIDUnique() );
 	}
 	
-	// TODO: fix this
 	function testSetUUID(){
 		var Page = EntityNew( "Page" );
+		Page.setTitle( "this is a unique id" ); // setUUID uses value returned by getTitle
 		makePublic( Page, "setUUID" );
-		Page.setUUID( "this is a unique id" );
+		Page.setUUID();
 		assertEquals( "this-is-a-unique-id", Page.getUUID() );
 	}
 	 
