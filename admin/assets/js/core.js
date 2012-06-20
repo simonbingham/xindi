@@ -46,7 +46,10 @@ jQuery( function($) {
 		}
 	});
 	var currentURI = document.location.href;
-	CKEDITOR.config[ "baseHref" ] = currentURI.substring( 0, currentURI.indexOf( "index.cfm" ) );
+	// if SESOmitIndex is enabled in FW/1 index.cfm will not be present in url
+	if( currentURI.indexOf( "index.cfm" ) != -1 ) currentURI = currentURI.substring( 0, currentURI.indexOf( "index.cfm" ) );
+	else currentURI = currentURI.substring( 0, currentURI.indexOf( "admin:" ) );
+	CKEDITOR.config[ "baseHref" ] = currentURI;
 	CKEDITOR.config.toolbar_Custom =
 	[
 		{ name: "document", items : [ "Source" ] },
