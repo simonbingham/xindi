@@ -25,9 +25,9 @@ component extends="mxunit.framework.TestCase"{
 		$LoginUser.getUsername().returns( "" );
 		$LoginUser.getEmail().returns( "foo@bar.moo" );
 		$LoginUser.getPassword().returns( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB" );
-		UserResult = CUT.getUserByCredentials( $LoginUser );
-		assertEquals( false, IsNull( UserResult ) );
-		assertEquals( "foo@bar.moo", UserResult.getEmail() );
+		result = CUT.getUserByCredentials( $LoginUser );
+		assertEquals( false, IsNull( result ) );
+		assertEquals( "foo@bar.moo", result.getEmail() );
 	}
 
 	function testGetUserByCredentialsReturnsUserForCorrectCredentialsByUsername(){
@@ -35,9 +35,9 @@ component extends="mxunit.framework.TestCase"{
 		$LoginUser.getUsername().returns( "aliaspooryorik" );
 		$LoginUser.getEmail().returns( "" );
 		$LoginUser.getPassword().returns( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB" );
-		UserResult = CUT.getUserByCredentials( $LoginUser );
-		assertEquals( false, IsNull( UserResult ) );
-		assertEquals( "foo@bar.moo", UserResult.getEmail() );
+		result = CUT.getUserByCredentials( $LoginUser );
+		assertEquals( false, IsNull( result ) );
+		assertEquals( "foo@bar.moo", result.getEmail() );
 	}
 
 	function testGetUserByCredentialsReturnsNullForInCorrectCredentials(){
@@ -45,8 +45,8 @@ component extends="mxunit.framework.TestCase"{
 		$LoginUser.getUsername().returns( "aliaspooryorik" );
 		$LoginUser.getEmail().returns( "" );
 		$LoginUser.getPassword().returns( "1111111111111111111111111111111111111111111111111111111111111111" );		
-		UserResult = CUT.getUserByCredentials( $LoginUser );
-		assertEquals( true, IsNull( UserResult ) );
+		result = CUT.getUserByCredentials( $LoginUser );
+		assertEquals( true, IsNull( result ) );
 	}
 
 	// ------------------------ IMPLICIT ------------------------ //

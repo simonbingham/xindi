@@ -37,11 +37,11 @@ component accessors="true"{
 		return this;
 	}
 
-	string function generateMetaDescription( required string description ){
+	string function generateMetaDescription( string description="" ){
 		return Left( Trim( replaceMultipleSpacesWithSingleSpace( removeUnrequiredCharacters( stripHTML( arguments.description ) ) ) ), 169 );
 	}
 
-	string function generateMetaKeywords( required string keywords ){
+	string function generateMetaKeywords( string keywords="" ){
 		return Left( replaceMultipleSpacesWithSingleSpace( removeUnrequiredCharacters( listDeleteDuplicatesNoCase( ListChangeDelims( removeNonKeywords( stripHTML( arguments.keywords ) ), ",", " ." ) ) ) ), 169 );
 	}
 

@@ -24,49 +24,22 @@ component extends="mxunit.framework.TestCase"{
 	 
 	function testDeletePage(){
 		var result = CUT.deletePage( 13 );
-		assertTrue( StructKeyExists( result.messages, "success" ) );
-		// attempting to delete same page again should fail
-		result = CUT.deletePage( 13 );
-		assertTrue( StructKeyExists( result.messages, "error" ) );		
+		assertTrue( isStruct( result ) );	
 	}
 	
 	function testGetPageByID(){
 		var result = CUT.getPageByID( 1 );
-		assertEquals( 1, result.getPageID() );
-		result = CUT.getPageByID( 2 );
-		assertEquals( 2, result.getPageID() );		
-		result = CUT.getPageByID( 5 );
-		assertEquals( 5, result.getPageID() );
-		// requesting a page that does not exist should return a new page
-		result = CUT.getPageByID( 14 );
-		assertFalse( result.isPersisted() );		
+		assertEquals( 1, result.getPageID() );	
 	}
 	
 	function testGetPageSlug(){
 		var result = CUT.getPageBySlug( "home" );
-		assertEquals( 1, result.getPageID() );
-		result = CUT.getPageBySlug( "title" );
-		assertEquals( 2, result.getPageID() );		
-		result = CUT.getPageBySlug( "title/title---" );
-		assertEquals( 5, result.getPageID() );
-		// requesting a page that does not exist should return a new page
-		result = CUT.getPageBySlug( "foobar" );
-		assertFalse( result.isPersisted() );	
+		assertEquals( 1, result.getPageID() );	
 	}
 
 	function testGetPages(){
 		var result = CUT.getPages();
-		assertEquals( 13, ArrayLen( result ) );
-		result = CUT.getPages( searchterm="home" );
-		assertEquals( 1, ArrayLen( result ) );
-		result = CUT.getPages( maxresults=5 );
-		assertEquals( 5, ArrayLen( result ) );
-		result = CUT.getPages( sortorder="pageid" );
-		var Page = result[ 1 ];
-		assertEquals( "home", Page.getUUID() );				
-		result = CUT.getPages( sortorder="pageid desc" );
-		Page = result[ 1 ];
-		assertEquals( "title-----------", Page.getUUID() );				
+		assertTrue( isArray( result ) );
 	}
 
 	function testGetRoot(){
@@ -75,46 +48,16 @@ component extends="mxunit.framework.TestCase"{
 	}
 
 	function testGetValidator(){
-		var ValidateThisConfig ={ definitionPath="/model/", JSIncludes=false };
-		var Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
-		CUT.setValidator( Validator );
-		makePublic( CUT, "newPage" );
-		var result = CUT.newPage();
-		assertTrue( IsObject( CUT.getValidator( result ) ) );
+		fail( "test not yet implemented" );
 	}
 
 	function testMovePage(){
 		var result = CUT.movePage( 13, "up" );
-		assertTrue( StructKeyExists( result.messages, "success" ) );
-		result = CUT.movePage( 13, "down" );
-		assertTrue( StructKeyExists( result.messages, "success" ) );
-		// TODO: test left and right values of moved page
+		assertTrue( isStruct( result ) );
 	}
 
 	function testSavePage(){
-		var MetaData = new model.content.MetaData();
-		CUT.setMetaData( MetaData );
-		var ValidateThisConfig ={ definitionPath="/model/", JSIncludes=false };
-		var Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
-		CUT.setValidator( Validator );		
-		// test saving valid page
-		var properties = { title="foo", content="bar" };
-		var result = CUT.savePage( properties, 13, "create" );
-		assertTrue( StructKeyExists( result.messages, "success" ) );
-		assertEquals( 24, result.getTheObject().getLeftValue() );
-		assertEquals( 25, result.getTheObject().getRightValue() );
-		// test saving invalid page
-		properties = { title="", content="" };
-		result = CUT.savePage( properties, 13, "create" );
-		assertTrue( StructKeyExists( result.messages, "error" ) );
-	}
-	 
-	// private methods
-	
-	function testNewPage(){
-		makePublic( CUT, "newPage" );
-		var result = CUT.newPage();
-		assertFalse( result.isPersisted() );
+		fail( "test not yet implemented" );
 	}
 	
 	// ------------------------ IMPLICIT ------------------------ // 
@@ -123,7 +66,10 @@ component extends="mxunit.framework.TestCase"{
 	* this will run before every single test in this test case
 	*/
 	function setUp(){
-		CUT = new model.content.ContentGateway(); 
+		CUT = new model.content.ContentService();
+		
+		var ContentGateway = new model.content.ContentGateway();
+		CUT.setContentGateway( ContentGateway );		
 	}
 	
 	/**

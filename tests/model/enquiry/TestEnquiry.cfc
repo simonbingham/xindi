@@ -21,27 +21,27 @@ component extends="mxunit.framework.TestCase"{
 	// ------------------------ TESTS ------------------------ //
 	 
 	function testLineFeedAndCarriageReturnReplace(){
-		var Enquiry = new model.enquiry.Enquiry();
-		Enquiry.setMessage( "
+		var result = new model.enquiry.Enquiry();
+		result.setMessage( "
 		This
 		
 		is
 		
 		a" );
-		assertTrue( FindNoCase( "<br />", Enquiry.getDisplayMessage() ) );
+		assertTrue( FindNoCase( "<br />", result.getDisplayMessage() ) );
 	}
 	 
 	function testHTMLisEscaped(){
-		var Enquiry = new model.enquiry.Enquiry();
-		Enquiry.setMessage( "<script>alert('hack');</script>" );
-		assertEquals( "&lt;script&gt;alert('hack');&lt;/script&gt;", Enquiry.getDisplayMessage() );
+		var result = new model.enquiry.Enquiry();
+		result.setMessage( "<script>alert('hack');</script>" );
+		assertEquals( "&lt;script&gt;alert('hack');&lt;/script&gt;", result.getDisplayMessage() );
 	}
 
 	function testGetFullName(){
-		var Enquiry = new model.enquiry.Enquiry();
-		Enquiry.setFirstName( "simon" );
-		Enquiry.setLastName( "bingham" );
-		assertEquals( "simon bingham", Enquiry.getFullname() );
+		var result = new model.enquiry.Enquiry();
+		result.setFirstName( "simon" );
+		result.setLastName( "bingham" );
+		assertEquals( "simon bingham", result.getFullname() );
 	}
 	
 	// ------------------------ IMPLICIT ------------------------ //

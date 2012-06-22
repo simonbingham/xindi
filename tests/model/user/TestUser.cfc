@@ -21,24 +21,24 @@ component extends="mxunit.framework.TestCase"{
 	// ------------------------ TESTS ------------------------ //
 	
 	function testPasswordHashing(){
-		var User = EntityNew( "User" );
-		User.setPassword( "admin" );
-		assertEquals( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB", User.getPassword() );
+		var result = EntityNew( "User" );
+		result.setPassword( "admin" );
+		assertEquals( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB", result.getPassword() );
 	}
 
 	function testBlankPasswordDoesNotChangeHashedPassword(){
-		var User = EntityNew( "User" );
-		User.setPassword( "admin" );
-		assertEquals( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB", User.getPassword() );
-		User.setPassword( "" );
-		assertEquals( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB", User.getPassword() );
+		var result = EntityNew( "User" );
+		result.setPassword( "admin" );
+		assertEquals( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB", result.getPassword() );
+		result.setPassword( "" );
+		assertEquals( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB", result.getPassword() );
 	}
 	
 	function testGetFullName(){
-		var User = EntityNew( "User" );
-		User.setFirstName( "john" );
-		User.setLastName( "whish" );
-		assertEquals( "john whish", User.getFullname() );
+		var result = EntityNew( "User" );
+		result.setFirstName( "john" );
+		result.setLastName( "whish" );
+		assertEquals( "john whish", result.getFullname() );
 	}
 
 	function testIsUniqueEmail(){
