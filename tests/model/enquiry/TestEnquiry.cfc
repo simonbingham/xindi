@@ -19,9 +19,10 @@
 component extends="mxunit.framework.TestCase"{
 			
 	// ------------------------ TESTS ------------------------ //
-	 
-	function testLineFeedAndCarriageReturnReplace(){
-		var result = new model.enquiry.Enquiry();
+
+	function testGetDisplayMessage(){
+		// line feeds and carriage returns should be replaced
+		var result = EntityNew( "Enquiry" );
 		result.setMessage( "
 		This
 		
@@ -29,20 +30,34 @@ component extends="mxunit.framework.TestCase"{
 		
 		a" );
 		assertTrue( FindNoCase( "<br />", result.getDisplayMessage() ) );
+		// html should be escaped
+		result = EntityNew( "Enquiry" );
+		result.setMessage( "<script>alert('hack');</script>" );
+		assertEquals( "&lt;script&gt;alert('hack');&lt;/script&gt;", result.getDisplayMessage() );		
 	}
 	 
-	function testHTMLisEscaped(){
-		var result = new model.enquiry.Enquiry();
-		result.setMessage( "<script>alert('hack');</script>" );
-		assertEquals( "&lt;script&gt;alert('hack');&lt;/script&gt;", result.getDisplayMessage() );
-	}
-
 	function testGetFullName(){
-		var result = new model.enquiry.Enquiry();
+		var result = EntityNew( "Enquiry" );
 		result.setFirstName( "simon" );
 		result.setLastName( "bingham" );
 		assertEquals( "simon bingham", result.getFullname() );
 	}
+	
+	function testIsPersisted(){
+		var result = EntityNew( "Enquiry" );
+		assertFalse( result.isPersisted() );
+	}
+	
+	function testIsUnread(){
+		var result = EntityNew( "Enquiry" );
+		assertTrue( result.isUnread() );
+	}	
+
+	function testSetRead(){
+		var result = EntityNew( "Enquiry" );
+		result.setRead( true );
+		assertFalse( result.isUnread() );
+	}	
 	
 	// ------------------------ IMPLICIT ------------------------ //
 	

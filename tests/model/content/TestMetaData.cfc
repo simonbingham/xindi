@@ -21,8 +21,6 @@ component extends="mxunit.framework.TestCase"
 	
 	// ------------------------ TESTS ------------------------ //
 	
-	// public methods	
-
 	function testGenerateMetaDescription()
 	{
 		var result = CUT.generateMetaDescription( "The Hoff and I are going to the beach. The Hoff said he would like an ice cream.", 100 );
@@ -77,9 +75,28 @@ component extends="mxunit.framework.TestCase"
 		assertEquals( "The Hoff and I are going to the beach. The Hoff said he would like an ice cream.", result );
 	}
 	
-	function setUp()
-	{
+	// ------------------------ IMPLICIT ------------------------ // 
+	
+	/**
+	* this will run before every single test in this test case
+	*/
+	function setUp(){
 		CUT = new model.content.MetaData(); 
 	}
-		
+	
+	/**
+	* this will run after every single test in this test case
+	*/
+	function tearDown(){}
+	
+	/**
+	* this will run once after initialization and before setUp()
+	*/
+	function beforeTests(){}
+	
+	/**
+	* this will run once after all tests have been run
+	*/
+	function afterTests(){}
+	
 }

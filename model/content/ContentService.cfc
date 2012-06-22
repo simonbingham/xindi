@@ -21,7 +21,7 @@ component accessors="true"{
 	/*
 	 * Dependency injection
 	 */	
-	
+
 	property name="ContentGateway" getter="false";
 
 	/*
@@ -43,7 +43,7 @@ component accessors="true"{
 	array function getPages( string searchterm="", sortorder="leftvalue", numeric maxresults="0" ){
 		return variables.ContentGateway.getPages( argumentCollection=arguments );
 	}
-		
+
 	function getRoot(){
 		return variables.ContentGateway.getRoot();
 	}	

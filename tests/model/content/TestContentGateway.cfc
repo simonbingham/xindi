@@ -22,38 +22,44 @@ component extends="mxunit.framework.TestCase"{
 	
 	// public methods
 	 
-	function testDeletePage(){
+	function testDeletePage_pageexists(){
 		var result = CUT.deletePage( 13 );
 		assertTrue( StructKeyExists( result.messages, "success" ) );
-		// attempting to delete same page again should fail
-		result = CUT.deletePage( 13 );
+	}
+
+	function testDeletePage_pagedoesnotexist(){
+		var result = CUT.deletePage( 14 );
 		assertTrue( StructKeyExists( result.messages, "error" ) );		
 	}
 	
-	function testGetPageByID(){
+	function testGetPageByID_pageexists(){
 		var result = CUT.getPageByID( 1 );
 		assertEquals( 1, result.getPageID() );
 		result = CUT.getPageByID( 2 );
 		assertEquals( 2, result.getPageID() );		
 		result = CUT.getPageByID( 5 );
 		assertEquals( 5, result.getPageID() );
-		// requesting a page that does not exist should return a new page
-		result = CUT.getPageByID( 14 );
+	}
+
+	function testGetPageByID_pagedoesnotexists(){
+		var result = CUT.getPageByID( 14 );
 		assertFalse( result.isPersisted() );		
 	}
 	
-	function testGetPageSlug(){
+	function testGetPageSlug_pageexists(){
 		var result = CUT.getPageBySlug( "home" );
 		assertEquals( 1, result.getPageID() );
 		result = CUT.getPageBySlug( "title" );
 		assertEquals( 2, result.getPageID() );		
 		result = CUT.getPageBySlug( "title/title---" );
 		assertEquals( 5, result.getPageID() );
-		// requesting a page that does not exist should return a new page
-		result = CUT.getPageBySlug( "foobar" );
-		assertFalse( result.isPersisted() );	
 	}
 
+	function testGetPageSlug_pagedoesnotexist(){
+		var result = CUT.getPageBySlug( "foobar" );
+		assertFalse( result.isPersisted() );	
+	}
+	
 	function testGetPages(){
 		var result = CUT.getPages();
 		assertEquals( 13, ArrayLen( result ) );
@@ -83,27 +89,51 @@ component extends="mxunit.framework.TestCase"{
 		assertTrue( IsObject( CUT.getValidator( result ) ) );
 	}
 
-	function testMovePage(){
+	function testMovePage_up(){
 		var result = CUT.movePage( 13, "up" );
 		assertTrue( StructKeyExists( result.messages, "success" ) );
-		result = CUT.movePage( 13, "down" );
-		assertTrue( StructKeyExists( result.messages, "success" ) );
-		// TODO: test left and right values of moved page
+		assertEquals( 21, result.Page.getLeftValue() );
+		assertEquals( 22, result.Page.getRightValue() );
+		assertFalse( StructKeyExists( result.messages, "error" ) );
 	}
 
-	function testSavePage(){
+	function testMovePage_down(){
+		var result = CUT.movePage( 12, "down" );
+		assertTrue( StructKeyExists( result.messages, "success" ) );
+		assertEquals( 23, result.Page.getLeftValue() );
+		assertEquals( 24, result.Page.getRightValue() );
+		assertFalse( StructKeyExists( result.messages, "error" ) );
+	}
+
+	function testMovePage_cannotmoveup(){
+		var result = CUT.movePage( 11, "up" );
+		assertTrue( StructKeyExists( result.messages, "error" ) );
+	}
+
+	function testMovePage_cannotmovedown(){
+		result = CUT.movePage( 13, "down" );
+		assertTrue( StructKeyExists( result.messages, "error" ) );
+	}
+
+	function testSavePage_validpage(){
 		var MetaData = new model.content.MetaData();
 		CUT.setMetaData( MetaData );
 		var ValidateThisConfig ={ definitionPath="/model/", JSIncludes=false };
 		var Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
 		CUT.setValidator( Validator );		
-		// test saving valid page
 		var properties = { title="foo", content="bar" };
 		var result = CUT.savePage( properties, 13, "create" );
 		assertTrue( StructKeyExists( result.messages, "success" ) );
 		assertEquals( 24, result.getTheObject().getLeftValue() );
 		assertEquals( 25, result.getTheObject().getRightValue() );
-		// test saving invalid page
+	}
+
+	function testSavePage_invalidpage(){
+		var MetaData = new model.content.MetaData();
+		CUT.setMetaData( MetaData );
+		var ValidateThisConfig ={ definitionPath="/model/", JSIncludes=false };
+		var Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
+		CUT.setValidator( Validator );		
 		properties = { title="", content="" };
 		result = CUT.savePage( properties, 13, "create" );
 		assertTrue( StructKeyExists( result.messages, "error" ) );

@@ -67,15 +67,12 @@
 		<cfargument name="searchterm" type="string" required="false" default="">
 		<cfargument name="sortorder" type="string" required="false" default="leftvalue">
 		<cfargument name="maxresults" type="numeric" required="false" default="0">
-		
 		<cfset var qPages = "">
 		<cfset var thesearchterm = Trim( arguments.searchterm )>
 		<cfset var ormoptions ={}>
-		
 		<cfif arguments.maxresults>
 			<cfset ormoptions.maxresults = arguments.maxresults>
 		</cfif>
-		
 		<cfquery name="qPages" dbtype="hql" ormoptions="#ormoptions#">
 			from Page
 			where 1=1
@@ -88,7 +85,6 @@
 			</cfif>
 			order by #arguments.sortorder#
 		</cfquery>
-		
 		<cfreturn qPages>
 	</cffunction>
 	
@@ -97,8 +93,6 @@
 			return variables.Validator.getValidator( theObject=arguments.Page );
 		}		
 		
-		// TODO: improve this method to include page in return struct and prevent page being moved when it cannot
-		// (i.e. if it's the first sibling it cannot be moved up and if it's the last it cannot be moved down)
 		struct function movePage( required numeric pageid, required string direction ){
 			var decreaseamount = "";
 			var increaseamount = "";
@@ -107,7 +101,7 @@
 			var previoussibling = "";
 			var previoussiblingdescendentidlist = "";
 			var Page = getPageByID( arguments.pageid );
-			var result ={};
+			var result = { Page=Page, messages = { error = "The page could not be moved." } };
 			if( Page.isPersisted() && ListFindNoCase( "up,down", Trim( arguments.direction ) ) ){
 				if( arguments.direction eq "up" ){
 					if( Page.hasPreviousSibling() ){
@@ -126,6 +120,7 @@
 							EntitySave( previoussibling );
 						}
 						result.messages.success = "The page &quot;#Page.getTitle()#&quot; has been moved.";
+						StructDelete( result.messages, "error" );
 					}
 				}else{
 					if( Page.hasNextSibling() ){
@@ -144,10 +139,9 @@
 							EntitySave( nextsibling );
 						}
 						result.messages.success = "The page &quot;#Page.getTitle()#&quot; has been moved.";
+						StructDelete( result.messages, "error" );
 					}
 				}
-			}else{
-				result.messages.error = "The page could not be moved.";
 			}
 			return result;
 		}

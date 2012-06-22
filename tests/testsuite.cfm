@@ -16,6 +16,8 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 --->
 
+<!--- open this file in a web browser to run unit tests --->
+
 <cfset testsuite = new mxunit.framework.TestSuite() />
 
 <cfdirectory action="list" directory="#getDirectoryFromPath( getCurrentTemplatePath() )#model" name="tests" recurse="true" filter="*.cfc">

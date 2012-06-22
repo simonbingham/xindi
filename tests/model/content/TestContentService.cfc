@@ -20,8 +20,6 @@ component extends="mxunit.framework.TestCase"{
 			
 	// ------------------------ TESTS ------------------------ //
 	
-	// public methods
-	 
 	function testDeletePage(){
 		var result = CUT.deletePage( 13 );
 		assertTrue( isStruct( result ) );	
