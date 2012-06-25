@@ -28,8 +28,8 @@ component accessors="true"{
 	 * Public methods
 	 */
 	 	
-	struct function deleteUser( required numeric userid ){
-		var User = getUserByID( arguments.userid );
+	struct function deleteUser( required userid ){
+		var User = getUserByID( Val( arguments.userid ) );
 		var result ={};
 		if( User.isPersisted() ){
 			transaction{
@@ -42,8 +42,8 @@ component accessors="true"{
 		return result;
 	}
 	
-	function getUserByID( required numeric userid ){
-		var User = EntityLoadByPK( "User", arguments.userid );
+	function getUserByID( required userid ){
+		var User = EntityLoadByPK( "User", Val( arguments.userid ) );
 		if( IsNull( User ) ) User = newUser();
 		return User;
 	}

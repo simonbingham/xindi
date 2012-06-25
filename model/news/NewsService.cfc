@@ -30,8 +30,8 @@ component accessors="true"{
 	 * Public methods
 	 */
 	 	
-	struct function deleteArticle( required numeric articleid ){
-		var Article = getArticleByID( arguments.articleid );
+	struct function deleteArticle( required articleid ){
+		var Article = getArticleByID( Val( arguments.articleid ) );
 		var result ={};
 		if( Article.isPersisted() ){ 
 			transaction{
@@ -44,8 +44,8 @@ component accessors="true"{
 		return result;
 	}
 	
-	function getArticleByID( required numeric articleid ){
-		var Article = EntityLoadByPK( "Article", arguments.articleid );
+	function getArticleByID( required articleid ){
+		var Article = EntityLoadByPK( "Article", Val( arguments.articleid ) );
 		if( IsNull( Article ) ) Article = newArticle();
 		return Article;
 	}
@@ -60,7 +60,9 @@ component accessors="true"{
 		return Val( ORMExecuteQuery( "select count( * ) from Article", true ) );
 	}
 
-	array function getArticles( string searchterm="", string sortorder="published desc", boolean published=false, numeric maxresults=0, numeric offset=0 ){
+	array function getArticles( string searchterm="", string sortorder="published desc", boolean published=false, maxresults=0, offset=0 ){
+		arguments.maxresults = Val( arguments.maxresults );
+		arguments.offset = Val( arguments.offset );
 		return variables.NewsGateway.getArticles( argumentCollection=arguments );
 	}
 		

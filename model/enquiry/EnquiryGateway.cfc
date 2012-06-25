@@ -53,7 +53,7 @@ component accessors="true"{
 	}
 
 	numeric function getUnreadEnquiryCount(){
-		return Val( ORMExecuteQuery( "select count( * ) from Enquiry where unread = true", true ) );
+		return ORMExecuteQuery( "select count( * ) from Enquiry where unread = true", true );
 	}	
 	 	
 	function getValidator( required any Enquiry ){
