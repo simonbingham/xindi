@@ -20,12 +20,12 @@ component extends="mxunit.framework.TestCase"{
 			
 	// ------------------------ TESTS ------------------------ //
 	
-	function testDeleteEnquiry_enquiryexists(){
+	function testDeleteEnquiryWhereEnquiryExists(){
 		var result = CUT.deleteEnquiry( 1 );
 		assertTrue( StructKeyExists( result.messages, "success" ) );
 	}
 
-	function testDeleteEnquiry_enquirydoesnotexist(){
+	function testDeleteEnquiryWhereEnquiryDoesNotExist(){
 		result = CUT.deleteEnquiry( 4 );
 		assertTrue( StructKeyExists( result.messages, "error" ) );
 	}
