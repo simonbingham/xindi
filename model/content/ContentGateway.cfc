@@ -110,8 +110,8 @@
 						previoussiblingdescendentidlist = previoussibling.getDescendentPageIDList();
 						decreaseamount = previoussibling.getRightValue() - previoussibling.getLeftValue() + 1;
 						transaction{
-							if( ListLen( Page.getDescendentPageIDList() ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue - :decreaseamount, rightvalue = rightvalue - :decreaseamount where pageid in ( #Page.getDescendentPageIDList()# )",{ decreaseamount=Val( decreaseamount ) });
-							if( ListLen( previoussiblingdescendentidlist ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue + :increaseamount, rightvalue = rightvalue + :increaseamount where pageid in ( #previoussiblingdescendentidlist# )",{ increaseamount=Val( increaseamount ) });
+							if( ListLen( Page.getDescendentPageIDList() ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue - :decreaseamount, rightvalue = rightvalue - :decreaseamount where pageid in ( #Page.getDescendentPageIDList()# )",{ decreaseamount=decreaseamount });
+							if( ListLen( previoussiblingdescendentidlist ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue + :increaseamount, rightvalue = rightvalue + :increaseamount where pageid in ( #previoussiblingdescendentidlist# )",{ increaseamount=increaseamount });
 							Page.setLeftValue( Page.getLeftValue() - decreaseamount );
 							Page.setRightValue( Page.getRightValue() - decreaseamount );
 							previoussibling.setLeftValue( previoussibling.getLeftValue() + increaseamount );
@@ -129,8 +129,8 @@
 						nextsiblingdescendentidlist = nextsibling.getDescendentPageIDList();
 						increaseamount = nextsibling.getRightValue() - nextsibling.getLeftValue() + 1;
 						transaction{
-							if( ListLen( Page.getDescendentPageIDList() ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue + :increaseamount, rightvalue = rightvalue + :increaseamount where pageid in ( #Page.getDescendentPageIDList()# )",{ increaseamount=Val( increaseamount ) });
-							if( ListLen( nextsiblingdescendentidlist ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue - :decreaseamount, rightvalue = rightvalue - :decreaseamount where pageid in ( #nextsiblingdescendentidlist# )",{ decreaseamount=Val( decreaseamount ) });
+							if( ListLen( Page.getDescendentPageIDList() ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue + :increaseamount, rightvalue = rightvalue + :increaseamount where pageid in ( #Page.getDescendentPageIDList()# )",{ increaseamount=increaseamount });
+							if( ListLen( nextsiblingdescendentidlist ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue - :decreaseamount, rightvalue = rightvalue - :decreaseamount where pageid in ( #nextsiblingdescendentidlist# )",{ decreaseamount=decreaseamount });
 							Page.setLeftValue( Page.getLeftValue() + increaseamount );
 							Page.setRightValue( Page.getRightValue() + increaseamount );
 							nextsibling.setLeftValue( nextsibling.getLeftValue() - decreaseamount );
@@ -150,7 +150,7 @@
 			param name="arguments.properties.pageid" default="0";
 			transaction{
 				var Page = "";
-				Page = getPageByID( Val( arguments.properties.pageid ) );
+				Page = getPageByID( arguments.properties.pageid );
 				Page.populate( arguments.properties );
 				if( Page.isMetaGenerated() ){
 					Page.setMetaTitle( Page.getTitle() );
@@ -161,10 +161,10 @@
 				if( !result.hasErrors() ){
 					if( !Page.isPersisted() && arguments.ancestorid ){
 						var Ancestor = getPageByID( arguments.ancestorid );
-						Page.setLeftValue( Val( Ancestor.getRightValue() ) );
-						Page.setRightValue( Val( Ancestor.getRightValue() + 1 ) );
-						ORMExecuteQuery( "update Page set leftvalue = leftvalue + 2 where leftvalue > :startingvalue",{ startingvalue=Val( Ancestor.getRightValue() - 1 ) });
-						ORMExecuteQuery( "update Page set rightvalue = rightvalue + 2 where rightvalue > :startingvalue",{ startingvalue=Val( Ancestor.getRightValue() - 1 ) });
+						Page.setLeftValue( Ancestor.getRightValue() );
+						Page.setRightValue( Ancestor.getRightValue() + 1 );
+						ORMExecuteQuery( "update Page set leftvalue = leftvalue + 2 where leftvalue > :startingvalue",{ startingvalue=Ancestor.getRightValue() - 1 } );
+						ORMExecuteQuery( "update Page set rightvalue = rightvalue + 2 where rightvalue > :startingvalue",{ startingvalue=Ancestor.getRightValue() - 1 } );
 						EntitySave( Page );
 						transaction action="commit";
 					}else if( Page.isPersisted() ){

@@ -28,19 +28,20 @@ component accessors="true"{
 	 * Public methods
 	 */
 	 	
-	struct function deletePage( required numeric pageid ){
-		return variables.ContentGateway.deletePage( argumentCollection=arguments );
+	struct function deletePage( required pageid ){
+		return variables.ContentGateway.deletePage( pageid=Val( arguments.pageid ) );
 	}
 	
-	function getPageByID( required numeric pageid ){
-		return variables.ContentGateway.getPageByID( argumentCollection=arguments );
+	function getPageByID( required pageid ){
+		return variables.ContentGateway.getPageByID( pageid=Val( arguments.pageid ) );
 	}
 	
 	function getPageBySlug( required string slug ){
 		return variables.ContentGateway.getPageBySlug( argumentCollection=arguments );
 	}
 
-	array function getPages( string searchterm="", sortorder="leftvalue", numeric maxresults="0" ){
+	array function getPages( string searchterm="", sortorder="leftvalue", maxresults=0 ){
+		arguments.maxresults = Val( arguments.maxresults );
 		return variables.ContentGateway.getPages( argumentCollection=arguments );
 	}
 
@@ -52,11 +53,13 @@ component accessors="true"{
 		return variables.ContentGateway.getValidator();
 	}
 	
-	struct function movePage( required numeric pageid, required string direction ){
+	struct function movePage( required pageid, required string direction ){
+		arguments.pageid = Val( arguments.pageid );
 		return variables.ContentGateway.movePage( argumentCollection=arguments );
 	}
 	
-	function savePage( required struct properties, required numeric ancestorid, required string context ){
+	function savePage( required struct properties, required ancestorid, required string context ){
+		arguments.ancestorid = Val( arguments.ancestorid );
 		return variables.ContentGateway.savePage( argumentCollection=arguments );
 	}
 	

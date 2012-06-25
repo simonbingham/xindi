@@ -204,8 +204,10 @@ component extends="mxunit.framework.TestCase"{
 		makePublic( result, "getDescendentCount" );
 		assertEquals( 12, result.getDescendentCount() );
 		result = EntityLoadByPK( "Page", 2 );
+		makePublic( result, "getDescendentCount" );
 		assertEquals( 3, result.getDescendentCount() );
 		result = EntityLoadByPK( "Page", 5 );
+		makePublic( result, "getDescendentCount" );
 		assertEquals( 0, result.getDescendentCount() );
 	}
 	
@@ -214,8 +216,10 @@ component extends="mxunit.framework.TestCase"{
 		makePublic( result, "getDescendents" );
 		assertEquals( 12, ArrayLen( result.getDescendents() ) );
 		result = EntityLoadByPK( "Page", 2 );
+		makePublic( result, "getDescendents" );
 		assertEquals( 3, ArrayLen( result.getDescendents() ) );
 		result = EntityLoadByPK( "Page", 5 );
+		makePublic( result, "getDescendents" );
 		assertEquals( 0, ArrayLen( result.getDescendents() ) );
 	}
 
@@ -225,9 +229,11 @@ component extends="mxunit.framework.TestCase"{
 		var result = Page.getFirstChild();
 		assertEquals( 2, result.getPageID() );
 		Page = EntityLoadByPK( "Page", 2 );
+		makePublic( Page, "getFirstChild" );
 		result = Page.getFirstChild();
 		assertEquals( 5, result.getPageID() );
 		Page = EntityLoadByPK( "Page", 5 );
+		makePublic( Page, "getFirstChild" );
 		assertTrue( IsNull( Page.getFirstChild() ) );
 	}
 
@@ -237,9 +243,11 @@ component extends="mxunit.framework.TestCase"{
 		var result = Page.getLastChild();
 		assertEquals( 4, result.getPageID() );
 		Page = EntityLoadByPK( "Page", 2 );
+		makePublic( Page, "getLastChild" );
 		result = Page.getLastChild();
 		assertEquals( 7, result.getPageID() );
 		Page = EntityLoadByPK( "Page", 5 );
+		makePublic( Page, "getLastChild" );
 		assertTrue( IsNull( Page.getLastChild() ) );
 	}
 
@@ -248,8 +256,10 @@ component extends="mxunit.framework.TestCase"{
 		makePublic( result, "hasContent" );
 		assertTrue( result.hasContent() );
 		result = EntityLoadByPK( "Page", 2 );
+		makePublic( result, "hasContent" );
 		assertTrue( result.hasContent() );
 		result = EntityLoadByPK( "Page", 5 );
+		makePublic( result, "hasContent" );
 		assertTrue( result.hasContent() );
 	}
 
@@ -258,8 +268,10 @@ component extends="mxunit.framework.TestCase"{
 		makePublic( result, "hasDescendents" );
 		assertTrue( result.hasDescendents() );
 		result = EntityLoadByPK( "Page", 2 );
+		makePublic( result, "hasDescendents" );
 		assertTrue( result.hasDescendents() );
 		result = EntityLoadByPK( "Page", 5 );
+		makePublic( result, "hasDescendents" );
 		assertFalse( result.hasDescendents() );
 	}
 
@@ -268,8 +280,10 @@ component extends="mxunit.framework.TestCase"{
 		makePublic( result, "isChild" );
 		assertFalse( result.isChild() );
 		result = EntityLoadByPK( "Page", 2 );
+		makePublic( result, "isChild" );
 		assertTrue( result.isChild() );
 		result = EntityLoadByPK( "Page", 5 );
+		makePublic( result, "isChild" );
 		assertTrue( result.isChild() );
 	}
 	

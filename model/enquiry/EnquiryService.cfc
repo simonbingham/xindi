@@ -28,16 +28,16 @@ component accessors="true"{
 	 * Public methods
 	 */
 
-	struct function deleteEnquiry( required numeric enquiryid ){
-		return variables.EnquiryGateway.deleteEnquiry( argumentCollection=arguments );		
+	struct function deleteEnquiry( required enquiryid ){
+		return variables.EnquiryGateway.deleteEnquiry( enquiryid=Val( arguments.enquiryid ) );		
 	}
 	
-	array function getEnquiries( numeric maxresults=0 ){
-		return variables.EnquiryGateway.getEnquiries( argumentCollection=arguments );
+	array function getEnquiries( maxresults=0 ){
+		return variables.EnquiryGateway.getEnquiries( maxresults=Val( arguments.maxresults ) );
 	}	
 
-	function getEnquiryByID( required numeric enquiryid ){
-		return variables.EnquiryGateway.getEnquiryByID( argumentCollection=arguments );
+	function getEnquiryByID( required enquiryid ){
+		return variables.EnquiryGateway.getEnquiryByID( enquiryid=Val( arguments.enquiryid ) );
 	}
 
 	numeric function getUnreadEnquiryCount(){
@@ -52,8 +52,8 @@ component accessors="true"{
 		return variables.EnquiryGateway.markAllRead();		
 	}
 
-	void function markRead( required numeric enquiryid ){
-		return variables.EnquiryGateway.markRead( argumentCollection=arguments );		
+	void function markRead( required enquiryid ){
+		return variables.EnquiryGateway.markRead( enquiryid=Val( arguments.enquiryid ) );
 	}	
 	
 	function newEnquiry(){

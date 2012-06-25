@@ -34,14 +34,14 @@ component accessors="true" extends="abstract"{
 
 	void function delete( required struct rc ){
 		param name="rc.articleid" default="0";
-		var result = variables.NewsService.deleteArticle( Val( rc.articleid ) );
+		var result = variables.NewsService.deleteArticle( rc.articleid );
 		rc.messages = result.messages;
 		variables.fw.redirect( "news", "messages" );
 	}
 	
 	void function maintain( required struct rc ){
 		param name="rc.articleid" default="0";
-		if( !StructKeyExists( rc, "Article" ) ) rc.Article = variables.NewsService.getArticleByID( Val( rc.articleid ) );
+		if( !StructKeyExists( rc, "Article" ) ) rc.Article = variables.NewsService.getArticleByID( rc.articleid );
 		rc.Validator = variables.NewsService.getValidator( rc.Article );
 		if( !StructKeyExists( rc, "result" ) ) rc.result = rc.Validator.newResult();
 	}	
