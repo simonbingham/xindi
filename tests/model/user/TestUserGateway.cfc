@@ -20,6 +20,14 @@ component extends="mxunit.framework.TestCase"{
 
 	// ------------------------ TESTS ------------------------ //
 	
+	function testDeleteUser(){
+		fail( "test not yet implemented" );
+	}
+	
+	function testGetUserByID(){
+		fail( "test not yet implemented" );
+	}	
+	
 	function testGetUserByCredentialsReturnsUserForCorrectCredentialsByEmail(){
 		var $LoginUser = mock( "model.user.User" );
 		$LoginUser.getUsername().returns( "" );
@@ -48,6 +56,26 @@ component extends="mxunit.framework.TestCase"{
 		result = CUT.getUserByCredentials( $LoginUser );
 		assertEquals( true, IsNull( result ) );
 	}
+	
+	function testGetUserByEmailOrUsername(){
+		fail( "test not yet implemented" );
+	}
+	
+	function testGetUsers(){
+		fail( "test not yet implemented" );
+	}	
+	
+	function testGetValidator(){
+		fail( "test not yet implemented" );
+	}
+	
+	function testNewUser(){
+		fail( "test not yet implemented" );
+	}
+	
+	function testSaveUser(){
+		fail( "test not yet implemented" );
+	}	
 
 	// ------------------------ IMPLICIT ------------------------ //
 	 
