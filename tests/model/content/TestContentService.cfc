@@ -26,23 +26,23 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testGetPageByID(){
-		var result = CUT.getPageByID( 1 );
-		assertEquals( 1, result.getPageID() );	
+		var Page = CUT.getPageByID( 1 );
+		assertEquals( 1, Page.getPageID() );	
 	}
 	
 	function testGetPageSlug(){
-		var result = CUT.getPageBySlug( "home" );
-		assertEquals( 1, result.getPageID() );	
+		var Page = CUT.getPageBySlug( "home" );
+		assertEquals( 1, Page.getPageID() );	
 	}
 
 	function testGetPages(){
-		var result = CUT.getPages();
-		assertTrue( isArray( result ) );
+		var pages = CUT.getPages();
+		assertTrue( isArray( pages ) );
 	}
 
 	function testGetRoot(){
-		var result = CUT.getRoot();
-		assertEquals( 1, result.getPageID() );
+		var Page = CUT.getRoot();
+		assertEquals( 1, Page.getPageID() );
 	}
 
 	function testGetValidator(){
@@ -82,9 +82,7 @@ component extends="mxunit.framework.TestCase"{
 		var q = new Query();
 		q.setSQL( "DROP TABLE Pages;");
 		q.execute();		
-		
 		ORMReload();
-		
 		q = new Query();
 		q.setSQL( "
 			INSERT INTO pages ( page_id, page_uuid, page_left, page_right, page_title, page_content, page_metagenerated, page_metatitle, page_metadescription, page_metakeywords, page_created, page_updated ) 

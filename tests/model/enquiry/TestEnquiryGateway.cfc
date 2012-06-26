@@ -31,36 +31,36 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testGetEnquiries(){
-		var result = CUT.getEnquiries();
-		assertEquals( 3, ArrayLen( result ) );
-		result = CUT.getEnquiries( 2 );
-		assertEquals( 2, ArrayLen( result ) );
+		var enquiries = CUT.getEnquiries();
+		assertEquals( 3, ArrayLen( enquiries ) );
+		enquiries = CUT.getEnquiries( 2 );
+		assertEquals( 2, ArrayLen( enquiries ) );
 	}
 	
 	function testGetEnquiryByID(){
-		var result = CUT.getEnquiryByID( 1 );
-		assertEquals( 1, result.getEnquiryID() );
+		var Enquiry = CUT.getEnquiryByID( 1 );
+		assertEquals( 1, Enquiry.getEnquiryID() );
 	}
 
-	function testGetUnreadEnquiryCount(){
-		var result = CUT.getUnreadEnquiryCount();
-		assertEquals( 3, result );
+	function testGetUnreadCount(){
+		var unreadcount = CUT.getUnreadCount();
+		assertEquals( 3, unreadcount );
 		CUT.markRead( 1 );
-		result = CUT.getUnreadEnquiryCount();
-		assertEquals( 2, result );
+		unreadcount = CUT.getUnreadCount();
+		assertEquals( 2, unreadcount );
 	}
 	
 	function testMarkAllRead(){
-		var result = CUT.getUnreadEnquiryCount();
+		var result = CUT.getUnreadCount();
 		assertEquals( 3, result );		
 		CUT.markAllRead();
-		result = CUT.getUnreadEnquiryCount();
+		result = CUT.getUnreadCount();
 		assertEquals( 0, result );		
 	}
 	
 	function testMarkRead(){
 		CUT.markRead( 1 );
-		result = CUT.getUnreadEnquiryCount();
+		result = CUT.getUnreadCount();
 		assertEquals( 2, result );
 	}
 	
@@ -94,9 +94,7 @@ component extends="mxunit.framework.TestCase"{
 		var q = new Query();
 		q.setSQL( "DROP TABLE Enquiries;");
 		q.execute();		
-		
 		ORMReload();
-		
 		q = new Query();
 		q.setSQL( "
 			INSERT INTO enquiries (enquiry_id, enquiry_firstname, enquiry_lastname, enquiry_email, enquiry_message, enquiry_unread, enquiry_created) 

@@ -21,32 +21,15 @@ component extends="mxunit.framework.TestCase"{
 	// ------------------------ TESTS ------------------------ //
 	
 	function testGetUserByCredentialsReturnsUserForCorrectCredentialsByEmail(){
-		var $LoginUser = mock( "model.user.User" );
-		$LoginUser.getUsername().returns( "" );
-		$LoginUser.getEmail().returns( "foo@bar.moo" );
-		$LoginUser.getPassword().returns( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB" );
-		result = CUT.getUserByCredentials( $LoginUser );
-		assertEquals( false, IsNull( result ) );
-		assertEquals( "foo@bar.moo", result.getEmail() );
+		fail( "test not yet implemented" );
 	}
 
 	function testGetUserByCredentialsReturnsUserForCorrectCredentialsByUsername(){
-		var $LoginUser = mock( "model.user.User" );
-		$LoginUser.getUsername().returns( "aliaspooryorik" );
-		$LoginUser.getEmail().returns( "" );
-		$LoginUser.getPassword().returns( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB" );
-		result = CUT.getUserByCredentials( $LoginUser );
-		assertEquals( false, IsNull( result ) );
-		assertEquals( "foo@bar.moo", result.getEmail() );
+		fail( "test not yet implemented" );
 	}
 
 	function testGetUserByCredentialsReturnsNullForInCorrectCredentials(){
-		var $LoginUser = mock( "model.user.User" );
-		$LoginUser.getUsername().returns( "aliaspooryorik" );
-		$LoginUser.getEmail().returns( "" );
-		$LoginUser.getPassword().returns( "1111111111111111111111111111111111111111111111111111111111111111" );		
-		result = CUT.getUserByCredentials( $LoginUser );
-		assertEquals( true, IsNull( result ) );
+		fail( "test not yet implemented" );
 	}
 
 	// ------------------------ IMPLICIT ------------------------ //
@@ -55,7 +38,7 @@ component extends="mxunit.framework.TestCase"{
 	* this will run before every single test in this test case
 	*/
 	function setUp(){
-		CUT = new model.user.UserService(); 
+		CUT = new model.user.UserGateway(); 
 	}
 	
 	/**

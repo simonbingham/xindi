@@ -16,44 +16,38 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true" extends="abstract"{
+component extends="mxunit.framework.TestCase"
+{
 	
-	/*
-	 * Dependency injection
-	 */		
-
-	property name="EnquiryService" setter="true" getter="false";
-
-	/*
-	 * Public methods
-	 */	
-
-	void function default( required struct rc ){
-		rc.enquiries = variables.EnquiryService.getEnquiries();
-		rc.unreadenquirycount = variables.EnquiryService.getUnreadCount();
+	// ------------------------ TESTS ------------------------ //
+	
+	function testPopulate()
+	{
+		fail( "test not yet implemented" );
 	}
 	
-	void function delete( required struct rc ){
-		param name="rc.enquiryid" default="0";
-		var result = variables.EnquiryService.deleteEnquiry( rc.enquiryid );
-		rc.messages = result.messages;
-		variables.fw.redirect( "enquiries", "messages" );
-	}	
+	// ------------------------ IMPLICIT ------------------------ // 
 	
-	void function enquiry( required struct rc ){
-		param name="rc.enquiryid" default="0";
-		rc.Enquiry = variables.EnquiryService.getEnquiryByID( rc.enquiryid );
-		if( !IsNull( rc.Enquiry ) ){
-			variables.EnquiryService.markRead( rc.Enquiry.getEnquiryID() );
-		}else{
-			variables.fw.redirect( "main.notfound" );
-		}
+	/**
+	* this will run before every single test in this test case
+	*/
+	function setUp(){
+		CUT = new model.abstract.BaseEntity(); 
 	}
 	
-	void function markallread( required struct rc ){
-		var result = variables.EnquiryService.markAllRead();
-		rc.messages = result.messages;
-		variables.fw.redirect( "enquiries", "messages" );
-	}	
+	/**
+	* this will run after every single test in this test case
+	*/
+	function tearDown(){}
+	
+	/**
+	* this will run once after initialization and before setUp()
+	*/
+	function beforeTests(){}
+	
+	/**
+	* this will run once after all tests have been run
+	*/
+	function afterTests(){}
 	
 }

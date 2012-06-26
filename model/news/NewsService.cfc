@@ -29,11 +29,11 @@ component accessors="true"{
 	 */
 	 	
 	struct function deleteArticle( required articleid ){
-		return variables.NewsGateway.deleteArticle( argumentCollection=Val( arguments.articleid ) );
+		return variables.NewsGateway.deleteArticle( articleid=Val( arguments.articleid ) );
 	}
 	
 	function getArticleByID( required articleid ){
-		return variables.NewsGateway.getArticleByID( argumentCollection=Val( arguments.articleid ) );
+		return variables.NewsGateway.getArticleByID( articleid=Val( arguments.articleid ) );
 	}
 	
 	function getArticleByUUID( required string uuid ){
