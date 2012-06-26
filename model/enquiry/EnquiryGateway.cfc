@@ -30,7 +30,7 @@ component accessors="true"{
 
 	struct function deleteEnquiry( required numeric enquiryid ){
 		var Enquiry = getEnquiryByID( arguments.enquiryid );
-		var result ={};
+		var result = {};
 		if( !IsNull( Enquiry ) ){ 
 			transaction{
 				EntityDelete( Enquiry );
@@ -69,7 +69,7 @@ component accessors="true"{
 	}
 
 	struct function markRead( required numeric enquiryid ){
-		var result ={};
+		var result = {};
 		var Enquiry = getEnquiryByID( arguments.enquiryid );
 		if( !IsNull( Enquiry ) ){ 
 			transaction{
@@ -93,7 +93,7 @@ component accessors="true"{
 			var Enquiry = newEnquiry(); 
 			Enquiry.populate( arguments.properties );
 			var result = variables.Validator.validate( theObject=Enquiry );
-			result.messages ={};
+			result.messages = {};
 			if( !result.hasErrors() ){
 				savecontent variable="emailtemplate"{ include arguments.emailtemplatepath; }
 				var Email = new mail();

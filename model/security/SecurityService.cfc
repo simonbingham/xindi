@@ -32,7 +32,7 @@ component accessors="true"{
 	 */
 
 	struct function deleteCurrentUser(){
-		var result ={};
+		var result = {};
 		if( hasCurrentUser() ){
 			StructDelete( session, variables.userkey );
 			result.messages.success = "You have been logged out.";	
@@ -66,7 +66,7 @@ component accessors="true"{
 			result.messages.success = "Welcome #User.getFirstName()#. You have been logged in.";
 		}else{
 			result.messages.error = "Sorry, your login details have not been recognised.";
-			var failure ={ propertyName="username", clientFieldname="username", message=result.messages.error };
+			var failure = { propertyName="username", clientFieldname="username", message=result.messages.error };
 			result.addFailure( failure );
 		}
 		return result;
@@ -97,7 +97,7 @@ component accessors="true"{
 				result.messages.success = "A new password has been sent to #User.getEmail()#.";
 			}else{
 				result.messages.error = "Sorry, your username or email address has not been recognised.";
-				var failure ={ propertyName="username", clientFieldname="username", message=result.messages.error };
+				var failure = { propertyName="username", clientFieldname="username", message=result.messages.error };
 				result.addFailure( failure );
 			}
 		}

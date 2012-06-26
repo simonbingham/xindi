@@ -32,7 +32,7 @@ component extends="frameworks.org.corfield.framework"{
 	this.mappings[ "/ValidateThis" ] = this.applicationroot & "frameworks/ValidateThis/";
 	this.datasource = ListLast( this.applicationroot, "\/" );
 	this.ormenabled = true;
-	this.ormsettings ={
+	this.ormsettings = {
 		flushatrequestend = false
 		, automanagesession = false
 		, cfclocation = this.mappings[ "/model" ]
@@ -51,7 +51,7 @@ component extends="frameworks.org.corfield.framework"{
 	/**
 	* FW/1 framework settings (https://github.com/seancorfield/fw1)
 	*/
-	variables.framework ={
+	variables.framework = {
 		cacheFileExists = !this.development
 		, defaultSubsystem = "public"
 		, generateSES = true
@@ -84,7 +84,7 @@ component extends="frameworks.org.corfield.framework"{
 		setBeanFactory( beanfactory );
 
 		// add validator bean to factory
-		var ValidateThisConfig ={ definitionPath="/model/", JSIncludes=false };
+		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
 		beanFactory.addBean( "Validator", new ValidateThis.ValidateThis( ValidateThisConfig ) );
 
 		// add meta data bean to factory
@@ -153,7 +153,7 @@ component extends="frameworks.org.corfield.framework"{
 	* configuration
 	*/		
 	private struct function getConfig(){
-		var config ={
+		var config = {
 			development = this.development
 			, enquiry = {
 				enabled = true

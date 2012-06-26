@@ -26,7 +26,7 @@ component{
 	this.mappings[ "/ValidateThis" ] = this.applicationroot & "frameworks/ValidateThis/";
 	this.datasource = "xindi_testsuite";
 	this.ormenabled = true;
-	this.ormsettings ={
+	this.ormsettings = {
 		flushatrequestend = false
 		, automanagesession = false
 		, cfclocation = this.mappings[ "/model" ]

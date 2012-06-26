@@ -31,7 +31,7 @@
 		
 		struct function deletePage( required numeric pageid ){
 			var Page = getPageByID( arguments.pageid );
-			var result ={};
+			var result = {};
 			if( Page.isPersisted() ){
 				transaction{
 					var startvalue = Page.getLeftValue();
@@ -69,7 +69,7 @@
 		<cfargument name="maxresults" type="numeric" required="false" default="0">
 		<cfset var qPages = "">
 		<cfset var thesearchterm = Trim( arguments.searchterm )>
-		<cfset var ormoptions ={}>
+		<cfset var ormoptions = {}>
 		<cfif arguments.maxresults>
 			<cfset ormoptions.maxresults = arguments.maxresults>
 		</cfif>

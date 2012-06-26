@@ -46,7 +46,7 @@ component extends="model.abstract.BaseEntity" persistent="true" table="users" ca
 	
 	struct function isEmailUnique(){
 		var matches = []; 
-		var result ={ issuccess=false, failuremessage="The email address '#getEmail()#' is registered to an existing account." };
+		var result = { issuccess=false, failuremessage="The email address '#getEmail()#' is registered to an existing account." };
 		if( isPersisted() ) matches = ORMExecuteQuery( "from User where userid <> :userid and email = :email",{ userid=getUserID(), email=getEmail()});
 		else matches = ORMExecuteQuery( "from User where email=:email",{ email=getEmail() });
 		if( !ArrayLen( matches ) ) result.issuccess = true;
@@ -55,7 +55,7 @@ component extends="model.abstract.BaseEntity" persistent="true" table="users" ca
 
 	struct function isUsernameUnique(){
 		var matches = []; 
-		var result ={ issuccess = false, failuremessage = "The username '#getUsername()#' is registered to an existing account." };
+		var result = { issuccess = false, failuremessage = "The username '#getUsername()#' is registered to an existing account." };
 		if( isPersisted() ) matches = ORMExecuteQuery( "from User where userid <> :userid and username = :username",{ userid=getUserID(), username=getUsername()});
 		else matches = OrmExecuteQuery( "from User where username = :username",{ username=getUsername() });
 		if( !ArrayLen( matches ) ) result.issuccess = true;

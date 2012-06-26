@@ -24,7 +24,7 @@ component accessors="true"{
 	 	
 	struct function createDirectory( required string directory )
 	{
-		var result ={};
+		var result = {};
 		if( Len( Trim( arguments.directory ) ) ) {
 			result.theobject = CreateObject( "java", "java.io.File" ).init( JavaCast( "string", arguments.directory ) );
 			result.messages.success = "The directory &quot;" & arguments.directory & "&quot; has been created.";
@@ -35,7 +35,7 @@ component accessors="true"{
 	}
 	
 	struct function deleteFile( required string file ){
-		result ={};
+		result = {};
 		if( isFile( arguments.file ) ){
 			getFile( arguments.file ).delete();
 			result.messages.success = "The file &quot;" & arguments.file & "&quot; has been deleted.";
@@ -66,7 +66,7 @@ component accessors="true"{
 	}
 	
 	struct function uploadFile( required string file, required string destination, required string allowedextensions ){
-		var result ={};
+		var result = {};
 		try{
 			result = FileUpload( arguments.destination, arguments.file, "", "MakeUnique" );
 			result.messages.success = "The file &quot;" & result.serverfile & "&quot; has been uploaded.";

@@ -81,7 +81,7 @@ component extends="mxunit.framework.TestCase"{
 	}
 
 	function testGetValidator(){
-		var ValidateThisConfig ={ definitionPath="/model/", JSIncludes=false };
+		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
 		var Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
 		CUT.setValidator( Validator );
 		makePublic( CUT, "newPage" );
@@ -118,7 +118,7 @@ component extends="mxunit.framework.TestCase"{
 	function testSavePageWherePageIsValid(){
 		var MetaData = new model.content.MetaData();
 		CUT.setMetaData( MetaData );
-		var ValidateThisConfig ={ definitionPath="/model/", JSIncludes=false };
+		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
 		var Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
 		CUT.setValidator( Validator );		
 		var properties = { title="foo", content="bar" };
@@ -131,7 +131,7 @@ component extends="mxunit.framework.TestCase"{
 	function testSavePageWherePageIsInvalid(){
 		var MetaData = new model.content.MetaData();
 		CUT.setMetaData( MetaData );
-		var ValidateThisConfig ={ definitionPath="/model/", JSIncludes=false };
+		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
 		var Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
 		CUT.setValidator( Validator );		
 		properties = { title="", content="" };

@@ -31,7 +31,7 @@
 		
 		struct function deleteArticle( required articleid ){
 			var Article = getArticleByID( Val( arguments.articleid ) );
-			var result ={};
+			var result = {};
 			if( Article.isPersisted() ){ 
 				transaction{
 					EntityDelete( Article );
@@ -68,7 +68,7 @@
 		<cfargument name="offset" type="numeric" required="false" default="0">
 		<cfset var qArticles = "">
 		<cfset var thesearchterm = Trim( arguments.searchterm )>
-		<cfset var ormoptions ={}>
+		<cfset var ormoptions = {}>
 		<cfif arguments.maxresults>
 			<cfset ormoptions.maxresults = arguments.maxresults>
 		</cfif>

@@ -57,7 +57,7 @@ component accessors="true" extends="abstract"{
 		param name="rc.password" default="";
 		param name="rc.context" default="create";
 		param name="rc.submit" default="Save & exit";
-		var properties ={ userid=rc.userid, firstname=rc.firstname, lastname=rc.lastname, email=rc.email, username=rc.username, password=rc.password };
+		var properties = { userid=rc.userid, firstname=rc.firstname, lastname=rc.lastname, email=rc.email, username=rc.username, password=rc.password };
 		rc.result = variables.UserService.saveUser( properties, rc.context );
 		rc.messages = rc.result.messages;
 		rc.User = rc.result.getTheObject();

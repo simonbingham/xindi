@@ -56,7 +56,7 @@ component accessors="true" extends="abstract"{
 		param name="rc.metadescription" default="";
 		param name="rc.metakeywords" default="";
 		param name="rc.submit" default="Save & exit";
-		var properties ={ articleid=rc.articleid, title=rc.title, published=rc.published, content=rc.content, metagenerated=rc.metagenerated, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
+		var properties = { articleid=rc.articleid, title=rc.title, published=rc.published, content=rc.content, metagenerated=rc.metagenerated, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
 		rc.result = variables.NewsService.saveArticle( properties );
 		rc.messages = rc.result.messages;
 		rc.Article = rc.result.getTheObject();

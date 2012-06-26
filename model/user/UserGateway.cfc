@@ -30,7 +30,7 @@ component accessors="true"{
 	 	
 	struct function deleteUser( required userid ){
 		var User = getUserByID( Val( arguments.userid ) );
-		var result ={};
+		var result = {};
 		if( User.isPersisted() ){
 			transaction{
 				EntityDelete( User );
