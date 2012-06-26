@@ -22,69 +22,42 @@ component accessors="true"{
 	 * Dependency injection
 	 */	
 	
-	property name="Validator" getter="false";
+	property name="UserGateway" getter="false";
 
 	/*
 	 * Public methods
 	 */
 	 	
 	struct function deleteUser( required userid ){
-		var User = getUserByID( Val( arguments.userid ) );
-		var result ={};
-		if( User.isPersisted() ){
-			transaction{
-				EntityDelete( User );
-				result.messages.success = "The user &quot;#User.getFullName()#&quot; has been deleted.";
-			}
-		}else{
-			result.messages.error = "The user could not be deleted.";
-		}
-		return result;
+		return variables.UserGateway.deleteUser( userid=Val( arguments.userid ) );
 	}
 	
 	function getUserByID( required userid ){
-		var User = EntityLoadByPK( "User", Val( arguments.userid ) );
-		if( IsNull( User ) ) User = newUser();
-		return User;
+		return variables.UserGateway.getUserByID( userid=Val( arguments.userid ) );
 	}
 
 	function getUserByCredentials( required User ){
-		return ORMExecuteQuery( " from User where ( username=:username or email=:email ) and password=:password", { username=arguments.User.getUsername(), email=arguments.User.getEmail(), password=arguments.User.getPassword() }, true );
+		return variables.UserGateway.getUserByCredentials( argumentCollection=arguments );
 	}
 
 	function getUserByEmailOrUsername( required User ){
-		return ORMExecuteQuery( " from User where username=:username or email=:email", { username=arguments.User.getUsername(), email=arguments.User.getEmail() }, true );
+		return variables.UserGateway.getUserByEmailOrUsername( argumentCollection=arguments );
 	}
 
 	array function getUsers(){
-		return EntityLoad( "User",{}, "firstname" );	
+		return variables.UserGateway.getUsers();
 	}
 		
 	function getValidator( required any User ){
-		return variables.Validator.getValidator( theObject=arguments.User );
+		return variables.UserGateway.getValidator( argumentCollection=arguments );
 	}
 	
 	function newUser(){
-		return EntityNew( "User" );
+		return variables.UserGateway.newUser();
 	}
 	
 	struct function saveUser( required struct properties, required string context ){
-		var result = {};
-		transaction{
-			var User = ""; 
-			User = getUserByID( Val( arguments.properties.userid ) );
-			User.populate( arguments.properties );
-			var result = variables.Validator.validate( theObject=User, Context=arguments.context );
-			if( !result.hasErrors() ){
-				result.messages.success = "The user &quot;#User.getFullName()#&quot; has been saved";
-				EntitySave( User );
-				transaction action="commit";
-			}else{
-				result.messages.error = "The user could not be saved. Please amend the highlighted fields.";
-				transaction action="rollback";
-			}
-		}
-		return result;
+		return variables.UserGateway.saveUser( argumentCollection=arguments );
 	}
 	
 }

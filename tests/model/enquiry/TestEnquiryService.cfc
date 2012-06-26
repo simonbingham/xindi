@@ -35,8 +35,8 @@ component extends="mxunit.framework.TestCase"{
 		assertTrue( IsStruct( result ) );
 	}
 
-	function testGetUnreadEnquiryCount(){
-		var result = CUT.getUnreadEnquiryCount();
+	function testGetUnreadCount(){
+		var result = CUT.getUnreadCount();
 		assertTrue( IsNumeric( result ) );
 	}
 	
@@ -80,9 +80,7 @@ component extends="mxunit.framework.TestCase"{
 		var q = new Query();
 		q.setSQL( "DROP TABLE Enquiries;");
 		q.execute();		
-		
 		ORMReload();
-		
 		q = new Query();
 		q.setSQL( "
 			INSERT INTO enquiries (enquiry_id, enquiry_firstname, enquiry_lastname, enquiry_email, enquiry_message, enquiry_unread, enquiry_created) 

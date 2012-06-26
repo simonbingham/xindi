@@ -52,7 +52,7 @@ component accessors="true"{
 		return EntityLoadByPK( "Enquiry", arguments.enquiryid );
 	}
 
-	numeric function getUnreadEnquiryCount(){
+	numeric function getUnreadCount(){
 		return ORMExecuteQuery( "select count( * ) from Enquiry where unread = true", true );
 	}	
 	 	

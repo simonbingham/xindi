@@ -49,7 +49,7 @@ component accessors="true"{
 			}
 			if( securearea ) variables.fw.redirect( "admin:security" );
 		}else{
-			rc.unreadenquirycount = variables.EnquiryService.getUnreadEnquiryCount();
+			rc.unreadenquirycount = variables.EnquiryService.getUnreadCount();
 			rc.unreadenquiries = variables.EnquiryService.getEnquiries( maxresults=10 );
 			rc.updatedpages = variables.ContentService.getPages( sortorder="updated desc", maxresults=10 );
 			rc.updatedarticles = variables.NewsService.getArticles( sortorder="updated desc", maxresults=10 );

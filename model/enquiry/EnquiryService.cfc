@@ -40,8 +40,8 @@ component accessors="true"{
 		return variables.EnquiryGateway.getEnquiryByID( enquiryid=Val( arguments.enquiryid ) );
 	}
 
-	numeric function getUnreadEnquiryCount(){
-		return variables.EnquiryGateway.getUnreadEnquiryCount();		
+	numeric function getUnreadCount(){
+		return variables.EnquiryGateway.getUnreadCount();		
 	}	
 	 	
 	function getValidator( required any Enquiry ){

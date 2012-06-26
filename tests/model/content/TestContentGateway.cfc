@@ -33,51 +33,51 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testGetPageByIDWherePageExists(){
-		var result = CUT.getPageByID( 1 );
-		assertEquals( 1, result.getPageID() );
-		result = CUT.getPageByID( 2 );
-		assertEquals( 2, result.getPageID() );		
-		result = CUT.getPageByID( 5 );
-		assertEquals( 5, result.getPageID() );
+		var Page = CUT.getPageByID( 1 );
+		assertEquals( 1, Page.getPageID() );
+		Page = CUT.getPageByID( 2 );
+		assertEquals( 2, Page.getPageID() );		
+		Page = CUT.getPageByID( 5 );
+		assertEquals( 5, Page.getPageID() );
 	}
 
 	function testGetPageByIDWherePageDoesNotExists(){
-		var result = CUT.getPageByID( 14 );
-		assertFalse( result.isPersisted() );		
+		var Page = CUT.getPageByID( 14 );
+		assertFalse( Page.isPersisted() );		
 	}
 	
 	function testGetPageSlugWherePageExists(){
-		var result = CUT.getPageBySlug( "home" );
-		assertEquals( 1, result.getPageID() );
-		result = CUT.getPageBySlug( "title" );
-		assertEquals( 2, result.getPageID() );		
-		result = CUT.getPageBySlug( "title/title---" );
-		assertEquals( 5, result.getPageID() );
+		var Page = CUT.getPageBySlug( "home" );
+		assertEquals( 1, Page.getPageID() );
+		Page = CUT.getPageBySlug( "title" );
+		assertEquals( 2, Page.getPageID() );		
+		Page = CUT.getPageBySlug( "title/title---" );
+		assertEquals( 5, Page.getPageID() );
 	}
 
 	function testGetPageSlugWherePageDoesNotExist(){
-		var result = CUT.getPageBySlug( "foobar" );
-		assertFalse( result.isPersisted() );	
+		var Page = CUT.getPageBySlug( "foobar" );
+		assertFalse( Page.isPersisted() );	
 	}
 	
 	function testGetPages(){
-		var result = CUT.getPages();
-		assertEquals( 13, ArrayLen( result ) );
-		result = CUT.getPages( searchterm="home" );
-		assertEquals( 1, ArrayLen( result ) );
-		result = CUT.getPages( maxresults=5 );
-		assertEquals( 5, ArrayLen( result ) );
-		result = CUT.getPages( sortorder="pageid" );
-		var Page = result[ 1 ];
+		var pages = CUT.getPages();
+		assertEquals( 13, ArrayLen( pages ) );
+		pages = CUT.getPages( searchterm="home" );
+		assertEquals( 1, ArrayLen( pages ) );
+		pages = CUT.getPages( maxresults=5 );
+		assertEquals( 5, ArrayLen( pages ) );
+		pages = CUT.getPages( sortorder="pageid" );
+		var Page = pages[ 1 ];
 		assertEquals( "home", Page.getUUID() );				
-		result = CUT.getPages( sortorder="pageid desc" );
-		Page = result[ 1 ];
+		pages = CUT.getPages( sortorder="pageid desc" );
+		Page = pages[ 1 ];
 		assertEquals( "title-----------", Page.getUUID() );				
 	}
 
 	function testGetRoot(){
-		var result = CUT.getRoot();
-		assertEquals( 1, result.getPageID() );
+		var Page = CUT.getRoot();
+		assertEquals( 1, Page.getPageID() );
 	}
 
 	function testGetValidator(){
@@ -85,8 +85,8 @@ component extends="mxunit.framework.TestCase"{
 		var Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
 		CUT.setValidator( Validator );
 		makePublic( CUT, "newPage" );
-		var result = CUT.newPage();
-		assertTrue( IsObject( CUT.getValidator( result ) ) );
+		var Page = CUT.newPage();
+		assertTrue( IsObject( CUT.getValidator( Page ) ) );
 	}
 
 	function testMovePageWherePageCanBeMovedUp(){
@@ -143,8 +143,8 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testNewPage(){
 		makePublic( CUT, "newPage" );
-		var result = CUT.newPage();
-		assertFalse( result.isPersisted() );
+		var Page = CUT.newPage();
+		assertFalse( Page.isPersisted() );
 	}
 	
 	// ------------------------ IMPLICIT ------------------------ // 

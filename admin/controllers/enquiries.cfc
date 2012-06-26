@@ -30,7 +30,7 @@ component accessors="true" extends="abstract"{
 
 	void function default( required struct rc ){
 		rc.enquiries = variables.EnquiryService.getEnquiries();
-		rc.unreadenquirycount = variables.EnquiryService.getUnreadEnquiryCount();
+		rc.unreadenquirycount = variables.EnquiryService.getUnreadCount();
 	}
 	
 	void function delete( required struct rc ){
