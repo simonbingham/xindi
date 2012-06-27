@@ -1,7 +1,7 @@
 /* import Twitter Bootstrap styles */
 
-@import url(../../common/bootstrap/css/bootstrap.min.css);
-@import url(../../common/bootstrap/css/bootstrap-responsive.min.css);
+@import url(../bootstrap/css/bootstrap.min.css);
+@import url(../bootstrap/css/bootstrap-responsive.min.css);
 
 /* tag styles */
 

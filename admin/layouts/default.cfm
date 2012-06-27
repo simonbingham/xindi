@@ -30,8 +30,8 @@
 
 			<title>Xindi</title>
 
-			<link href="#rc.basehref#common/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-			<link href="#rc.basehref#common/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+			<link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+			<link href="assets/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
 			<link href="assets/css/smoothness/jquery-ui-1.8.19.custom.css" rel="stylesheet">
 			<link href="assets/css/core.css?r=#rc.config.revision#" rel="stylesheet">
 
@@ -39,7 +39,7 @@
 			<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js" type="text/javascript"></script>
 			<script src="assets/js/jquery-ui-1.8.19.custom.min.js"></script>
 			<script src="assets/js/jquery.field.min.js"></script>
-			<script src="#rc.basehref#common/bootstrap/js/bootstrap.min.js"></script>
+			<script src="assets/bootstrap/js/bootstrap.min.js"></script>
 			<script src="assets/ckeditor/ckeditor.js"></script>
 			<script src="assets/js/core.js?r=#rc.config.revision#"></script>
 			
