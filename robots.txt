@@ -1,10 +1,11 @@
 User-Agent: *
 Disallow: /admin/
-Disallow: /common/
 Disallow: /frameworks/
 Disallow: /logs/
 Disallow: /model/
-Disallow: /public/
+Disallow: /public/controllers/
+Disallow: /public/layouts/
+Disallow: /public/views/
 Disallow: /remote/
 Disallow: /tests/
 Allow: /
