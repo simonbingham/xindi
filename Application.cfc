@@ -110,7 +110,7 @@ component extends="frameworks.org.corfield.framework"{
 		rc.config = getBeanFactory().getBean( "Config" );
 		
 		// call admin on every request (used for security)
-		controller( "admin:main.default" );		 
+		controller( "admin:main" );
 	}
 	
 	/**
