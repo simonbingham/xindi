@@ -53,7 +53,7 @@ component accessors="true"{
 	}
 
 	void function markRead( required enquiryid ){
-		return variables.EnquiryGateway.markRead( enquiryid=Val( arguments.enquiryid ) );
+		variables.EnquiryGateway.markRead( enquiryid=Val( arguments.enquiryid ) );
 	}	
 	
 	function newEnquiry(){
