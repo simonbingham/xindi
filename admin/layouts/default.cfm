@@ -63,7 +63,7 @@
 						
 						<div class="nav-collapse">
 							<ul class="nav pull-right">
-								<cfif rc.loggedin>
+								<cfif StructKeyExists( rc, "CurrentUser" )>
 									<li><a href="#buildURL( 'pages' )#">Pages</a></li>
 									<cfif rc.config.news.enabled><li><a href="#buildURL( 'news' )#">News</a></li></cfif>
 									<cfif rc.config.enquiry.enabled><li><a href="#buildURL( 'enquiries' )#">Enquiries<cfif rc.unreadenquirycount> <span class="badge badge-info">#NumberFormat( rc.unreadenquirycount )#</span></cfif></a></li></cfif>

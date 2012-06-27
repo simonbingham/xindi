@@ -26,7 +26,6 @@ component accessors="true"{
 	property name="EnquiryService" setter="true" getter="false";
 	property name="NewsService" setter="true" getter="false";
 	property name="SecurityService" setter="true" getter="false";
-	property name="config" setter="true" getter="false";
 	
 	/*
 	 * Public methods
@@ -37,18 +36,8 @@ component accessors="true"{
 	}
 
 	void function before( required rc ){
-		var securearea = true; 
-		var whitelist = variables.config.security.whitelist;		
-		rc.loggedin = variables.SecurityService.hasCurrentUser();
-		if( !rc.loggedin ){
-			for ( var unsecured in ListToArray( whitelist ) ){
-				if( ReFindNoCase( unsecured, variables.fw.getFullyQualifiedAction() ) ){
-					securearea = false;
-					break;
-				}
-			}
-			if( securearea ) variables.fw.redirect( "admin:security" );
-		}
+		rc.isallowed = variables.SecurityService.isallowed( action=variables.fw.getFullyQualifiedAction() );
+		if( !rc.isallowed ) variables.fw.redirect( "admin:security" );
 	}
 
 	void function default( required rc ){
