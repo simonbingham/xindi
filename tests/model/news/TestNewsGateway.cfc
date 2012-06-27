@@ -60,21 +60,57 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testGetArticles(){
-		fail( "test not yet implemented" );
+		var articles = CUT.getArticles();
+		assertEquals( 3, ArrayLen( articles ) );
+		articles = CUT.getArticles( searchterm="Sample Article A" );
+		assertEquals( 1, ArrayLen( articles ) );
+		articles = CUT.getArticles( maxresults=2 );
+		assertEquals( 2, ArrayLen( articles ) );
+		articles = CUT.getArticles( sortorder="articleid" );
+		var Article = articles[ 1 ];
+		assertEquals( "sample-article-a", Article.getUUID() );				
+		articles = CUT.getArticles( sortorder="articleid desc" );
+		Article = articles[ 1 ];
+		assertEquals( "sample-article-c", Article.getUUID() );				
 	}
 	
 	function testGetValidator(){
-		fail( "test not yet implemented" );
+		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
+		var Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
+		CUT.setValidator( Validator );
+		makePublic( CUT, "newArticle" );
+		var Article = CUT.newArticle();
+		assertTrue( IsObject( CUT.getValidator( Article ) ) );
 	}
 	
-	function testSaveArticle(){
-		fail( "test not yet implemented" );
+	function testSaveArticleWherePageIsInvalid(){
+		var MetaData = new model.content.MetaData();
+		CUT.setMetaData( MetaData );
+		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
+		var Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
+		CUT.setValidator( Validator );		
+		var properties = { title="", published="27/6/2012", content="bar" };
+		var result = CUT.saveArticle( properties );
+		assertTrue( StructKeyExists( result.messages, "error" ) );
+	}
+
+	function testSaveArticleWherePageIsValid(){
+		var MetaData = new model.content.MetaData();
+		CUT.setMetaData( MetaData );
+		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
+		var Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
+		CUT.setValidator( Validator );		
+		var properties = { title="foo", published="27/6/2012", content="bar" };
+		var result = CUT.saveArticle( properties );
+		assertTrue( StructKeyExists( result.messages, "success" ) );
 	}
 	
 	// private methods
 	
 	function testNewArticle(){
-		fail( "test not yet implemented" );
+		makePublic( CUT, "newArticle" );
+		var Article = CUT.newArticle();
+		assertFalse( Article.isPersisted() );
 	}
  
 	// ------------------------ IMPLICIT ------------------------ // 

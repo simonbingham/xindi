@@ -21,23 +21,27 @@ component extends="mxunit.framework.TestCase"{
 	// ------------------------ TESTS ------------------------ //
 	
 	function testDeleteArticle(){
-		fail( "test not yet implemented" );
-	}
-	
-	function testGetArticleByID(){
-		fail( "test not yet implemented" );
-	}
- 
-	function testGetArticleByUUID(){
-		fail( "test not yet implemented" );
+		var result = CUT.deleteArticle( 1 );
+		assertTrue( IsStruct( result ) );
 	}
 
+	function testGetArticleByID(){
+		var Article = CUT.getArticleByID( 1 );
+		assertTrue( IsObject( Article ) );
+	}
+	
+	function testGetArticleByUUID(){
+		var Article = CUT.getArticleByUUID( "sample-article-a" );
+		assertTrue( IsObject( Article ) );
+	}
+	
 	function testGetArticleCount(){
-		fail( "test not yet implemented" );
+		assertTrue( IsNumeric( CUT.getArticleCount() ) );
 	}
 	
 	function testGetArticles(){
-		fail( "test not yet implemented" );
+		var articles = CUT.getArticles();
+		assertTrue( IsArray( articles ) );			
 	}
 	
 	function testGetValidator(){
@@ -54,7 +58,10 @@ component extends="mxunit.framework.TestCase"{
 	* this will run before every single test in this test case
 	*/
 	function setUp(){
-		CUT = new model.news.NewsService(); 
+		CUT = new model.news.NewsService();
+		
+		var NewsGateway = new model.news.NewsGateway();
+		CUT.setNewsGateway( NewsGateway );		
 	}
 	
 	/**

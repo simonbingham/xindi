@@ -52,8 +52,8 @@ component accessors="true"{
 		return variables.EnquiryGateway.markAllRead();		
 	}
 
-	void function markRead( required enquiryid ){
-		variables.EnquiryGateway.markRead( enquiryid=Val( arguments.enquiryid ) );
+	struct function markRead( required enquiryid ){
+		return variables.EnquiryGateway.markRead( enquiryid=Val( arguments.enquiryid ) );
 	}	
 	
 	function newEnquiry(){

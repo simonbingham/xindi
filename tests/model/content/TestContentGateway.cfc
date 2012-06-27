@@ -167,10 +167,8 @@ component extends="mxunit.framework.TestCase"{
 	function beforeTests(){
 		var q = new Query();
 		q.setSQL( "DROP TABLE Pages;");
-		q.execute();		
-		
+		q.execute();
 		ORMReload();
-		
 		q = new Query();
 		q.setSQL( "
 			INSERT INTO pages ( page_id, page_uuid, page_left, page_right, page_title, page_content, page_metagenerated, page_metatitle, page_metadescription, page_metakeywords, page_created, page_updated ) 

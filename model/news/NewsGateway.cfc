@@ -99,6 +99,7 @@
 		}
 		
 		function saveArticle( required struct properties ){
+			param name="arguments.properties.articleid" default="0";
 			transaction{
 				var Article = ""; 
 				Article = getArticleByID( Val( arguments.properties.articleid ) );

@@ -20,12 +20,19 @@ component extends="mxunit.framework.TestCase"{
 
 	// ------------------------ TESTS ------------------------ //
 	
-	function testDeleteUser(){
-		fail( "test not yet implemented" );
+	function testDeleteUserWhereUserExists(){
+		result = CUT.deleteUser( 1 );
+		assertTrue( StructKeyExists( result.messages, "success" ) );
+	}
+
+	function testDeleteUserWhereUserDoesNotExist(){
+		result = CUT.deleteUser( 2 );
+		assertTrue( StructKeyExists( result.messages, "error" ) );
 	}
 	
 	function testGetUserByID(){
-		fail( "test not yet implemented" );
+		var User = CUT.getUserByID( 1 );
+		assertTrue( User.isPersisted() );
 	}	
 	
 	function testGetUserByCredentialsReturnsUserForCorrectCredentialsByEmail(){
@@ -57,12 +64,23 @@ component extends="mxunit.framework.TestCase"{
 		assertEquals( true, IsNull( result ) );
 	}
 	
-	function testGetUserByEmailOrUsername(){
-		fail( "test not yet implemented" );
+	function testGetUserByEmailOrUsernameWhereEmailIsSpecified(){
+		var User = CUT.newUser();
+		User.setEmail( "foo@bar.moo" );
+		User = CUT.getUserByEmailOrUsername( User );
+		assertTrue( User.isPersisted() );
+	}
+
+	function testGetUserByEmailOrUsernameWhereUsernameIsSpecified(){
+		var User = CUT.newUser();
+		User.setUsername( "aliaspooryorik" );
+		User = CUT.getUserByEmailOrUsername( User );
+		assertTrue( User.isPersisted() );
 	}
 	
 	function testGetUsers(){
-		fail( "test not yet implemented" );
+		var users = CUT.getUsers();
+		assertTrue( ArrayLen( users ) == 1 );
 	}	
 	
 	function testGetValidator(){
@@ -70,7 +88,8 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testNewUser(){
-		fail( "test not yet implemented" );
+		var User = CUT.newUser();
+		assertFalse( User.isPersisted() );
 	}
 	
 	function testSaveUser(){
@@ -98,9 +117,9 @@ component extends="mxunit.framework.TestCase"{
 		var q = new Query();
 		q.setSQL( "
 			insert into Users (
-				user_firstname, user_lastname, user_email, user_username, user_password
+				user_id, user_firstname, user_lastname, user_email, user_username, user_password
 			) values (
-				'John', 'Whish', 'foo@bar.moo', 'aliaspooryorik', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB'
+				1, 'John', 'Whish', 'foo@bar.moo', 'aliaspooryorik', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB'
 			)
 		" );
 		q.execute();

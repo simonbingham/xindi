@@ -21,19 +21,49 @@ component extends="mxunit.framework.TestCase"{
 	// ------------------------ TESTS ------------------------ //
 	
 	function testDeleteCurrentUser(){
-		fail( "test not yet implemented" );
-	}
-	
-	function testGetCurrentUser(){
-		fail( "test not yet implemented" );
+		assertFalse( CUT.hasCurrentUser() );
+		var User = EntityLoadByPK( "User", 1 );
+		CUT.setCurrentUser( User );
+		assertTrue( CUT.hasCurrentUser() );
+		CUT.deleteCurrentUser();
+		assertFalse( CUT.hasCurrentUser() );
 	}
 	
 	function testHasCurrentUser(){
-		fail( "test not yet implemented" );
+		assertFalse( CUT.hasCurrentUser() );
+		var User = EntityLoadByPK( "User", 1 );
+		CUT.setCurrentUser( User );
+		assertTrue( CUT.hasCurrentUser() );
 	}
 	
-	function testLoginUser(){
-		fail( "test not yet implemented" );
+	function testIsAllowedForSecureAction(){
+		assertFalse( CUT.isAllowed( "admin:pages" ) );
+		var User = EntityLoadByPK( "User", 1 );
+		CUT.setCurrentUser( User );
+		assertTrue( CUT.isAllowed( "admin:pages" ) );
+		CUT.deleteCurrentUser();
+		assertFalse( CUT.isAllowed( "admin:pages" ) );
+	}	
+
+	function testIsAllowedForUnsecureAction(){
+		assertTrue( CUT.isAllowed( "public:" ) );
+		var User = EntityLoadByPK( "User", 1 );
+		CUT.setCurrentUser( User );
+		assertTrue( CUT.isAllowed( "public:" ) );
+		CUT.deleteCurrentUser();
+		assertTrue( CUT.isAllowed( "public:" ) );		
+	}	
+	
+	function testLoginUserForValidUser(){
+		var properties = { username="admin", password="admin" };
+		result = CUT.loginUser( properties );
+		assertTrue( StructKeyExists( result.messages, "success" ) );
+	}
+
+	function testLoginUserForInvalidUser(){
+		var properties = { username="foo", password="bar" };
+		result = CUT.loginUser( properties );
+		assertTrue( StructKeyExists( result.messages, "error" ) );
 	}
 	
 	function testResetPassword(){
@@ -41,7 +71,10 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testSetCurrentUser(){
-		fail( "test not yet implemented" );
+		assertFalse( CUT.hasCurrentUser() );
+		var User = EntityLoadByPK( "User", 1 );
+		CUT.setCurrentUser( User );
+		assertTrue( CUT.hasCurrentUser() );
 	}
 
 	// ------------------------ IMPLICIT ------------------------ //
@@ -50,7 +83,17 @@ component extends="mxunit.framework.TestCase"{
 	* this will run before every single test in this test case
 	*/
 	function setUp(){
-		CUT = new model.security.SecurityService(); 
+		CUT = new model.security.SecurityService();
+		
+		var UserService = new model.user.UserService();
+		var UserGateway = new model.user.UserGateway();
+		UserService.setUserGateway( UserGateway );
+		CUT.setUserService( UserService );
+		var config = { security = { whitelist="^admin:security,^public:" } };
+		CUT.setConfig( config );
+		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
+		var Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
+		CUT.setValidator( Validator );
 	}
 	
 	/**
@@ -61,7 +104,18 @@ component extends="mxunit.framework.TestCase"{
 	/**
 	* this will run once after initialization and before setUp()
 	*/
-	function beforeTests(){}
+	function beforeTests(){
+		var q = new Query();
+		q.setSQL( "DROP TABLE Users;");
+		q.execute();		
+		ORMReload();
+		q = new Query();
+		q.setSQL( "
+			INSERT INTO users ( user_id, user_firstname, user_lastname, user_email, user_username, user_password, user_created, user_updated ) 
+			VALUES ( 1, 'Default', 'User', 'enquiries@getxindi.com', 'admin', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB', '2012-04-22 08:39:07', '2012-04-22 08:39:09' );
+		" );
+		q.execute();		
+	}
 	
 	/**
 	* this will run once after all tests have been run

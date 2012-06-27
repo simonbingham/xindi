@@ -43,10 +43,6 @@ component accessors="true"{
 		return result;
 	}
 
-	function getCurrentUser(){
-		if( hasCurrentUser() ) return variables.UserService.getUserByID( session[ variables.userkey ] ).isPersisted();
-	}
-		
 	boolean function hasCurrentUser(){
 		return StructKeyExists( session, variables.userkey );
 	}
