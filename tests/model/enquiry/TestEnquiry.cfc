@@ -20,8 +20,12 @@ component extends="mxunit.framework.TestCase"{
 			
 	// ------------------------ TESTS ------------------------ //
 
-	function testGetDisplayMessage(){
-		// line feeds and carriage returns should be replaced
+	function testGetDisplayMessageHTMLShouldBeEscaped(){
+		CUT.setMessage( "<script>alert('hack');</script>" );
+		assertEquals( "&lt;script&gt;alert('hack');&lt;/script&gt;", CUT.getDisplayMessage() );		
+	}	
+	 
+	function testGetDisplayMessageLineFeedsAndCarriageReturnsShouldBeReplace(){
 		CUT.setMessage( "
 		This
 		
@@ -29,11 +33,8 @@ component extends="mxunit.framework.TestCase"{
 		
 		a" );
 		assertTrue( FindNoCase( "<br />", CUT.getDisplayMessage() ) );
-		// html should be escaped
-		CUT.setMessage( "<script>alert('hack');</script>" );
-		assertEquals( "&lt;script&gt;alert('hack');&lt;/script&gt;", CUT.getDisplayMessage() );		
 	}
-	 
+	
 	function testGetFullName(){
 		CUT.setFirstName( "simon" );
 		CUT.setLastName( "bingham" );

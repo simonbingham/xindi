@@ -19,62 +19,57 @@
 component extends="mxunit.framework.TestCase"{
 
 	// ------------------------ TESTS ------------------------ //
-	
-	function testPasswordHashing(){
-		var result = EntityNew( "User" );
-		result.setPassword( "admin" );
-		assertEquals( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB", result.getPassword() );
-	}
 
 	function testBlankPasswordDoesNotChangeHashedPassword(){
-		var result = EntityNew( "User" );
-		result.setPassword( "admin" );
-		assertEquals( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB", result.getPassword() );
-		result.setPassword( "" );
-		assertEquals( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB", result.getPassword() );
-	}
-	
-	function testGetFullName(){
-		var result = EntityNew( "User" );
-		result.setFirstName( "john" );
-		result.setLastName( "whish" );
-		assertEquals( "john whish", result.getFullname() );
+		CUT.setPassword( "admin" );
+		assertEquals( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB", CUT.getPassword() );
+		CUT.setPassword( "" );
+		assertEquals( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB", CUT.getPassword() );
 	}
 
-	function testIsUniqueEmail(){
-		var User = EntityNew( "User" );
-		User.setEmail( "asdhakjsdas@badkjasld.com" );
-		var result = User.IsEmailUnique();
-		assertEquals( true, result.issuccess );
+	function testGetFullName(){
+		CUT.setFirstName( "john" );
+		CUT.setLastName( "whish" );
+		assertEquals( "john whish", CUT.getFullname() );
 	}
 
 	function testIsNotUniqueEmail(){
-		var User = EntityNew( "User" );
-		User.setEmail( "foo@bar.moo" );
-		var result = User.IsEmailUnique();
+		CUT.setEmail( "foo@bar.moo" );
+		var result = CUT.IsEmailUnique();
 		assertEquals( false, result.issuccess );
-	}
-	
-	function testIsUniqueUsername(){
-		var User = EntityNew( "User" );
-		User.setUsername( "sdjalkdjakdjasd" );
-		var result = User.isUsernameUnique();
-		assertEquals( true, result.issuccess );
 	}
 
 	function testIsNotUniqueUsername(){
-		var User = EntityNew( "User" );
-		User.setUsername( "aliaspooryorik" );
-		var result = User.isUsernameUnique();
+		CUT.setUsername( "aliaspooryorik" );
+		var result = CUT.isUsernameUnique();
 		assertEquals( false, result.issuccess );
 	}
 	
+	function testIsUniqueEmail(){
+		CUT.setEmail( "asdhakjsdas@badkjasld.com" );
+		var result = CUT.IsEmailUnique();
+		assertEquals( true, result.issuccess );
+	}
+
+	function testIsUniqueUsername(){
+		CUT.setUsername( "sdjalkdjakdjasd" );
+		var result = CUT.isUsernameUnique();
+		assertEquals( true, result.issuccess );
+	}
+
+	function testPasswordHashing(){
+		CUT.setPassword( "admin" );
+		assertEquals( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB", CUT.getPassword() );
+	}
+
 	// ------------------------ IMPLICIT ------------------------ //
 
 	/**
 	* this will run before every single test in this test case
 	*/
-	function setUp(){}
+	function setUp(){
+		CUT = new model.user.User(); 
+	}
 	
 	/**
 	* this will run after every single test in this test case
@@ -86,12 +81,15 @@ component extends="mxunit.framework.TestCase"{
 	*/
 	function beforeTests(){
 		var q = new Query();
+		q.setSQL( "DROP TABLE Users;");
+		q.execute();		
+		ORMReload();
+		q = new Query();
 		q.setSQL( "
 			insert into Users (
-				user_firstname, user_lastname, user_email, user_username, user_password
-			) 
-			values (
-				'John', 'Whish', 'foo@bar.moo', 'aliaspooryorik', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB'
+				user_id, user_firstname, user_lastname, user_email, user_username, user_password
+			) values (
+				1, 'John', 'Whish', 'foo@bar.moo', 'aliaspooryorik', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB'
 			)
 		" );
 		q.execute();
@@ -100,10 +98,6 @@ component extends="mxunit.framework.TestCase"{
 	/**
 	* this will run once after all tests have been run
 	*/
-	function afterTests(){
-		var q = new Query();
-		q.setSQL( "delete from Users where user_username = 'aliaspooryorik'");
-		q.execute();
-	}
+	function afterTests(){}
 	
 }

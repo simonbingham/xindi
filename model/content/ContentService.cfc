@@ -50,7 +50,7 @@ component accessors="true"{
 	}	
 	
 	function getValidator( required any Page ){
-		return variables.ContentGateway.getValidator();
+		return variables.ContentGateway.getValidator( argumentCollection=arguments );
 	}
 	
 	struct function movePage( required pageid, required string direction ){

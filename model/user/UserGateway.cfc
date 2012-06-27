@@ -52,6 +52,7 @@ component accessors="true"{
 		return ORMExecuteQuery( " from User where ( username=:username or email=:email ) and password=:password", { username=arguments.User.getUsername(), email=arguments.User.getEmail(), password=arguments.User.getPassword() }, true );
 	}
 
+	// TODO: might be able to remove this
 	function getUserByEmailOrUsername( required User ){
 		return ORMExecuteQuery( " from User where username=:username or email=:email", { username=arguments.User.getUsername(), email=arguments.User.getEmail() }, true );
 	}
@@ -69,6 +70,7 @@ component accessors="true"{
 	}
 	
 	struct function saveUser( required struct properties, required string context ){
+		param name="arguments.properties.userid" default="0";
 		var result = {};
 		transaction{
 			var User = ""; 

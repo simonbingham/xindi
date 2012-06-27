@@ -81,12 +81,10 @@ component extends="mxunit.framework.TestCase"{
 	}
 
 	function testGetValidator(){
-		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
-		var Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
-		CUT.setValidator( Validator );
 		makePublic( CUT, "newPage" );
 		var Page = CUT.newPage();
-		assertTrue( IsObject( CUT.getValidator( Page ) ) );
+		var Validator = CUT.getValidator( Page );
+		assertTrue( IsObject( Validator ) );
 	}
 
 	function testMovePageWherePageCanBeMovedUp(){
@@ -116,11 +114,6 @@ component extends="mxunit.framework.TestCase"{
 	}
 
 	function testSavePageWherePageIsValid(){
-		var MetaData = new model.content.MetaData();
-		CUT.setMetaData( MetaData );
-		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
-		var Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
-		CUT.setValidator( Validator );		
 		var properties = { title="foo", content="bar" };
 		var result = CUT.savePage( properties, 13, "create" );
 		assertTrue( StructKeyExists( result.messages, "success" ) );
@@ -129,11 +122,6 @@ component extends="mxunit.framework.TestCase"{
 	}
 
 	function testSavePageWherePageIsInvalid(){
-		var MetaData = new model.content.MetaData();
-		CUT.setMetaData( MetaData );
-		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
-		var Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
-		CUT.setValidator( Validator );		
 		properties = { title="", content="" };
 		result = CUT.savePage( properties, 13, "create" );
 		assertTrue( StructKeyExists( result.messages, "error" ) );
@@ -154,6 +142,12 @@ component extends="mxunit.framework.TestCase"{
 	*/
 	function setUp(){
 		CUT = new model.content.ContentGateway(); 
+
+		var MetaData = new model.content.MetaData();
+		CUT.setMetaData( MetaData );
+		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
+		var Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
+		CUT.setValidator( Validator );	
 	}
 	
 	/**

@@ -22,39 +22,36 @@ component extends="mxunit.framework.TestCase"{
 	
 	// public methods
 	
-	function testDeleteArticle(){
+	function testDeleteArticleWhereArticleExists(){
 		var result = CUT.deleteArticle( 1 );
 		assertTrue( StructKeyExists( result.messages, "success" ) );
 	}
 
-	function testGetArticleByIDWhereArticleDoesNotExists(){
+	function testDeleteArticleWhereArticleDoesNotExist(){
+		var result = CUT.deleteArticle( 4 );
+		assertTrue( StructKeyExists( result.messages, "error" ) );
+	}
+
+	function testGetArticleByIDWhereArticleDoesNotExist(){
 		var Article = CUT.getArticleByID( 4 );
 		assertFalse( Article.isPersisted() );
 	}
 		
 	function testGetArticleByIDWhereArticleExists(){
 		var Article = CUT.getArticleByID( 1 );
-		assertEquals( 1, Article.getArticleID() );
-		Article = CUT.getArticleByID( 2 );
-		assertEquals( 2, Article.getArticleID() );		
-		Article = CUT.getArticleByID( 3 );
-		assertEquals( 3, Article.getArticleID() );
+		assertTrue( Article.isPersisted() );
 	}
-	
-	function testGetArticleByUUIDWhereArticleExists(){
-		var Article = CUT.getArticleByUUID( "sample-article-a" );
-		assertEquals( 1, Article.getArticleID() );
-		Article = CUT.getArticleByUUID( "sample-article-b" );
-		assertEquals( 2, Article.getArticleID() );		
-		Article = CUT.getArticleByUUID( "sample-article-c" );
-		assertEquals( 3, Article.getArticleID() );
-	}
-	
-	function testGetArticleByUUIDWhereArticleDoesNotExists(){
+
+	function testGetArticleByUUIDWhereArticleDoesNotExist(){
 		var Article = CUT.getArticleByUUID( "foobar" );
 		assertFalse( Article.isPersisted() );
 	}	
-
+	
+	function testGetArticleByUUIDWhereArticleExists(){
+		var Article = CUT.getArticleByUUID( "sample-article-a" );
+		assertTrue( Article.isPersisted() );
+	}
+	
 	function testGetArticleCount(){
 		assertEquals( 3, CUT.getArticleCount() );
 	}
@@ -62,44 +59,43 @@ component extends="mxunit.framework.TestCase"{
 	function testGetArticles(){
 		var articles = CUT.getArticles();
 		assertEquals( 3, ArrayLen( articles ) );
-		articles = CUT.getArticles( searchterm="Sample Article A" );
+	}
+
+	function testGetArticlesBySearchTerm(){
+		var articles = CUT.getArticles( searchterm="Sample Article A" );
 		assertEquals( 1, ArrayLen( articles ) );
-		articles = CUT.getArticles( maxresults=2 );
+	}
+
+	function testGetArticlesWithMaxResultsParameter(){
+		var articles = CUT.getArticles( maxresults=2 );
 		assertEquals( 2, ArrayLen( articles ) );
-		articles = CUT.getArticles( sortorder="articleid" );
+	}
+	
+	function testGetArticlesSortedByArticleID(){
+		var articles = CUT.getArticles( sortorder="articleid" );
 		var Article = articles[ 1 ];
 		assertEquals( "sample-article-a", Article.getUUID() );				
-		articles = CUT.getArticles( sortorder="articleid desc" );
-		Article = articles[ 1 ];
+	}
+	
+	function testGetArticlesSortedByArticleIDDescending(){
+		var articles = CUT.getArticles( sortorder="articleid desc" );
+		var Article = articles[ 1 ];
 		assertEquals( "sample-article-c", Article.getUUID() );				
 	}
 	
 	function testGetValidator(){
-		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
-		var Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
-		CUT.setValidator( Validator );
 		makePublic( CUT, "newArticle" );
 		var Article = CUT.newArticle();
 		assertTrue( IsObject( CUT.getValidator( Article ) ) );
 	}
 	
-	function testSaveArticleWherePageIsInvalid(){
-		var MetaData = new model.content.MetaData();
-		CUT.setMetaData( MetaData );
-		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
-		var Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
-		CUT.setValidator( Validator );		
+	function testSaveArticleWhereArticleIsInvalid(){
 		var properties = { title="", published="27/6/2012", content="bar" };
 		var result = CUT.saveArticle( properties );
 		assertTrue( StructKeyExists( result.messages, "error" ) );
 	}
 
-	function testSaveArticleWherePageIsValid(){
-		var MetaData = new model.content.MetaData();
-		CUT.setMetaData( MetaData );
-		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
-		var Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
-		CUT.setValidator( Validator );		
+	function testSaveArticleWhereArticleIsValid(){
 		var properties = { title="foo", published="27/6/2012", content="bar" };
 		var result = CUT.saveArticle( properties );
 		assertTrue( StructKeyExists( result.messages, "success" ) );
@@ -120,6 +116,12 @@ component extends="mxunit.framework.TestCase"{
 	*/
 	function setUp(){
 		CUT = new model.news.NewsGateway(); 
+
+		var MetaData = new model.content.MetaData();
+		CUT.setMetaData( MetaData );
+		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
+		var Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
+		CUT.setValidator( Validator );		
 	}
 	
 	/**

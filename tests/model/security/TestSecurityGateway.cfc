@@ -21,10 +21,12 @@ component extends="mxunit.framework.TestCase"{
 	// ------------------------ TESTS ------------------------ //
 	
 	function testDeleteCurrentUser(){
+		assertFalse( CUT.hasCurrentUser() );
 		var User = EntityLoadByPK( "User", 1 );
 		CUT.setCurrentUser( User );
-		var result = CUT.deleteCurrentUser();
-		assertTrue( IsStruct( result ) );
+		assertTrue( CUT.hasCurrentUser() );
+		CUT.deleteCurrentUser();
+		assertFalse( CUT.hasCurrentUser() );
 	}
 	
 	function testHasCurrentUser(){
@@ -34,25 +36,45 @@ component extends="mxunit.framework.TestCase"{
 		assertTrue( CUT.hasCurrentUser() );
 	}
 	
-	function testIsAllowed(){
-		var result = CUT.isAllowed( "admin:pages" );
-		assertTrue( IsBoolean( result ) );
+	function testIsAllowedForSecureAction(){
+		assertFalse( CUT.isAllowed( "admin:pages" ) );
+		var User = EntityLoadByPK( "User", 1 );
+		CUT.setCurrentUser( User );
+		assertTrue( CUT.isAllowed( "admin:pages" ) );
+		CUT.deleteCurrentUser();
+		assertFalse( CUT.isAllowed( "admin:pages" ) );
 	}	
 
-	function testLoginUser(){
+	function testIsAllowedForUnsecureAction(){
+		assertTrue( CUT.isAllowed( "public:" ) );
+		var User = EntityLoadByPK( "User", 1 );
+		CUT.setCurrentUser( User );
+		assertTrue( CUT.isAllowed( "public:" ) );
+		CUT.deleteCurrentUser();
+		assertTrue( CUT.isAllowed( "public:" ) );		
+	}	
+	
+	function testLoginUserForValidUser(){
 		var properties = { username="admin", password="admin" };
 		result = CUT.loginUser( properties );
-		assertTrue( IsStruct( result ) );
+		assertTrue( StructKeyExists( result.messages, "success" ) );
 	}
 
+	function testLoginUserForInvalidUser(){
+		var properties = { username="foo", password="bar" };
+		result = CUT.loginUser( properties );
+		assertTrue( StructKeyExists( result.messages, "error" ) );
+	}
+	
 	function testResetPassword(){
 		fail( "test not yet implemented" );
 	}
 	
 	function testSetCurrentUser(){
+		assertFalse( CUT.hasCurrentUser() );
 		var User = EntityLoadByPK( "User", 1 );
-		var result = CUT.setCurrentUser( User );
-		assertTrue( IsNull( result ) );
+		CUT.setCurrentUser( User );
+		assertTrue( CUT.hasCurrentUser() );
 	}
 
 	// ------------------------ IMPLICIT ------------------------ //

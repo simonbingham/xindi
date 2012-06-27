@@ -20,62 +20,62 @@ component extends="mxunit.framework.TestCase"{
 
 	// ------------------------ TESTS ------------------------ //
 	
+	// ------------------------ TESTS ------------------------ //
+	
 	function testDeleteUser(){
-		fail( "test not yet implemented" );
+		result = CUT.deleteUser( 1 );
+		assertTrue( IsStruct( result ) );
 	}
-	
+
 	function testGetUserByID(){
-		fail( "test not yet implemented" );
-	}		
+		var User = CUT.getUserByID( 1 );
+		assertTrue( IsObject( User ) );
+	}	
 	
-	function testGetUserByCredentialsReturnsUserForCorrectCredentialsByEmail(){
+	function testGetUserByCredentials(){
 		var LoginUser = mock( "model.user.User" );
-		LoginUser.getUsername().returns( "" );
-		LoginUser.getEmail().returns( "foo@bar.moo" );
+		LoginUser.getUsername().returns( "aliaspooryorik" );
+		LoginUser.getEmail().returns( "" );
 		LoginUser.getPassword().returns( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB" );
-		var User = CUT.getUserByCredentials( LoginUser );
+		User = CUT.getUserByCredentials( LoginUser );
 		assertTrue( IsObject( User ) );
 	}
 
-	function testGetUserByCredentialsReturnsUserForCorrectCredentialsByUsername(){
-		var LoginUser = mock( "model.user.User" );
-		LoginUser.getUsername().returns( "aliaspooryorik" );
-		LoginUser.getEmail().returns( "" );
-		LoginUser.getPassword().returns( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB" );
-		var User = CUT.getUserByCredentials( LoginUser );
-		assertEquals( false, IsNull( User ) );
-		assertEquals( "foo@bar.moo", User.getEmail() );
+	function testGetUserByEmailOrUsername(){
+		var User = CUT.newUser();
+		User.setEmail( "foo@bar.moo" );
+		User = CUT.getUserByEmailOrUsername( User );
+		assertTrue( IsObject( User ) );
 	}
 
-	function testGetUserByCredentialsReturnsNullForInCorrectCredentials(){
-		var LoginUser = mock( "model.user.User" );
-		LoginUser.getUsername().returns( "aliaspooryorik" );
-		LoginUser.getEmail().returns( "" );
-		LoginUser.getPassword().returns( "1111111111111111111111111111111111111111111111111111111111111111" );		
-		var User = CUT.getUserByCredentials( LoginUser );
-		assertEquals( true, IsNull( User ) );
-	}
-	
-	function testGetUserByEmailOrUsername(){
-		fail( "test not yet implemented" );
-	}
-	
 	function testGetUsers(){
-		fail( "test not yet implemented" );
+		var users = CUT.getUsers();
+		assertTrue( IsArray( users ) );
 	}	
 	
 	function testGetValidator(){
-		fail( "test not yet implemented" );
+		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
+		var Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
+		CUT.setValidator( Validator );
+		makePublic( CUT, "newUser" );
+		var User = CUT.newUser();
+		assertTrue( IsObject( CUT.getValidator( User ) ) );
 	}
 	
 	function testNewUser(){
-		fail( "test not yet implemented" );
+		var User = CUT.newUser();
+		assertTrue( IsObject( User ) );
+	}
+
+	function testSaveUser(){
+		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
+		var Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
+		CUT.setValidator( Validator );		
+		var properties = { firstname="Simon", lastname="Bingham", email="foobarfoobarcom", username="foo", password="bar"  };
+		var result = CUT.saveUser( properties, "create" );
+		assertTrue( IsStruct( result ) );
 	}
 	
-	function testSaveUser(){
-		fail( "test not yet implemented" );
-	}	
-
 	// ------------------------ IMPLICIT ------------------------ //
 	 
 	/**
@@ -95,11 +95,15 @@ component extends="mxunit.framework.TestCase"{
 	*/
 	function beforeTests(){
 		var q = new Query();
+		q.setSQL( "DROP TABLE Users;");
+		q.execute();		
+		ORMReload();
+		q = new Query();
 		q.setSQL( "
 			insert into Users (
-				user_firstname, user_lastname, user_email, user_username, user_password
+				user_id, user_firstname, user_lastname, user_email, user_username, user_password
 			) values (
-				'John', 'Whish', 'foo@bar.moo', 'aliaspooryorik', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB'
+				1, 'John', 'Whish', 'foo@bar.moo', 'aliaspooryorik', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB'
 			)
 		" );
 		q.execute();
@@ -108,10 +112,6 @@ component extends="mxunit.framework.TestCase"{
 	/**
 	* this will run once after all tests have been run
 	*/
-	function afterTests(){
-		var q = new Query();
-		q.setSQL( "delete from Users where user_username = 'aliaspooryorik'");
-		q.execute();
-	}
+	function afterTests(){}
 
 }

@@ -20,47 +20,52 @@ component extends="mxunit.framework.TestCase"{
 
 	// ------------------------ TESTS ------------------------ //
 	
+	function testDeleteUserWhereUserDoesNotExist(){
+		result = CUT.deleteUser( 2 );
+		assertTrue( StructKeyExists( result.messages, "error" ) );
+	}
+
 	function testDeleteUserWhereUserExists(){
 		result = CUT.deleteUser( 1 );
 		assertTrue( StructKeyExists( result.messages, "success" ) );
 	}
 
-	function testDeleteUserWhereUserDoesNotExist(){
-		result = CUT.deleteUser( 2 );
-		assertTrue( StructKeyExists( result.messages, "error" ) );
-	}
+	function testGetUserByIDWhereUserDoesNotExist(){
+		var User = CUT.getUserByID( 2 );
+		assertFalse( User.isPersisted() );
+	}	
 	
-	function testGetUserByID(){
+	function testGetUserByIDWhereUserExists(){
 		var User = CUT.getUserByID( 1 );
 		assertTrue( User.isPersisted() );
 	}	
 	
 	function testGetUserByCredentialsReturnsUserForCorrectCredentialsByEmail(){
-		var $LoginUser = mock( "model.user.User" );
-		$LoginUser.getUsername().returns( "" );
-		$LoginUser.getEmail().returns( "foo@bar.moo" );
-		$LoginUser.getPassword().returns( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB" );
-		result = CUT.getUserByCredentials( $LoginUser );
+		var LoginUser = mock( "model.user.User" );
+		LoginUser.getUsername().returns( "" );
+		LoginUser.getEmail().returns( "foo@bar.moo" );
+		LoginUser.getPassword().returns( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB" );
+		result = CUT.getUserByCredentials( LoginUser );
 		assertEquals( false, IsNull( result ) );
 		assertEquals( "foo@bar.moo", result.getEmail() );
 	}
 
 	function testGetUserByCredentialsReturnsUserForCorrectCredentialsByUsername(){
-		var $LoginUser = mock( "model.user.User" );
-		$LoginUser.getUsername().returns( "aliaspooryorik" );
-		$LoginUser.getEmail().returns( "" );
-		$LoginUser.getPassword().returns( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB" );
-		result = CUT.getUserByCredentials( $LoginUser );
+		var LoginUser = mock( "model.user.User" );
+		LoginUser.getUsername().returns( "aliaspooryorik" );
+		LoginUser.getEmail().returns( "" );
+		LoginUser.getPassword().returns( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB" );
+		result = CUT.getUserByCredentials( LoginUser );
 		assertEquals( false, IsNull( result ) );
 		assertEquals( "foo@bar.moo", result.getEmail() );
 	}
 
 	function testGetUserByCredentialsReturnsNullForInCorrectCredentials(){
-		var $LoginUser = mock( "model.user.User" );
-		$LoginUser.getUsername().returns( "aliaspooryorik" );
-		$LoginUser.getEmail().returns( "" );
-		$LoginUser.getPassword().returns( "1111111111111111111111111111111111111111111111111111111111111111" );		
-		result = CUT.getUserByCredentials( $LoginUser );
+		var LoginUser = mock( "model.user.User" );
+		LoginUser.getUsername().returns( "aliaspooryorik" );
+		LoginUser.getEmail().returns( "" );
+		LoginUser.getPassword().returns( "1111111111111111111111111111111111111111111111111111111111111111" );		
+		result = CUT.getUserByCredentials( LoginUser );
 		assertEquals( true, IsNull( result ) );
 	}
 	
@@ -84,16 +89,26 @@ component extends="mxunit.framework.TestCase"{
 	}	
 	
 	function testGetValidator(){
-		fail( "test not yet implemented" );
+		makePublic( CUT, "newUser" );
+		var User = CUT.newUser();
+		assertTrue( IsObject( CUT.getValidator( User ) ) );
 	}
 	
 	function testNewUser(){
 		var User = CUT.newUser();
 		assertFalse( User.isPersisted() );
 	}
+
+	function testSaveUserWhereUserIsInvalid(){
+		var properties = { firstname="Simon", lastname="Bingham", email="foobarfoobarcom", username="foo", password="bar"  };
+		var result = CUT.saveUser( properties, "create" );
+		assertTrue( StructKeyExists( result.messages, "error" ) );
+	}
 	
-	function testSaveUser(){
-		fail( "test not yet implemented" );
+	function testSaveUserWhereUserIsValid(){
+		var properties = { firstname="Simon", lastname="Bingham", email="foobar@foobar.com", username="foo", password="bar"  };
+		var result = CUT.saveUser( properties, "create" );
+		assertTrue( StructKeyExists( result.messages, "success" ) );
 	}	
 
 	// ------------------------ IMPLICIT ------------------------ //
@@ -103,6 +118,10 @@ component extends="mxunit.framework.TestCase"{
 	*/
 	function setUp(){
 		CUT = new model.user.UserGateway(); 
+
+		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
+		var Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
+		CUT.setValidator( Validator );		
 	}
 	
 	/**
@@ -115,6 +134,10 @@ component extends="mxunit.framework.TestCase"{
 	*/
 	function beforeTests(){
 		var q = new Query();
+		q.setSQL( "DROP TABLE Users;");
+		q.execute();		
+		ORMReload();
+		q = new Query();
 		q.setSQL( "
 			insert into Users (
 				user_id, user_firstname, user_lastname, user_email, user_username, user_password
@@ -128,10 +151,6 @@ component extends="mxunit.framework.TestCase"{
 	/**
 	* this will run once after all tests have been run
 	*/
-	function afterTests(){
-		var q = new Query();
-		q.setSQL( "delete from Users where user_username = 'aliaspooryorik'");
-		q.execute();
-	}
+	function afterTests(){}
 
 }

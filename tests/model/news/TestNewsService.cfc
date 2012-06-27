@@ -45,11 +45,14 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testGetValidator(){
-		fail( "test not yet implemented" );
+		var Article = EntityNew( "Article" );
+		assertTrue( IsObject( CUT.getValidator( Article ) ) );
 	}
 	
 	function testSaveArticle(){
-		fail( "test not yet implemented" );
+		var properties = { title="foo", published="27/6/2012", content="bar" };
+		var result = CUT.saveArticle( properties );
+		assertTrue( IsStruct( result ) );
 	}
 	
 	// ------------------------ IMPLICIT ------------------------ // 
@@ -61,7 +64,12 @@ component extends="mxunit.framework.TestCase"{
 		CUT = new model.news.NewsService();
 		
 		var NewsGateway = new model.news.NewsGateway();
-		CUT.setNewsGateway( NewsGateway );		
+		var MetaData = new model.content.MetaData();
+		NewsGateway.setMetaData( MetaData );
+		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
+		var Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
+		NewsGateway.setValidator( Validator );				
+		CUT.setNewsGateway( NewsGateway );
 	}
 	
 	/**

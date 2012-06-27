@@ -46,7 +46,9 @@ component extends="mxunit.framework.TestCase"{
 	}
 
 	function testGetValidator(){
-		fail( "test not yet implemented" );
+		var Page = EntityNew( "Page" );
+		var Validator = CUT.getValidator( Page );
+		assertTrue( IsObject( Validator ) );
 	}
 
 	function testMovePage(){
@@ -55,7 +57,9 @@ component extends="mxunit.framework.TestCase"{
 	}
 
 	function testSavePage(){
-		fail( "test not yet implemented" );
+		var properties = { title="foo", content="bar" };
+		var result = CUT.savePage( properties, 13, "create" );
+		assertTrue( IsStruct( result ) );
 	}
 	
 	// ------------------------ IMPLICIT ------------------------ // 
@@ -67,6 +71,11 @@ component extends="mxunit.framework.TestCase"{
 		CUT = new model.content.ContentService();
 		
 		var ContentGateway = new model.content.ContentGateway();
+		var MetaData = new model.content.MetaData();
+		ContentGateway.setMetaData( MetaData );
+		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
+		var Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
+		ContentGateway.setValidator( Validator );				
 		CUT.setContentGateway( ContentGateway );		
 	}
 	
