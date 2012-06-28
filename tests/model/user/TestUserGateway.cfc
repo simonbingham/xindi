@@ -41,31 +41,31 @@ component extends="mxunit.framework.TestCase"{
 	}	
 	
 	function testGetUserByCredentialsReturnsUserForCorrectCredentialsByEmail(){
-		var LoginUser = mock( "model.user.User" );
-		LoginUser.getUsername().returns( "" );
-		LoginUser.getEmail().returns( "foo@bar.moo" );
-		LoginUser.getPassword().returns( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB" );
-		result = CUT.getUserByCredentials( LoginUser );
+		var $LoginUser = mock( "model.user.User" );
+		$LoginUser.getUsername().returns( "" );
+		$LoginUser.getEmail().returns( "foo@bar.moo" );
+		$LoginUser.getPassword().returns( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB" );
+		result = CUT.getUserByCredentials( $LoginUser );
 		assertEquals( false, IsNull( result ) );
 		assertEquals( "foo@bar.moo", result.getEmail() );
 	}
 
 	function testGetUserByCredentialsReturnsUserForCorrectCredentialsByUsername(){
-		var LoginUser = mock( "model.user.User" );
-		LoginUser.getUsername().returns( "aliaspooryorik" );
-		LoginUser.getEmail().returns( "" );
-		LoginUser.getPassword().returns( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB" );
-		result = CUT.getUserByCredentials( LoginUser );
+		var $LoginUser = mock( "model.user.User" );
+		$LoginUser.getUsername().returns( "aliaspooryorik" );
+		$LoginUser.getEmail().returns( "" );
+		$LoginUser.getPassword().returns( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB" );
+		result = CUT.getUserByCredentials( $LoginUser );
 		assertEquals( false, IsNull( result ) );
 		assertEquals( "foo@bar.moo", result.getEmail() );
 	}
 
 	function testGetUserByCredentialsReturnsNullForInCorrectCredentials(){
-		var LoginUser = mock( "model.user.User" );
-		LoginUser.getUsername().returns( "aliaspooryorik" );
-		LoginUser.getEmail().returns( "" );
-		LoginUser.getPassword().returns( "1111111111111111111111111111111111111111111111111111111111111111" );		
-		result = CUT.getUserByCredentials( LoginUser );
+		var $LoginUser = mock( "model.user.User" );
+		$LoginUser.getUsername().returns( "aliaspooryorik" );
+		$LoginUser.getEmail().returns( "" );
+		$LoginUser.getPassword().returns( "1111111111111111111111111111111111111111111111111111111111111111" );		
+		result = CUT.getUserByCredentials( $LoginUser );
 		assertEquals( true, IsNull( result ) );
 	}
 	
@@ -89,8 +89,9 @@ component extends="mxunit.framework.TestCase"{
 	}	
 	
 	function testGetValidator(){
-		makePublic( CUT, "newUser" );
+		var $Validator = mock();
 		var User = CUT.newUser();
+		CUT.setValidator( $Validator );
 		assertTrue( IsObject( CUT.getValidator( User ) ) );
 	}
 	
@@ -101,12 +102,22 @@ component extends="mxunit.framework.TestCase"{
 
 	function testSaveUserWhereUserIsInvalid(){
 		var properties = { firstname="Simon", lastname="Bingham", email="foobarfoobarcom", username="foo", password="bar"  };
+		var $Validator = mock();
+		var $result = mock();
+		$result.hasErrors().returns( true );
+		$Validator.validate( "{any}","{string}" ).returns( $result );
+		CUT.setValidator( $Validator );		
 		var result = CUT.saveUser( properties, "create" );
 		assertTrue( StructKeyExists( result.messages, "error" ) );
 	}
 	
 	function testSaveUserWhereUserIsValid(){
 		var properties = { firstname="Simon", lastname="Bingham", email="foobar@foobar.com", username="foo", password="bar"  };
+		var $Validator = mock();
+		var $result = mock();
+		$result.hasErrors().returns( false );
+		$Validator.validate( "{any}","{string}" ).returns( $result );
+		CUT.setValidator( $Validator );		
 		var result = CUT.saveUser( properties, "create" );
 		assertTrue( StructKeyExists( result.messages, "success" ) );
 	}	
@@ -118,10 +129,6 @@ component extends="mxunit.framework.TestCase"{
 	*/
 	function setUp(){
 		CUT = new model.user.UserGateway(); 
-
-		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
-		var Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
-		CUT.setValidator( Validator );		
 	}
 	
 	/**

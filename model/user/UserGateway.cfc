@@ -78,7 +78,7 @@ component accessors="true"{
 			User.populate( arguments.properties );
 			var result = variables.Validator.validate( theObject=User, Context=arguments.context );
 			if( !result.hasErrors() ){
-				result.messages.success = "The user &quot;#User.getFullName()#&quot; has been saved";
+				result.messages.success = "The user &quot;#User.getFullName()#&quot; has been saved.";
 				EntitySave( User );
 				transaction action="commit";
 			}else{
