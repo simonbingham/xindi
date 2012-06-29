@@ -18,61 +18,38 @@
 
 component extends="mxunit.framework.TestCase"{
 			
-	// ------------------------ TESTS ------------------------ //
+	// ------------------------ INTEGRATION TESTS ------------------------ //
 	
 	function testDeletePage(){
-		var $ContentGateway = mock().deletePage( pageid="numeric" ).returns( {} );
-		CUT.setContentGateway( $ContentGateway );
-		var result = CUT.deletePage( 1 );
-		assertTrue( IsStruct( result ) );	
+		fail( "test not yet implemented" );
 	}
 	
 	function testGetPageByID(){
-		var $ContentGateway = mock().testGetPageByID( pageid="numeric" ).returns( mock() );
-		CUT.setContentGateway( $ContentGateway );
-		var Page = CUT.getPageByID( 1 );
-		assertTrue( IsObject( Page ) );	
+		fail( "test not yet implemented" );
 	}
 	
 	function testGetPageSlug(){
-		var $ContentGateway = mock().testGetPageSlug( slug="string" ).returns( mock() );
-		CUT.setContentGateway( $ContentGateway );
-		var Page = CUT.getPageByID( 1 );
-		assertTrue( IsObject( Page ) );			
+		fail( "test not yet implemented" );
 	}
 
 	function testGetPages(){
-		var $ContentGateway = mock().getPages( searchterm="{string}", sortorder="{string}", maxresults="{numeric}" ).returns( [] );
-		CUT.setContentGateway( $ContentGateway );
-		var pages = CUT.getPages();
-		assertTrue( IsArray( pages ) );
+		fail( "test not yet implemented" );
 	}
 
 	function testGetRoot(){
-		var $ContentGateway = mock().getRoot().returns( mock() );
-		CUT.setContentGateway( $ContentGateway );
-		assertTrue( IsObject( CUT.getRoot() ) );
+		fail( "test not yet implemented" );
 	}
 
 	function testGetValidator(){
-		var $ContentGateway = mock().getValidator( Page="{any}" ).returns( mock() );
-		CUT.setContentGateway( $ContentGateway );
-		var Validator = CUT.getValidator( mock() );
-		assertTrue( IsObject( Validator ) );
+		fail( "test not yet implemented" );
 	}
 
 	function testMovePage(){
-		var $ContentGateway = mock().movePage( pageid="{numeric}", direction="{string}" ).returns( {} );
-		CUT.setContentGateway( $ContentGateway );
-		var result = CUT.movePage( 1, "" );
-		assertTrue( isStruct( result ) );
+		fail( "test not yet implemented" );
 	}
 
 	function testSavePage(){
-		var $ContentGateway = mock().savePage( properties="{struct}", ancestorid="{numeric}", context="{string}" ).returns( {} );
-		CUT.setContentGateway( $ContentGateway );
-		var result = CUT.savePage( {}, 1, "" );
-		assertTrue( IsStruct( result ) );
+		fail( "test not yet implemented" );
 	}
 	
 	// ------------------------ IMPLICIT ------------------------ // 

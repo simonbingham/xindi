@@ -18,7 +18,7 @@
 
 component extends="mxunit.framework.TestCase"{
 			
-	// ------------------------ TESTS ------------------------ //
+	// ------------------------ UNIT TESTS ------------------------ //
 	
 	// public methods
 	
@@ -33,23 +33,23 @@ component extends="mxunit.framework.TestCase"{
 	}
 
 	function testGetArticleByIDWhereArticleDoesNotExist(){
-		var Article = CUT.getArticleByID( 100 );
-		assertFalse( Article.isPersisted() );
+		var result = CUT.getArticleByID( 100 );
+		assertFalse( result.isPersisted() );
 	}
 		
 	function testGetArticleByIDWhereArticleExists(){
-		var Article = CUT.getArticleByID( 1 );
-		assertTrue( Article.isPersisted() );
+		var result = CUT.getArticleByID( 1 );
+		assertTrue( result.isPersisted() );
 	}
 
 	function testGetArticleByUUIDWhereArticleDoesNotExist(){
-		var Article = CUT.getArticleByUUID( "foobar" );
-		assertFalse( Article.isPersisted() );
+		var result = CUT.getArticleByUUID( "foobar" );
+		assertFalse( result.isPersisted() );
 	}	
 	
 	function testGetArticleByUUIDWhereArticleExists(){
-		var Article = CUT.getArticleByUUID( "sample-article-a" );
-		assertTrue( Article.isPersisted() );
+		var result = CUT.getArticleByUUID( "sample-article-a" );
+		assertTrue( result.isPersisted() );
 	}
 	
 	function testGetArticleCount(){
@@ -57,60 +57,56 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testGetArticles(){
-		var articles = CUT.getArticles();
-		assertEquals( 3, ArrayLen( articles ) );
+		var result = CUT.getArticles();
+		assertEquals( 3, ArrayLen( result ) );
 	}
 
 	function testGetArticlesBySearchTerm(){
-		var articles = CUT.getArticles( searchterm="Sample Article A" );
-		assertEquals( 1, ArrayLen( articles ) );
+		var result = CUT.getArticles( searchterm="Sample Article A" );
+		assertEquals( 1, ArrayLen( result ) );
 	}
 
 	function testGetArticlesWithMaxResultsParameter(){
-		var articles = CUT.getArticles( maxresults=2 );
-		assertEquals( 2, ArrayLen( articles ) );
+		var result = CUT.getArticles( maxresults=2 );
+		assertEquals( 2, ArrayLen( result ) );
 	}
 	
 	function testGetArticlesSortedByArticleID(){
 		var articles = CUT.getArticles( sortorder="articleid" );
-		var Article = articles[ 1 ];
-		assertEquals( "sample-article-a", Article.getUUID() );				
+		assertEquals( "sample-article-a", articles[ 1 ].getUUID() );				
 	}
 	
 	function testGetArticlesSortedByArticleIDDescending(){
 		var articles = CUT.getArticles( sortorder="articleid desc" );
-		var Article = articles[ 1 ];
-		assertEquals( "sample-article-c", Article.getUUID() );				
+		assertEquals( "sample-article-c", articles[ 1 ].getUUID() );				
 	}
 	
 	function testGetValidator(){
-		makePublic( CUT, "newArticle" );
-		var Article = CUT.newArticle();
-		var $result = mock();
-		var $Validator = mock().getValidator( theObject='{any}' ).returns( $result );
-		CUT.setValidator( $Validator );		
-		assertTrue( IsObject( CUT.getValidator( Article ) ) );
+		var $ValidationResult = mock( "ValidateThis" );
+		var $Validator = mock( "ValidateThis" ).getValidator( theObject='{any}' ).returns( $ValidationResult );
+		CUT.setValidator( $Validator );	
+		var $Article = mock( "model.news.Article" );
+		var result = CUT.getValidator( $Article );	
+		assertTrue( IsObject( result ) );
 	}
 	
 	function testSaveArticleWhereArticleIsInvalid(){
-		var properties = { title="", published="27/6/2012", content="bar" };
 		var $MetaData = new model.content.MetaData();
 		CUT.setMetaData( $MetaData );		
-		var $ValidationResult = mock().hasErrors().returns( true );
-		var $Validator = mock().validate( theObject='{any}' ).returns( $ValidationResult );
+		var $ValidationResult = mock( "ValidateThis" ).hasErrors().returns( true );
+		var $Validator = mock( "ValidateThis" ).validate( theObject='{any}' ).returns( $ValidationResult );
 		CUT.setValidator( $Validator );		
-		var result = CUT.saveArticle( properties );
+		var result = CUT.saveArticle( { title="", published="27/6/2012", content="bar" } );
 		assertTrue( StructKeyExists( result.messages, "error" ) );
 	}
 
 	function testSaveArticleWhereArticleIsValid(){
-		var properties = { title="foo", published="27/6/2012", content="bar" };
 		var $MetaData = new model.content.MetaData();
 		CUT.setMetaData( $MetaData );		
-		var $ValidationResult = mock().hasErrors().returns( false );
-		var $Validator = mock().validate( theObject='{any}' ).returns( $ValidationResult );
+		var $ValidationResult = mock( "ValidateThis" ).hasErrors().returns( false );
+		var $Validator = mock( "ValidateThis" ).validate( theObject='{any}' ).returns( $ValidationResult );
 		CUT.setValidator( $Validator );		
-		var result = CUT.saveArticle( properties );
+		var result = CUT.saveArticle( { title="foo", published="27/6/2012", content="bar" } );
 		assertTrue( StructKeyExists( result.messages, "success" ) );
 	}
 	
@@ -118,8 +114,8 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testNewArticle(){
 		makePublic( CUT, "newArticle" );
-		var Article = CUT.newArticle();
-		assertFalse( Article.isPersisted() );
+		var result = CUT.newArticle();
+		assertFalse( result.isPersisted() );
 	}
  
 	// ------------------------ IMPLICIT ------------------------ // 
@@ -130,11 +126,8 @@ component extends="mxunit.framework.TestCase"{
 	function setUp(){
 		CUT = new model.news.NewsGateway();
 		 
-		var q = new Query();
-		q.setSQL( "DROP TABLE Articles;");
-		q.execute();		
 		ORMReload();
-		q = new Query();
+		var q = new Query();
 		q.setSQL( "
 			INSERT INTO articles ( article_id, article_uuid, article_title, article_content, article_metagenerated, article_metatitle, article_metadescription, article_metakeywords, article_published, article_created, article_updated) 
 			VALUES
@@ -148,7 +141,11 @@ component extends="mxunit.framework.TestCase"{
 	/**
 	* this will run after every single test in this test case
 	*/
-	function tearDown(){}
+	function tearDown(){
+		var q = new Query();
+		q.setSQL( "DROP TABLE Articles;");
+		q.execute();		
+	}
 	
 	/**
 	* this will run once after initialization and before setUp()

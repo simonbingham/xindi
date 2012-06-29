@@ -18,7 +18,7 @@
 
 component extends="mxunit.framework.TestCase"{
 
-	// ------------------------ TESTS ------------------------ //
+	// ------------------------ UNIT TESTS ------------------------ //
 
 	function testBlankPasswordDoesNotChangeHashedPassword(){
 		CUT.setPassword( "admin" );
@@ -34,13 +34,13 @@ component extends="mxunit.framework.TestCase"{
 	}
 
 	function testIsNotUniqueEmail(){
-		CUT.setEmail( "foo@bar.moo" );
+		CUT.setEmail( "enquiries@getxindi.com" );
 		var result = CUT.IsEmailUnique();
 		assertEquals( false, result.issuccess );
 	}
 
 	function testIsNotUniqueUsername(){
-		CUT.setUsername( "aliaspooryorik" );
+		CUT.setUsername( "admin" );
 		var result = CUT.isUsernameUnique();
 		assertEquals( false, result.issuccess );
 	}
@@ -68,32 +68,30 @@ component extends="mxunit.framework.TestCase"{
 	* this will run before every single test in this test case
 	*/
 	function setUp(){
-		CUT = new model.user.User(); 
+		CUT = new model.user.User();
+		 
+		ORMReload();
+		var q = new Query();
+		q.setSQL( "
+			INSERT INTO Users ( user_id, user_firstname, user_lastname, user_email, user_username, user_password, user_created, user_updated ) 
+			VALUES ( 1, 'Default', 'User', 'enquiries@getxindi.com', 'admin', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB', '2012-04-22 08:39:07', '2012-04-22 08:39:09' );
+		" );
+		q.execute();
 	}
 	
 	/**
 	* this will run after every single test in this test case
 	*/
-	function tearDown(){}
+	function tearDown(){
+		var q = new Query();
+		q.setSQL( "DROP TABLE Users;");
+		q.execute();		
+	}
 	
 	/**
 	* this will run once after initialization and before setUp()
 	*/
-	function beforeTests(){
-		var q = new Query();
-		q.setSQL( "DROP TABLE Users;");
-		q.execute();		
-		ORMReload();
-		q = new Query();
-		q.setSQL( "
-			insert into Users (
-				user_id, user_firstname, user_lastname, user_email, user_username, user_password
-			) values (
-				1, 'John', 'Whish', 'foo@bar.moo', 'aliaspooryorik', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB'
-			)
-		" );
-		q.execute();
-	}
+	function beforeTests(){}
 	
 	/**
 	* this will run once after all tests have been run

@@ -18,7 +18,7 @@
 
 component extends="mxunit.framework.TestCase"{
 			
-	// ------------------------ TESTS ------------------------ //
+	// ------------------------ UNIT TESTS ------------------------ //
 
 	function testGetDisplayMessageHTMLShouldBeEscaped(){
 		CUT.setMessage( "<script>alert('hack');</script>" );

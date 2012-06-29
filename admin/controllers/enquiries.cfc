@@ -35,16 +35,16 @@ component accessors="true" extends="abstract"{
 	
 	void function delete( required struct rc ){
 		param name="rc.enquiryid" default="0";
-		var result = variables.EnquiryService.deleteEnquiry( rc.enquiryid );
+		var result = variables.EnquiryService.deleteEnquiry( enquiryid=rc.enquiryid );
 		rc.messages = result.messages;
 		variables.fw.redirect( "enquiries", "messages" );
 	}	
 	
 	void function enquiry( required struct rc ){
 		param name="rc.enquiryid" default="0";
-		rc.Enquiry = variables.EnquiryService.getEnquiryByID( rc.enquiryid );
+		rc.Enquiry = variables.EnquiryService.getEnquiryByID( enquiryid=rc.enquiryid );
 		if( !IsNull( rc.Enquiry ) ){
-			variables.EnquiryService.markRead( rc.Enquiry.getEnquiryID() );
+			variables.EnquiryService.markRead( enquiryid=rc.Enquiry.getEnquiryID() );
 		}else{
 			variables.fw.redirect( "main.notfound" );
 		}

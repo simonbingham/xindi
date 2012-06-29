@@ -18,31 +18,22 @@
 
 component extends="mxunit.framework.TestCase"{
 
-	// ------------------------ TESTS ------------------------ //
+	// ------------------------ INTEGRATION TESTS ------------------------ //
 	
 	function testDeleteCurrentUser(){
-		var User = EntityLoadByPK( "User", 1 );
-		CUT.setCurrentUser( User );
-		var result = CUT.deleteCurrentUser();
-		assertTrue( IsStruct( result ) );
+		fail( "test not yet implemented" );
 	}
 	
 	function testHasCurrentUser(){
-		assertFalse( CUT.hasCurrentUser() );
-		var User = EntityLoadByPK( "User", 1 );
-		CUT.setCurrentUser( User );
-		assertTrue( CUT.hasCurrentUser() );
+		fail( "test not yet implemented" );
 	}
 	
 	function testIsAllowed(){
-		var result = CUT.isAllowed( "admin:pages" );
-		assertTrue( IsBoolean( result ) );
+		fail( "test not yet implemented" );
 	}	
 
 	function testLoginUser(){
-		var properties = { username="admin", password="admin" };
-		result = CUT.loginUser( properties );
-		assertTrue( IsStruct( result ) );
+		fail( "test not yet implemented" );
 	}
 
 	function testResetPassword(){
@@ -50,9 +41,7 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testSetCurrentUser(){
-		var User = EntityLoadByPK( "User", 1 );
-		var result = CUT.setCurrentUser( User );
-		assertTrue( IsNull( result ) );
+		fail( "test not yet implemented" );
 	}
 
 	// ------------------------ IMPLICIT ------------------------ //
@@ -72,18 +61,7 @@ component extends="mxunit.framework.TestCase"{
 	/**
 	* this will run once after initialization and before setUp()
 	*/
-	function beforeTests(){
-		var q = new Query();
-		q.setSQL( "DROP TABLE Users;");
-		q.execute();		
-		ORMReload();
-		q = new Query();
-		q.setSQL( "
-			INSERT INTO users ( user_id, user_firstname, user_lastname, user_email, user_username, user_password, user_created, user_updated ) 
-			VALUES ( 1, 'Default', 'User', 'enquiries@getxindi.com', 'admin', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB', '2012-04-22 08:39:07', '2012-04-22 08:39:09' );
-		" );
-		q.execute();		
-	}
+	function beforeTests(){}
 	
 	/**
 	* this will run once after all tests have been run

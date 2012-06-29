@@ -39,7 +39,7 @@ component accessors="true"{
 			variables.fw.redirect( "main" );
 		}else{
 			rc.User = variables.UserService.newUser();
-			rc.Validator = variables.UserService.getValidator( rc.User );
+			rc.Validator = variables.UserService.getValidator( theObject=rc.User );
 			if( !StructKeyExists( rc, "result" ) ) rc.result = rc.Validator.newResult();
 		}
 	}
@@ -48,7 +48,7 @@ component accessors="true"{
 		param name="rc.username" default="";
 		param name="rc.password" default="";
 		var properties = { username=rc.username, password=rc.password };
-		var result = variables.SecurityService.loginUser( properties );
+		var result = variables.SecurityService.loginUser( properties=properties );
 		rc.messages = result.messages;
 		if( StructKeyExists( rc.messages, "success" ) ) variables.fw.redirect( "main", "messages" );
 		else variables.fw.redirect( "security", "messages" );
@@ -62,7 +62,7 @@ component accessors="true"{
 	
 	void function password( required rc ){
 		rc.User = variables.UserService.newUser();
-		rc.Validator = variables.UserService.getValidator( rc.User );
+		rc.Validator = variables.UserService.getValidator( theObject=rc.User );
 		if( !StructKeyExists( rc, "result" ) ) rc.result = rc.Validator.newResult();
 	}
 	
@@ -70,7 +70,7 @@ component accessors="true"{
 		param name="rc.username" default="";
 		var properties = { username=rc.username };
 		var emailtemplatepath = "../../admin/views/security/email.cfm";
-		var result = variables.SecurityService.resetPassword( properties, rc.config.name, rc.config.security, emailtemplatepath );
+		var result = variables.SecurityService.resetPassword( properties=properties, name=rc.config.name, config=rc.config.security, emailtemplatepath=emailtemplatepath );
 		rc.messages = result.messages;
 		if( StructKeyExists( rc.messages, "success" ) ) variables.fw.redirect( "security", "messages" );
 		else variables.fw.redirect( "security.password", "messages" );

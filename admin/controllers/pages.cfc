@@ -46,16 +46,16 @@ component accessors="true" extends="abstract"{
 	void function maintain( required struct rc ){
 		param name="rc.pageid" default="0";
 		param name="rc.context" default="create";
-		if( !StructKeyExists( rc, "Page" ) ) rc.Page = variables.ContentService.getPageByID( rc.pageid );
+		if( !StructKeyExists( rc, "Page" ) ) rc.Page = variables.ContentService.getPageByID( pageid=rc.pageid );
 		if( rc.Page.isPersisted() && !rc.Page.hasRoute( variables.fw.getRoutes() ) ) rc.context = "update";
-		rc.Validator = variables.ContentService.getValidator( rc.Page );
+		rc.Validator = variables.ContentService.getValidator( theObject=rc.Page );
 		if( !StructKeyExists( rc, "result" ) ) rc.result = rc.Validator.newResult();
 	}	
 	
 	void function move( required struct rc ){
 		param name="rc.pageid" default="0";
 		param name="rc.direction" default="";
-		var result = variables.ContentService.movePage( rc.pageid, rc.direction );
+		var result = variables.ContentService.movePage( pageid=rc.pageid, direction=rc.direction );
 		rc.messages = result.messages;
 		variables.fw.redirect( "pages", "messages" );
 	}	
@@ -72,7 +72,7 @@ component accessors="true" extends="abstract"{
 		param name="rc.context" default="create";
 		param name="rc.submit" default="Save & exit";
 		var properties = { pageid=rc.pageid, title=rc.title, content=rc.content, metagenerated=rc.metagenerated, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
-		rc.result = variables.ContentService.savePage( properties, rc.ancestorid, rc.context );
+		rc.result = variables.ContentService.savePage( properties=properties, ancestorid=rc.ancestorid, context=rc.context );
 		rc.messages = rc.result.messages;
 		rc.Page = rc.result.getTheObject();
 		if( StructKeyExists( rc.messages, "success" ) ){

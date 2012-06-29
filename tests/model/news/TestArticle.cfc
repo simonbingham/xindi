@@ -18,7 +18,7 @@
 
 component extends="mxunit.framework.TestCase"{
 			
-	// ------------------------ TESTS ------------------------ //
+	// ------------------------ UNIT TESTS ------------------------ //
 	
 	// public methods
 	
@@ -45,31 +45,31 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testHasMetaDescription(){
-		var Article = EntityLoadByPK( "Article", 1 );
-		assertTrue( Article.hasMetaDescription() );
-		Article = EntityLoadByPK( "Article", 3 );
-		assertFalse( Article.hasMetaDescription() );
+		var result = EntityLoadByPK( "Article", 1 );
+		assertTrue( result.hasMetaDescription() );
+		result = EntityLoadByPK( "Article", 3 );
+		assertFalse( result.hasMetaDescription() );
 	}	
 
 	function testHasMetaKeywords(){
-		var Article = EntityLoadByPK( "Article", 1 );
-		assertTrue( Article.hasMetaKeywords() );
-		Article = EntityLoadByPK( "Article", 3 );
-		assertFalse( Article.hasMetaKeywords() );
+		var result = EntityLoadByPK( "Article", 1 );
+		assertTrue( result.hasMetaKeywords() );
+		result = EntityLoadByPK( "Article", 3 );
+		assertFalse( result.hasMetaKeywords() );
 	}	
 	
 	function testHasMetaTitle(){
-		var Article = EntityLoadByPK( "Article", 1 );
-		assertTrue( Article.hasMetaTitle() );
-		Article = EntityLoadByPK( "Article", 3 );
-		assertFalse( Article.hasMetaTitle() );
+		var result = EntityLoadByPK( "Article", 1 );
+		assertTrue( result.hasMetaTitle() );
+		result = EntityLoadByPK( "Article", 3 );
+		assertFalse( result.hasMetaTitle() );
 	}
 	
 	function testIsMetaGenerated(){
-		var Article = EntityLoadByPK( "Article", 1 );
-		assertTrue( Article.isMetaGenerated() );
-		Article = EntityLoadByPK( "Article", 3 );
-		assertFalse( Article.isMetaGenerated() );
+		var result = EntityLoadByPK( "Article", 1 );
+		assertTrue( result.isMetaGenerated() );
+		result = EntityLoadByPK( "Article", 3 );
+		assertFalse( result.isMetaGenerated() );
 	}		
 	
 	function testIsNew(){
@@ -81,8 +81,8 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testIsPersisted(){
 		assertFalse( CUT.isPersisted() );
-		var Article = EntityLoadByPK( "Article", 1 );
-		assertTrue( Article.isPersisted() );		
+		var result = EntityLoadByPK( "Article", 1 );
+		assertTrue( result.isPersisted() );		
 	}
 	
 	function testIsPublished(){
@@ -121,23 +121,10 @@ component extends="mxunit.framework.TestCase"{
 	* this will run before every single test in this test case
 	*/
 	function setUp(){
-		CUT = new model.news.Article(); 
-	}
-	
-	/**
-	* this will run after every single test in this test case
-	*/
-	function tearDown(){}
-	
-	/**
-	* this will run once after initialization and before setUp()
-	*/
-	function beforeTests(){
-		var q = new Query();
-		q.setSQL( "DROP TABLE Articles;");
-		q.execute();		
+		CUT = new model.news.Article();
+		
 		ORMReload();
-		q = new Query();
+		var q = new Query();
 		q.setSQL( "
 			INSERT INTO articles ( article_id, article_uuid, article_title, article_content, article_metagenerated, article_metatitle, article_metadescription, article_metakeywords, article_published, article_created, article_updated) 
 			VALUES
@@ -147,6 +134,20 @@ component extends="mxunit.framework.TestCase"{
 		" );
 		q.execute();
 	}
+	
+	/**
+	* this will run after every single test in this test case
+	*/
+	function tearDown(){
+		var q = new Query();
+		q.setSQL( "DROP TABLE Articles;");
+		q.execute();		
+	}
+	
+	/**
+	* this will run once after initialization and before setUp()
+	*/
+	function beforeTests(){}
 	
 	/**
 	* this will run once after all tests have been run

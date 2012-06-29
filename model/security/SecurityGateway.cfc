@@ -22,7 +22,7 @@ component accessors="true"{
 	 * Dependency injection
 	 */	
 	
-	property name="UserService" getter="false";
+	property name="UserGateway" getter="false";
 	property name="Validator" getter="false";
 	property name="config" setter="true" getter="false";
 	
@@ -70,10 +70,10 @@ component accessors="true"{
 			arguments.properties.email = arguments.properties.username;
 			StructDelete( arguments.properties, "username" );
 		}
-		var User = variables.UserService.newUser();
+		var User = variables.UserGateway.newUser();
 		User.populate( arguments.properties );
 		var result = variables.Validator.validate( User, "login" );
-		User = variables.UserService.getUserByCredentials( User );
+		User = variables.UserGateway.getUserByCredentials( User );
 		if( !IsNull( User ) ){
 			setCurrentUser( User );
 			result.messages.success = "Welcome #User.getFirstName()#. You have been logged in.";
@@ -92,7 +92,7 @@ component accessors="true"{
 				arguments.properties.email = arguments.properties.username;
 				StructDelete( arguments.properties, "username" );
 			}
-			var User = variables.UserService.newUser();
+			var User = variables.UserGateway.newUser();
 			User.populate( arguments.properties );
 			var result = variables.Validator.validate( User, "password" );
 			User = variables.UserService.getUserByEmailOrUsername( User );

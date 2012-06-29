@@ -18,7 +18,7 @@
 
 component extends="mxunit.framework.TestCase"{
 			
-	// ------------------------ TESTS ------------------------ //
+	// ------------------------ UNIT TESTS ------------------------ //
 	
 	// public methods
 	 
@@ -49,9 +49,9 @@ component extends="mxunit.framework.TestCase"{
 	function testGetLevel(){
 		var Page = EntityLoadByPK( "Page", 1 );
 		assertEquals( 0, Page.getLevel() );
-		var Page = EntityLoadByPK( "Page", 2 );
+		Page = EntityLoadByPK( "Page", 2 );
 		assertEquals( 1, Page.getLevel() );
-		var Page = EntityLoadByPK( "Page", 5 );
+		Page = EntityLoadByPK( "Page", 5 );
 		assertEquals( 2, Page.getLevel() );		
 	}
 
@@ -307,23 +307,10 @@ component extends="mxunit.framework.TestCase"{
 	* this will run before every single test in this test case
 	*/
 	function setUp(){
-		CUT = new model.content.Page(); 
-	}
-	
-	/**
-	* this will run after every single test in this test case
-	*/
-	function tearDown(){}
-	
-	/**
-	* this will run once after initialization and before setUp()
-	*/
-	function beforeTests(){
-		var q = new Query();
-		q.setSQL( "DROP TABLE Pages;");
-		q.execute();		
+		CUT = new model.content.Page();
+
 		ORMReload();
-		q = new Query();
+		var q = new Query();
 		q.setSQL( "
 			INSERT INTO pages ( page_id, page_uuid, page_left, page_right, page_title, page_content, page_metagenerated, page_metatitle, page_metadescription, page_metakeywords, page_created, page_updated ) 
 			VALUES
@@ -343,6 +330,20 @@ component extends="mxunit.framework.TestCase"{
 		" );
 		q.execute();
 	}
+	
+	/**
+	* this will run after every single test in this test case
+	*/
+	function tearDown(){
+		var q = new Query();
+		q.setSQL( "DROP TABLE Pages;");
+		q.execute();		 
+	}
+	
+	/**
+	* this will run once after initialization and before setUp()
+	*/
+	function beforeTests(){}
 	
 	/**
 	* this will run once after all tests have been run

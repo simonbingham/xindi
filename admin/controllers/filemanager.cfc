@@ -38,7 +38,7 @@ component accessors="true" extends="abstract"{
 			rc.subdirectory = "";
 		}
 		rc.currentdirectory = rc.webrootdirectory & rc.clientfilesdirectory & rc.subdirectory;
-		if( !variables.FileManagerService.isDirectory( rc.currentdirectory ) ) rc.message.error = "Sorry, the requested " & rc.subdirectory & " is not valid.";
+		if( !variables.FileManagerService.isDirectory( directory=rc.currentdirectory ) ) rc.message.error = "Sorry, the requested " & rc.subdirectory & " is not valid.";
 	}
 
 	void function configure( required struct rc ){	
@@ -53,26 +53,26 @@ component accessors="true" extends="abstract"{
 	void function createdirectory( required struct rc ){
 		param name="rc.newdirectory" default="";
 		var newdirectory = ReReplaceNoCase( Trim( rc.newdirectory ), "[^a-z0-9_\-\.]", "", "all" );
-		var result = variables.FileManagerService.createDirectory( rc.currentdirectory & "/" & newdirectory );
+		var result = variables.FileManagerService.createDirectory( directory=rc.currentdirectory & "/" & newdirectory );
 		rc.messages = result.messages;
 		if( result.theobject.mkdirs() && StructKeyExists( result.messages, "success" ) ) variables.fw.redirect( action="filemanager.default", querystring="subdirectory=#urlSafePath( rc.subdirectory & "/" & newdirectory )#", preserve="messages" );
 		else variables.fw.redirect( action="filemanager.default", querystring="subdirectory=#urlSafePath( rc.subdirectory )#", preserve="messages" );
 	}
 
 	void function default( required struct rc ){
-		rc.listing = variables.FileManagerService.getDirectoryList( rc.currentdirectory, variables.config.filemanager.allowedextensions );
+		rc.listing = variables.FileManagerService.getDirectoryList( directory=rc.currentdirectory, allowedextensions=variables.config.filemanager.allowedextensions );
 	}
 
 	void function delete( required struct rc ){
 		param name="rc.delete" default="";
-		var result = variables.FileManagerService.deleteFile( rc.currentdirectory  & "/" & rc.delete );
+		var result = variables.FileManagerService.deleteFile( file=rc.currentdirectory  & "/" & rc.delete );
 		rc.messages = result.messages;
 		variables.fw.redirect( action="filemanager.default", querystring="subdirectory=#urlSafePath( rc.subdirectory )#", preserve="messages" );
 	}
 
 	void function upload( required struct rc ){
 		param name="rc.file" default="";
-		var result = variables.FileManagerService.uploadFile( "file", rc.currentdirectory, variables.config.filemanager.allowedextensions );
+		var result = variables.FileManagerService.uploadFile( file="file", destination=rc.currentdirectory, allowedextensions=variables.config.filemanager.allowedextensions );
 		rc.messages = result.messages;
 		variables.fw.redirect( action="filemanager.default", querystring="subdirectory=#urlSafePath( rc.subdirectory )#", preserve="messages" );
 	}

@@ -21,7 +21,7 @@
 */
 component extends="mxunit.framework.TestCase"{
 			
-	// ------------------------ TESTS ------------------------ //
+	// ------------------------ UNIT TESTS ------------------------ //
 	
 	// public methods
 	 
@@ -86,11 +86,10 @@ component extends="mxunit.framework.TestCase"{
 	}
 
 	function testGetValidator(){
-		makePublic( CUT, "newPage" );
-		var Page = CUT.newPage();
-		var $Validator = mock().getValidator( theObject="{any}" ).returns( mock() );
+		var $Validator = mock( "ValidateThis" ).getValidator( theObject="{any}" ).returns( mock( "model.content.Page" ) );
 		CUT.setValidator( $Validator );		
-		assertTrue( IsObject( CUT.getValidator( Page ) ) );
+		var $Page = mock( "model.content.Page" );
+		assertTrue( IsObject( CUT.getValidator( $Page ) ) );
 	}
 
 	function testMovePageWherePageCanBeMovedDown(){
@@ -120,18 +119,18 @@ component extends="mxunit.framework.TestCase"{
 	function testSavePageWherePageIsInvalid(){
 		var $MetaData = new model.content.MetaData();
 		CUT.setMetaData( $MetaData );		
-		var $ValidationResult = mock().hasErrors().returns( true );
-		var $Validator = mock().validate( theObject="{any}", Context="{string}" ).returns( $ValidationResult );
+		var $ValidationResult = mock( "ValidateThis" ).hasErrors().returns( true );
+		var $Validator = mock( "ValidateThis" ).validate( theObject="{any}", Context="{string}" ).returns( $ValidationResult );
 		CUT.setValidator( $Validator );		
 		var result = CUT.savePage( { title="", content="" }, 1, "create" );
 		assertTrue( StructKeyExists( result.messages, "error" ) );
 	}
 	 
 	function testSavePageWherePageIsValid(){
-		var $MetaData = mock().generateMetaDescription( description="{string}" ).returns( "" ).generateMetaKeywords( keywords="{string}" ).returns( "" );
+		var $MetaData = mock( "model.content.MetaData" ).generateMetaDescription( description="{string}" ).returns( "" ).generateMetaKeywords( keywords="{string}" ).returns( "" );
 		CUT.setMetaData( $MetaData );		
-		var $ValidationResult = mock().hasErrors().returns( false );
-		var $Validator = mock().validate( theObject="{any}", Context="{string}" ).returns( $ValidationResult );
+		var $ValidationResult = mock( "ValidateThis" ).hasErrors().returns( false );
+		var $Validator = mock( "ValidateThis" ).validate( theObject="{any}", Context="{string}" ).returns( $ValidationResult );
 		CUT.setValidator( $Validator );
 		var result = CUT.savePage( { title="foo", content="bar" }, 1, "create" );
 		assertTrue( StructKeyExists( result.messages, "success" ) );
@@ -152,22 +151,9 @@ component extends="mxunit.framework.TestCase"{
 	*/
 	function setUp(){
 		CUT = new model.content.ContentGateway(); 
-	}
-	
-	/**
-	* this will run after every single test in this test case
-	*/
-	function tearDown(){}
-	
-	/**
-	* this will run once after initialization and before setUp()
-	*/
-	function beforeTests(){
-		var q = new Query();
-		q.setSQL( "DROP TABLE Pages;");
-		q.execute();
+		
 		ORMReload();
-		q = new Query();
+		var q = new Query();
 		q.setSQL( "
 			INSERT INTO pages ( page_id, page_uuid, page_left, page_right, page_title, page_content, page_metagenerated, page_metatitle, page_metadescription, page_metakeywords, page_created, page_updated ) 
 			VALUES
@@ -187,6 +173,20 @@ component extends="mxunit.framework.TestCase"{
 		" );
 		q.execute();
 	}
+	
+	/**
+	* this will run after every single test in this test case
+	*/
+	function tearDown(){
+		var q = new Query();
+		q.setSQL( "DROP TABLE Pages;");
+		q.execute();		
+	}
+	
+	/**
+	* this will run once after initialization and before setUp()
+	*/
+	function beforeTests(){}
 	
 	/**
 	* this will run once after all tests have been run

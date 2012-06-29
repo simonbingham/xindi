@@ -18,62 +18,38 @@
 
 component extends="mxunit.framework.TestCase"{
 
-	// ------------------------ TESTS ------------------------ //
-	
-	// ------------------------ TESTS ------------------------ //
+	// ------------------------ INTEGRATION TESTS ------------------------ //
 	
 	function testDeleteUser(){
-		result = CUT.deleteUser( 1 );
-		assertTrue( IsStruct( result ) );
+		fail( "test not yet implemented" );
 	}
 
 	function testGetUserByID(){
-		var User = CUT.getUserByID( 1 );
-		assertTrue( IsObject( User ) );
+		fail( "test not yet implemented" );
 	}	
 	
 	function testGetUserByCredentials(){
-		var LoginUser = mock( "model.user.User" );
-		LoginUser.getUsername().returns( "aliaspooryorik" );
-		LoginUser.getEmail().returns( "" );
-		LoginUser.getPassword().returns( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB" );
-		User = CUT.getUserByCredentials( LoginUser );
-		assertTrue( IsObject( User ) );
+		fail( "test not yet implemented" );
 	}
 
 	function testGetUserByEmailOrUsername(){
-		var User = CUT.newUser();
-		User.setEmail( "foo@bar.moo" );
-		User = CUT.getUserByEmailOrUsername( User );
-		assertTrue( IsObject( User ) );
+		fail( "test not yet implemented" );
 	}
 
 	function testGetUsers(){
-		var users = CUT.getUsers();
-		assertTrue( IsArray( users ) );
+		fail( "test not yet implemented" );
 	}	
 	
 	function testGetValidator(){
-		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
-		var Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
-		CUT.setValidator( Validator );
-		makePublic( CUT, "newUser" );
-		var User = CUT.newUser();
-		assertTrue( IsObject( CUT.getValidator( User ) ) );
+		fail( "test not yet implemented" );
 	}
 	
 	function testNewUser(){
-		var User = CUT.newUser();
-		assertTrue( IsObject( User ) );
+		fail( "test not yet implemented" );
 	}
 
 	function testSaveUser(){
-		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
-		var Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
-		CUT.setValidator( Validator );		
-		var properties = { firstname="Simon", lastname="Bingham", email="foobarfoobarcom", username="foo", password="bar"  };
-		var result = CUT.saveUser( properties, "create" );
-		assertTrue( IsStruct( result ) );
+		fail( "test not yet implemented" );
 	}
 	
 	// ------------------------ IMPLICIT ------------------------ //
@@ -82,7 +58,7 @@ component extends="mxunit.framework.TestCase"{
 	* this will run before every single test in this test case
 	*/
 	function setUp(){
-		CUT = new model.user.UserGateway(); 
+		CUT = new model.user.UserGateway();
 	}
 	
 	/**
@@ -93,21 +69,7 @@ component extends="mxunit.framework.TestCase"{
 	/**
 	* this will run once after initialization and before setUp()
 	*/
-	function beforeTests(){
-		var q = new Query();
-		q.setSQL( "DROP TABLE Users;");
-		q.execute();		
-		ORMReload();
-		q = new Query();
-		q.setSQL( "
-			insert into Users (
-				user_id, user_firstname, user_lastname, user_email, user_username, user_password
-			) values (
-				1, 'John', 'Whish', 'foo@bar.moo', 'aliaspooryorik', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB'
-			)
-		" );
-		q.execute();
-	}
+	function beforeTests(){}
 	
 	/**
 	* this will run once after all tests have been run

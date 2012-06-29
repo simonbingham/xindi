@@ -21,7 +21,7 @@
 */
 component extends="mxunit.framework.TestCase"{
 			
-	// ------------------------ TESTS ------------------------ //
+	// ------------------------ UNIT TESTS ------------------------ //
 	
 	function testDeleteEnquiryWhereEnquiryExists(){
 		var result = CUT.deleteEnquiry( enquiryid=1 );
@@ -79,11 +79,8 @@ component extends="mxunit.framework.TestCase"{
 	function setUp(){
 		CUT = new model.enquiry.EnquiryGateway();
 		
-		var q = new Query();
-		q.setSQL( "DROP TABLE Enquiries;");
-		q.execute();		
 		ORMReload();
-		q = new Query();
+		var q = new Query();
 		q.setSQL( "
 			INSERT INTO enquiries (enquiry_id, enquiry_firstname, enquiry_lastname, enquiry_email, enquiry_message, enquiry_unread, enquiry_created) 
 			VALUES
@@ -97,7 +94,11 @@ component extends="mxunit.framework.TestCase"{
 	/**
 	* this will run after every single test in this test case
 	*/
-	function tearDown(){}
+	function tearDown(){
+		var q = new Query();
+		q.setSQL( "DROP TABLE Enquiries;");
+		q.execute();		
+	}
 	
 	/**
 	* this will run once after initialization and before setUp()

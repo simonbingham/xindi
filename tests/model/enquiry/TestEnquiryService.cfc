@@ -18,41 +18,34 @@
 
 component extends="mxunit.framework.TestCase"{
 			
-	// ------------------------ TESTS ------------------------ //
+	// ------------------------ INTEGRATION TESTS ------------------------ //
 	
 	function testDeleteEnquiry(){
-		var result = CUT.deleteEnquiry( enquiryid=1 );
-		assertTrue( IsStruct( result ) );
+		fail( "test not yet implemented" );
 	}
 	
 	function testGetEnquiries(){
-		var result = CUT.getEnquiries();
-		assertTrue( IsArray( result ) );
+		fail( "test not yet implemented" );
 	}
 	
 	function testGetEnquiryByID(){
-		var Enquiry = CUT.getEnquiryByID( enquiryid=2 );
-		assertTrue( IsObject( Enquiry ) );
+		fail( "test not yet implemented" );
 	}
 
 	function testGetUnreadCount(){
-		var result = CUT.getUnreadCount();
-		assertTrue( IsNumeric( result ) );
+		fail( "test not yet implemented" );
 	}
 	
 	function testMarkAllRead(){
-		var result = CUT.markAllRead();
-		assertTrue( IsStruct( result ) );		
+		fail( "test not yet implemented" );
 	}
 	
 	function testMarkRead(){
-		var result = CUT.markRead( enquiryid=3 );
-		assertTrue( IsStruct( result ) );
+		fail( "test not yet implemented" );
 	}
 	
 	function testNewEnquiry(){
-		result = CUT.newEnquiry();
-		assertTrue( IsObject( result ) );
+		fail( "test not yet implemented" );
 	}
 	
 	function testSendEnquiry(){
@@ -66,20 +59,6 @@ component extends="mxunit.framework.TestCase"{
 	*/
 	function setUp(){
 		CUT = new model.enquiry.EnquiryGateway();
-		
-		var q = new Query();
-		q.setSQL( "DROP TABLE Enquiries;");
-		q.execute();		
-		ORMReload();
-		q = new Query();
-		q.setSQL( "
-			INSERT INTO enquiries (enquiry_id, enquiry_firstname, enquiry_lastname, enquiry_email, enquiry_message, enquiry_unread, enquiry_created) 
-			VALUES
-				(1, 'Simon', 'Bingham', 'example@example.com', 'Phasellus ut tortor in erat dignissim eleifend at nec leo! Praesent vel lectus et elit condimentum hendrerit vel sit amet magna. Nunc luctus bibendum mi sed posuere. Pellentesque facilisis ullamcorper ultrices. Nulla eu dolor ac nunc laoreet tincidunt. Nulla et laoreet eros. Proin id pellentesque justo? Maecenas quis risus augue. Nulla commodo laoreet est nec mattis. Phasellus id dolor quam, id mattis mauris.', true, '2012-06-08 13:46:47'),
-				(2, 'John', 'Whish', 'example@example.com', 'Phasellus ut tortor in erat dignissim eleifend at nec leo! Praesent vel lectus et elit condimentum hendrerit vel sit amet magna. Nunc luctus bibendum mi sed posuere. Pellentesque facilisis ullamcorper ultrices. Nulla eu dolor ac nunc laoreet tincidunt. Nulla et laoreet eros. Proin id pellentesque justo? Maecenas quis risus augue. Nulla commodo laoreet est nec mattis. Phasellus id dolor quam, id mattis mauris.', true, '2012-06-08 13:46:57'),
-				(3, 'Andy', 'Beer', 'example@example.com', 'Phasellus ut tortor in erat dignissim eleifend at nec leo! Praesent vel lectus et elit condimentum hendrerit vel sit amet magna. Nunc luctus bibendum mi sed posuere. Pellentesque facilisis ullamcorper ultrices. Nulla eu dolor ac nunc laoreet tincidunt. Nulla et laoreet eros. Proin id pellentesque justo? Maecenas quis risus augue. Nulla commodo laoreet est nec mattis. Phasellus id dolor quam, id mattis mauris.', true, '2012-06-08 13:47:04');
-		" );
-		q.execute();
 	}
 	
 	/**

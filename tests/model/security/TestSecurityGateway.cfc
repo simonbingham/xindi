@@ -18,12 +18,12 @@
 
 component extends="mxunit.framework.TestCase"{
 
-	// ------------------------ TESTS ------------------------ //
+	// ------------------------ UNIT TESTS ------------------------ //
 	
 	function testDeleteCurrentUser(){
 		assertFalse( CUT.hasCurrentUser() );
 		var User = EntityLoadByPK( "User", 1 );
-		CUT.setCurrentUser( User );
+		CUT.setCurrentUser( User=User );
 		assertTrue( CUT.hasCurrentUser() );
 		CUT.deleteCurrentUser();
 		assertFalse( CUT.hasCurrentUser() );
@@ -32,37 +32,42 @@ component extends="mxunit.framework.TestCase"{
 	function testHasCurrentUser(){
 		assertFalse( CUT.hasCurrentUser() );
 		var User = EntityLoadByPK( "User", 1 );
-		CUT.setCurrentUser( User );
+		CUT.setCurrentUser( User=User );
 		assertTrue( CUT.hasCurrentUser() );
 	}
 	
 	function testIsAllowedForSecureAction(){
-		assertFalse( CUT.isAllowed( "admin:pages" ) );
+		assertFalse( CUT.isAllowed( action="admin:pages", whitelist="^admin:security,^public:" ) );
 		var User = EntityLoadByPK( "User", 1 );
-		CUT.setCurrentUser( User );
-		assertTrue( CUT.isAllowed( "admin:pages" ) );
+		CUT.setCurrentUser( User=User );
+		assertTrue( CUT.isAllowed( action="admin:pages", whitelist="^admin:security,^public:" ) );
 		CUT.deleteCurrentUser();
-		assertFalse( CUT.isAllowed( "admin:pages" ) );
+		assertFalse( CUT.isAllowed( action="admin:pages", whitelist="^admin:security,^public:" ) );
 	}	
 
 	function testIsAllowedForUnsecureAction(){
-		assertTrue( CUT.isAllowed( "public:" ) );
+		assertTrue( CUT.isAllowed( action="public:", whitelist="^admin:security,^public:" ) );
 		var User = EntityLoadByPK( "User", 1 );
-		CUT.setCurrentUser( User );
-		assertTrue( CUT.isAllowed( "public:" ) );
+		CUT.setCurrentUser( User=User );
+		assertTrue( CUT.isAllowed( action="public:", whitelist="^admin:security,^public:" ) );
 		CUT.deleteCurrentUser();
-		assertTrue( CUT.isAllowed( "public:" ) );		
+		assertTrue( CUT.isAllowed( action="public:", whitelist="^admin:security,^public:" ) );		
 	}	
 	
 	function testLoginUserForValidUser(){
 		var properties = { username="admin", password="admin" };
-		result = CUT.loginUser( properties );
+		result = CUT.loginUser( properties=properties );
 		assertTrue( StructKeyExists( result.messages, "success" ) );
 	}
 
 	function testLoginUserForInvalidUser(){
-		var properties = { username="foo", password="bar" };
-		result = CUT.loginUser( properties );
+		var $User = mock( "model.user.User" ).getFirstName().returns( "" ).isPersisted().returns( false );
+		var $UserGateway = mock( "model.user.UserGateway" ).getUserByCredentials( User="{any}" ).returns( $User ).newUser().returns( $User );
+		CUT.setUserGateway( $UserGateway );
+		var $ValidationResult = mock( "Validator" ).hasErrors().returns( true );
+		var $Validator = mock( "Validator" ).validate( theObject="{any}", Context="{string}" ).returns( $ValidationResult );
+		CUT.setValidator( $Validator );
+		result = CUT.loginUser( properties={ username="foo", password="bar" } );
 		assertTrue( StructKeyExists( result.messages, "error" ) );
 	}
 	
@@ -73,7 +78,7 @@ component extends="mxunit.framework.TestCase"{
 	function testSetCurrentUser(){
 		assertFalse( CUT.hasCurrentUser() );
 		var User = EntityLoadByPK( "User", 1 );
-		CUT.setCurrentUser( User );
+		CUT.setCurrentUser( User=User );
 		assertTrue( CUT.hasCurrentUser() );
 	}
 
@@ -83,33 +88,40 @@ component extends="mxunit.framework.TestCase"{
 	* this will run before every single test in this test case
 	*/
 	function setUp(){
-		CUT = new model.security.SecurityService();
-	}
-	
-	/**
-	* this will run after every single test in this test case
-	*/
-	function tearDown(){}
-	
-	/**
-	* this will run once after initialization and before setUp()
-	*/
-	function beforeTests(){
-		var q = new Query();
-		q.setSQL( "DROP TABLE Users;");
-		q.execute();		
+		CUT = new model.security.SecurityGateway();
+		
 		ORMReload();
-		q = new Query();
+		var q = new Query();
 		q.setSQL( "
-			INSERT INTO users ( user_id, user_firstname, user_lastname, user_email, user_username, user_password, user_created, user_updated ) 
+			INSERT INTO Users ( user_id, user_firstname, user_lastname, user_email, user_username, user_password, user_created, user_updated ) 
 			VALUES ( 1, 'Default', 'User', 'enquiries@getxindi.com', 'admin', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB', '2012-04-22 08:39:07', '2012-04-22 08:39:09' );
 		" );
 		q.execute();		
 	}
 	
 	/**
+	* this will run after every single test in this test case
+	*/
+	function tearDown(){
+		var q = new Query();
+		q.setSQL( "DROP TABLE Users;");
+		q.execute();
+		
+		ORMReload(); // TODO: error occurs in web browsers test if this is excluded - need to work out why this is happening
+	}
+	
+	/**
+	* this will run once after initialization and before setUp()
+	*/
+	function beforeTests(){}
+	
+	/**
 	* this will run once after all tests have been run
 	*/
-	function afterTests(){}
+	function afterTests(){
+		var q = new Query();
+		q.setSQL( "DROP TABLE Users;");
+		q.execute();		
+	}
 
 }

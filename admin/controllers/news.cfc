@@ -34,15 +34,15 @@ component accessors="true" extends="abstract"{
 
 	void function delete( required struct rc ){
 		param name="rc.articleid" default="0";
-		var result = variables.NewsService.deleteArticle( rc.articleid );
+		var result = variables.NewsService.deleteArticle( articleid=rc.articleid );
 		rc.messages = result.messages;
 		variables.fw.redirect( "news", "messages" );
 	}
 	
 	void function maintain( required struct rc ){
 		param name="rc.articleid" default="0";
-		if( !StructKeyExists( rc, "Article" ) ) rc.Article = variables.NewsService.getArticleByID( rc.articleid );
-		rc.Validator = variables.NewsService.getValidator( rc.Article );
+		if( !StructKeyExists( rc, "Article" ) ) rc.Article = variables.NewsService.getArticleByID( articleid=rc.articleid );
+		rc.Validator = variables.NewsService.getValidator( theObject=rc.Article );
 		if( !StructKeyExists( rc, "result" ) ) rc.result = rc.Validator.newResult();
 	}	
 	
@@ -57,7 +57,7 @@ component accessors="true" extends="abstract"{
 		param name="rc.metakeywords" default="";
 		param name="rc.submit" default="Save & exit";
 		var properties = { articleid=rc.articleid, title=rc.title, published=rc.published, content=rc.content, metagenerated=rc.metagenerated, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
-		rc.result = variables.NewsService.saveArticle( properties );
+		rc.result = variables.NewsService.saveArticle( properties=properties );
 		rc.messages = rc.result.messages;
 		rc.Article = rc.result.getTheObject();
 		if( StructKeyExists( rc.messages, "success" ) ){
