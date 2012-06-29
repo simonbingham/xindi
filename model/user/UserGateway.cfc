@@ -58,7 +58,7 @@ component accessors="true"{
 	}
 
 	array function getUsers(){
-		return EntityLoad( "User",{}, "firstname" );	
+		return EntityLoad( "User", {}, "firstname" );	
 	}
 		
 	function getValidator( required any User ){

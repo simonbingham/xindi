@@ -16,43 +16,33 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+/**
+* @mxunit:decorators mxunit.framework.decorators.TransactionRollbackDecorator
+*/
 component extends="mxunit.framework.TestCase"{
 			
 	// ------------------------ TESTS ------------------------ //
 	
 	// public methods
 	 
-	function testDeletePageWherePageExists(){
-		var result = CUT.deletePage( 13 );
-		assertTrue( StructKeyExists( result.messages, "success" ) );
-	}
-
 	function testDeletePageWherePageDoesNotExist(){
-		var result = CUT.deletePage( 14 );
+		var result = CUT.deletePage( pageid=100 );
 		assertTrue( StructKeyExists( result.messages, "error" ) );		
 	}
 	
-	function testGetPageByIDWherePageExists(){
-		var Page = CUT.getPageByID( 1 );
-		assertEquals( 1, Page.getPageID() );
-		Page = CUT.getPageByID( 2 );
-		assertEquals( 2, Page.getPageID() );		
-		Page = CUT.getPageByID( 5 );
-		assertEquals( 5, Page.getPageID() );
+	function testDeletePageWherePageExists(){
+		var result = CUT.deletePage( pageid=13 );
+		assertTrue( StructKeyExists( result.messages, "success" ) );
 	}
 
 	function testGetPageByIDWherePageDoesNotExists(){
-		var Page = CUT.getPageByID( 14 );
+		var Page = CUT.getPageByID( pageid=14 );
 		assertFalse( Page.isPersisted() );		
 	}
 	
-	function testGetPageSlugWherePageExists(){
-		var Page = CUT.getPageBySlug( "home" );
-		assertEquals( 1, Page.getPageID() );
-		Page = CUT.getPageBySlug( "title" );
-		assertEquals( 2, Page.getPageID() );		
-		Page = CUT.getPageBySlug( "title/title---" );
-		assertEquals( 5, Page.getPageID() );
+	function testGetPageByIDWherePageExists(){
+		var Page = CUT.getPageByID( pageid=1 );
+		assertTrue( Page.isPersisted() );
 	}
 
 	function testGetPageSlugWherePageDoesNotExist(){
@@ -60,39 +50,47 @@ component extends="mxunit.framework.TestCase"{
 		assertFalse( Page.isPersisted() );	
 	}
 	
+	function testGetPageSlugWherePageExists(){
+		var Page = CUT.getPageBySlug( slug="home" );
+		assertTrue( Page.isPersisted() );
+	}
+
 	function testGetPages(){
 		var pages = CUT.getPages();
 		assertEquals( 13, ArrayLen( pages ) );
-		pages = CUT.getPages( searchterm="home" );
+	}
+	
+	function testGetPagesBySearchTerm(){
+		var pages = CUT.getPages( searchterm="home" );
 		assertEquals( 1, ArrayLen( pages ) );
-		pages = CUT.getPages( maxresults=5 );
+	}	
+
+	function testGetPagesBySortOrder(){
+		var pages = CUT.getPages( sortorder="pageid" );
+		assertEquals( "home", pages[ 1 ].getUUID() );
+	}
+
+	function testGetPagesBySortOrderDescending(){
+		var pages = CUT.getPages( sortorder="pageid desc" );
+		assertEquals( "title-----------", pages[ 1 ].getUUID() );
+	}
+
+	function testGetPagesUsingMaxResults(){
+		var pages = CUT.getPages( maxresults=5 );
 		assertEquals( 5, ArrayLen( pages ) );
-		pages = CUT.getPages( sortorder="pageid" );
-		var Page = pages[ 1 ];
-		assertEquals( "home", Page.getUUID() );				
-		pages = CUT.getPages( sortorder="pageid desc" );
-		Page = pages[ 1 ];
-		assertEquals( "title-----------", Page.getUUID() );				
 	}
 
 	function testGetRoot(){
 		var Page = CUT.getRoot();
-		assertEquals( 1, Page.getPageID() );
+		assertEquals( 1, Page.getLeftValue() );
 	}
 
 	function testGetValidator(){
 		makePublic( CUT, "newPage" );
 		var Page = CUT.newPage();
-		var Validator = CUT.getValidator( Page );
-		assertTrue( IsObject( Validator ) );
-	}
-
-	function testMovePageWherePageCanBeMovedUp(){
-		var result = CUT.movePage( 13, "up" );
-		assertTrue( StructKeyExists( result.messages, "success" ) );
-		assertEquals( 21, result.Page.getLeftValue() );
-		assertEquals( 22, result.Page.getRightValue() );
-		assertFalse( StructKeyExists( result.messages, "error" ) );
+		var $Validator = mock().getValidator( theObject="{any}" ).returns( mock() );
+		CUT.setValidator( $Validator );		
+		assertTrue( IsObject( CUT.getValidator( Page ) ) );
 	}
 
 	function testMovePageWherePageCanBeMovedDown(){
@@ -100,7 +98,18 @@ component extends="mxunit.framework.TestCase"{
 		assertTrue( StructKeyExists( result.messages, "success" ) );
 		assertEquals( 23, result.Page.getLeftValue() );
 		assertEquals( 24, result.Page.getRightValue() );
-		assertFalse( StructKeyExists( result.messages, "error" ) );
+	}
+
+	function testMovePageWherePageCanBeMovedUp(){
+		var result = CUT.movePage( 7, "up" );
+		assertTrue( StructKeyExists( result.messages, "success" ) );
+		assertEquals( 5, result.Page.getLeftValue() );
+		assertEquals( 6, result.Page.getRightValue() );
+	}
+
+	function testMovePageWherePageCannotBeMovedDown(){
+		var result = CUT.movePage( 13, "down" );
+		assertTrue( StructKeyExists( result.messages, "error" ) );
 	}
 
 	function testMovePageWherePageCannotBeMovedUp(){
@@ -108,25 +117,26 @@ component extends="mxunit.framework.TestCase"{
 		assertTrue( StructKeyExists( result.messages, "error" ) );
 	}
 
-	function testMovePageWherePageCannotBeMovedDown(){
-		result = CUT.movePage( 13, "down" );
-		assertTrue( StructKeyExists( result.messages, "error" ) );
-	}
-
-	function testSavePageWherePageIsValid(){
-		var properties = { title="foo", content="bar" };
-		var result = CUT.savePage( properties, 13, "create" );
-		assertTrue( StructKeyExists( result.messages, "success" ) );
-		assertEquals( 24, result.getTheObject().getLeftValue() );
-		assertEquals( 25, result.getTheObject().getRightValue() );
-	}
-
 	function testSavePageWherePageIsInvalid(){
-		properties = { title="", content="" };
-		result = CUT.savePage( properties, 13, "create" );
+		var $MetaData = new model.content.MetaData();
+		CUT.setMetaData( $MetaData );		
+		var $ValidationResult = mock().hasErrors().returns( true );
+		var $Validator = mock().validate( theObject="{any}", Context="{string}" ).returns( $ValidationResult );
+		CUT.setValidator( $Validator );		
+		var result = CUT.savePage( { title="", content="" }, 1, "create" );
 		assertTrue( StructKeyExists( result.messages, "error" ) );
 	}
 	 
+	function testSavePageWherePageIsValid(){
+		var $MetaData = mock().generateMetaDescription( description="{string}" ).returns( "" ).generateMetaKeywords( keywords="{string}" ).returns( "" );
+		CUT.setMetaData( $MetaData );		
+		var $ValidationResult = mock().hasErrors().returns( false );
+		var $Validator = mock().validate( theObject="{any}", Context="{string}" ).returns( $ValidationResult );
+		CUT.setValidator( $Validator );
+		var result = CUT.savePage( { title="foo", content="bar" }, 1, "create" );
+		assertTrue( StructKeyExists( result.messages, "success" ) );
+	}
+
 	// private methods
 	
 	function testNewPage(){
@@ -142,12 +152,6 @@ component extends="mxunit.framework.TestCase"{
 	*/
 	function setUp(){
 		CUT = new model.content.ContentGateway(); 
-
-		var MetaData = new model.content.MetaData();
-		CUT.setMetaData( MetaData );
-		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
-		var Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
-		CUT.setValidator( Validator );	
 	}
 	
 	/**

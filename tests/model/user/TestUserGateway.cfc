@@ -102,10 +102,8 @@ component extends="mxunit.framework.TestCase"{
 
 	function testSaveUserWhereUserIsInvalid(){
 		var properties = { firstname="Simon", lastname="Bingham", email="foobarfoobarcom", username="foo", password="bar"  };
-		var $Validator = mock();
-		var $result = mock();
-		$result.hasErrors().returns( true );
-		$Validator.validate( "{any}","{string}" ).returns( $result );
+		var $ValidationResult = mock().hasErrors().returns( true );
+		var $Validator = mock().validate( theObject='{any}', Context='{string}' ).returns( $ValidationResult );
 		CUT.setValidator( $Validator );		
 		var result = CUT.saveUser( properties, "create" );
 		assertTrue( StructKeyExists( result.messages, "error" ) );
@@ -113,11 +111,9 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testSaveUserWhereUserIsValid(){
 		var properties = { firstname="Simon", lastname="Bingham", email="foobar@foobar.com", username="foo", password="bar"  };
-		var $Validator = mock();
-		var $result = mock();
-		$result.hasErrors().returns( false );
-		$Validator.validate( "{any}","{string}" ).returns( $result );
-		CUT.setValidator( $Validator );		
+		var $ValidationResult = mock().hasErrors().returns( false );
+		var $Validator = mock().validate( theObject='{any}', Context='{string}' ).returns( $ValidationResult );
+		CUT.setValidator( $Validator );	
 		var result = CUT.saveUser( properties, "create" );
 		assertTrue( StructKeyExists( result.messages, "success" ) );
 	}	

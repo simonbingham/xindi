@@ -16,56 +16,54 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+/**
+* @mxunit:decorators mxunit.framework.decorators.TransactionRollbackDecorator
+*/
 component extends="mxunit.framework.TestCase"{
 			
 	// ------------------------ TESTS ------------------------ //
 	
 	function testDeleteEnquiryWhereEnquiryExists(){
-		var result = CUT.deleteEnquiry( 1 );
+		var result = CUT.deleteEnquiry( enquiryid=1 );
 		assertTrue( StructKeyExists( result.messages, "success" ) );
 	}
 
 	function testDeleteEnquiryWhereEnquiryDoesNotExist(){
-		result = CUT.deleteEnquiry( 4 );
+		var result = CUT.deleteEnquiry( enquiryid=4 );
 		assertTrue( StructKeyExists( result.messages, "error" ) );
 	}
 	
 	function testGetEnquiries(){
 		var enquiries = CUT.getEnquiries();
 		assertEquals( 3, ArrayLen( enquiries ) );
-		enquiries = CUT.getEnquiries( 2 );
+	}
+
+	function testGetEnquiriesWithMaxResults(){
+		var enquiries = CUT.getEnquiries( maxresults=2 );
 		assertEquals( 2, ArrayLen( enquiries ) );
 	}
 	
 	function testGetEnquiryByID(){
-		var Enquiry = CUT.getEnquiryByID( 1 );
-		assertEquals( 1, Enquiry.getEnquiryID() );
+		var Enquiry = CUT.getEnquiryByID( enquiryid=2 );
+		assertTrue( Enquiry.isPersisted() );
 	}
 
 	function testGetUnreadCount(){
-		var unreadcount = CUT.getUnreadCount();
-		assertEquals( 3, unreadcount );
-		CUT.markRead( 1 );
-		unreadcount = CUT.getUnreadCount();
-		assertEquals( 2, unreadcount );
+		assertEquals( 3, CUT.getUnreadCount() );
 	}
 	
 	function testMarkAllRead(){
-		var result = CUT.getUnreadCount();
-		assertEquals( 3, result );		
-		CUT.markAllRead();
-		result = CUT.getUnreadCount();
-		assertEquals( 0, result );		
+		var result = CUT.markAllRead();
+		assertTrue( StructKeyExists( result.messages, "success" ) );
 	}
 	
 	function testMarkRead(){
-		CUT.markRead( 1 );
-		result = CUT.getUnreadCount();
-		assertEquals( 2, result );
+		var result = CUT.markRead( enquiryid=3 );
+		assertTrue( StructKeyExists( result.messages, "success" ) );
 	}
 	
 	function testNewEnquiry(){
-		result = CUT.newEnquiry();
+		var result = CUT.newEnquiry();
 		assertFalse( result.isPersisted() );
 	}
 	
@@ -79,18 +77,8 @@ component extends="mxunit.framework.TestCase"{
 	* this will run before every single test in this test case
 	*/
 	function setUp(){
-		CUT = new model.enquiry.EnquiryGateway(); 
-	}
-	
-	/**
-	* this will run after every single test in this test case
-	*/
-	function tearDown(){}
-	
-	/**
-	* this will run once after initialization and before setUp()
-	*/
-	function beforeTests(){
+		CUT = new model.enquiry.EnquiryGateway();
+		
 		var q = new Query();
 		q.setSQL( "DROP TABLE Enquiries;");
 		q.execute();		
@@ -103,8 +91,18 @@ component extends="mxunit.framework.TestCase"{
 				(2, 'John', 'Whish', 'example@example.com', 'Phasellus ut tortor in erat dignissim eleifend at nec leo! Praesent vel lectus et elit condimentum hendrerit vel sit amet magna. Nunc luctus bibendum mi sed posuere. Pellentesque facilisis ullamcorper ultrices. Nulla eu dolor ac nunc laoreet tincidunt. Nulla et laoreet eros. Proin id pellentesque justo? Maecenas quis risus augue. Nulla commodo laoreet est nec mattis. Phasellus id dolor quam, id mattis mauris.', true, '2012-06-08 13:46:57'),
 				(3, 'Andy', 'Beer', 'example@example.com', 'Phasellus ut tortor in erat dignissim eleifend at nec leo! Praesent vel lectus et elit condimentum hendrerit vel sit amet magna. Nunc luctus bibendum mi sed posuere. Pellentesque facilisis ullamcorper ultrices. Nulla eu dolor ac nunc laoreet tincidunt. Nulla et laoreet eros. Proin id pellentesque justo? Maecenas quis risus augue. Nulla commodo laoreet est nec mattis. Phasellus id dolor quam, id mattis mauris.', true, '2012-06-08 13:47:04');
 		" );
-		q.execute();
+		q.execute();		
 	}
+	
+	/**
+	* this will run after every single test in this test case
+	*/
+	function tearDown(){}
+	
+	/**
+	* this will run once after initialization and before setUp()
+	*/
+	function beforeTests(){}
 	
 	/**
 	* this will run once after all tests have been run

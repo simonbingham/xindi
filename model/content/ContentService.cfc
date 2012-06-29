@@ -29,7 +29,9 @@ component accessors="true"{
 	 */
 	 	
 	struct function deletePage( required pageid ){
-		return variables.ContentGateway.deletePage( pageid=Val( arguments.pageid ) );
+		transaction{
+			return variables.ContentGateway.deletePage( pageid=Val( arguments.pageid ) );
+		}
 	}
 	
 	function getPageByID( required pageid ){
@@ -54,13 +56,17 @@ component accessors="true"{
 	}
 	
 	struct function movePage( required pageid, required string direction ){
-		arguments.pageid = Val( arguments.pageid );
-		return variables.ContentGateway.movePage( argumentCollection=arguments );
+		transaction{
+			arguments.pageid = Val( arguments.pageid );
+			return variables.ContentGateway.movePage( argumentCollection=arguments );
+		}
 	}
 	
 	function savePage( required struct properties, required ancestorid, required string context ){
-		arguments.ancestorid = Val( arguments.ancestorid );
-		return variables.ContentGateway.savePage( argumentCollection=arguments );
+		transaction{
+			arguments.ancestorid = Val( arguments.ancestorid );
+			return variables.ContentGateway.savePage( argumentCollection=arguments );
+		}
 	}
 	
 }

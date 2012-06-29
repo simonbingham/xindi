@@ -29,7 +29,7 @@
 				<label class="control-label" for="title">Title <cfif rc.Validator.propertyIsRequired( "title", rc.context )>*</cfif></label>
 				<div class="controls">
 					<input class="input-xlarge" type="text" name="title" id="title" value="#HtmlEditFormat( rc.Page.getTitle() )#" maxlength="100">
-					#view( "helpers/failures",{ property="title" })#
+					#view( "helpers/failures", { property="title" })#
 				</div>
 			</div>
 			
@@ -37,7 +37,7 @@
 				<label class="control-label" for="page-content">Content <cfif rc.Validator.propertyIsRequired( "content", rc.context )>*</cfif></label>
 				<div class="controls">
 					<textarea class="input-xlarge ckeditor" name="content" id="page-content">#HtmlEditFormat( rc.Page.getContent() )#</textarea>
-					#view( "helpers/failures",{ property="content" })#
+					#view( "helpers/failures", { property="content" })#
 				</div>
 			</div>
 		</fieldset>                        
@@ -51,7 +51,7 @@
 					<label class="checkbox">
 						<input type="checkbox" name="metagenerated" id="metagenerated" value="true" <cfif rc.Page.getMetaGenerated()>checked="checked"</cfif>>
 						Generate automatically <cfif rc.Validator.propertyIsRequired( "metagenerated" )>*</cfif>
-						#view( "helpers/failures",{ property="metagenerated" })#
+						#view( "helpers/failures", { property="metagenerated" })#
 					</label>
 				</div>
 			</div>		
@@ -61,7 +61,7 @@
 					<label class="control-label" for="metatitle">Title <cfif rc.Validator.propertyIsRequired( "metatitle", rc.context )>*</cfif></label>
 					<div class="controls">
 						<input class="input-xlarge" type="text" name="metatitle" id="metatitle" value="#HtmlEditFormat( rc.Page.getMetaTitle() )#" maxlength="100">
-						#view( "helpers/failures",{ property="metatitle" })#
+						#view( "helpers/failures", { property="metatitle" })#
 					</div>
 				</div>
 				
@@ -69,7 +69,7 @@
 					<label class="control-label" for="metadescription">Description <cfif rc.Validator.propertyIsRequired( "metadescription", rc.context )>*</cfif></label>
 					<div class="controls">
 						<input class="input-xlarge" type="text" name="metadescription" id="metadescription" value="#HtmlEditFormat( rc.Page.getMetaDescription() )#" maxlength="200">
-						#view( "helpers/failures",{ property="metadescription" })#
+						#view( "helpers/failures", { property="metadescription" })#
 					</div>
 				</div>
 				
@@ -77,7 +77,7 @@
 					<label class="control-label" for="metakeywords">Keywords <cfif rc.Validator.propertyIsRequired( "metakeywords", rc.context )>*</cfif></label>
 					<div class="controls">
 						<input class="input-xlarge" type="text" name="metakeywords" id="metakeywords" value="#HtmlEditFormat( rc.Page.getMetaKeywords() )#" maxlength="200">
-						#view( "helpers/failures",{ property="metakeywords" })#
+						#view( "helpers/failures", { property="metakeywords" })#
 					</div>
 				</div>
 			</div>

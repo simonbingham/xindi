@@ -37,7 +37,7 @@
 				<label class="control-label" for="lastname">Last Name <cfif rc.Validator.propertyIsRequired( "lastname", rc.context )>*</cfif></label>
 				<div class="controls">
 					<input class="input-xlarge" type="text" name="lastname" id="lastname" value="#HtmlEditFormat( rc.User.getLastName() )#" maxlength="50">
-					#view( "helpers/failures",{ property="lastname" })#
+					#view( "helpers/failures", { property="lastname" })#
 				</div>
 			</div>
 			
@@ -45,7 +45,7 @@
 				<label class="control-label" for="email">Email Address <cfif rc.Validator.propertyIsRequired( "email", rc.context )>*</cfif></label>
 				<div class="controls">
 					<input class="input-xlarge" type="text" name="email" id="email" value="#HtmlEditFormat( rc.User.getEmail() )#" maxlength="50">
-					#view( "helpers/failures",{ property="email" })#
+					#view( "helpers/failures", { property="email" })#
 				</div>
 			</div>			
 			
@@ -53,7 +53,7 @@
 				<label class="control-label" for="username">Username <cfif rc.Validator.propertyIsRequired( "username", rc.context )>*</cfif></label>
 				<div class="controls">
 					<input class="input-xlarge" type="text" name="username" id="username" value="#HtmlEditFormat( rc.User.getUsername() )#" maxlength="50">
-					#view( "helpers/failures",{ property="username" })#
+					#view( "helpers/failures", { property="username" })#
 				</div>
 			</div>			
 
@@ -61,7 +61,7 @@
 				<label class="control-label" for="password">Password <cfif rc.Validator.propertyIsRequired( "password", rc.context )>*</cfif></label>
 				<div class="controls">
 					<input class="input-xlarge" type="password" name="password" id="password" value="" maxlength="50">
-					#view( "helpers/failures",{ property="password" })#
+					#view( "helpers/failures", { property="password" })#
 				</div>
 			</div>			
 		</fieldset>

@@ -83,9 +83,6 @@ component extends="mxunit.framework.TestCase"{
 		Page = EntityLoadByPK( "Page", 3 );
 		PreviousSibling = Page.getPreviousSibling();
 		assertEquals( 2, PreviousSibling.getPageID() );		
-		Page = EntityLoadByPK( "Page", 6 );
-		PreviousSibling = Page.getPreviousSibling();
-		assertEquals( 5, PreviousSibling.getPageID() );	
 	}
 
 	function testGetSlug(){

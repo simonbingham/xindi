@@ -62,14 +62,6 @@ component extends="mxunit.framework.TestCase"{
 	*/
 	function setUp(){
 		CUT = new model.news.NewsService();
-		
-		var NewsGateway = new model.news.NewsGateway();
-		var MetaData = new model.content.MetaData();
-		NewsGateway.setMetaData( MetaData );
-		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
-		var Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
-		NewsGateway.setValidator( Validator );				
-		CUT.setNewsGateway( NewsGateway );
 	}
 	
 	/**

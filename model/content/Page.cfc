@@ -58,19 +58,19 @@ component extends="model.abstract.BaseEntity" persistent="true" table="pages" ca
 	}
 
 	function getLevel(){
-		return ORMExecuteQuery( "select Count( pageSubQuery ) from Page as pageSubQuery where pageSubQuery.leftvalue < :leftvalue and pageSubQuery.rightvalue > :rightvalue",{ leftvalue=variables.leftvalue, rightvalue=variables.rightvalue } )[ 1 ];
+		return ORMExecuteQuery( "select Count( pageSubQuery ) from Page as pageSubQuery where pageSubQuery.leftvalue < :leftvalue and pageSubQuery.rightvalue > :rightvalue", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue } )[ 1 ];
 	}
 
 	function getNextSibling(){
-		return ORMExecuteQuery( "from Page where leftvalue = :leftvalue",{ leftvalue=variables.rightvalue + 1 }, true );
+		return ORMExecuteQuery( "from Page where leftvalue = :leftvalue", { leftvalue=variables.rightvalue + 1 }, true );
 	}
 	
 	array function getPath(){
-		return ORMExecuteQuery( "from Page where leftvalue < :leftvalue and rightvalue > :rightvalue",{ leftvalue=variables.leftvalue, rightvalue=variables.rightvalue } );
+		return ORMExecuteQuery( "from Page where leftvalue < :leftvalue and rightvalue > :rightvalue", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue } );
 	}	
 
 	function getPreviousSibling(){
-		return ORMExecuteQuery( "from Page where rightvalue = :rightvalue",{ rightvalue=variables.leftvalue - 1 }, true );
+		return ORMExecuteQuery( "from Page where rightvalue = :rightvalue", { rightvalue=variables.leftvalue - 1 }, true );
 	}
 	
 	string function getSlug(){
@@ -155,15 +155,15 @@ component extends="model.abstract.BaseEntity" persistent="true" table="pages" ca
 	}
 	
 	private array function getDescendents(){
-		return ORMExecuteQuery( "from Page where leftvalue > :leftvalue and rightvalue < :rightvalue",{ leftvalue=variables.leftvalue, rightvalue=variables.rightvalue } );
+		return ORMExecuteQuery( "from Page where leftvalue > :leftvalue and rightvalue < :rightvalue", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue } );
 	}
 
 	private function getFirstChild(){
-		return ORMExecuteQuery( "from Page where leftvalue = :leftvalue",{ leftvalue=variables.leftvalue + 1 }, true );
+		return ORMExecuteQuery( "from Page where leftvalue = :leftvalue", { leftvalue=variables.leftvalue + 1 }, true );
 	}	
 
 	private function getLastChild(){
-		return ORMExecuteQuery( "from Page where rightvalue = :rightvalue",{ rightvalue=variables.rightvalue - 1 }, true );
+		return ORMExecuteQuery( "from Page where rightvalue = :rightvalue", { rightvalue=variables.rightvalue - 1 }, true );
 	}		
 	
 	private boolean function hasContent(){
@@ -180,8 +180,8 @@ component extends="model.abstract.BaseEntity" persistent="true" table="pages" ca
 	
 	private boolean function isUUIDUnique(){
 		var matches = []; 
-		if( isPersisted() ) matches = ORMExecuteQuery( "from Page where pageid <> :pageid and uuid = :uuid",{ pageid=getPageID(), uuid=getUUID()});
-		else matches = ORMExecuteQuery( "from Page where uuid=:uuid",{ uuid=getUUID() });
+		if( isPersisted() ) matches = ORMExecuteQuery( "from Page where pageid <> :pageid and uuid = :uuid", { pageid=getPageID(), uuid=getUUID()});
+		else matches = ORMExecuteQuery( "from Page where uuid=:uuid", { uuid=getUUID() });
 		return !ArrayLen( matches );
 	}
 	

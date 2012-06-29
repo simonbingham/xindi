@@ -33,7 +33,7 @@ component extends="mxunit.framework.TestCase"{
 	}
 
 	function testGetArticleByIDWhereArticleDoesNotExist(){
-		var Article = CUT.getArticleByID( 4 );
+		var Article = CUT.getArticleByID( 100 );
 		assertFalse( Article.isPersisted() );
 	}
 		
@@ -86,17 +86,30 @@ component extends="mxunit.framework.TestCase"{
 	function testGetValidator(){
 		makePublic( CUT, "newArticle" );
 		var Article = CUT.newArticle();
+		var $result = mock();
+		var $Validator = mock().getValidator( theObject='{any}' ).returns( $result );
+		CUT.setValidator( $Validator );		
 		assertTrue( IsObject( CUT.getValidator( Article ) ) );
 	}
 	
 	function testSaveArticleWhereArticleIsInvalid(){
 		var properties = { title="", published="27/6/2012", content="bar" };
+		var $MetaData = new model.content.MetaData();
+		CUT.setMetaData( $MetaData );		
+		var $ValidationResult = mock().hasErrors().returns( true );
+		var $Validator = mock().validate( theObject='{any}' ).returns( $ValidationResult );
+		CUT.setValidator( $Validator );		
 		var result = CUT.saveArticle( properties );
 		assertTrue( StructKeyExists( result.messages, "error" ) );
 	}
 
 	function testSaveArticleWhereArticleIsValid(){
 		var properties = { title="foo", published="27/6/2012", content="bar" };
+		var $MetaData = new model.content.MetaData();
+		CUT.setMetaData( $MetaData );		
+		var $ValidationResult = mock().hasErrors().returns( false );
+		var $Validator = mock().validate( theObject='{any}' ).returns( $ValidationResult );
+		CUT.setValidator( $Validator );		
 		var result = CUT.saveArticle( properties );
 		assertTrue( StructKeyExists( result.messages, "success" ) );
 	}
@@ -115,24 +128,8 @@ component extends="mxunit.framework.TestCase"{
 	* this will run before every single test in this test case
 	*/
 	function setUp(){
-		CUT = new model.news.NewsGateway(); 
-
-		var MetaData = new model.content.MetaData();
-		CUT.setMetaData( MetaData );
-		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
-		var Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
-		CUT.setValidator( Validator );		
-	}
-	
-	/**
-	* this will run after every single test in this test case
-	*/
-	function tearDown(){}
-	
-	/**
-	* this will run once after initialization and before setUp()
-	*/
-	function beforeTests(){
+		CUT = new model.news.NewsGateway();
+		 
 		var q = new Query();
 		q.setSQL( "DROP TABLE Articles;");
 		q.execute();		
@@ -147,6 +144,16 @@ component extends="mxunit.framework.TestCase"{
 		" );
 		q.execute();
 	}
+	
+	/**
+	* this will run after every single test in this test case
+	*/
+	function tearDown(){}
+	
+	/**
+	* this will run once after initialization and before setUp()
+	*/
+	function beforeTests(){}
 	
 	/**
 	* this will run once after all tests have been run

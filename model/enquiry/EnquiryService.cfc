@@ -29,7 +29,9 @@ component accessors="true"{
 	 */
 
 	struct function deleteEnquiry( required enquiryid ){
-		return variables.EnquiryGateway.deleteEnquiry( enquiryid=Val( arguments.enquiryid ) );		
+		transaction{
+			return variables.EnquiryGateway.deleteEnquiry( enquiryid=Val( arguments.enquiryid ) );
+		}		
 	}
 	
 	array function getEnquiries( maxresults=0 ){
@@ -49,11 +51,15 @@ component accessors="true"{
 	}	
 	
 	struct function markAllRead(){
-		return variables.EnquiryGateway.markAllRead();		
+		transaction{
+			return variables.EnquiryGateway.markAllRead();
+		}
 	}
 
 	struct function markRead( required enquiryid ){
-		return variables.EnquiryGateway.markRead( enquiryid=Val( arguments.enquiryid ) );
+		transaction{
+			return variables.EnquiryGateway.markRead( enquiryid=Val( arguments.enquiryid ) );
+		}
 	}	
 	
 	function newEnquiry(){
@@ -61,7 +67,7 @@ component accessors="true"{
 	}
 	
 	struct function sendEnquiry( required struct properties, required struct config, required string emailtemplatepath ){
-		return variables.EnquiryGateway.sendEnquiry( argumentCollection=arguments );			
+		return variables.EnquiryGateway.sendEnquiry( argumentCollection=arguments );
 	}
 	
 }

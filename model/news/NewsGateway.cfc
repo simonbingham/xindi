@@ -50,7 +50,7 @@
 		}
 		
 		function getArticleByUUID( required string uuid ){
-			var Article = ORMExecuteQuery( "from Article where uuid=:uuid and published<=:published",{ uuid=arguments.uuid, published=Now() }, true );
+			var Article = ORMExecuteQuery( "from Article where uuid=:uuid and published<=:published", { uuid=arguments.uuid, published=Now() }, true );
 			if( IsNull( Article ) ) Article = newArticle();
 			return Article;
 		}

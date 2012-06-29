@@ -62,18 +62,6 @@ component extends="mxunit.framework.TestCase"{
 	*/
 	function setUp(){
 		CUT = new model.security.SecurityService();
-		
-		var UserService = new model.user.UserService();
-		var UserGateway = new model.user.UserGateway();
-		var SecurityGateway = new model.security.SecurityGateway();
-		UserService.setUserGateway( UserGateway );
-		SecurityGateway.setUserService( UserService );
-		var config = { security = { whitelist="^admin:security,^public:" } };
-		SecurityGateway.setConfig( config );
-		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
-		var Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
-		SecurityGateway.setValidator( Validator );
-		CUT.setSecurityGateway( SecurityGateway );
 	}
 	
 	/**

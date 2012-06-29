@@ -21,7 +21,7 @@ component extends="mxunit.framework.TestCase"{
 	// ------------------------ TESTS ------------------------ //
 	
 	function testDeleteEnquiry(){
-		var result = CUT.deleteEnquiry( 1 );
+		var result = CUT.deleteEnquiry( enquiryid=1 );
 		assertTrue( IsStruct( result ) );
 	}
 	
@@ -31,8 +31,8 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testGetEnquiryByID(){
-		var result = CUT.getEnquiryByID( 1 );
-		assertTrue( IsStruct( result ) );
+		var Enquiry = CUT.getEnquiryByID( enquiryid=2 );
+		assertTrue( IsObject( Enquiry ) );
 	}
 
 	function testGetUnreadCount(){
@@ -46,7 +46,7 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testMarkRead(){
-		var result = CUT.markRead( 1 );
+		var result = CUT.markRead( enquiryid=3 );
 		assertTrue( IsStruct( result ) );
 	}
 	
@@ -65,18 +65,8 @@ component extends="mxunit.framework.TestCase"{
 	* this will run before every single test in this test case
 	*/
 	function setUp(){
-		CUT = new model.enquiry.EnquiryGateway(); 
-	}
-	
-	/**
-	* this will run after every single test in this test case
-	*/
-	function tearDown(){}
-	
-	/**
-	* this will run once after initialization and before setUp()
-	*/
-	function beforeTests(){
+		CUT = new model.enquiry.EnquiryGateway();
+		
 		var q = new Query();
 		q.setSQL( "DROP TABLE Enquiries;");
 		q.execute();		
@@ -91,6 +81,16 @@ component extends="mxunit.framework.TestCase"{
 		" );
 		q.execute();
 	}
+	
+	/**
+	* this will run after every single test in this test case
+	*/
+	function tearDown(){}
+	
+	/**
+	* this will run once after initialization and before setUp()
+	*/
+	function beforeTests(){}
 	
 	/**
 	* this will run once after all tests have been run

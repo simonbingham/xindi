@@ -29,7 +29,7 @@
 				<label class="control-label" for="username">Email or Username</label>
 				<div class="controls">
 					<input class="input-xlarge" type="text" name="username" id="username">
-					#view( "helpers/failures",{ property="username" })#
+					#view( "helpers/failures", { property="username" })#
 				</div>
 			</div>
 			
