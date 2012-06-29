@@ -23,21 +23,21 @@ component extends="mxunit.framework.TestCase"{
 	function testDeletePage(){
 		var $ContentGateway = mock().deletePage( pageid="numeric" ).returns( {} );
 		CUT.setContentGateway( $ContentGateway );
-		var result = CUT.deletePage( 1 );
+		var result = CUT.deletePage( pageid=1 );
 		assertTrue( IsStruct( result ) );	
 	}
 	
 	function testGetPageByID(){
 		var $ContentGateway = mock().testGetPageByID( pageid="numeric" ).returns( mock() );
 		CUT.setContentGateway( $ContentGateway );
-		var Page = CUT.getPageByID( 1 );
+		var Page = CUT.getPageByID( pageid=1 );
 		assertTrue( IsObject( Page ) );	
 	}
 	
 	function testGetPageSlug(){
 		var $ContentGateway = mock().testGetPageSlug( slug="string" ).returns( mock() );
 		CUT.setContentGateway( $ContentGateway );
-		var Page = CUT.getPageByID( 1 );
+		var Page = CUT.getPageByID( pageid=1 );
 		assertTrue( IsObject( Page ) );			
 	}
 
@@ -64,14 +64,14 @@ component extends="mxunit.framework.TestCase"{
 	function testMovePage(){
 		var $ContentGateway = mock().movePage( pageid="{numeric}", direction="{string}" ).returns( {} );
 		CUT.setContentGateway( $ContentGateway );
-		var result = CUT.movePage( 1, "" );
+		var result = CUT.movePage( pageid=1, direction="" );
 		assertTrue( isStruct( result ) );
 	}
 
 	function testSavePage(){
 		var $ContentGateway = mock().savePage( properties="{struct}", ancestorid="{numeric}", context="{string}" ).returns( {} );
 		CUT.setContentGateway( $ContentGateway );
-		var result = CUT.savePage( {}, 1, "" );
+		var result = CUT.savePage( properties={}, ancestorid=1, context="" );
 		assertTrue( IsStruct( result ) );
 	}
 	

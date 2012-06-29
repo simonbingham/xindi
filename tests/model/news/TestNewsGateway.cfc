@@ -33,23 +33,23 @@ component extends="mxunit.framework.TestCase"{
 	}
 
 	function testGetArticleByIDWhereArticleDoesNotExist(){
-		var Article = CUT.getArticleByID( 100 );
-		assertFalse( Article.isPersisted() );
+		var result = CUT.getArticleByID( 100 );
+		assertFalse( result.isPersisted() );
 	}
 		
 	function testGetArticleByIDWhereArticleExists(){
-		var Article = CUT.getArticleByID( 1 );
-		assertTrue( Article.isPersisted() );
+		var result = CUT.getArticleByID( 1 );
+		assertTrue( result.isPersisted() );
 	}
 
 	function testGetArticleByUUIDWhereArticleDoesNotExist(){
-		var Article = CUT.getArticleByUUID( "foobar" );
-		assertFalse( Article.isPersisted() );
+		var result = CUT.getArticleByUUID( "foobar" );
+		assertFalse( result.isPersisted() );
 	}	
 	
 	function testGetArticleByUUIDWhereArticleExists(){
-		var Article = CUT.getArticleByUUID( "sample-article-a" );
-		assertTrue( Article.isPersisted() );
+		var result = CUT.getArticleByUUID( "sample-article-a" );
+		assertTrue( result.isPersisted() );
 	}
 	
 	function testGetArticleCount(){
@@ -57,39 +57,40 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testGetArticles(){
-		var articles = CUT.getArticles();
-		assertEquals( 3, ArrayLen( articles ) );
+		var result = CUT.getArticles();
+		assertEquals( 3, ArrayLen( result ) );
 	}
 
 	function testGetArticlesBySearchTerm(){
-		var articles = CUT.getArticles( searchterm="Sample Article A" );
-		assertEquals( 1, ArrayLen( articles ) );
+		var result = CUT.getArticles( searchterm="Sample Article A" );
+		assertEquals( 1, ArrayLen( result ) );
 	}
 
 	function testGetArticlesWithMaxResultsParameter(){
-		var articles = CUT.getArticles( maxresults=2 );
-		assertEquals( 2, ArrayLen( articles ) );
+		var result = CUT.getArticles( maxresults=2 );
+		assertEquals( 2, ArrayLen( result ) );
 	}
 	
 	function testGetArticlesSortedByArticleID(){
 		var articles = CUT.getArticles( sortorder="articleid" );
-		var Article = articles[ 1 ];
-		assertEquals( "sample-article-a", Article.getUUID() );				
+		var result = articles[ 1 ];
+		assertEquals( "sample-article-a", result.getUUID() );				
 	}
 	
 	function testGetArticlesSortedByArticleIDDescending(){
 		var articles = CUT.getArticles( sortorder="articleid desc" );
-		var Article = articles[ 1 ];
-		assertEquals( "sample-article-c", Article.getUUID() );				
+		var result = articles[ 1 ];
+		assertEquals( "sample-article-c", result.getUUID() );				
 	}
 	
 	function testGetValidator(){
 		makePublic( CUT, "newArticle" );
 		var Article = CUT.newArticle();
-		var $result = mock();
-		var $Validator = mock().getValidator( theObject='{any}' ).returns( $result );
-		CUT.setValidator( $Validator );		
-		assertTrue( IsObject( CUT.getValidator( Article ) ) );
+		var $ValidationResult = mock();
+		var $Validator = mock().getValidator( theObject='{any}' ).returns( $ValidationResult );
+		CUT.setValidator( $Validator );	
+		var result = CUT.getValidator( Article );	
+		assertTrue( IsObject( result ) );
 	}
 	
 	function testSaveArticleWhereArticleIsInvalid(){
@@ -118,8 +119,8 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testNewArticle(){
 		makePublic( CUT, "newArticle" );
-		var Article = CUT.newArticle();
-		assertFalse( Article.isPersisted() );
+		var result = CUT.newArticle();
+		assertFalse( result.isPersisted() );
 	}
  
 	// ------------------------ IMPLICIT ------------------------ // 

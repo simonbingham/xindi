@@ -45,31 +45,31 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testHasMetaDescription(){
-		var Article = EntityLoadByPK( "Article", 1 );
-		assertTrue( Article.hasMetaDescription() );
-		Article = EntityLoadByPK( "Article", 3 );
-		assertFalse( Article.hasMetaDescription() );
+		var result = EntityLoadByPK( "Article", 1 );
+		assertTrue( result.hasMetaDescription() );
+		result = EntityLoadByPK( "Article", 3 );
+		assertFalse( result.hasMetaDescription() );
 	}	
 
 	function testHasMetaKeywords(){
-		var Article = EntityLoadByPK( "Article", 1 );
-		assertTrue( Article.hasMetaKeywords() );
-		Article = EntityLoadByPK( "Article", 3 );
-		assertFalse( Article.hasMetaKeywords() );
+		var result = EntityLoadByPK( "Article", 1 );
+		assertTrue( result.hasMetaKeywords() );
+		result = EntityLoadByPK( "Article", 3 );
+		assertFalse( result.hasMetaKeywords() );
 	}	
 	
 	function testHasMetaTitle(){
-		var Article = EntityLoadByPK( "Article", 1 );
-		assertTrue( Article.hasMetaTitle() );
-		Article = EntityLoadByPK( "Article", 3 );
-		assertFalse( Article.hasMetaTitle() );
+		var result = EntityLoadByPK( "Article", 1 );
+		assertTrue( result.hasMetaTitle() );
+		result = EntityLoadByPK( "Article", 3 );
+		assertFalse( result.hasMetaTitle() );
 	}
 	
 	function testIsMetaGenerated(){
-		var Article = EntityLoadByPK( "Article", 1 );
-		assertTrue( Article.isMetaGenerated() );
-		Article = EntityLoadByPK( "Article", 3 );
-		assertFalse( Article.isMetaGenerated() );
+		var result = EntityLoadByPK( "Article", 1 );
+		assertTrue( result.isMetaGenerated() );
+		result = EntityLoadByPK( "Article", 3 );
+		assertFalse( result.isMetaGenerated() );
 	}		
 	
 	function testIsNew(){
@@ -81,8 +81,8 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testIsPersisted(){
 		assertFalse( CUT.isPersisted() );
-		var Article = EntityLoadByPK( "Article", 1 );
-		assertTrue( Article.isPersisted() );		
+		var result = EntityLoadByPK( "Article", 1 );
+		assertTrue( result.isPersisted() );		
 	}
 	
 	function testIsPublished(){

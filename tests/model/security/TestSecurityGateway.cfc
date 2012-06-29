@@ -23,7 +23,7 @@ component extends="mxunit.framework.TestCase"{
 	function testDeleteCurrentUser(){
 		assertFalse( CUT.hasCurrentUser() );
 		var User = EntityLoadByPK( "User", 1 );
-		CUT.setCurrentUser( User );
+		CUT.setCurrentUser( User=User );
 		assertTrue( CUT.hasCurrentUser() );
 		CUT.deleteCurrentUser();
 		assertFalse( CUT.hasCurrentUser() );
@@ -32,37 +32,42 @@ component extends="mxunit.framework.TestCase"{
 	function testHasCurrentUser(){
 		assertFalse( CUT.hasCurrentUser() );
 		var User = EntityLoadByPK( "User", 1 );
-		CUT.setCurrentUser( User );
+		CUT.setCurrentUser( User=User );
 		assertTrue( CUT.hasCurrentUser() );
 	}
 	
 	function testIsAllowedForSecureAction(){
-		assertFalse( CUT.isAllowed( "admin:pages" ) );
+		assertFalse( CUT.isAllowed( action="admin:pages", whitelist="^admin:security,^public:" ) );
 		var User = EntityLoadByPK( "User", 1 );
-		CUT.setCurrentUser( User );
-		assertTrue( CUT.isAllowed( "admin:pages" ) );
+		CUT.setCurrentUser( User=User );
+		assertTrue( CUT.isAllowed( action="admin:pages", whitelist="^admin:security,^public:" ) );
 		CUT.deleteCurrentUser();
-		assertFalse( CUT.isAllowed( "admin:pages" ) );
+		assertFalse( CUT.isAllowed( action="admin:pages", whitelist="^admin:security,^public:" ) );
 	}	
 
 	function testIsAllowedForUnsecureAction(){
-		assertTrue( CUT.isAllowed( "public:" ) );
+		assertTrue( CUT.isAllowed( action="public:", whitelist="^admin:security,^public:" ) );
 		var User = EntityLoadByPK( "User", 1 );
-		CUT.setCurrentUser( User );
-		assertTrue( CUT.isAllowed( "public:" ) );
+		CUT.setCurrentUser( User=User );
+		assertTrue( CUT.isAllowed( action="public:", whitelist="^admin:security,^public:" ) );
 		CUT.deleteCurrentUser();
-		assertTrue( CUT.isAllowed( "public:" ) );		
+		assertTrue( CUT.isAllowed( action="public:", whitelist="^admin:security,^public:" ) );		
 	}	
 	
 	function testLoginUserForValidUser(){
 		var properties = { username="admin", password="admin" };
-		result = CUT.loginUser( properties );
+		result = CUT.loginUser( properties=properties );
 		assertTrue( StructKeyExists( result.messages, "success" ) );
 	}
 
 	function testLoginUserForInvalidUser(){
-		var properties = { username="foo", password="bar" };
-		result = CUT.loginUser( properties );
+		var $User = mock().getFirstName().returns( "" ).isPersisted().returns( false );
+		var $UserGateway = mock().getUserByCredentials( User="{any}" ).returns( $User ).newUser().returns( $User );
+		CUT.setUserGateway( $UserGateway );
+		var $ValidationResult = mock().hasErrors().returns( true );
+		var $Validator = mock().validate( theObject="{any}", Context="{string}" ).returns( $ValidationResult );
+		CUT.setValidator( $Validator );
+		result = CUT.loginUser( properties={ username="foo", password="bar" } );
 		assertTrue( StructKeyExists( result.messages, "error" ) );
 	}
 	
@@ -73,7 +78,7 @@ component extends="mxunit.framework.TestCase"{
 	function testSetCurrentUser(){
 		assertFalse( CUT.hasCurrentUser() );
 		var User = EntityLoadByPK( "User", 1 );
-		CUT.setCurrentUser( User );
+		CUT.setCurrentUser( User=User );
 		assertTrue( CUT.hasCurrentUser() );
 	}
 
@@ -83,18 +88,8 @@ component extends="mxunit.framework.TestCase"{
 	* this will run before every single test in this test case
 	*/
 	function setUp(){
-		CUT = new model.security.SecurityService();
-	}
-	
-	/**
-	* this will run after every single test in this test case
-	*/
-	function tearDown(){}
-	
-	/**
-	* this will run once after initialization and before setUp()
-	*/
-	function beforeTests(){
+		CUT = new model.security.SecurityGateway();
+		
 		var q = new Query();
 		q.setSQL( "DROP TABLE Users;");
 		q.execute();		
@@ -106,6 +101,16 @@ component extends="mxunit.framework.TestCase"{
 		" );
 		q.execute();		
 	}
+	
+	/**
+	* this will run after every single test in this test case
+	*/
+	function tearDown(){}
+	
+	/**
+	* this will run once after initialization and before setUp()
+	*/
+	function beforeTests(){}
 	
 	/**
 	* this will run once after all tests have been run
