@@ -21,6 +21,7 @@ component extends="mxunit.framework.TestCase"{
 	// ------------------------ INTEGRATION TESTS ------------------------ //
 	
 	function testDeletePage(){
+<<<<<<< HEAD
 		fail( "test not yet implemented" );
 	}
 	
@@ -30,6 +31,26 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testGetPageSlug(){
 		fail( "test not yet implemented" );
+=======
+		var $ContentGateway = mock().deletePage( pageid="numeric" ).returns( {} );
+		CUT.setContentGateway( $ContentGateway );
+		var result = CUT.deletePage( pageid=1 );
+		assertTrue( IsStruct( result ) );	
+	}
+	
+	function testGetPageByID(){
+		var $ContentGateway = mock().testGetPageByID( pageid="numeric" ).returns( mock() );
+		CUT.setContentGateway( $ContentGateway );
+		var Page = CUT.getPageByID( pageid=1 );
+		assertTrue( IsObject( Page ) );	
+	}
+	
+	function testGetPageSlug(){
+		var $ContentGateway = mock().testGetPageSlug( slug="string" ).returns( mock() );
+		CUT.setContentGateway( $ContentGateway );
+		var Page = CUT.getPageByID( pageid=1 );
+		assertTrue( IsObject( Page ) );			
+>>>>>>> origin/develop
 	}
 
 	function testGetPages(){
@@ -45,11 +66,25 @@ component extends="mxunit.framework.TestCase"{
 	}
 
 	function testMovePage(){
+<<<<<<< HEAD
 		fail( "test not yet implemented" );
 	}
 
 	function testSavePage(){
 		fail( "test not yet implemented" );
+=======
+		var $ContentGateway = mock().movePage( pageid="{numeric}", direction="{string}" ).returns( {} );
+		CUT.setContentGateway( $ContentGateway );
+		var result = CUT.movePage( pageid=1, direction="" );
+		assertTrue( isStruct( result ) );
+	}
+
+	function testSavePage(){
+		var $ContentGateway = mock().savePage( properties="{struct}", ancestorid="{numeric}", context="{string}" ).returns( {} );
+		CUT.setContentGateway( $ContentGateway );
+		var result = CUT.savePage( properties={}, ancestorid=1, context="" );
+		assertTrue( IsStruct( result ) );
+>>>>>>> origin/develop
 	}
 	
 	// ------------------------ IMPLICIT ------------------------ // 

@@ -21,6 +21,7 @@ component extends="mxunit.framework.TestCase"{
 	// ------------------------ INTEGRATION TESTS ------------------------ //
 	
 	function testDeleteArticle(){
+<<<<<<< HEAD
 		fail( "test not yet implemented" );
 	}
 
@@ -46,6 +47,54 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testSaveArticle(){
 		fail( "test not yet implemented" );
+=======
+		var $NewsGateway = mock().deleteArticle( articleid="numeric" ).returns( {} );
+		CUT.setNewsGateway( $NewsGateway );
+		var result = CUT.deleteArticle( articleid=1 );
+		assertTrue( IsStruct( result ) );
+	}
+
+	function testGetArticleByID(){
+		var $NewsGateway = mock().getArticleByID( articleid="numeric" ).returns( {} );
+		CUT.setNewsGateway( $NewsGateway );		
+		var result = CUT.getArticleByID( articleid=1 );
+		assertTrue( IsObject( result ) );
+	}
+	
+	function testGetArticleByUUID(){
+		var $NewsGateway = mock().getArticleByUUID( uuid="string" ).returns( {} );
+		CUT.setNewsGateway( $NewsGateway );			
+		var result = CUT.getArticleByUUID( uuid="sample-article-a" );
+		assertTrue( IsObject( result ) );
+	}
+	
+	function testGetArticleCount(){
+		var $NewsGateway = mock().getArticleCount().returns( 0 );
+		CUT.setNewsGateway( $NewsGateway );
+		var result = CUT.getArticleCount();		
+		assertTrue( IsNumeric( result ) );
+	}
+	
+	function testGetArticles(){
+		var $NewsGateway = mock().getArticles( searchterm="{string}", sortorder="{string}", published="{boolean}", maxresults="{numeric}", offset="{numeric}" ).returns( [] );
+		CUT.setNewsGateway( $NewsGateway );		
+		var result = CUT.getArticles();
+		assertTrue( IsArray( result ) );			
+	}
+	
+	function testGetValidator(){
+		var $NewsGateway = mock().getValidator( Article="{any}" ).returns( mock() );
+		CUT.setNewsGateway( $NewsGateway );
+		var result = CUT.getValidator( mock() );
+		assertTrue( IsObject( result ) );
+	}
+	
+	function testSaveArticle(){
+		var $NewsGateway = mock().saveArticle( properties="{struct}" ).returns( {} );
+		CUT.setNewsGateway( $NewsGateway );
+		var result = CUT.saveArticle( properties={ title="foo", published="27/6/2012", content="bar" } );
+		assertTrue( IsStruct( result ) );
+>>>>>>> origin/develop
 	}
 	
 	// ------------------------ IMPLICIT ------------------------ // 

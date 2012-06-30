@@ -73,11 +73,17 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testGetArticlesSortedByArticleID(){
 		var articles = CUT.getArticles( sortorder="articleid" );
+<<<<<<< HEAD
 		assertEquals( "sample-article-a", articles[ 1 ].getUUID() );				
+=======
+		var result = articles[ 1 ];
+		assertEquals( "sample-article-a", result.getUUID() );				
+>>>>>>> origin/develop
 	}
 	
 	function testGetArticlesSortedByArticleIDDescending(){
 		var articles = CUT.getArticles( sortorder="articleid desc" );
+<<<<<<< HEAD
 		assertEquals( "sample-article-c", articles[ 1 ].getUUID() );				
 	}
 	
@@ -87,6 +93,19 @@ component extends="mxunit.framework.TestCase"{
 		CUT.setValidator( $Validator );	
 		var $Article = mock( "model.news.Article" );
 		var result = CUT.getValidator( $Article );	
+=======
+		var result = articles[ 1 ];
+		assertEquals( "sample-article-c", result.getUUID() );				
+	}
+	
+	function testGetValidator(){
+		makePublic( CUT, "newArticle" );
+		var Article = CUT.newArticle();
+		var $ValidationResult = mock();
+		var $Validator = mock().getValidator( theObject='{any}' ).returns( $ValidationResult );
+		CUT.setValidator( $Validator );	
+		var result = CUT.getValidator( Article );	
+>>>>>>> origin/develop
 		assertTrue( IsObject( result ) );
 	}
 	
