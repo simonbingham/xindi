@@ -6,19 +6,6 @@ Xindi is a small, lightweight and flexible CFML content management system. It's 
 
 Open source, free and flexible, Xindi is a great choice for your next web project.
 
-## Minimum Requirements
-
-* Adobe ColdFusion 9.0.1 or Railo 3.3
-* MySQL 5 or MSSQL
-
-## Quick Start
-
-Clone the git repo - `git clone git@github.com:simonbingham/xindi.git` - or [download it] (https://github.com/simonbingham/xindi/zipball/master).
-
-## Installation
-
-[Please view the project wiki for installation instructions.] (https://github.com/simonbingham/xindi/wiki)
-
 ## Frameworks
 
 Xindi uses the frameworks listed below.
@@ -35,6 +22,19 @@ Xindi uses the frameworks listed below.
 * [Twitter Bootstrap] (http://twitter.github.com/bootstrap/)
 * [jQuery (and jQuery UI)] (http://jquery.com/)
 * [CKeditor] (http://ckeditor.com/)
+
+## Minimum Requirements
+
+* Adobe ColdFusion 9.0.1 or Railo 3.3
+* MySQL 5 or MSSQL
+
+## Quick Start
+
+Clone the git repo - `git clone git@github.com:simonbingham/xindi.git` - or [download it] (https://github.com/simonbingham/xindi/zipball/master).
+
+## Installation
+
+[Please view the project wiki for installation instructions.] (https://github.com/simonbingham/xindi/wiki)
 
 ## License
 
