@@ -6,20 +6,6 @@ Xindi is a small, lightweight and flexible CFML content management system. It's 
 
 Open source, free and flexible, Xindi is a great choice for your next web project.
 
-## Features
-
-* Password protected
-* Page manager
-* User account manager
-* News feature with RSS feed
-* Enquiry form
-* Text editor (with file manager)
-* Search engine friendly urls
-* Search form
-* Breadcrumb trail
-* Site map
-* Sitemap.xml generation
-
 ## Minimum Requirements
 
 * Adobe ColdFusion 9.0.1 or Railo 3.3
@@ -70,6 +56,8 @@ If you experience any problems with Xindi please:
 
 ## Contact
 
-To get in touch please email us at [enquiries@getxindi.com] (mailto:enquiries@getxindi.com).
+[To get in touch please email us.] (mailto:enquiries@getxindi.com).
 
-Alternatively, you can find us on [Twitter] (https://twitter.com/#!/getxindi), [Facebook] (http://www.facebook.com/getxindi) and [Google+] (https://plus.google.com/112798469896267857099).
+## Social Media
+
+You can find us on [Twitter] (https://twitter.com/#!/getxindi), [Facebook] (http://www.facebook.com/getxindi) and [Google+] (https://plus.google.com/112798469896267857099).
