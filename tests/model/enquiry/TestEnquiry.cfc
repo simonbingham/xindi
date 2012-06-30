@@ -60,6 +60,7 @@ component extends="mxunit.framework.TestCase"{
 	* this will run before every single test in this test case
 	*/
 	function setUp(){
+		// initialise component under test
 		CUT = new model.enquiry.Enquiry(); 
 	}
 	

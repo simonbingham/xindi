@@ -20,32 +20,48 @@ component extends="mxunit.framework.TestCase"{
 			
 	// ------------------------ INTEGRATION TESTS ------------------------ //
 	
-	function testDeleteEnquiry(){
-		fail( "test not yet implemented" );
+	function testDeleteEnquiryWhereEnquiryExists(){
+		var result = CUT.deleteEnquiry( enquiryid=1 );
+		assertTrue( StructKeyExists( result.messages, "success" ) );
+	}
+
+	function testDeleteEnquiryWhereEnquiryDoesNotExist(){
+		var result = CUT.deleteEnquiry( enquiryid=4 );
+		assertTrue( StructKeyExists( result.messages, "error" ) );
 	}
 	
 	function testGetEnquiries(){
-		fail( "test not yet implemented" );
+		var enquiries = CUT.getEnquiries();
+		assertEquals( 3, ArrayLen( enquiries ) );
+	}
+
+	function testGetEnquiriesWithMaxResults(){
+		var enquiries = CUT.getEnquiries( maxresults=2 );
+		assertEquals( 2, ArrayLen( enquiries ) );
 	}
 	
 	function testGetEnquiryByID(){
-		fail( "test not yet implemented" );
+		var Enquiry = CUT.getEnquiryByID( enquiryid=2 );
+		assertTrue( Enquiry.isPersisted() );
 	}
 
 	function testGetUnreadCount(){
-		fail( "test not yet implemented" );
+		assertEquals( 3, CUT.getUnreadCount() );
 	}
 	
 	function testMarkAllRead(){
-		fail( "test not yet implemented" );
+		var result = CUT.markAllRead();
+		assertTrue( StructKeyExists( result.messages, "success" ) );
 	}
 	
 	function testMarkRead(){
-		fail( "test not yet implemented" );
+		var result = CUT.markRead( enquiryid=3 );
+		assertTrue( StructKeyExists( result.messages, "success" ) );
 	}
 	
 	function testNewEnquiry(){
-		fail( "test not yet implemented" );
+		var result = CUT.newEnquiry();
+		assertFalse( result.isPersisted() );
 	}
 	
 	function testSendEnquiry(){
@@ -58,13 +74,41 @@ component extends="mxunit.framework.TestCase"{
 	* this will run before every single test in this test case
 	*/
 	function setUp(){
-		CUT = new model.enquiry.EnquiryGateway();
+		// initialise component under test
+		CUT = new model.enquiry.EnquiryService();
+		var EnquiryGateway = new model.enquiry.EnquiryGateway();
+		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
+		Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
+		EnquiryGateway.setValidator( Validator );
+		CUT.setEnquiryGateway( EnquiryGateway );
+		
+		// reinitialise ORM for the application (create database table)
+		ORMReload();
+		
+		// insert test data into database
+		var q = new Query();
+		q.setSQL( "
+			INSERT INTO enquiries (enquiry_id, enquiry_firstname, enquiry_lastname, enquiry_email, enquiry_message, enquiry_unread, enquiry_created) 
+			VALUES
+				(1, 'Simon', 'Bingham', 'example@example.com', 'Phasellus ut tortor in erat dignissim eleifend at nec leo! Praesent vel lectus et elit condimentum hendrerit vel sit amet magna. Nunc luctus bibendum mi sed posuere. Pellentesque facilisis ullamcorper ultrices. Nulla eu dolor ac nunc laoreet tincidunt. Nulla et laoreet eros. Proin id pellentesque justo? Maecenas quis risus augue. Nulla commodo laoreet est nec mattis. Phasellus id dolor quam, id mattis mauris.', true, '2012-06-08 13:46:47'),
+				(2, 'John', 'Whish', 'example@example.com', 'Phasellus ut tortor in erat dignissim eleifend at nec leo! Praesent vel lectus et elit condimentum hendrerit vel sit amet magna. Nunc luctus bibendum mi sed posuere. Pellentesque facilisis ullamcorper ultrices. Nulla eu dolor ac nunc laoreet tincidunt. Nulla et laoreet eros. Proin id pellentesque justo? Maecenas quis risus augue. Nulla commodo laoreet est nec mattis. Phasellus id dolor quam, id mattis mauris.', true, '2012-06-08 13:46:57'),
+				(3, 'Andy', 'Beer', 'example@example.com', 'Phasellus ut tortor in erat dignissim eleifend at nec leo! Praesent vel lectus et elit condimentum hendrerit vel sit amet magna. Nunc luctus bibendum mi sed posuere. Pellentesque facilisis ullamcorper ultrices. Nulla eu dolor ac nunc laoreet tincidunt. Nulla et laoreet eros. Proin id pellentesque justo? Maecenas quis risus augue. Nulla commodo laoreet est nec mattis. Phasellus id dolor quam, id mattis mauris.', true, '2012-06-08 13:47:04');
+		" );
+		q.execute();		
 	}
 	
 	/**
 	* this will run after every single test in this test case
 	*/
-	function tearDown(){}
+	function tearDown(){
+		// destroy test data
+		var q = new Query();
+		q.setSQL( "DROP TABLE Enquiries;");
+		q.execute();
+		
+		// clear first level cache and remove any unsaved objects
+		ORMClearSession( "xindi_testsuite" );			
+	}
 	
 	/**
 	* this will run once after initialization and before setUp()

@@ -37,46 +37,19 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testIsAllowedForSecureAction(){
-		assertFalse( CUT.isAllowed( action="admin:pages", whitelist="^admin:security,^public:" ) );
-		var User = EntityLoadByPK( "User", 1 );
-		CUT.setCurrentUser( User=User );
-		assertTrue( CUT.isAllowed( action="admin:pages", whitelist="^admin:security,^public:" ) );
-		CUT.deleteCurrentUser();
-		assertFalse( CUT.isAllowed( action="admin:pages", whitelist="^admin:security,^public:" ) );
+		fail( "test not yet implemented" );
 	}	
 
 	function testIsAllowedForUnsecureAction(){
-		assertTrue( CUT.isAllowed( action="public:", whitelist="^admin:security,^public:" ) );
-		var User = EntityLoadByPK( "User", 1 );
-		CUT.setCurrentUser( User=User );
-		assertTrue( CUT.isAllowed( action="public:", whitelist="^admin:security,^public:" ) );
-		CUT.deleteCurrentUser();
-		assertTrue( CUT.isAllowed( action="public:", whitelist="^admin:security,^public:" ) );		
+		fail( "test not yet implemented" );	
 	}	
 	
 	function testLoginUserForValidUser(){
-		var properties = { username="admin", password="admin" };
-		result = CUT.loginUser( properties=properties );
-		assertTrue( StructKeyExists( result.messages, "success" ) );
+		fail( "test not yet implemented" );
 	}
 
 	function testLoginUserForInvalidUser(){
-<<<<<<< HEAD
-		var $User = mock( "model.user.User" ).getFirstName().returns( "" ).isPersisted().returns( false );
-		var $UserGateway = mock( "model.user.UserGateway" ).getUserByCredentials( User="{any}" ).returns( $User ).newUser().returns( $User );
-		CUT.setUserGateway( $UserGateway );
-		var $ValidationResult = mock( "Validator" ).hasErrors().returns( true );
-		var $Validator = mock( "Validator" ).validate( theObject="{any}", Context="{string}" ).returns( $ValidationResult );
-=======
-		var $User = mock().getFirstName().returns( "" ).isPersisted().returns( false );
-		var $UserGateway = mock().getUserByCredentials( User="{any}" ).returns( $User ).newUser().returns( $User );
-		CUT.setUserGateway( $UserGateway );
-		var $ValidationResult = mock().hasErrors().returns( true );
-		var $Validator = mock().validate( theObject="{any}", Context="{string}" ).returns( $ValidationResult );
->>>>>>> origin/develop
-		CUT.setValidator( $Validator );
-		result = CUT.loginUser( properties={ username="foo", password="bar" } );
-		assertTrue( StructKeyExists( result.messages, "error" ) );
+		fail( "test not yet implemented" );
 	}
 	
 	function testResetPassword(){
@@ -96,50 +69,33 @@ component extends="mxunit.framework.TestCase"{
 	* this will run before every single test in this test case
 	*/
 	function setUp(){
+		// initialise component under test
 		CUT = new model.security.SecurityGateway();
 		
-<<<<<<< HEAD
+		// reinitialise ORM for the application (create database table)
 		ORMReload();
+		
+		// insert test data into database
 		var q = new Query();
-		q.setSQL( "
-			INSERT INTO Users ( user_id, user_firstname, user_lastname, user_email, user_username, user_password, user_created, user_updated ) 
-=======
-		var q = new Query();
-		q.setSQL( "DROP TABLE Users;");
-		q.execute();		
-		ORMReload();
-		q = new Query();
 		q.setSQL( "
 			INSERT INTO users ( user_id, user_firstname, user_lastname, user_email, user_username, user_password, user_created, user_updated ) 
->>>>>>> origin/develop
 			VALUES ( 1, 'Default', 'User', 'enquiries@getxindi.com', 'admin', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB', '2012-04-22 08:39:07', '2012-04-22 08:39:09' );
 		" );
 		q.execute();		
 	}
-<<<<<<< HEAD
 	
 	/**
 	* this will run after every single test in this test case
 	*/
 	function tearDown(){
+		// destroy test data
 		var q = new Query();
 		q.setSQL( "DROP TABLE Users;");
 		q.execute();
 		
-		ORMReload(); // TODO: error occurs in web browsers test if this is excluded - need to work out why this is happening
+		// clear first level cache and remove any unsaved objects
+		ORMClearSession( "xindi_testsuite" );
 	}
-	
-	/**
-	* this will run once after initialization and before setUp()
-	*/
-	function beforeTests(){}
-=======
->>>>>>> origin/develop
-	
-	/**
-	* this will run after every single test in this test case
-	*/
-	function tearDown(){}
 	
 	/**
 	* this will run once after initialization and before setUp()
@@ -149,10 +105,6 @@ component extends="mxunit.framework.TestCase"{
 	/**
 	* this will run once after all tests have been run
 	*/
-	function afterTests(){
-		var q = new Query();
-		q.setSQL( "DROP TABLE Users;");
-		q.execute();		
-	}
+	function afterTests(){}
 
 }

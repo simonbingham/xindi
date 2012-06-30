@@ -73,18 +73,7 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testGetArticlesSortedByArticleID(){
 		var articles = CUT.getArticles( sortorder="articleid" );
-<<<<<<< HEAD
 		assertEquals( "sample-article-a", articles[ 1 ].getUUID() );				
-=======
-		var result = articles[ 1 ];
-		assertEquals( "sample-article-a", result.getUUID() );				
->>>>>>> origin/develop
-	}
-	
-	function testGetArticlesSortedByArticleIDDescending(){
-		var articles = CUT.getArticles( sortorder="articleid desc" );
-<<<<<<< HEAD
-		assertEquals( "sample-article-c", articles[ 1 ].getUUID() );				
 	}
 	
 	function testGetValidator(){
@@ -93,19 +82,6 @@ component extends="mxunit.framework.TestCase"{
 		CUT.setValidator( $Validator );	
 		var $Article = mock( "model.news.Article" );
 		var result = CUT.getValidator( $Article );	
-=======
-		var result = articles[ 1 ];
-		assertEquals( "sample-article-c", result.getUUID() );				
-	}
-	
-	function testGetValidator(){
-		makePublic( CUT, "newArticle" );
-		var Article = CUT.newArticle();
-		var $ValidationResult = mock();
-		var $Validator = mock().getValidator( theObject='{any}' ).returns( $ValidationResult );
-		CUT.setValidator( $Validator );	
-		var result = CUT.getValidator( Article );	
->>>>>>> origin/develop
 		assertTrue( IsObject( result ) );
 	}
 	
@@ -143,9 +119,13 @@ component extends="mxunit.framework.TestCase"{
 	* this will run before every single test in this test case
 	*/
 	function setUp(){
+		// initialise component under test
 		CUT = new model.news.NewsGateway();
-		 
+
+		// reinitialise ORM for the application (create database table)
 		ORMReload();
+		
+		// insert test data into database
 		var q = new Query();
 		q.setSQL( "
 			INSERT INTO articles ( article_id, article_uuid, article_title, article_content, article_metagenerated, article_metatitle, article_metadescription, article_metakeywords, article_published, article_created, article_updated) 
@@ -161,9 +141,13 @@ component extends="mxunit.framework.TestCase"{
 	* this will run after every single test in this test case
 	*/
 	function tearDown(){
+		// destroy test data
 		var q = new Query();
 		q.setSQL( "DROP TABLE Articles;");
-		q.execute();		
+		q.execute();
+		
+		// clear first level cache and remove any unsaved objects
+		ORMClearSession( "xindi_testsuite" );		
 	}
 	
 	/**

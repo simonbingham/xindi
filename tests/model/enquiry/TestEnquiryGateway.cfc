@@ -16,9 +16,6 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-/**
-* @mxunit:decorators mxunit.framework.decorators.TransactionRollbackDecorator
-*/
 component extends="mxunit.framework.TestCase"{
 			
 	// ------------------------ UNIT TESTS ------------------------ //
@@ -77,9 +74,13 @@ component extends="mxunit.framework.TestCase"{
 	* this will run before every single test in this test case
 	*/
 	function setUp(){
+		// initialise component under test
 		CUT = new model.enquiry.EnquiryGateway();
 		
+		// reinitialise ORM for the application (create database table)
 		ORMReload();
+		
+		// insert test data into database
 		var q = new Query();
 		q.setSQL( "
 			INSERT INTO enquiries (enquiry_id, enquiry_firstname, enquiry_lastname, enquiry_email, enquiry_message, enquiry_unread, enquiry_created) 
@@ -95,9 +96,13 @@ component extends="mxunit.framework.TestCase"{
 	* this will run after every single test in this test case
 	*/
 	function tearDown(){
+		// destroy test data
 		var q = new Query();
 		q.setSQL( "DROP TABLE Enquiries;");
-		q.execute();		
+		q.execute();
+		
+		// clear first level cache and remove any unsaved objects
+		ORMClearSession( "xindi_testsuite" );		
 	}
 	
 	/**

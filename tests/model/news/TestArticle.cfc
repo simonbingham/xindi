@@ -121,9 +121,13 @@ component extends="mxunit.framework.TestCase"{
 	* this will run before every single test in this test case
 	*/
 	function setUp(){
+		// initialise component under test
 		CUT = new model.news.Article();
 		
+		// reinitialise ORM for the application (create database table)
 		ORMReload();
+		
+		// insert test data into database
 		var q = new Query();
 		q.setSQL( "
 			INSERT INTO articles ( article_id, article_uuid, article_title, article_content, article_metagenerated, article_metatitle, article_metadescription, article_metakeywords, article_published, article_created, article_updated) 
@@ -139,9 +143,13 @@ component extends="mxunit.framework.TestCase"{
 	* this will run after every single test in this test case
 	*/
 	function tearDown(){
+		// destroy test data
 		var q = new Query();
 		q.setSQL( "DROP TABLE Articles;");
-		q.execute();		
+		q.execute();
+		
+		// clear first level cache and remove any unsaved objects
+		ORMClearSession( "xindi_testsuite" );	
 	}
 	
 	/**

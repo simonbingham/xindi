@@ -68,9 +68,13 @@ component extends="mxunit.framework.TestCase"{
 	* this will run before every single test in this test case
 	*/
 	function setUp(){
+		// initialise component under test
 		CUT = new model.user.User();
-		 
+		
+		// reinitialise ORM for the application (create database table)
 		ORMReload();
+		
+		// insert test data into database
 		var q = new Query();
 		q.setSQL( "
 			INSERT INTO Users ( user_id, user_firstname, user_lastname, user_email, user_username, user_password, user_created, user_updated ) 
@@ -83,9 +87,13 @@ component extends="mxunit.framework.TestCase"{
 	* this will run after every single test in this test case
 	*/
 	function tearDown(){
+		// destroy test data
 		var q = new Query();
 		q.setSQL( "DROP TABLE Users;");
-		q.execute();		
+		q.execute();
+		
+		// clear first level cache and remove any unsaved objects
+		ORMClearSession( "xindi_testsuite" );		
 	}
 	
 	/**

@@ -49,12 +49,12 @@ component accessors="true"{
 	}
 
 	function getUserByCredentials( required User ){
-		return ORMExecuteQuery( " from User where ( username=:username or email=:email ) and password=:password", { username=arguments.User.getUsername(), email=arguments.User.getEmail(), password=arguments.User.getPassword() }, true );
+		return ORMExecuteQuery( "from User where ( username=:username or email=:email ) and password=:password", { username=arguments.User.getUsername(), email=arguments.User.getEmail(), password=arguments.User.getPassword() }, true );
 	}
 
 	// TODO: might be able to remove this
 	function getUserByEmailOrUsername( required User ){
-		return ORMExecuteQuery( " from User where username=:username or email=:email", { username=arguments.User.getUsername(), email=arguments.User.getEmail() }, true );
+		return ORMExecuteQuery( "from User where username=:username or email=:email", { username=arguments.User.getUsername(), email=arguments.User.getEmail() }, true );
 	}
 
 	array function getUsers(){

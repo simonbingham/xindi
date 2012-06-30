@@ -4,7 +4,7 @@
 
 The test suite uses:
 
-* unit testing to test entities and gateways
+* unit testing to test objects and gateways
 * integration testing to test services
 
 ## What is a Unit Test?

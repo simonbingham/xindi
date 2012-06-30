@@ -20,36 +20,94 @@ component extends="mxunit.framework.TestCase"{
 
 	// ------------------------ INTEGRATION TESTS ------------------------ //
 	
-	function testDeleteUser(){
-		fail( "test not yet implemented" );
+	function testDeleteUserWhereUserDoesNotExist(){
+		result = CUT.deleteUser( 2 );
+		assertTrue( StructKeyExists( result.messages, "error" ) );
 	}
 
-	function testGetUserByID(){
-		fail( "test not yet implemented" );
+	function testDeleteUserWhereUserExists(){
+		result = CUT.deleteUser( 1 );
+		assertTrue( StructKeyExists( result.messages, "success" ) );
+	}
+
+	function testGetUserByIDWhereUserDoesNotExist(){
+		var User = CUT.getUserByID( 2 );
+		assertFalse( User.isPersisted() );
 	}	
 	
-	function testGetUserByCredentials(){
-		fail( "test not yet implemented" );
+	function testGetUserByIDWhereUserExists(){
+		var User = CUT.getUserByID( 1 );
+		assertTrue( User.isPersisted() );
+	}	
+	
+	function testGetUserByCredentialsReturnsUserForCorrectCredentialsByEmail(){
+		var User = new model.user.User();
+		User.setUsername( "" );
+		User.setEmail( "enquiries@getxindi.com" );
+		User.setPassword( "admin" );
+		result = CUT.getUserByCredentials( User );
+		assertFalse( IsNull( result ) );
+		assertEquals( "enquiries@getxindi.com", result.getEmail() );
 	}
 
-	function testGetUserByEmailOrUsername(){
-		fail( "test not yet implemented" );
+	function testGetUserByCredentialsReturnsUserForCorrectCredentialsByUsername(){
+		var User = new model.user.User();
+		User.setUsername( "admin" );
+		User.setEmail( "" );
+		User.setPassword( "admin" );
+		result = CUT.getUserByCredentials( User );
+		assertFalse( IsNull( result ) );
+		assertEquals( "enquiries@getxindi.com", result.getEmail() );
 	}
 
+	function testGetUserByCredentialsReturnsNullForInCorrectCredentials(){
+		var User = new model.user.User();
+		User.setUsername( "aliaspooryorik" );
+		User.setEmail( "" );
+		User.setPassword( "1111111111111111111111111111111111111111111111111111111111111111" );		
+		result = CUT.getUserByCredentials( User );
+		assertEquals( true, IsNull( result ) );
+	}
+	
+	function testGetUserByEmailOrUsernameWhereEmailIsSpecified(){
+		var User = CUT.newUser();
+		User.setEmail( "enquiries@getxindi.com" );
+		User = CUT.getUserByEmailOrUsername( User );
+		assertTrue( User.isPersisted() );
+	}
+
+	function testGetUserByEmailOrUsernameWhereUsernameIsSpecified(){
+		var User = CUT.newUser();
+		User.setUsername( "admin" );
+		User = CUT.getUserByEmailOrUsername( User );
+		assertTrue( User.isPersisted() );
+	}
+	
 	function testGetUsers(){
-		fail( "test not yet implemented" );
+		var users = CUT.getUsers();
+		assertTrue( ArrayLen( users ) == 1 );
 	}	
 	
 	function testGetValidator(){
-		fail( "test not yet implemented" );
+		var User = new model.user.User();
+		assertTrue( IsObject( CUT.getValidator( User ) ) );
 	}
 	
 	function testNewUser(){
-		fail( "test not yet implemented" );
+		var User = CUT.newUser();
+		assertFalse( User.isPersisted() );
 	}
 
-	function testSaveUser(){
-		fail( "test not yet implemented" );
+	function testSaveUserWhereUserIsInvalid(){
+		var properties = { firstname="Simon", lastname="Bingham", email="foobarfoobarcom", username="foo", password="bar"  };
+		var result = CUT.saveUser( properties, "create" );
+		assertTrue( StructKeyExists( result.messages, "error" ) );
+	}
+	
+	function testSaveUserWhereUserIsValid(){
+		var properties = { firstname="Simon", lastname="Bingham", email="foobar@foobar.com", username="foo", password="bar"  };
+		var result = CUT.saveUser( properties, "create" );
+		assertTrue( StructKeyExists( result.messages, "success" ) );
 	}
 	
 	// ------------------------ IMPLICIT ------------------------ //
@@ -58,13 +116,38 @@ component extends="mxunit.framework.TestCase"{
 	* this will run before every single test in this test case
 	*/
 	function setUp(){
-		CUT = new model.user.UserGateway();
+		// initialise component under test
+		CUT = new model.user.UserService();
+		var UserGateway = new model.user.UserGateway();
+		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
+		Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
+		UserGateway.setValidator( Validator );
+		CUT.setUserGateway( UserGateway );
+		
+		// reinitialise ORM for the application (create database table)
+		ORMReload();
+		
+		// insert test data into database
+		var q = new Query();
+		q.setSQL( "
+			INSERT INTO Users ( user_id, user_firstname, user_lastname, user_email, user_username, user_password, user_created, user_updated ) 
+			VALUES ( 1, 'Default', 'User', 'enquiries@getxindi.com', 'admin', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB', '2012-04-22 08:39:07', '2012-04-22 08:39:09' );
+		" );
+		q.execute();
 	}
 	
 	/**
 	* this will run after every single test in this test case
 	*/
-	function tearDown(){}
+	function tearDown(){
+		// destroy test data
+		var q = new Query();
+		q.setSQL( "DROP TABLE Users;");
+		q.execute();
+		
+		// clear first level cache and remove any unsaved objects
+		ORMClearSession( "xindi_testsuite" );		
+	}
 	
 	/**
 	* this will run once after initialization and before setUp()
