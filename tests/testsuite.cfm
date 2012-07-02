@@ -16,18 +16,22 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 --->
 
-<!--- open this file in a web browser to run unit tests --->
+<!--- open this file in a web browser to run the tests --->
 
-<cfset testsuite = new mxunit.framework.TestSuite() />
-
-<cfdirectory action="list" directory="#getDirectoryFromPath( getCurrentTemplatePath() )#model" name="tests" recurse="true" filter="*.cfc">
-
-<cfloop query="tests">
-	<cfset filepath = Replace( Right( directory, Len( directory ) - FindNoCase( "tests", directory ) - 5 ), "\", ".", "all" ) />
+<cfif IsLocalHost( CGI.REMOTE_ADDR )>
+	<cfset testsuite = new mxunit.framework.TestSuite() />
 	
-	<cfset testSuite.addAll( filepath & "." & Replace( name, ".cfc", "" ) ) />
-</cfloop>
-
-<cfset results = testsuite.run() />
-
-<cfoutput>#ReplaceNoCase( results.getResultsOutput( "html" ), "/model", "model", "ALL" )#</cfoutput>
+	<cfdirectory action="list" directory="#getDirectoryFromPath( getCurrentTemplatePath() )#model" name="tests" recurse="true" filter="*.cfc">
+	
+	<cfloop query="tests">
+		<cfset filepath = Replace( Right( directory, Len( directory ) - FindNoCase( "tests", directory ) - 5 ), "\", ".", "all" ) />
+		
+		<cfset testSuite.addAll( filepath & "." & Replace( name, ".cfc", "" ) ) />
+	</cfloop>
+	
+	<cfset results = testsuite.run() />
+	
+	<cfoutput>#ReplaceNoCase( results.getResultsOutput( "html" ), "/model", "model", "ALL" )#</cfoutput>
+<cfelse>
+	<p>Tests can only be run in the development environment.</p>
+</cfif>
