@@ -21,27 +21,63 @@ component extends="mxunit.framework.TestCase"{
 	// ------------------------ INTEGRATION TESTS ------------------------ //
 	
 	function testDeleteCurrentUser(){
-		fail( "test not yet implemented" );
+		assertFalse( CUT.hasCurrentUser() );
+		var User = EntityLoadByPK( "User", 1 );
+		CUT.setCurrentUser( User=User );
+		assertTrue( CUT.hasCurrentUser() );
+		CUT.deleteCurrentUser();
+		assertFalse( CUT.hasCurrentUser() );
 	}
 	
 	function testHasCurrentUser(){
-		fail( "test not yet implemented" );
+		assertFalse( CUT.hasCurrentUser() );
+		var User = EntityLoadByPK( "User", 1 );
+		CUT.setCurrentUser( User=User );
+		assertTrue( CUT.hasCurrentUser() );
 	}
 	
-	function testIsAllowed(){
-		fail( "test not yet implemented" );
+	function testIsAllowedForSecureActionWhereUserIsLoggedIn(){
+		var User = EntityLoadByPK( "User", 1 );
+		CUT.setCurrentUser( User=User );
+		var result = CUT.isAllowed( action="admin:pages", whitelist="^admin:security,^public:" );
+		assertTrue( result );
 	}	
 
-	function testLoginUser(){
-		fail( "test not yet implemented" );
+	function testIsAllowedForSecureActionWhereUserIsNotLoggedIn(){
+		var result = CUT.isAllowed( action="admin:pages", whitelist="^admin:security,^public:" );
+		assertFalse( result );
+	}	
+
+	function testIsAllowedForUnsecureActionWhereUserIsLoggedIn(){
+		var result = CUT.isAllowed( action="admin:security", whitelist="^admin:security,^public:" );
+		assertTrue( result );
+	}	
+	
+	function testIsAllowedForUnsecureActionWhereUserIsNotLoggedIn(){
+		var result = CUT.isAllowed( action="admin:security", whitelist="^admin:security,^public:" );
+		assertTrue( result );
+	}		
+	
+	function testLoginUserForValidUser(){
+		var properties = { username="admin", password="admin" };
+		var result = CUT.loginUser( properties=properties );
+		assertTrue( StructKeyExists( result.messages, "success" ) ); 
 	}
 
+	function testLoginUserForInvalidUser(){
+		var properties = { username="", password="" };
+		var result = CUT.loginUser( properties=properties );
+		assertTrue( StructKeyExists( result.messages, "error" ) );
+	}
+	
 	function testResetPassword(){
 		fail( "test not yet implemented" );
 	}
 	
 	function testSetCurrentUser(){
-		fail( "test not yet implemented" );
+		var User = EntityLoadByPK( "User", 1 );
+		CUT.setCurrentUser( User=User );
+		assertTrue( CUT.hasCurrentUser() );
 	}
 
 	// ------------------------ IMPLICIT ------------------------ //
@@ -52,12 +88,41 @@ component extends="mxunit.framework.TestCase"{
 	function setUp(){
 		// initialise component under test
 		CUT = new model.security.SecurityService();
+		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
+		Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
+		var SecurityGateway = new model.security.SecurityGateway();
+		var UserGateway = new model.user.UserGateway();
+		UserGateway.setValidator( Validator );
+		var $config = { security={ whitelist="^admin:security,^public:" } };
+		SecurityGateway.setConfig( $config );
+		SecurityGateway.setValidator( Validator );
+		SecurityGateway.setUserGateway( UserGateway );
+		CUT.setSecurityGateway( SecurityGateway );
+		
+		// reinitialise ORM for the application (create database table)
+		ORMReload();
+		
+		// insert test data into database
+		var q = new Query();
+		q.setSQL( "
+			INSERT INTO Users ( user_id, user_firstname, user_lastname, user_email, user_username, user_password, user_created, user_updated ) 
+			VALUES ( 1, 'Default', 'User', 'enquiries@getxindi.com', 'admin', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB', '2012-04-22 08:39:07', '2012-04-22 08:39:09' );
+		" );
+		q.execute();
 	}
 	
 	/**
 	* this will run after every single test in this test case
 	*/
-	function tearDown(){}
+	function tearDown(){
+		// destroy test data
+		var q = new Query();
+		q.setSQL( "DROP TABLE Users;");
+		q.execute();
+		
+		// clear first level cache and remove any unsaved objects
+		ORMClearSession( "xindi_testsuite" );		
+	}
 	
 	/**
 	* this will run once after initialization and before setUp()

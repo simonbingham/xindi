@@ -66,7 +66,7 @@ component extends="mxunit.framework.TestCase"{
 		$LoginUser.getEmail().returns( "" );
 		$LoginUser.getPassword().returns( "1111111111111111111111111111111111111111111111111111111111111111" );		
 		result = CUT.getUserByCredentials( $LoginUser );
-		assertEquals( true, IsNull( result ) );
+		assertFalse( result.isPersisted() );
 	}
 	
 	function testGetUserByEmailOrUsernameWhereEmailIsSpecified(){

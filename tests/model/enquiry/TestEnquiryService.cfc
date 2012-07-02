@@ -64,8 +64,14 @@ component extends="mxunit.framework.TestCase"{
 		assertFalse( result.isPersisted() );
 	}
 	
-	function testSendEnquiry(){
-		fail( "test not yet implemented" );
+	function testSendEnquiryWhereEnquiryIsInvalid(){
+		var result = CUT.sendEnquiry( properties={ firstname="", lastname="", email="", message="" }, config={ subject="Test", emailto="example@example.com" }, emailtemplatepath="../../public/views/enquiry/email.cfm" );
+		assertTrue( StructKeyExists( result.messages, "error" ) );
+	}
+
+	function testSendEnquiryWhereEnquiryIsValid(){
+		var result = CUT.sendEnquiry( properties={ firstname="Test", lastname="User", email="example@example.com", message="This is a test message." }, config={ subject="Test", emailto="example@example.com" }, emailtemplatepath="../../public/views/enquiry/email.cfm" );
+		assertTrue( StructKeyExists( result.messages, "success" ) );
 	}
  
 	// ------------------------ IMPLICIT ------------------------ // 

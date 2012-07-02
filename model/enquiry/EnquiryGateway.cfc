@@ -86,7 +86,6 @@ component accessors="true"{
 		var Enquiry = newEnquiry(); 
 		Enquiry.populate( arguments.properties );
 		var result = variables.Validator.validate( theObject=Enquiry );
-		result.messages = {};
 		if( !result.hasErrors() ){
 			savecontent variable="emailtemplate"{ include arguments.emailtemplatepath; }
 			var Email = new mail();

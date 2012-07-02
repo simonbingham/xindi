@@ -41,14 +41,14 @@ component extends="mxunit.framework.TestCase"{
 		CUT.setConfig( $config );
 		var User = EntityLoadByPK( "User", 1 );
 		CUT.setCurrentUser( User=User );
-		result = CUT.isAllowed( action="admin:pages", whitelist="^admin:security,^public:" );
+		var result = CUT.isAllowed( action="admin:pages", whitelist="^admin:security,^public:" );
 		assertTrue( result );
 	}	
 
 	function testIsAllowedForSecureActionWhereUserIsNotLoggedIn(){
 		var $config = { security={ whitelist="^admin:security,^public:" } };
 		CUT.setConfig( $config );
-		result = CUT.isAllowed( action="admin:pages", whitelist="^admin:security,^public:" );
+		var result = CUT.isAllowed( action="admin:pages", whitelist="^admin:security,^public:" );
 		assertFalse( result );
 	}	
 
@@ -57,14 +57,14 @@ component extends="mxunit.framework.TestCase"{
 		CUT.setConfig( $config );
 		var User = EntityLoadByPK( "User", 1 );
 		CUT.setCurrentUser( User=User );
-		result = CUT.isAllowed( action="admin:security", whitelist="^admin:security,^public:" );
+		var result = CUT.isAllowed( action="admin:security", whitelist="^admin:security,^public:" );
 		assertTrue( result );
 	}	
 	
 	function testIsAllowedForUnsecureActionWhereUserIsNotLoggedIn(){
 		var $config = { security={ whitelist="^admin:security,^public:" } };
 		CUT.setConfig( $config );
-		result = CUT.isAllowed( action="admin:security", whitelist="^admin:security,^public:" );
+		var result = CUT.isAllowed( action="admin:security", whitelist="^admin:security,^public:" );
 		assertTrue( result );
 	}		
 	
