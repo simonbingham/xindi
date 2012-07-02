@@ -36,20 +36,60 @@ component extends="mxunit.framework.TestCase"{
 		assertTrue( CUT.hasCurrentUser() );
 	}
 	
-	function testIsAllowedForSecureAction(){
-		fail( "test not yet implemented" );
+	function testIsAllowedForSecureActionWhereUserIsLoggedIn(){
+		var $config = { security={ whitelist="^admin:security,^public:" } };
+		CUT.setConfig( $config );
+		var User = EntityLoadByPK( "User", 1 );
+		CUT.setCurrentUser( User=User );
+		result = CUT.isAllowed( action="admin:pages", whitelist="^admin:security,^public:" );
+		assertTrue( result );
 	}	
 
-	function testIsAllowedForUnsecureAction(){
-		fail( "test not yet implemented" );	
+	function testIsAllowedForSecureActionWhereUserIsNotLoggedIn(){
+		var $config = { security={ whitelist="^admin:security,^public:" } };
+		CUT.setConfig( $config );
+		result = CUT.isAllowed( action="admin:pages", whitelist="^admin:security,^public:" );
+		assertFalse( result );
+	}	
+
+	function testIsAllowedForUnsecureActionWhereUserIsLoggedIn(){
+		var $config = { security={ whitelist="^admin:security,^public:" } };
+		CUT.setConfig( $config );
+		var User = EntityLoadByPK( "User", 1 );
+		CUT.setCurrentUser( User=User );
+		result = CUT.isAllowed( action="admin:security", whitelist="^admin:security,^public:" );
+		assertTrue( result );
 	}	
 	
+	function testIsAllowedForUnsecureActionWhereUserIsNotLoggedIn(){
+		var $config = { security={ whitelist="^admin:security,^public:" } };
+		CUT.setConfig( $config );
+		result = CUT.isAllowed( action="admin:security", whitelist="^admin:security,^public:" );
+		assertTrue( result );
+	}		
+	
 	function testLoginUserForValidUser(){
-		fail( "test not yet implemented" );
+		var $User = mock( "model.user.User" ).getFirstName().returns( "" ).populate( "{struct}" ).isPersisted().returns( true );
+		var $UserGateway = mock( "model.user.UserGateway" ).newUser().returns( $User ).getUserByCredentials( "{any}" ).returns( $User );
+		CUT.setUserGateway( $UserGateway );
+		var $ValidationResult = mock( "ValidateThis" ).hasErrors().returns( false );
+		var $Validator = mock( "ValidateThis" ).validate( theObject="{any}", Context="{string}" ).returns( $ValidationResult );
+		CUT.setValidator( $Validator );
+		var properties = { username="", password="" };
+		var result = CUT.loginUser( properties=properties );
+		assertTrue( StructKeyExists( result.messages, "success" ) ); 
 	}
 
 	function testLoginUserForInvalidUser(){
-		fail( "test not yet implemented" );
+		var $User = mock( "model.user.User" ).getFirstName().returns( "" ).populate( "{struct}" ).isPersisted().returns( false );
+		var $UserGateway = mock( "model.user.UserGateway" ).newUser().returns( $User ).getUserByCredentials( "{any}" ).returns( $User );
+		CUT.setUserGateway( $UserGateway );
+		var $ValidationResult = mock( "ValidateThis" ).hasErrors().returns( false );
+		var $Validator = mock( "ValidateThis" ).validate( theObject="{any}", Context="{string}" ).returns( $ValidationResult );
+		CUT.setValidator( $Validator );
+		var properties = { username="", password="" };
+		var result = CUT.loginUser( properties=properties );
+		assertTrue( StructKeyExists( result.messages, "error" ) );
 	}
 	
 	function testResetPassword(){

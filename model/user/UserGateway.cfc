@@ -49,7 +49,9 @@ component accessors="true"{
 	}
 
 	function getUserByCredentials( required User ){
-		return ORMExecuteQuery( "from User where ( username=:username or email=:email ) and password=:password", { username=arguments.User.getUsername(), email=arguments.User.getEmail(), password=arguments.User.getPassword() }, true );
+		User = ORMExecuteQuery( "from User where ( username=:username or email=:email ) and password=:password", { username=arguments.User.getUsername(), email=arguments.User.getEmail(), password=arguments.User.getPassword() }, true );
+		if( IsNull( User ) ) User = newUser();
+		return User;
 	}
 
 	// TODO: might be able to remove this

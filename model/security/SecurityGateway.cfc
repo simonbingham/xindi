@@ -24,7 +24,7 @@ component accessors="true"{
 	
 	property name="UserGateway" getter="false";
 	property name="Validator" getter="false";
-	property name="config" setter="true" getter="false";
+	property name="config" getter="false";
 	
 	variables.userkey = "userid";
 
@@ -63,7 +63,7 @@ component accessors="true"{
 		return false;
 	}	
 
-	struct function loginUser( required struct properties ){
+	function loginUser( required struct properties ){
 		param name="arguments.properties.username" default="";
 		param name="arguments.properties.password" default="";
 		if( IsValid( "email", arguments.properties.username ) ){
@@ -74,7 +74,7 @@ component accessors="true"{
 		User.populate( arguments.properties );
 		var result = variables.Validator.validate( User, "login" );
 		User = variables.UserGateway.getUserByCredentials( User );
-		if( !IsNull( User ) ){
+		if( User.isPersisted() ){
 			setCurrentUser( User );
 			result.messages.success = "Welcome #User.getFirstName()#. You have been logged in.";
 		}else{
