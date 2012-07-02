@@ -33,10 +33,8 @@
 			var Article = getArticleByID( Val( arguments.articleid ) );
 			var result = {};
 			if( Article.isPersisted() ){ 
-				transaction{
-					EntityDelete( Article );
-					result.messages.success = "The article &quot;#Article.getTitle()#&quot; has been deleted.";
-				}
+				EntityDelete( Article );
+				result.messages.success = "The article &quot;#Article.getTitle()#&quot; has been deleted.";
 			}else{
 				result.messages.error = "The article could not be deleted.";
 			}
@@ -100,31 +98,27 @@
 		
 		function saveArticle( required struct properties ){
 			param name="arguments.properties.articleid" default="0";
-			transaction{
-				var Article = ""; 
-				Article = getArticleByID( Val( arguments.properties.articleid ) );
-				try{
-					arguments.properties.published = CreateDate( ListGetAt( arguments.properties.published, 3, "/" ), ListGetAt( arguments.properties.published, 2, "/" ), ListGetAt( arguments.properties.published, 1, "/" ) );
-				}
-				catch(any e){
-					arguments.properties.published = "";
-				}
-				Article.populate( arguments.properties );
-				if( IsNull( Article.getContent() ) ) Article.setContent( "" );
-				if( Article.isMetaGenerated() ){
-					Article.setMetaTitle( Article.getTitle() );
-					Article.setMetaDescription( variables.MetaData.generateMetaDescription( Article.getContent() ) );
-					Article.setMetaKeywords( variables.MetaData.generateMetaKeywords( Article.getContent() ) );
-				}
-				var result = variables.Validator.validate( theObject=Article );
-				if( !result.hasErrors() ){
-					EntitySave( Article );
-					transaction action="commit";
-					result.messages.success = "The article &quot;#Article.getTitle()#&quot; has been saved.";
-				}else{
-					transaction action="rollback";
-					result.messages.error = "Your article could not be saved. Please amend the highlighted fields.";
-				}
+			var Article = ""; 
+			Article = getArticleByID( Val( arguments.properties.articleid ) );
+			try{
+				arguments.properties.published = CreateDate( ListGetAt( arguments.properties.published, 3, "/" ), ListGetAt( arguments.properties.published, 2, "/" ), ListGetAt( arguments.properties.published, 1, "/" ) );
+			}
+			catch(any e){
+				arguments.properties.published = "";
+			}
+			Article.populate( arguments.properties );
+			if( IsNull( Article.getContent() ) ) Article.setContent( "" );
+			if( Article.isMetaGenerated() ){
+				Article.setMetaTitle( Article.getTitle() );
+				Article.setMetaDescription( variables.MetaData.generateMetaDescription( Article.getContent() ) );
+				Article.setMetaKeywords( variables.MetaData.generateMetaKeywords( Article.getContent() ) );
+			}
+			var result = variables.Validator.validate( theObject=Article );
+			if( !result.hasErrors() ){
+				EntitySave( Article );
+				result.messages.success = "The article &quot;#Article.getTitle()#&quot; has been saved.";
+			}else{
+				result.messages.error = "Your article could not be saved. Please amend the highlighted fields.";
 			}
 			return result;
 		}

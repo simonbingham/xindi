@@ -91,9 +91,57 @@ component extends="mxunit.framework.TestCase"{
 		var result = CUT.loginUser( properties=properties );
 		assertTrue( StructKeyExists( result.messages, "error" ) );
 	}
+
+	function testResetPasswordByEmailWhereUsernameIsInvalid(){
+		var $ValidationResult = mock( "ValidateThis" ).hasErrors().returns( true );
+		var $Validator = mock( "ValidateThis" ).validate( theObject="{any}", context="{string}" ).returns( $ValidationResult );
+		CUT.setValidator( $Validator );
+		var $User = mock( "model.user.User" ).populate( "{struct}" ).isPersisted().returns( false ).getEmail().returns( "example@example.com" );
+		var $UserGateway = mock( "model.user.UserGateway" ).newUser().returns( $User ).getUserByEmailOrUsername( "{any}" ).returns( $User );
+		CUT.setUserGateway( $UserGateway );
+		var $Config = { security = { resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" } };
+		CUT.setConfig( $Config );
+		var result = CUT.resetPassword( properties={ email="foo@bar.com" }, name="Default", config={ resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, emailtemplatepath="../../admin/views/security/email.cfm" );
+		assertTrue( StructKeyExists( result.messages, "error" ) );
+	}
 	
-	function testResetPassword(){
-		fail( "test not yet implemented" );
+	function testResetPasswordByEmailWhereUsernameIsValid(){
+		var $ValidationResult = mock( "ValidateThis" ).hasErrors().returns( false );
+		var $Validator = mock( "ValidateThis" ).validate( theObject="{any}", context="{string}" ).returns( $ValidationResult );
+		CUT.setValidator( $Validator );
+		var $User = mock( "model.user.User" ).populate( "{struct}" ).isPersisted().returns( true ).getEmail().returns( "example@example.com" );
+		var $UserGateway = mock( "model.user.UserGateway" ).newUser().returns( $User ).getUserByEmailOrUsername( "{any}" ).returns( $User );
+		CUT.setUserGateway( $UserGateway );
+		var $Config = { security = { resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" } };
+		CUT.setConfig( $Config );
+		var result = CUT.resetPassword( properties={ email="example@example.com" }, name="Default", config={ resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, emailtemplatepath="../../admin/views/security/email.cfm" );
+		assertTrue( StructKeyExists( result.messages, "success" ) );
+	}
+
+	function testResetPasswordByUsernameWhereUsernameIsInvalid(){
+		var $ValidationResult = mock( "ValidateThis" ).hasErrors().returns( true );
+		var $Validator = mock( "ValidateThis" ).validate( theObject="{any}", context="{string}" ).returns( $ValidationResult );
+		CUT.setValidator( $Validator );
+		var $User = mock( "model.user.User" ).populate( "{struct}" ).isPersisted().returns( false ).getEmail().returns( "example@example.com" );
+		var $UserGateway = mock( "model.user.UserGateway" ).newUser().returns( $User ).getUserByEmailOrUsername( "{any}" ).returns( $User );
+		CUT.setUserGateway( $UserGateway );
+		var $Config = { security = { resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" } };
+		CUT.setConfig( $Config );
+		var result = CUT.resetPassword( properties={ username="foobar" }, name="Default", config={ resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, emailtemplatepath="../../admin/views/security/email.cfm" );
+		assertTrue( StructKeyExists( result.messages, "error" ) );
+	}
+	
+	function testResetPasswordByUsernameWhereUsernameIsValid(){
+		var $ValidationResult = mock( "ValidateThis" ).hasErrors().returns( false );
+		var $Validator = mock( "ValidateThis" ).validate( theObject="{any}", context="{string}" ).returns( $ValidationResult );
+		CUT.setValidator( $Validator );
+		var $User = mock( "model.user.User" ).populate( "{struct}" ).isPersisted().returns( true ).getEmail().returns( "example@example.com" );
+		var $UserGateway = mock( "model.user.UserGateway" ).newUser().returns( $User ).getUserByEmailOrUsername( "{any}" ).returns( $User );
+		CUT.setUserGateway( $UserGateway );
+		var $Config = { security = { resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" } };
+		CUT.setConfig( $Config );
+		var result = CUT.resetPassword( properties={ username="admin" }, name="Default", config={ resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, emailtemplatepath="../../admin/views/security/email.cfm" );
+		assertTrue( StructKeyExists( result.messages, "success" ) );
 	}
 	
 	function testSetCurrentUser(){
@@ -119,7 +167,7 @@ component extends="mxunit.framework.TestCase"{
 		var q = new Query();
 		q.setSQL( "
 			INSERT INTO users ( user_id, user_firstname, user_lastname, user_email, user_username, user_password, user_created, user_updated ) 
-			VALUES ( 1, 'Default', 'User', 'enquiries@getxindi.com', 'admin', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB', '2012-04-22 08:39:07', '2012-04-22 08:39:09' );
+			VALUES ( 1, 'Default', 'User', 'example@example.com', 'admin', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB', '2012-04-22 08:39:07', '2012-04-22 08:39:09' );
 		" );
 		q.execute();		
 	}

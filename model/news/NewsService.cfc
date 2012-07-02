@@ -29,7 +29,9 @@ component accessors="true"{
 	 */
 	 	
 	struct function deleteArticle( required articleid ){
-		return variables.NewsGateway.deleteArticle( articleid=Val( arguments.articleid ) );
+		transaction{
+			return variables.NewsGateway.deleteArticle( articleid=Val( arguments.articleid ) );
+		}
 	}
 	
 	function getArticleByID( required articleid ){
@@ -55,7 +57,9 @@ component accessors="true"{
 	}
 	
 	function saveArticle( required struct properties ){
-		return variables.NewsGateway.saveArticle( argumentCollection=arguments );
+		transaction{
+			return variables.NewsGateway.saveArticle( argumentCollection=arguments );
+		}
 	}
 	
 }

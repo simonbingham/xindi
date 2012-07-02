@@ -32,10 +32,8 @@ component accessors="true"{
 		var User = getUserByID( Val( arguments.userid ) );
 		var result = {};
 		if( User.isPersisted() ){
-			transaction{
-				EntityDelete( User );
-				result.messages.success = "The user &quot;#User.getFullName()#&quot; has been deleted.";
-			}
+			EntityDelete( User );
+			result.messages.success = "The user &quot;#User.getFullName()#&quot; has been deleted.";
 		}else{
 			result.messages.error = "The user could not be deleted.";
 		}
@@ -56,7 +54,9 @@ component accessors="true"{
 
 	// TODO: might be able to remove this
 	function getUserByEmailOrUsername( required User ){
-		return ORMExecuteQuery( "from User where username=:username or email=:email", { username=arguments.User.getUsername(), email=arguments.User.getEmail() }, true );
+		User = ORMExecuteQuery( "from User where username=:username or email=:email", { username=arguments.User.getUsername(), email=arguments.User.getEmail() }, true );
+		if( IsNull( User ) ) User = newUser();
+		return User;		
 	}
 
 	array function getUsers(){
@@ -74,19 +74,15 @@ component accessors="true"{
 	struct function saveUser( required struct properties, required string context ){
 		param name="arguments.properties.userid" default="0";
 		var result = {};
-		transaction{
-			var User = ""; 
-			User = getUserByID( Val( arguments.properties.userid ) );
-			User.populate( arguments.properties );
-			var result = variables.Validator.validate( theObject=User, Context=arguments.context );
-			if( !result.hasErrors() ){
-				result.messages.success = "The user &quot;#User.getFullName()#&quot; has been saved.";
-				EntitySave( User );
-				transaction action="commit";
-			}else{
-				result.messages.error = "The user could not be saved. Please amend the highlighted fields.";
-				transaction action="rollback";
-			}
+		var User = ""; 
+		User = getUserByID( Val( arguments.properties.userid ) );
+		User.populate( arguments.properties );
+		var result = variables.Validator.validate( theObject=User, Context=arguments.context );
+		if( !result.hasErrors() ){
+			result.messages.success = "The user &quot;#User.getFullName()#&quot; has been saved.";
+			EntitySave( User );
+		}else{
+			result.messages.error = "The user could not be saved. Please amend the highlighted fields.";
 		}
 		return result;
 	}

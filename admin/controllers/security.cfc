@@ -39,7 +39,7 @@ component accessors="true"{
 			variables.fw.redirect( "main" );
 		}else{
 			rc.User = variables.UserService.newUser();
-			rc.Validator = variables.UserService.getValidator( theObject=rc.User );
+			rc.Validator = variables.UserService.getValidator( User=rc.User );
 			if( !StructKeyExists( rc, "result" ) ) rc.result = rc.Validator.newResult();
 		}
 	}

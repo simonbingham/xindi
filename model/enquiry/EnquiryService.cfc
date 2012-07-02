@@ -67,7 +67,9 @@ component accessors="true"{
 	}
 	
 	struct function sendEnquiry( required struct properties, required struct config, required string emailtemplatepath ){
-		return variables.EnquiryGateway.sendEnquiry( argumentCollection=arguments );
+		transaction{
+			return variables.EnquiryGateway.sendEnquiry( argumentCollection=arguments );
+		}
 	}
 	
 }

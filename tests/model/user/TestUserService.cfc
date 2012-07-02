@@ -43,11 +43,11 @@ component extends="mxunit.framework.TestCase"{
 	function testGetUserByCredentialsReturnsUserForCorrectCredentialsByEmail(){
 		var User = new model.user.User();
 		User.setUsername( "" );
-		User.setEmail( "enquiries@getxindi.com" );
+		User.setEmail( "example@example.com" );
 		User.setPassword( "admin" );
 		result = CUT.getUserByCredentials( User );
 		assertFalse( IsNull( result ) );
-		assertEquals( "enquiries@getxindi.com", result.getEmail() );
+		assertEquals( "example@example.com", result.getEmail() );
 	}
 
 	function testGetUserByCredentialsReturnsUserForCorrectCredentialsByUsername(){
@@ -57,7 +57,7 @@ component extends="mxunit.framework.TestCase"{
 		User.setPassword( "admin" );
 		result = CUT.getUserByCredentials( User );
 		assertFalse( IsNull( result ) );
-		assertEquals( "enquiries@getxindi.com", result.getEmail() );
+		assertEquals( "example@example.com", result.getEmail() );
 	}
 
 	function testGetUserByCredentialsReturnsNullForInCorrectCredentials(){
@@ -71,7 +71,7 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testGetUserByEmailOrUsernameWhereEmailIsSpecified(){
 		var User = CUT.newUser();
-		User.setEmail( "enquiries@getxindi.com" );
+		User.setEmail( "example@example.com" );
 		User = CUT.getUserByEmailOrUsername( User );
 		assertTrue( User.isPersisted() );
 	}
@@ -131,7 +131,7 @@ component extends="mxunit.framework.TestCase"{
 		var q = new Query();
 		q.setSQL( "
 			INSERT INTO Users ( user_id, user_firstname, user_lastname, user_email, user_username, user_password, user_created, user_updated ) 
-			VALUES ( 1, 'Default', 'User', 'enquiries@getxindi.com', 'admin', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB', '2012-04-22 08:39:07', '2012-04-22 08:39:09' );
+			VALUES ( 1, 'Default', 'User', 'example@example.com', 'admin', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB', '2012-04-22 08:39:07', '2012-04-22 08:39:09' );
 		" );
 		q.execute();
 	}

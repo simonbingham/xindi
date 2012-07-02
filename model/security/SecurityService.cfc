@@ -45,7 +45,9 @@ component accessors="true"{
 	}	
 	
 	struct function resetPassword( required struct properties, required string name, required struct config, required string emailtemplatepath ){
-		return variables.SecurityGateway.resetPassword( argumentCollection=arguments );
+		transaction{
+			return variables.SecurityGateway.resetPassword( argumentCollection=arguments );
+		}
 	}	
 	
 	void function setCurrentUser( required any User ){

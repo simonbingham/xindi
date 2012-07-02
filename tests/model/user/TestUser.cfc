@@ -34,7 +34,7 @@ component extends="mxunit.framework.TestCase"{
 	}
 
 	function testIsNotUniqueEmail(){
-		CUT.setEmail( "enquiries@getxindi.com" );
+		CUT.setEmail( "example@example.com" );
 		var result = CUT.IsEmailUnique();
 		assertEquals( false, result.issuccess );
 	}
@@ -78,7 +78,7 @@ component extends="mxunit.framework.TestCase"{
 		var q = new Query();
 		q.setSQL( "
 			INSERT INTO Users ( user_id, user_firstname, user_lastname, user_email, user_username, user_password, user_created, user_updated ) 
-			VALUES ( 1, 'Default', 'User', 'enquiries@getxindi.com', 'admin', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB', '2012-04-22 08:39:07', '2012-04-22 08:39:09' );
+			VALUES ( 1, 'Default', 'User', 'example@example.com', 'admin', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB', '2012-04-22 08:39:07', '2012-04-22 08:39:09' );
 		" );
 		q.execute();
 	}

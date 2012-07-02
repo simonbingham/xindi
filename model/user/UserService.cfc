@@ -29,7 +29,9 @@ component accessors="true"{
 	 */
 	 	
 	struct function deleteUser( required userid ){
-		return variables.UserGateway.deleteUser( userid=Val( arguments.userid ) );
+		transaction{
+			return variables.UserGateway.deleteUser( userid=Val( arguments.userid ) );
+		}
 	}
 	
 	function getUserByID( required userid ){
@@ -57,7 +59,9 @@ component accessors="true"{
 	}
 	
 	struct function saveUser( required struct properties, required string context ){
-		return variables.UserGateway.saveUser( argumentCollection=arguments );
+		transaction{
+			return variables.UserGateway.saveUser( argumentCollection=arguments );
+		}
 	}
 	
 }
