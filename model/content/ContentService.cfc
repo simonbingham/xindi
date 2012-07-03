@@ -30,12 +30,12 @@ component accessors="true"{
 	 	
 	struct function deletePage( required pageid ){
 		transaction{
-			return variables.ContentGateway.deletePage( pageid=Val( arguments.pageid ) );
+			return variables.ContentGateway.deletePage( Val( arguments.pageid ) );
 		}
 	}
 	
 	function getPageByID( required pageid ){
-		return variables.ContentGateway.getPageByID( pageid=Val( arguments.pageid ) );
+		return variables.ContentGateway.getPageByID( Val( arguments.pageid ) );
 	}
 	
 	function getPageBySlug( required string slug ){

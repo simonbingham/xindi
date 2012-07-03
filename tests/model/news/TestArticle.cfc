@@ -113,8 +113,8 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testIsUUIDUnique(){
 		CUT.setTitle( "Sample Article A" );
+		makePublic( CUT, "setUUID" );
 		makePublic( CUT, "isUUIDUnique" );
-		CUT.setUUID( "" );
 		var result = CUT.isUUIDUnique();
 		assertTrue( result );
 	}	

@@ -51,9 +51,7 @@ component extends="model.abstract.BaseEntity" persistent="true" table="pages" ca
 	
 	string function getDescendentPageIDList(){
 		var pageidlist = "";
-		for( var looppage in getDescendents() ){
-			pageidlist = ListAppend( pageidlist, looppage.getPageID() );
-		}
+		for( var looppage in getDescendents() ) pageidlist = ListAppend( pageidlist, looppage.getPageID() );
 		return pageidlist; 
 	}
 
@@ -121,8 +119,9 @@ component extends="model.abstract.BaseEntity" persistent="true" table="pages" ca
 	}
 			
 	boolean function hasRoute( array routes=[] ){
-		for( var route in arguments.routes )
+		for( var route in arguments.routes ){
 			if( StructKeyExists( route, getSlug() ) ) return true;
+		}
 		return false;
 	}
 	

@@ -55,11 +55,11 @@ component accessors="true"{
 	}	
 	 	
 	function getValidator( required any Enquiry ){
-		return variables.Validator.getValidator( theObject=arguments.Enquiry );
+		return variables.Validator.getValidator( arguments.Enquiry );
 	}	
 	
 	struct function markAllRead(){
-		var result = { messages = { success = "All messages have been marked as read." } };
+		var result = { messages={ success="All messages have been marked as read." } };
 		ORMExecuteQuery( "update Enquiry set unread=false" );
 		return result;
 	}

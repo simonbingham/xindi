@@ -61,7 +61,7 @@ component extends="mxunit.framework.TestCase"{
 		
 		vestibulum! In non lectus sem; ut lacinia.	
 		" );
-		assertEquals( "morbi at felis quis       metus scelerisque venenatis.       curabitur ut tellus nec massa eleifend       vestibulum! in non lectus sem; ut lacinia.", result );		
+		assertEquals( "morbi at felis quis metus scelerisque venenatis. curabitur ut tellus nec massa eleifend vestibulum! in non lectus sem; ut lacinia.", result );		
 	}	
 	
 	function testReplaceMultipleSpacesWithSingleSpace()

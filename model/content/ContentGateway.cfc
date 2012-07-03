@@ -57,7 +57,7 @@
 		}
 		
 		function getRoot(){
-			return EntityLoad( "Page", { leftvalue = 1 }, true );
+			return EntityLoad( "Page", { leftvalue=1 }, true );
 		}
 	</cfscript>
 	
@@ -99,7 +99,7 @@
 			var previoussibling = "";
 			var previoussiblingdescendentidlist = "";
 			var Page = getPageByID( arguments.pageid );
-			var result = { Page=Page, messages = { error = "The page could not be moved." } };
+			var result = { Page=Page, messages={ error="The page could not be moved." } };
 			if( Page.isPersisted() && ListFindNoCase( "up,down", Trim( arguments.direction ) ) ){
 				if( arguments.direction eq "up" ){
 					if( Page.hasPreviousSibling() ){
@@ -150,7 +150,7 @@
 				Page.setMetaDescription( variables.MetaData.generateMetaDescription( Page.getContent() ) );
 				Page.setMetaKeywords( variables.MetaData.generateMetaKeywords( Page.getContent() ) );
 			}			
-			var result = variables.Validator.validate( theObject=Page, Context=arguments.context );
+			var result = variables.Validator.validate( theObject=Page, context=arguments.context );
 			if( !result.hasErrors() ){
 				if( !Page.isPersisted() && arguments.ancestorid ){
 					var Ancestor = getPageByID( arguments.ancestorid );

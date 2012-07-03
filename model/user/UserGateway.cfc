@@ -77,7 +77,7 @@ component accessors="true"{
 		var User = ""; 
 		User = getUserByID( Val( arguments.properties.userid ) );
 		User.populate( arguments.properties );
-		var result = variables.Validator.validate( theObject=User, Context=arguments.context );
+		var result = variables.Validator.validate( theObject=User, context=arguments.context );
 		if( !result.hasErrors() ){
 			result.messages.success = "The user &quot;#User.getFullName()#&quot; has been saved.";
 			EntitySave( User );

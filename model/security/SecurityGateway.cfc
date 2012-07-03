@@ -72,7 +72,7 @@ component accessors="true"{
 		}
 		var User = variables.UserGateway.newUser();
 		User.populate( arguments.properties );
-		var result = variables.Validator.validate( User, "login" );
+		var result = variables.Validator.validate( theObject=User, context="login" );
 		User = variables.UserGateway.getUserByCredentials( User );
 		if( User.isPersisted() ){
 			setCurrentUser( User );
@@ -93,8 +93,8 @@ component accessors="true"{
 		}
 		var User = variables.UserGateway.newUser();
 		User.populate( arguments.properties );
-		var result = variables.Validator.validate( User, "password" );
-		User = variables.UserGateway.getUserByEmailOrUsername( User=User );
+		var result = variables.Validator.validate( theObject=User, context="password" );
+		User = variables.UserGateway.getUserByEmailOrUsername( User );
 		if( User.isPersisted() ){
 			var password = Left( CreateUUID(), 8 );
 			User.setPassword( password );

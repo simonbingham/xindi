@@ -72,7 +72,7 @@ component accessors="true"{
 	}
 	
 	string function removeUnrequiredCharacters( required string thestring ){
-		return Trim( REReplaceNoCase( arguments.thestring, "([#Chr(09)#-#Chr(30)#])", " ", "all" ) );
+		return replaceMultipleSpacesWithSingleSpace( REReplaceNoCase( arguments.thestring, "([#Chr(09)#-#Chr(30)#])", " ", "all" ) );
 	}	
 
 	string function replaceMultipleSpacesWithSingleSpace( required string thestring ){

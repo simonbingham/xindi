@@ -177,7 +177,7 @@ component extends="mxunit.framework.TestCase"{
 		// insert test data into database
 		var q = new Query();
 		q.setSQL( "
-			INSERT INTO users ( user_id, user_firstname, user_lastname, user_email, user_username, user_password, user_created, user_updated ) 
+			INSERT INTO Users ( user_id, user_firstname, user_lastname, user_email, user_username, user_password, user_created, user_updated ) 
 			VALUES ( 1, 'Default', 'User', 'example@example.com', 'admin', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB', '2012-04-22 08:39:07', '2012-04-22 08:39:09' );
 		" );
 		q.execute();		
@@ -192,8 +192,9 @@ component extends="mxunit.framework.TestCase"{
 		q.setSQL( "DROP TABLE Users;");
 		q.execute();
 		
-		// clear first level cache and remove any unsaved objects
+		// reset session
 		ORMClearSession();
+		StructClear( session );
 	}
 	
 	/**

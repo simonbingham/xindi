@@ -353,18 +353,25 @@ component extends="mxunit.framework.TestCase"{
 		result = Page.isChild();
 		assertTrue( result );
 	}
-	
-	function testIsUUIDUnique(){
-		var Page = EntityNew( "Page" );
-		makePublic( Page, "isUUIDUnique" );
-		Page.setUUID( "title" );
-		var result = Page.isUUIDUnique();
-		assertFalse( result );
-		Page.setUUID( "title-foobar" );
-		result = Page.isUUIDUnique();
+
+	function testIsUUIDUniqueWhereUUIDDoesNotExist(){
+		CUT.setTitle( "foobar" );
+		makePublic( CUT, "setUUID" );
+		makePublic( CUT, "isUUIDUnique" );
+		CUT.setUUID();
+		var result = CUT.isUUIDUnique();
 		assertTrue( result );
 	}
 	
+	function testIsUUIDUniqueWhereUUIDExists(){
+		CUT.setTitle( "title" );
+		makePublic( CUT, "setUUID" );
+		makePublic( CUT, "isUUIDUnique" );
+		CUT.setUUID();
+		var result = CUT.isUUIDUnique();
+		assertTrue( result );
+	}
+
 	function testSetUUID(){
 		var Page = EntityNew( "Page" );
 		Page.setTitle( "this is a unique id" ); // setUUID uses value returned by getTitle

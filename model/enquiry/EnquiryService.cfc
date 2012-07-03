@@ -30,16 +30,16 @@ component accessors="true"{
 
 	struct function deleteEnquiry( required enquiryid ){
 		transaction{
-			return variables.EnquiryGateway.deleteEnquiry( enquiryid=Val( arguments.enquiryid ) );
+			return variables.EnquiryGateway.deleteEnquiry( Val( arguments.enquiryid ) );
 		}		
 	}
 	
 	array function getEnquiries( maxresults=0 ){
-		return variables.EnquiryGateway.getEnquiries( maxresults=Val( arguments.maxresults ) );
+		return variables.EnquiryGateway.getEnquiries( Val( arguments.maxresults ) );
 	}	
 
 	function getEnquiryByID( required enquiryid ){
-		return variables.EnquiryGateway.getEnquiryByID( enquiryid=Val( arguments.enquiryid ) );
+		return variables.EnquiryGateway.getEnquiryByID( Val( arguments.enquiryid ) );
 	}
 
 	numeric function getUnreadCount(){
@@ -58,7 +58,7 @@ component accessors="true"{
 
 	struct function markRead( required enquiryid ){
 		transaction{
-			return variables.EnquiryGateway.markRead( enquiryid=Val( arguments.enquiryid ) );
+			return variables.EnquiryGateway.markRead( Val( arguments.enquiryid ) );
 		}
 	}	
 	

@@ -21,6 +21,7 @@ component extends="mxunit.framework.TestCase"{
 	// ------------------------ INTEGRATION TESTS ------------------------ //
 	
 	function testDeleteCurrentUser(){
+		StructClear( session );
 		var User = CUT.hasCurrentUser();
 		assertFalse( User );
 		var User = EntityLoadByPK( "User", 1 );
@@ -33,6 +34,7 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testHasCurrentUser(){
+		StructClear( session );
 		var result = CUT.hasCurrentUser();
 		assertFalse( result );
 		var User = EntityLoadByPK( "User", 1 );
@@ -42,6 +44,7 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testIsAllowedForSecureActionWhereUserIsLoggedIn(){
+		StructClear( session );
 		var User = EntityLoadByPK( "User", 1 );
 		CUT.setCurrentUser( User=User );
 		var result = CUT.isAllowed( action="admin:pages", whitelist="^admin:security,^public:" );
@@ -49,6 +52,7 @@ component extends="mxunit.framework.TestCase"{
 	}	
 
 	function testIsAllowedForSecureActionWhereUserIsNotLoggedIn(){
+		StructClear( session );
 		var result = CUT.isAllowed( action="admin:pages", whitelist="^admin:security,^public:" );
 		assertFalse( result );
 	}	
@@ -148,8 +152,9 @@ component extends="mxunit.framework.TestCase"{
 		q.setSQL( "DROP TABLE Users;");
 		q.execute();
 		
-		// clear first level cache and remove any unsaved objects
-		ORMClearSession();		
+		// reset session
+		ORMClearSession();
+		StructClear( session );
 	}
 	
 	/**
