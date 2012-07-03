@@ -21,102 +21,125 @@ component extends="mxunit.framework.TestCase"{
 	// ------------------------ INTEGRATION TESTS ------------------------ //
 	
 	function testDeletePageWherePageDoesNotExist(){
-		var result = CUT.deletePage( pageid=100 );
-		assertTrue( StructKeyExists( result.messages, "error" ) );		
+		var deletepageresult = CUT.deletePage( pageid=100 );
+		var result = StructKeyExists( deletepageresult.messages, "error" );
+		assertTrue( result );
 	}
 	
 	function testDeletePageWherePageExists(){
-		var result = CUT.deletePage( pageid=13 );
-		assertTrue( StructKeyExists( result.messages, "success" ) );
+		var deletepageresult = CUT.deletePage( pageid=13 );
+		var result = StructKeyExists( deletepageresult.messages, "success" );
+		assertTrue( result );
 	}
 
 	function testGetPageByIDWherePageDoesNotExists(){
 		var Page = CUT.getPageByID( pageid=14 );
-		assertFalse( Page.isPersisted() );		
+		var result = Page.isPersisted();
+		assertFalse( result );
 	}
 	
 	function testGetPageByIDWherePageExists(){
 		var Page = CUT.getPageByID( pageid=1 );
-		assertTrue( Page.isPersisted() );
+		var result = Page.isPersisted();
+		assertTrue( result );
 	}
 
 	function testGetPageSlugWherePageDoesNotExist(){
-		var Page = CUT.getPageBySlug( "foobar" );
-		assertFalse( Page.isPersisted() );	
+		var Page = CUT.getPageBySlug( slug="foobar" );
+		var result = Page.isPersisted();
+		assertFalse( result );	
 	}
 	
 	function testGetPageSlugWherePageExists(){
 		var Page = CUT.getPageBySlug( slug="home" );
-		assertTrue( Page.isPersisted() );
+		var result = Page.isPersisted();
+		assertTrue( result );
 	}
 
 	function testGetPages(){
 		var pages = CUT.getPages();
-		assertEquals( 13, ArrayLen( pages ) );
+		var result = ArrayLen( pages );
+		assertEquals( 13, result );
 	}
 	
 	function testGetPagesBySearchTerm(){
 		var pages = CUT.getPages( searchterm="home" );
-		assertEquals( 1, ArrayLen( pages ) );
+		var result = ArrayLen( pages );
+		assertEquals( 1, result );
 	}	
 
 	function testGetPagesBySortOrder(){
 		var pages = CUT.getPages( sortorder="pageid" );
-		assertEquals( "home", pages[ 1 ].getUUID() );
+		var result = pages[ 1 ].getUUID();
+		assertEquals( "home", result );
 	}
 
 	function testGetPagesBySortOrderDescending(){
 		var pages = CUT.getPages( sortorder="pageid desc" );
-		assertEquals( "title-----------", pages[ 1 ].getUUID() );
+		var result = pages[ 1 ].getUUID();
+		assertEquals( "title-----------", result );
 	}
 
 	function testGetPagesUsingMaxResults(){
 		var pages = CUT.getPages( maxresults=5 );
-		assertEquals( 5, ArrayLen( pages ) );
+		var result = ArrayLen( pages );
+		assertEquals( 5, result );
 	}
 
 	function testGetRoot(){
 		var Page = CUT.getRoot();
-		assertEquals( 1, Page.getLeftValue() );
+		var result = Page.getLeftValue();
+		assertEquals( 1, result );
 	}
 
 	function testGetValidator(){
 		var Page = CUT.getRoot();
-		assertTrue( IsObject( CUT.getValidator( Page ) ) );
+		var result = IsObject( CUT.getValidator( Page ) );
+		assertTrue( result );
 	}
 
 	function testMovePageWherePageCanBeMovedDown(){
-		var result = CUT.movePage( 12, "down" );
-		assertTrue( StructKeyExists( result.messages, "success" ) );
-		assertEquals( 23, result.Page.getLeftValue() );
-		assertEquals( 24, result.Page.getRightValue() );
+		var movepageresult = CUT.movePage( pageid=12, direction="down" );
+		var result = StructKeyExists( movepageresult.messages, "success" );
+		assertTrue( result );
+		result = movepageresult.Page.getLeftValue();
+		assertEquals( 23, result );
+		result = movepageresult.Page.getRightValue();
+		assertEquals( 24, result );
 	}
 
 	function testMovePageWherePageCanBeMovedUp(){
-		var result = CUT.movePage( 7, "up" );
-		assertTrue( StructKeyExists( result.messages, "success" ) );
-		assertEquals( 5, result.Page.getLeftValue() );
-		assertEquals( 6, result.Page.getRightValue() );
+		var movepageresult = CUT.movePage( pageid=7, direction="up" );
+		var result = StructKeyExists( movepageresult.messages, "success" );
+		assertTrue( result );
+		result = movepageresult.Page.getLeftValue();
+		assertEquals( 5, result );
+		result = movepageresult.Page.getRightValue();
+		assertEquals( 6, result );
 	}
 
 	function testMovePageWherePageCannotBeMovedDown(){
-		var result = CUT.movePage( 13, "down" );
-		assertTrue( StructKeyExists( result.messages, "error" ) );
+		var movepageresult = CUT.movePage( pageid=13, direction="down" );
+		var result = StructKeyExists( movepageresult.messages, "error" );
+		assertTrue( result );
 	}
 
 	function testMovePageWherePageCannotBeMovedUp(){
-		var result = CUT.movePage( 11, "up" );
-		assertTrue( StructKeyExists( result.messages, "error" ) );
+		var movepageresult = CUT.movePage( pageid=11, direction="up" );
+		var result = StructKeyExists( movepageresult.messages, "error" );
+		assertTrue( result );
 	}
 
 	function testSavePageWherePageIsInvalid(){
-		var result = CUT.savePage( { title="", content="" }, 1, "create" );
-		assertTrue( StructKeyExists( result.messages, "error" ) );
+		var savepageresult = CUT.savePage( { title="", content="" }, 1, "create" );
+		var result = StructKeyExists( savepageresult.messages, "error" );
+		assertTrue( result );
 	}
 	 
 	function testSavePageWherePageIsValid(){
-		var result = CUT.savePage( { title="foo", content="bar" }, 1, "create" );
-		assertTrue( StructKeyExists( result.messages, "success" ) );
+		var savepageresult = CUT.savePage( { title="foo", content="bar" }, 1, "create" );
+		var result = StructKeyExists( savepageresult.messages, "success" );
+		assertTrue( result );
 	}
 	
 	// ------------------------ IMPLICIT ------------------------ // 
@@ -170,7 +193,7 @@ component extends="mxunit.framework.TestCase"{
 		q.execute();
 		
 		// clear first level cache and remove any unsaved objects
-		ORMClearSession( "xindi_testsuite" );		
+		ORMClearSession();		
 	}
 	
 	/**

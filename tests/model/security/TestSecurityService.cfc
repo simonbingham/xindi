@@ -21,19 +21,24 @@ component extends="mxunit.framework.TestCase"{
 	// ------------------------ INTEGRATION TESTS ------------------------ //
 	
 	function testDeleteCurrentUser(){
-		assertFalse( CUT.hasCurrentUser() );
+		var User = CUT.hasCurrentUser();
+		assertFalse( User );
 		var User = EntityLoadByPK( "User", 1 );
 		CUT.setCurrentUser( User=User );
-		assertTrue( CUT.hasCurrentUser() );
+		var result = CUT.hasCurrentUser();
+		assertTrue( result );
 		CUT.deleteCurrentUser();
-		assertFalse( CUT.hasCurrentUser() );
+		result = CUT.hasCurrentUser();
+		assertFalse( result );
 	}
 	
 	function testHasCurrentUser(){
-		assertFalse( CUT.hasCurrentUser() );
+		var result = CUT.hasCurrentUser();
+		assertFalse( result );
 		var User = EntityLoadByPK( "User", 1 );
 		CUT.setCurrentUser( User=User );
-		assertTrue( CUT.hasCurrentUser() );
+		result = CUT.hasCurrentUser();
+		assertTrue( result );
 	}
 	
 	function testIsAllowedForSecureActionWhereUserIsLoggedIn(){
@@ -57,43 +62,50 @@ component extends="mxunit.framework.TestCase"{
 		var result = CUT.isAllowed( action="admin:security", whitelist="^admin:security,^public:" );
 		assertTrue( result );
 	}		
-	
-	function testLoginUserForValidUser(){
-		var properties = { username="admin", password="admin" };
-		var result = CUT.loginUser( properties=properties );
-		assertTrue( StructKeyExists( result.messages, "success" ) ); 
-	}
 
 	function testLoginUserForInvalidUser(){
 		var properties = { username="", password="" };
-		var result = CUT.loginUser( properties=properties );
-		assertTrue( StructKeyExists( result.messages, "error" ) );
+		var loginuserresult = CUT.loginUser( properties=properties );
+		var result = StructKeyExists( loginuserresult.messages, "error" );
+		assertTrue( result );
+	}
+		
+	function testLoginUserForValidUser(){
+		var properties = { username="admin", password="admin" };
+		var loginuserresult = CUT.loginUser( properties=properties );
+		var result = StructKeyExists( loginuserresult.messages, "success" );
+		assertTrue( result ); 
 	}
 
 	function testResetPasswordByEmailWhereUsernameIsInvalid(){
-		var result = CUT.resetPassword( properties={ email="foo@bar.com" }, name="Default", config={ resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, emailtemplatepath="../../admin/views/security/email.cfm" );
-		assertTrue( StructKeyExists( result.messages, "error" ) );
+		var resetpasswordresult = CUT.resetPassword( properties={ email="foo@bar.com" }, name="Default", config={ resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, emailtemplatepath="../../admin/views/security/email.cfm" );
+		var result = StructKeyExists( resetpasswordresult.messages, "error" );
+		assertTrue( result );
 	}
 	
 	function testResetPasswordByEmailWhereUsernameIsValid(){
-		var result = CUT.resetPassword( properties={ email="example@example.com" }, name="Default", config={ resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, emailtemplatepath="../../admin/views/security/email.cfm" );
-		assertTrue( StructKeyExists( result.messages, "success" ) );
+		var resetpasswordresult = CUT.resetPassword( properties={ email="example@example.com" }, name="Default", config={ resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, emailtemplatepath="../../admin/views/security/email.cfm" );
+		var result = StructKeyExists( resetpasswordresult.messages, "success" );
+		assertTrue( result );
 	}
 	
 	function testResetPasswordByUsernameWhereUsernameIsInvalid(){
-		var result = CUT.resetPassword( properties={ username="foobar" }, name="Default", config={ resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, emailtemplatepath="../../admin/views/security/email.cfm" );
-		assertTrue( StructKeyExists( result.messages, "error" ) );
+		var resetpasswordresult = CUT.resetPassword( properties={ username="foobar" }, name="Default", config={ resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, emailtemplatepath="../../admin/views/security/email.cfm" );
+		var result = StructKeyExists( resetpasswordresult.messages, "error" );
+		assertTrue( result );
 	}
 	
 	function testResetPasswordByUsernameWhereUsernameIsValid(){
-		var result = CUT.resetPassword( properties={ username="admin" }, name="Default", config={ resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, emailtemplatepath="../../admin/views/security/email.cfm" );
-		assertTrue( StructKeyExists( result.messages, "success" ) );
+		var resetpasswordresult = CUT.resetPassword( properties={ username="admin" }, name="Default", config={ resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, emailtemplatepath="../../admin/views/security/email.cfm" );
+		var result = StructKeyExists( resetpasswordresult.messages, "success" );
+		assertTrue( result );
 	}
 	
 	function testSetCurrentUser(){
 		var User = EntityLoadByPK( "User", 1 );
 		CUT.setCurrentUser( User=User );
-		assertTrue( CUT.hasCurrentUser() );
+		var result = CUT.hasCurrentUser();
+		assertTrue( result );
 	}
 
 	// ------------------------ IMPLICIT ------------------------ //
@@ -137,7 +149,7 @@ component extends="mxunit.framework.TestCase"{
 		q.execute();
 		
 		// clear first level cache and remove any unsaved objects
-		ORMClearSession( "xindi_testsuite" );		
+		ORMClearSession();		
 	}
 	
 	/**

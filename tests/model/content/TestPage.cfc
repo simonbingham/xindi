@@ -25,173 +25,220 @@ component extends="mxunit.framework.TestCase"{
 	function testGetAncestor(){
 		var Page = EntityLoadByPK( "Page", 1 );
 		var Ancestor = Page.getAncestor();
-		assertTrue( IsNull( Ancestor ) );
+		var result = IsNull( Ancestor );
+		assertTrue( result );
 		Page = EntityLoadByPK( "Page", 2 );
 		Ancestor = Page.getAncestor();
-		assertEquals( 1, Ancestor.getPageID() );
+		result = Ancestor.getPageID();
+		assertEquals( 1, result );
 		Page = EntityLoadByPK( "Page", 5 );
 		Ancestor = Page.getAncestor();
-		assertEquals( 2, Ancestor.getPageID() );
+		result = Ancestor.getPageID();
+		assertEquals( 2, result );
 	}
 	
 	function testGetDescendentPageIDList(){
 		var Page = EntityLoadByPK( "Page", 1 );
-		var descendentpageidlist = Page.getDescendentPageIDList();
-		assertEquals( "2,3,4,5,6,7,8,9,10,11,12,13", descendentpageidlist );		
+		var result = Page.getDescendentPageIDList();
+		assertEquals( "2,3,4,5,6,7,8,9,10,11,12,13", result );		
 		Page = EntityLoadByPK( "Page", 2 );
-		descendentpageidlist = Page.getDescendentPageIDList();
-		assertEquals( "5,6,7", descendentpageidlist );		
+		result = Page.getDescendentPageIDList();
+		assertEquals( "5,6,7", result );		
 		Page = EntityLoadByPK( "Page", 5 );
-		descendentpageidlist = Page.getDescendentPageIDList();
-		assertEquals( "", descendentpageidlist );		
+		result = Page.getDescendentPageIDList();
+		assertEquals( "", result );		
 	}
 	
 	function testGetLevel(){
 		var Page = EntityLoadByPK( "Page", 1 );
-		assertEquals( 0, Page.getLevel() );
+		var result = Page.getLevel();
+		assertEquals( 0, result );
 		Page = EntityLoadByPK( "Page", 2 );
-		assertEquals( 1, Page.getLevel() );
+		result = Page.getLevel();
+		assertEquals( 1, result );
 		Page = EntityLoadByPK( "Page", 5 );
-		assertEquals( 2, Page.getLevel() );		
+		result = Page.getLevel();
+		assertEquals( 2, result );
 	}
 
 	function testGetNextSibling(){
 		var Page = EntityLoadByPK( "Page", 1 );
 		var NextSibling = Page.getNextSibling();
-		assertTrue( IsNull( NextSibling ) );		
+		var result = IsNull( NextSibling );
+		assertTrue( result );
 		Page = EntityLoadByPK( "Page", 2 );
 		NextSibling = Page.getNextSibling();
-		assertEquals( 3, NextSibling.getPageID() );		
+		result = NextSibling.getPageID();
+		assertEquals( 3, result );		
 		Page = EntityLoadByPK( "Page", 5 );
 		NextSibling = Page.getNextSibling();
-		assertEquals( 6, NextSibling.getPageID() );		
+		result = NextSibling.getPageID();
+		assertEquals( 6, result );		
 	}
 
 	function testGetPath(){
 		var Page = EntityLoadByPK( "Page", 5 );
-		assertEquals( 2, ArrayLen( Page.getPath() ) );
+		result = ArrayLen( Page.getPath() );
+		assertEquals( 2, result );
 		Page = EntityLoadByPK( "Page", 2 );
-		assertEquals( 1, ArrayLen( Page.getPath() ) );
+		result = ArrayLen( Page.getPath() );
+		assertEquals( 1, result );
 		Page = EntityLoadByPK( "Page", 1 );
-		assertEquals( 0, ArrayLen( Page.getPath() ) );		
+		result = ArrayLen( Page.getPath() );
+		assertEquals( 0, result );
 	}
 
 	function testGetPreviousSibling(){
 		var Page = EntityLoadByPK( "Page", 1 );
 		var PreviousSibling = Page.getPreviousSibling();
-		assertTrue( IsNull( PreviousSibling ) );		
+		var result = IsNull( PreviousSibling );
+		assertTrue( result );		
 		Page = EntityLoadByPK( "Page", 3 );
 		PreviousSibling = Page.getPreviousSibling();
-		assertEquals( 2, PreviousSibling.getPageID() );		
+		result = PreviousSibling.getPageID();
+		assertEquals( 2, result );
 	}
 
 	function testGetSlug(){
 		var Page = EntityLoadByPK( "Page", 1 );
-		assertEquals( "", Page.getSlug() );	
+		var result = Page.getSlug();
+		assertEquals( "", result );	
 		Page = EntityLoadByPK( "Page", 2 );
-		assertEquals( "title", Page.getSlug() );	
+		result = Page.getSlug();
+		assertEquals( "title", result );	
 		Page = EntityLoadByPK( "Page", 5 );
-		assertEquals( "title/title---", Page.getSlug() );	
+		result = Page.getSlug();
+		assertEquals( "title/title---", result );	
 	}
 
 	function testGetSummary(){
 		var Page = EntityLoadByPK( "Page", 1 );
-		assertEquals( "integer tincidunt porta ipsum euismod ultricies. maecenas mattis vehicula iaculis. morbi eu risus erat. in nunc ligula, semper venenatis viverra non, viverra in nisl. vivamus at felis turpis. maecenas metus nisl, tincidunt vitae mattis dapibus, tempor eu libero. donec elementum leo vitae neque consectetur elementum. donec semper varius dui, quis ullamcorper enim mollis sed. maecenas ac quam sem. phasellus vitae ante ante. sed urna tellus, aliquet facilisis tempor et; mollis eu nisi. "" aliquam l...", Page.getSummary() );
+		var result = Page.getSummary(); 
+		assertEquals( "integer tincidunt porta ipsum euismod ultricies. maecenas mattis vehicula iaculis. morbi eu risus erat. in nunc ligula, semper venenatis viverra non, viverra in nisl. vivamus at felis turpis. maecenas metus nisl, tincidunt vitae mattis dapibus, tempor eu libero. donec elementum leo vitae neque consectetur elementum. donec semper varius dui, quis ullamcorper enim mollis sed. maecenas ac quam sem. phasellus vitae ante ante. sed urna tellus, aliquet facilisis tempor et; mollis eu nisi. "" aliquam l...", result );
 	}
 
 	function testHasChild(){
 		var Page = EntityLoadByPK( "Page", 1 );
-		assertTrue( Page.hasChild() );
+		var result = Page.hasChild();
+		assertTrue( result );
 		Page = EntityLoadByPK( "Page", 2 );
-		assertTrue( Page.hasChild() );
+		result = Page.hasChild();
+		assertTrue( result );
 		Page = EntityLoadByPK( "Page", 5 );
-		assertFalse( Page.hasChild() );
+		result = Page.hasChild();
+		assertFalse( result );
 	}
 
 	function testHasNextSibling(){
 		var Page = EntityLoadByPK( "Page", 1 );
-		assertFalse( Page.hasNextSibling() );
+		var result = Page.hasNextSibling();
+		assertFalse( result );
 		Page = EntityLoadByPK( "Page", 2 );
-		assertTrue( Page.hasNextSibling() );
+		result = Page.hasNextSibling();
+		assertTrue( result );
 		Page = EntityLoadByPK( "Page", 5 );
-		assertTrue( Page.hasNextSibling() );
+		result = Page.hasNextSibling();
+		assertTrue( result );
 	}
 
 	function testHasMetaDescription(){
 		var Page = EntityLoadByPK( "Page", 1 );
-		assertTrue( Page.hasMetaDescription() );
+		var result = Page.hasMetaDescription();
+		assertTrue( result );
 		Page = EntityLoadByPK( "Page", 13 );
-		assertFalse( Page.hasMetaDescription() );
+		result = Page.hasMetaDescription();
+		assertFalse( result );
 	}
 
 	function testHasMetaKeywords(){
 		var Page = EntityLoadByPK( "Page", 1 );
-		assertTrue( Page.hasMetaKeywords() );
+		var result = Page.hasMetaKeywords();
+		assertTrue( result );
 		Page = EntityLoadByPK( "Page", 13 );
-		assertFalse( Page.hasMetaKeywords() );
+		result = Page.hasMetaKeywords();
+		assertFalse( result );
 	}
 
 	function testHasMetaTitle(){
 		var Page = EntityLoadByPK( "Page", 1 );
-		assertTrue( Page.hasMetaTitle() );
+		var result = Page.hasMetaTitle();
+		assertTrue( result );
 		Page = EntityLoadByPK( "Page", 13 );
-		assertFalse( Page.hasMetaTitle() );
+		result = Page.hasMetaTitle();
+		assertFalse( result );
 	}
 
 	function testHasPageIDInPath(){
 		var Page = EntityLoadByPK( "Page", 1 );
-		assertFalse( Page.hasPageIDInPath( 3 ) );
+		var result = Page.hasPageIDInPath( 3 );
+		assertFalse( result );
 		Page = EntityLoadByPK( "Page", 3 );
-		assertTrue( Page.hasPageIDInPath( 1 ) );
+		result = Page.hasPageIDInPath( 1 );
+		assertTrue( result );
 		Page = EntityLoadByPK( "Page", 6 );
-		assertTrue( Page.hasPageIDInPath( 2 ) );
+		result = Page.hasPageIDInPath( 2 );
+		assertTrue( result );
 	}
 
 	function testHasPreviousSibling(){
 		var Page = EntityLoadByPK( "Page", 1 );
-		assertFalse( Page.hasPreviousSibling() );
+		var result = Page.hasPreviousSibling();
+		assertFalse( result );
 		Page = EntityLoadByPK( "Page", 3 );
-		assertTrue( Page.hasPreviousSibling() );
+		result = Page.hasPreviousSibling();
+		assertTrue( result );
 		Page = EntityLoadByPK( "Page", 6 );
-		assertTrue( Page.hasPreviousSibling() );
+		result = Page.hasPreviousSibling();
+		assertTrue( result );
 	}
 
 	function testHasRoute(){
 		var routes = [ { hint="", title="title" } ];
 		var Page = EntityLoadByPK( "Page", 1 );
-		assertFalse( Page.hasRoute( routes ) );
+		var result = Page.hasRoute( routes );
+		assertFalse( result );
 		Page = EntityLoadByPK( "Page", 2 );
-		assertTrue( Page.hasRoute( routes ) );
+		result = Page.hasRoute( routes );
+		assertTrue( result );
 		Page = EntityLoadByPK( "Page", 6 );
-		assertFalse( Page.hasRoute( routes ) );
+		result = Page.hasRoute( routes );
+		assertFalse( result );
 	}
 
 	function testIsLeaf(){
 		var Page = EntityLoadByPK( "Page", 5 );
-		assertTrue( Page.isLeaf() );
+		var result = Page.isLeaf();
+		assertTrue( result );
 		Page = EntityLoadByPK( "Page", 6 );
-		assertTrue( Page.isLeaf() );		
+		result = Page.isLeaf();
+		assertTrue( result );		
 		Page = EntityLoadByPK( "Page", 7 );
-		assertTrue( Page.isLeaf() );		
+		result = Page.isLeaf();
+		assertTrue( result );		
 	}
 
 	function testIsMetaGenerated(){
 		var Page = EntityLoadByPK( "Page", 1 );
-		assertTrue( Page.isMetaGenerated() );
+		var result = Page.isMetaGenerated();
+		assertTrue( result );
 		Page = EntityLoadByPK( "Page", 13 );
-		assertFalse( Page.isMetaGenerated() );
+		result = Page.isMetaGenerated();
+		assertFalse( result );
 	}
 
 	function testIsPersisted(){
 		var Page = EntityLoadByPK( "Page", 1 );
-		assertTrue( Page.isPersisted() );
+		var result = Page.isPersisted();
+		assertTrue( result );
 	}
 
 	function testIsRoot(){
 		var Page = EntityLoadByPK( "Page", 1 );
-		assertTrue( Page.isRoot() );
+		var result = Page.isRoot();
+		assertTrue( result );
 		Page = EntityLoadByPK( "Page", 13 );
-		assertFalse( Page.isRoot() );
+		result = Page.isRoot();
+		assertFalse( result );
 	}
 
 	// private methods
@@ -199,98 +246,123 @@ component extends="mxunit.framework.TestCase"{
 	function testGetDescendentCount(){
 		var Page = EntityLoadByPK( "Page", 1 );
 		makePublic( Page, "getDescendentCount" );
-		assertEquals( 12, Page.getDescendentCount() );
+		var result = Page.getDescendentCount();
+		assertEquals( 12, result );
 		Page = EntityLoadByPK( "Page", 2 );
 		makePublic( Page, "getDescendentCount" );
-		assertEquals( 3, Page.getDescendentCount() );
+		result = Page.getDescendentCount();
+		assertEquals( 3, result );
 		Page = EntityLoadByPK( "Page", 5 );
 		makePublic( Page, "getDescendentCount" );
-		assertEquals( 0, Page.getDescendentCount() );
+		result = Page.getDescendentCount();
+		assertEquals( 0, result );
 	}
 	
 	function testGetDescendents(){
 		var Page = EntityLoadByPK( "Page", 1 );
 		makePublic( Page, "getDescendents" );
-		assertEquals( 12, ArrayLen( Page.getDescendents() ) );
+		var result = ArrayLen( Page.getDescendents() );
+		assertEquals( 12, result );
 		Page = EntityLoadByPK( "Page", 2 );
 		makePublic( Page, "getDescendents" );
-		assertEquals( 3, ArrayLen( Page.getDescendents() ) );
+		result = ArrayLen( Page.getDescendents() );
+		assertEquals( 3, result );
 		Page = EntityLoadByPK( "Page", 5 );
 		makePublic( Page, "getDescendents" );
-		assertEquals( 0, ArrayLen( Page.getDescendents() ) );
+		result = ArrayLen( Page.getDescendents() );
+		assertEquals( 0, result );
 	}
 
 	function testGetFirstChild(){
 		var Page = EntityLoadByPK( "Page", 1 );
 		makePublic( Page, "getFirstChild" );
 		var FirstChild = Page.getFirstChild();
-		assertEquals( 2, FirstChild.getPageID() );
+		var result = FirstChild.getPageID();
+		assertEquals( 2, result );
 		Page = EntityLoadByPK( "Page", 2 );
 		makePublic( Page, "getFirstChild" );
 		FirstChild = Page.getFirstChild();
-		assertEquals( 5, FirstChild.getPageID() );
+		result = FirstChild.getPageID();
+		assertEquals( 5, result );
 		Page = EntityLoadByPK( "Page", 5 );
 		makePublic( Page, "getFirstChild" );
-		assertTrue( IsNull( Page.getFirstChild() ) );
+		FirstChild = Page.getFirstChild();
+		result = IsNull( FirstChild );
+		assertTrue( result );
 	}
 
 	function testGetLastChild(){
 		var Page = EntityLoadByPK( "Page", 1 );
 		makePublic( Page, "getLastChild" );
 		var LastChild = Page.getLastChild();
-		assertEquals( 4, LastChild.getPageID() );
+		var result = LastChild.getPageID();
+		assertEquals( 4, result );
 		Page = EntityLoadByPK( "Page", 2 );
 		makePublic( Page, "getLastChild" );
 		LastChild = Page.getLastChild();
-		assertEquals( 7, LastChild.getPageID() );
+		result = LastChild.getPageID();
+		assertEquals( 7, result );
 		Page = EntityLoadByPK( "Page", 5 );
 		makePublic( Page, "getLastChild" );
-		assertTrue( IsNull( Page.getLastChild() ) );
+		LastChild = Page.getLastChild();
+		result = IsNull( LastChild );
+		assertTrue( result );
 	}
 
 	function testHasContent(){
 		var Page = EntityLoadByPK( "Page", 1 );
 		makePublic( Page, "hasContent" );
-		assertTrue( Page.hasContent() );
+		var result = Page.hasContent();
+		assertTrue( result );
 		Page = EntityLoadByPK( "Page", 2 );
 		makePublic( Page, "hasContent" );
-		assertTrue( Page.hasContent() );
+		result = Page.hasContent();
+		assertTrue( result );
 		Page = EntityLoadByPK( "Page", 5 );
 		makePublic( Page, "hasContent" );
-		assertTrue( Page.hasContent() );
+		result = Page.hasContent();
+		assertTrue( result );
 	}
 
 	function testHasDescendents(){
 		var Page = EntityLoadByPK( "Page", 1 );
 		makePublic( Page, "hasDescendents" );
-		assertTrue( Page.hasDescendents() );
+		var result = Page.hasDescendents();
+		assertTrue( result );
 		Page = EntityLoadByPK( "Page", 2 );
 		makePublic( Page, "hasDescendents" );
-		assertTrue( Page.hasDescendents() );
+		result = Page.hasDescendents();
+		assertTrue( result );
 		Page = EntityLoadByPK( "Page", 5 );
 		makePublic( Page, "hasDescendents" );
-		assertFalse( Page.hasDescendents() );
+		result = Page.hasDescendents();
+		assertFalse( result );
 	}
 
 	function testIsChild(){
 		var Page = EntityLoadByPK( "Page", 1 );
 		makePublic( Page, "isChild" );
-		assertFalse( Page.isChild() );
+		var result = Page.isChild();
+		assertFalse( result );
 		Page = EntityLoadByPK( "Page", 2 );
 		makePublic( Page, "isChild" );
-		assertTrue( Page.isChild() );
+		result = Page.isChild();
+		assertTrue( result );
 		Page = EntityLoadByPK( "Page", 5 );
 		makePublic( Page, "isChild" );
-		assertTrue( Page.isChild() );
+		result = Page.isChild();
+		assertTrue( result );
 	}
 	
 	function testIsUUIDUnique(){
 		var Page = EntityNew( "Page" );
 		makePublic( Page, "isUUIDUnique" );
 		Page.setUUID( "title" );
-		assertFalse( Page.isUUIDUnique() );
+		var result = Page.isUUIDUnique();
+		assertFalse( result );
 		Page.setUUID( "title-foobar" );
-		assertTrue( Page.isUUIDUnique() );
+		result = Page.isUUIDUnique();
+		assertTrue( result );
 	}
 	
 	function testSetUUID(){
@@ -298,7 +370,8 @@ component extends="mxunit.framework.TestCase"{
 		Page.setTitle( "this is a unique id" ); // setUUID uses value returned by getTitle
 		makePublic( Page, "setUUID" );
 		Page.setUUID();
-		assertEquals( "this-is-a-unique-id", Page.getUUID() );
+		var result = Page.getUUID();
+		assertEquals( "this-is-a-unique-id", result );
 	}
 	 
 	// ------------------------ IMPLICIT ------------------------ // 
@@ -345,7 +418,7 @@ component extends="mxunit.framework.TestCase"{
 		q.execute();
 		
 		// clear first level cache and remove any unsaved objects
-		ORMClearSession( "xindi_testsuite" );	 
+		ORMClearSession();	 
 	}
 	
 	/**

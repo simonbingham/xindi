@@ -20,74 +20,88 @@ component extends="mxunit.framework.TestCase"{
 			
 	// ------------------------ INTEGRATION TESTS ------------------------ //
 	
-	function testDeleteArticleWhereArticleExists(){
-		var result = CUT.deleteArticle( 1 );
-		assertTrue( StructKeyExists( result.messages, "success" ) );
-	}
-
 	function testDeleteArticleWhereArticleDoesNotExist(){
-		var result = CUT.deleteArticle( 4 );
-		assertTrue( StructKeyExists( result.messages, "error" ) );
+		var deletearticleresult = CUT.deleteArticle( articleid=4 );
+		var result = StructKeyExists( deletearticleresult.messages, "error" );
+		assertTrue( result );
 	}
+	
+	function testDeleteArticleWhereArticleExists(){
+		var deletearticleresult = CUT.deleteArticle( articleid=1 );
+		var result = StructKeyExists( deletearticleresult.messages, "success" );
+		assertTrue( result );
+	}	
 
 	function testGetArticleByIDWhereArticleDoesNotExist(){
-		var result = CUT.getArticleByID( 100 );
-		assertFalse( result.isPersisted() );
+		var Article = CUT.getArticleByID( articleid=100 );
+		var result = Article.isPersisted();
+		assertFalse( result );
 	}
 		
 	function testGetArticleByIDWhereArticleExists(){
-		var result = CUT.getArticleByID( 1 );
-		assertTrue( result.isPersisted() );
+		var Article = CUT.getArticleByID( articleid=1 );
+		var result = Article.isPersisted();
+		assertTrue( result );
 	}
 
 	function testGetArticleByUUIDWhereArticleDoesNotExist(){
-		var result = CUT.getArticleByUUID( "foobar" );
-		assertFalse( result.isPersisted() );
+		var Article = CUT.getArticleByUUID( uuid="foobar" );
+		var result = Article.isPersisted();
+		assertFalse( result );
 	}	
 	
 	function testGetArticleByUUIDWhereArticleExists(){
-		var result = CUT.getArticleByUUID( "sample-article-a" );
-		assertTrue( result.isPersisted() );
+		var Article = CUT.getArticleByUUID( uuid="sample-article-a" );
+		var result = Article.isPersisted();
+		assertTrue( result );
 	}
 	
 	function testGetArticleCount(){
-		assertEquals( 3, CUT.getArticleCount() );
+		var result = CUT.getArticleCount();
+		assertEquals( 3, result );
 	}
 	
 	function testGetArticles(){
-		var result = CUT.getArticles();
-		assertEquals( 3, ArrayLen( result ) );
+		var articles = CUT.getArticles();
+		var result = ArrayLen( articles );
+		assertEquals( 3, result );
 	}
 
 	function testGetArticlesBySearchTerm(){
-		var result = CUT.getArticles( searchterm="Sample Article A" );
-		assertEquals( 1, ArrayLen( result ) );
+		var articles = CUT.getArticles( searchterm="Sample Article A" );
+		var result = ArrayLen( articles );
+		assertEquals( 1, result );
 	}
 
-	function testGetArticlesWithMaxResultsParameter(){
-		var result = CUT.getArticles( maxresults=2 );
-		assertEquals( 2, ArrayLen( result ) );
-	}
-	
 	function testGetArticlesSortedByArticleID(){
 		var articles = CUT.getArticles( sortorder="articleid" );
-		assertEquals( "sample-article-a", articles[ 1 ].getUUID() );				
+		var result = articles[ 1 ].getUUID();
+		assertEquals( "sample-article-a", result );				
+	}
+	
+	function testGetArticlesWithMaxResultsParameter(){
+		var articles = CUT.getArticles( maxresults=2 );
+		var result = ArrayLen( articles );
+		assertEquals( 2, result );
 	}
 	
 	function testGetValidator(){
-		var Article = CUT.getArticleByID( 1 );
-		var result = CUT.getValidator( Article );	
-		assertTrue( IsObject( result ) );
+		var Article = CUT.getArticleByID( articleid=1 );
+		var Validator = CUT.getValidator( Article );
+		var result = IsObject( Validator );	
+		assertTrue( result );
 	}
 	
 	function testSaveArticleWhereArticleIsInvalid(){
-		var result = CUT.saveArticle( { title="", published="27/6/2012", content="bar" } );
-		assertTrue( StructKeyExists( result.messages, "error" ) );
+		var savearticleresult = CUT.saveArticle( { title="", published="27/6/2012", content="bar" } );
+		var result = StructKeyExists( savearticleresult.messages, "error" );
+		assertTrue( result );
 	}
 
 	function testSaveArticleWhereArticleIsValid(){
-		var result = CUT.saveArticle( { title="foo", published="27/6/2012", content="bar" } );
-		assertTrue( StructKeyExists( result.messages, "success" ) );
+		var savearticleresult = CUT.saveArticle( { title="foo", published="27/6/2012", content="bar" } );
+		var result = StructKeyExists( savearticleresult.messages, "success" );
+		assertTrue( result );
 	}
 	
 	// ------------------------ IMPLICIT ------------------------ // 
@@ -131,7 +145,7 @@ component extends="mxunit.framework.TestCase"{
 		q.execute();
 		
 		// clear first level cache and remove any unsaved objects
-		ORMClearSession( "xindi_testsuite" );	
+		ORMClearSession();	
 	}
 	
 	/**

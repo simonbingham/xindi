@@ -24,72 +24,89 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testGetRSSSummary(){
 		CUT.setContent( "'Nullam ac mi nec enim vestibulum scelerisque sit amet at tellus. Phasellus eget quam neque; id luctus lorem. Sed sagittis.'" );
-		assertEquals( "&apos;nullam ac mi nec enim vestibulum scelerisque sit amet at tellus. phasellus eget quam neque; id luctus lorem. sed sagittis.&apos;", CUT.getRSSSummary() );
+		var result = CUT.getRSSSummary();
+		assertEquals( "&apos;nullam ac mi nec enim vestibulum scelerisque sit amet at tellus. phasellus eget quam neque; id luctus lorem. sed sagittis.&apos;", result );
 	}
 	 
 	function testGetSummaryDoesNotAppendHellipIfShort(){
 		CUT.setContent( "<p>short page content</p>" );
-		assertEquals( "short page content", CUT.getSummary() );
+		var result = CUT.getSummary();
+		assertEquals( "short page content", result );
 	}
 
 	function testGetSummaryIsPlainText(){
 		CUT.setContent( "<p>some <strong class='foo'>page</strong> content</p>" );
-		assertEquals( "some page content", CUT.getSummary() );
+		var result = CUT.getSummary();
+		assertEquals( "some page content", result );
 	}
 	
 	function testGetSummaryTruncatesAndAppendsHellipIfLong(){
 		CUT.setContent( "<p>This is a long description which is over five-hundred characters in length - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices purus non velit adipiscing malesuada. Aliquam sed convallis neque. Praesent vulputate suscipit luctus. Integer nec neque non dolor eleifend commodo. Mauris consectetur, augue ut pretium lobortis, lectus dui mattis velit, quis venenatis arcu leo non ipsum. Quisque sit amet tortor nec orci lobortis aliquet eget ac erat. Cras rhoncus molestie tincidunt. Vestibulum feugiat aliquam sapien id pharetra. Sed viverra turpis a neque molestie sed venenatis turpis sollicitudin. Duis eu nisl in lacus luctus molestie ac nec turpis. Maecenas vel orci eget purus suscipit aliquam ut id enim. Maecenas euismod, arcu et vestibulum laoreet, sem nisl ultrices arcu, vitae elementum leo leo at tortor. Aliquam erat volutpat. Curabitur eu pellentesque lorem. Donec at nisl erat. Mauris ornare posuere dui a sollicitudin. Quisque quis diam ligula, sed feugiat mauris. In hac habitasse platea dictumst. In condimentum, urna id imperdiet lobortis, mauris justo bibendum ante, sed malesuada nulla elit ac quam. In pellentesque, orci et mattis cursus, urna urna tincidunt sapien, sollicitudin molestie libero mi ac eros. Curabitur elementum felis vel nisi fermentum vehicula. Suspendisse vitae suscipit neque. Sed est ipsum, tempor id sodales in, tempus eget dolor. Quisque nulla mi, posuere sit amet porttitor in, adipiscing quis elit. Morbi vitae lectus felis. Fusce bibendum, quam auctor pellentesque faucibus, quam diam bibendum risus, sit amet malesuada enim lectus in nisl. Aenean blandit molestie risus nec vulputate. Morbi nec sodales sapien. Donec varius porttitor leo, ac vehicula turpis ornare sit amet. In hac habitasse platea dictumst.</p>" );
-		var result = CUT.getSummary();
-		assertTrue( Len( result ) == 503 );
-		assertTrue( Right( result, 3 ) == "..." );
+		var result = Len( CUT.getSummary() ) == 503;
+		assertTrue( result );
+		result = Right( CUT.getSummary(), 3 ) == "...";
+		assertTrue( result );
 	}
 	
 	function testHasMetaDescription(){
-		var result = EntityLoadByPK( "Article", 1 );
-		assertTrue( result.hasMetaDescription() );
-		result = EntityLoadByPK( "Article", 3 );
-		assertFalse( result.hasMetaDescription() );
+		var Article = EntityLoadByPK( "Article", 1 );
+		var result = Article.hasMetaDescription();
+		assertTrue( result );
+		Article = EntityLoadByPK( "Article", 3 );
+		result = Article.hasMetaDescription();
+		assertFalse( result );
 	}	
 
 	function testHasMetaKeywords(){
-		var result = EntityLoadByPK( "Article", 1 );
-		assertTrue( result.hasMetaKeywords() );
-		result = EntityLoadByPK( "Article", 3 );
-		assertFalse( result.hasMetaKeywords() );
-	}	
+		var Article = EntityLoadByPK( "Article", 1 );
+		var result = Article.hasMetaKeywords();
+		assertTrue( result );
+		Article = EntityLoadByPK( "Article", 3 );
+		result = Article.hasMetaKeywords();
+		assertFalse( result );
+	}
 	
 	function testHasMetaTitle(){
-		var result = EntityLoadByPK( "Article", 1 );
-		assertTrue( result.hasMetaTitle() );
-		result = EntityLoadByPK( "Article", 3 );
-		assertFalse( result.hasMetaTitle() );
+		var Article = EntityLoadByPK( "Article", 1 );
+		var result = Article.hasMetaTitle();
+		assertTrue( result );
+		Article = EntityLoadByPK( "Article", 3 );
+		result = Article.hasMetaTitle();
+		assertFalse( result );
 	}
 	
 	function testIsMetaGenerated(){
-		var result = EntityLoadByPK( "Article", 1 );
-		assertTrue( result.isMetaGenerated() );
-		result = EntityLoadByPK( "Article", 3 );
-		assertFalse( result.isMetaGenerated() );
+		var Article = EntityLoadByPK( "Article", 1 );
+		var result = Article.isMetaGenerated();
+		assertTrue( result );
+		Article = EntityLoadByPK( "Article", 3 );
+		result = Article.isMetaGenerated();
+		assertFalse( result );
 	}		
 	
 	function testIsNew(){
 		CUT.setPublished( Now() );
-		assertTrue( CUT.isNew() );
+		var result = CUT.isNew();
+		assertTrue( result );
 		CUT.setPublished( DateAdd( "ww", -2, Now() ) );
-		assertFalse( CUT.isNew() );		
+		result = CUT.isNew();
+		assertFalse( result );		
 	}
 	
 	function testIsPersisted(){
 		assertFalse( CUT.isPersisted() );
-		var result = EntityLoadByPK( "Article", 1 );
-		assertTrue( result.isPersisted() );		
+		var Article = EntityLoadByPK( "Article", 1 );
+		var result = Article.isPersisted();
+		assertTrue( result );		
 	}
 	
 	function testIsPublished(){
 		CUT.setPublished( DateAdd( "d", -1, Now() ) );
-		assertTrue( CUT.isPublished() );
+		var result = CUT.isPublished();
+		assertTrue( result );
 		CUT.setPublished( DateAdd( "d", 1, Now() ) );
-		assertFalse( CUT.isPublished() );	
+		result = CUT.isPublished();
+		assertFalse( result );
 	}
 	
 	// private methods	
@@ -98,23 +115,26 @@ component extends="mxunit.framework.TestCase"{
 		CUT.setTitle( "Sample Article A" );
 		makePublic( CUT, "isUUIDUnique" );
 		CUT.setUUID( "" );
-		assertTrue( CUT.isUUIDUnique() );
-	}	
-
-	function testSetUUIDWhereRecordWithSameTitleExists(){
-		CUT.setTitle( "Sample Article A" );
-		makePublic( CUT, "setUUID" );
-		CUT.setUUID( "" );
-		assertEquals( "sample-article-a-", CUT.getUUID() );
+		var result = CUT.isUUIDUnique();
+		assertTrue( result );
 	}	
 
 	function testSetUUIDWhereRecordWithSameTitleDoesNotExist(){
 		CUT.setTitle( "Sample Article D" );
 		makePublic( CUT, "setUUID" );
 		CUT.setUUID( "" );
-		assertEquals( "sample-article-d", CUT.getUUID() );
+		var result = CUT.getUUID();
+		assertEquals( "sample-article-d", result );
 	}	
 	
+	function testSetUUIDWhereRecordWithSameTitleExists(){
+		CUT.setTitle( "Sample Article A" );
+		makePublic( CUT, "setUUID" );
+		CUT.setUUID( "" );
+		var result = CUT.getUUID();
+		assertEquals( "sample-article-a-", result );
+	}	
+
 	// ------------------------ IMPLICIT ------------------------ //
 	
 	/**
@@ -149,7 +169,7 @@ component extends="mxunit.framework.TestCase"{
 		q.execute();
 		
 		// clear first level cache and remove any unsaved objects
-		ORMClearSession( "xindi_testsuite" );	
+		ORMClearSession();	
 	}
 	
 	/**

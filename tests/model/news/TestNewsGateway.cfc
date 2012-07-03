@@ -21,96 +21,111 @@ component extends="mxunit.framework.TestCase"{
 	// ------------------------ UNIT TESTS ------------------------ //
 	
 	// public methods
-	
-	function testDeleteArticleWhereArticleExists(){
-		var result = CUT.deleteArticle( 1 );
-		assertTrue( StructKeyExists( result.messages, "success" ) );
-	}
 
 	function testDeleteArticleWhereArticleDoesNotExist(){
-		var result = CUT.deleteArticle( 4 );
-		assertTrue( StructKeyExists( result.messages, "error" ) );
+		var deletearticleresult = CUT.deleteArticle( articleid=4 );
+		var result = StructKeyExists( deletearticleresult.messages, "error" );
+		assertTrue( result );
+	}
+		
+	function testDeleteArticleWhereArticleExists(){
+		var deletearticleresult = CUT.deleteArticle( articleid=1 );
+		var result = StructKeyExists( deletearticleresult.messages, "success" );
+		assertTrue( result );
 	}
 
 	function testGetArticleByIDWhereArticleDoesNotExist(){
-		var result = CUT.getArticleByID( 100 );
-		assertFalse( result.isPersisted() );
+		var Article = CUT.getArticleByID( articleid=100 );
+		var result = Article.isPersisted();
+		assertFalse( result );
 	}
 		
 	function testGetArticleByIDWhereArticleExists(){
-		var result = CUT.getArticleByID( 1 );
-		assertTrue( result.isPersisted() );
+		var Article = CUT.getArticleByID( articleid=1 );
+		var result = Article.isPersisted();
+		assertTrue( result );
 	}
 
 	function testGetArticleByUUIDWhereArticleDoesNotExist(){
-		var result = CUT.getArticleByUUID( "foobar" );
-		assertFalse( result.isPersisted() );
+		var Article = CUT.getArticleByUUID( uuid="foobar" );
+		var result = Article.isPersisted();
+		assertFalse( result );
 	}	
 	
 	function testGetArticleByUUIDWhereArticleExists(){
-		var result = CUT.getArticleByUUID( "sample-article-a" );
-		assertTrue( result.isPersisted() );
+		var Article = CUT.getArticleByUUID( uuid="sample-article-a" );
+		var result = Article.isPersisted();
+		assertTrue( result );
 	}
 	
 	function testGetArticleCount(){
-		assertEquals( 3, CUT.getArticleCount() );
+		var result = CUT.getArticleCount();
+		assertEquals( 3, result );
 	}
 	
 	function testGetArticles(){
-		var result = CUT.getArticles();
-		assertEquals( 3, ArrayLen( result ) );
+		var articles = CUT.getArticles();
+		var result = ArrayLen( articles );
+		assertEquals( 3, result );
 	}
 
 	function testGetArticlesBySearchTerm(){
-		var result = CUT.getArticles( searchterm="Sample Article A" );
-		assertEquals( 1, ArrayLen( result ) );
+		var articles = CUT.getArticles( searchterm="Sample Article A" );
+		var result = ArrayLen( articles );
+		assertEquals( 1, result );
 	}
 
-	function testGetArticlesWithMaxResultsParameter(){
-		var result = CUT.getArticles( maxresults=2 );
-		assertEquals( 2, ArrayLen( result ) );
-	}
-	
 	function testGetArticlesSortedByArticleID(){
 		var articles = CUT.getArticles( sortorder="articleid" );
-		assertEquals( "sample-article-a", articles[ 1 ].getUUID() );				
+		var result = articles[ 1 ].getUUID();
+		assertEquals( "sample-article-a", result );				
+	}
+	
+	function testGetArticlesWithMaxResultsParameter(){
+		var articles = CUT.getArticles( maxresults=2 );
+		var result = ArrayLen( articles );
+		assertEquals( 2, result );
 	}
 	
 	function testGetValidator(){
 		var $ValidationResult = mock( "ValidateThis" );
-		var $Validator = mock( "ValidateThis" ).getValidator( theObject='{any}' ).returns( $ValidationResult );
-		CUT.setValidator( $Validator );	
+		var $Validator = mock( "ValidateThis" ).getValidator( theObject='{any}' ).returns( ValidationResult=$ValidationResult );
+		CUT.setValidator( Validator=$Validator );	
 		var $Article = mock( "model.news.Article" );
-		var result = CUT.getValidator( $Article );	
-		assertTrue( IsObject( result ) );
+		var Validator = CUT.getValidator( Article=$Article );
+		var result = IsObject( Validator );
+		assertTrue( result );
 	}
 	
 	function testSaveArticleWhereArticleIsInvalid(){
 		var $MetaData = new model.content.MetaData();
-		CUT.setMetaData( $MetaData );		
+		CUT.setMetaData( MetaData=$MetaData );		
 		var $ValidationResult = mock( "ValidateThis" ).hasErrors().returns( true );
-		var $Validator = mock( "ValidateThis" ).validate( theObject='{any}' ).returns( $ValidationResult );
-		CUT.setValidator( $Validator );		
-		var result = CUT.saveArticle( { title="", published="27/6/2012", content="bar" } );
-		assertTrue( StructKeyExists( result.messages, "error" ) );
+		var $Validator = mock( "ValidateThis" ).validate( theObject='{any}' ).returns( ValidationResult=$ValidationResult );
+		CUT.setValidator( Validator=$Validator );		
+		var savearticleresult = CUT.saveArticle( { title="", published="27/6/2012", content="bar" } );
+		var result = StructKeyExists( savearticleresult.messages, "error" );
+		assertTrue( result );
 	}
 
 	function testSaveArticleWhereArticleIsValid(){
 		var $MetaData = new model.content.MetaData();
-		CUT.setMetaData( $MetaData );		
+		CUT.setMetaData( MetaData=$MetaData );		
 		var $ValidationResult = mock( "ValidateThis" ).hasErrors().returns( false );
-		var $Validator = mock( "ValidateThis" ).validate( theObject='{any}' ).returns( $ValidationResult );
-		CUT.setValidator( $Validator );		
-		var result = CUT.saveArticle( { title="foo", published="27/6/2012", content="bar" } );
-		assertTrue( StructKeyExists( result.messages, "success" ) );
+		var $Validator = mock( "ValidateThis" ).validate( theObject='{any}' ).returns( ValidationResult=$ValidationResult );
+		CUT.setValidator( Validator=$Validator );		
+		var savearticleresult = CUT.saveArticle( { title="foo", published="27/6/2012", content="bar" } );
+		var result = StructKeyExists( savearticleresult.messages, "success" );
+		assertTrue( result );
 	}
 	
 	// private methods
 	
 	function testNewArticle(){
 		makePublic( CUT, "newArticle" );
-		var result = CUT.newArticle();
-		assertFalse( result.isPersisted() );
+		var Article = CUT.newArticle();
+		var result = Article.isPersisted();
+		assertFalse( result );
 	}
  
 	// ------------------------ IMPLICIT ------------------------ // 
@@ -147,7 +162,7 @@ component extends="mxunit.framework.TestCase"{
 		q.execute();
 		
 		// clear first level cache and remove any unsaved objects
-		ORMClearSession( "xindi_testsuite" );		
+		ORMClearSession();		
 	}
 	
 	/**

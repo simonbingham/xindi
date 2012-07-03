@@ -22,7 +22,8 @@ component extends="mxunit.framework.TestCase"{
 
 	function testGetDisplayMessageHTMLShouldBeEscaped(){
 		CUT.setMessage( "<script>alert('hack');</script>" );
-		assertEquals( "&lt;script&gt;alert('hack');&lt;/script&gt;", CUT.getDisplayMessage() );		
+		var result = CUT.getDisplayMessage();
+		assertEquals( "&lt;script&gt;alert('hack');&lt;/script&gt;", result );		
 	}	
 	 
 	function testGetDisplayMessageLineFeedsAndCarriageReturnsShouldBeReplace(){
@@ -32,26 +33,31 @@ component extends="mxunit.framework.TestCase"{
 		is
 		
 		a" );
-		assertTrue( FindNoCase( "<br />", CUT.getDisplayMessage() ) );
+		var result = FindNoCase( "<br />", CUT.getDisplayMessage() );
+		assertTrue( result );
 	}
 	
 	function testGetFullName(){
 		CUT.setFirstName( "simon" );
 		CUT.setLastName( "bingham" );
-		assertEquals( "simon bingham", CUT.getFullname() );
+		var result = CUT.getFullname();
+		assertEquals( "simon bingham", result );
 	}
 	
 	function testIsPersisted(){
-		assertFalse( CUT.isPersisted() );
+		var result = CUT.isPersisted();
+		assertFalse( result );
 	}
 	
 	function testIsUnread(){
-		assertTrue( CUT.isUnread() );
+		var result = CUT.isUnread();
+		assertTrue( result );
 	}	
 
 	function testSetRead(){
 		CUT.setRead( true );
-		assertFalse( CUT.isUnread() );
+		var result = CUT.isUnread();
+		assertFalse( result );
 	}	
 	
 	// ------------------------ IMPLICIT ------------------------ //

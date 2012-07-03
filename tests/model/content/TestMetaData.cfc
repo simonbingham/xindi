@@ -22,56 +22,58 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testGenerateMetaDescription()
 	{
-		var result = CUT.generateMetaDescription( "The Hoff and I are going to the beach. The Hoff said he would like an ice cream.", 100 );
-		assertEquals( "The Hoff and I are going to the beach. The Hoff said he would like an ice cream.", result );		
+		var result = CUT.generateMetaDescription( description="Morbi at felis quis metus scelerisque venenatis. Curabitur ut tellus nec massa eleifend vestibulum! In non lectus sem; ut lacinia." );
+		assertEquals( "Morbi at felis quis metus scelerisque venenatis. Curabitur ut tellus nec massa eleifend vestibulum! In non lectus sem; ut lacinia.", result );		
 	}
 
 	function testGenerateMetaKeywords()
 	{
-		var result = CUT.generateMetaKeywords( "The Hoff and I are going to the beach. The Hoff said he would like an ice cream.", 100 );
-		assertEquals( "hoff,going,beach,said,he,would,like,ice,cream", result );		
+		var result = CUT.generateMetaKeywords( keywords="Morbi at felis quis metus scelerisque venenatis. Curabitur ut tellus nec massa eleifend vestibulum! In non lectus sem; ut lacinia." );
+		assertEquals( "morbi,at,felis,quis,metus,scelerisque,venenatis,curabitur,ut,tellus,nec,massa,eleifend,vestibulum!,non,lectus,sem;,lacinia", result );		
 	}
 
 	function testGeneratePageTitle()
 	{
-		var result = CUT.generatePageTitle( "The Hoff", "Ice Cream", 100 );
-		assertEquals( "Ice Cream | The Hoff", result );		
+		var result = CUT.generatePageTitle( websitetitle="foo", pagetitle="bar" );
+		assertEquals( "bar | foo", result );		
 	}
 	
 	function testListDeleteDuplicatesNoCase()
 	{
-		var result = CUT.listDeleteDuplicatesNoCase( "The,Hoff,and,I,are,going,to,the,beach.,The,Hoff,said,he,would,like,an,ice,cream." );
-		assertEquals( "the,hoff,and,i,are,going,to,beach,said,he,would,like,an,ice,cream", result );
+		var result = CUT.listDeleteDuplicatesNoCase( thelist="Morbi,at,felis,quis,metus,scelerisque,venenatis,Morbi,at,felis,quis,metus,scelerisque,venenatis" );
+		assertEquals( "Morbi,at,felis,quis,metus,scelerisque,venenatis", result );
 	}	
 	
 	function testRemoveNonKeywords()
 	{
-		var result = CUT.removeNonKeywords( "The Hoff and I are going to the beach. The Hoff said he would like an ice cream." );
-		assertEquals( "hoff going beach hoff said he would like ice cream", result  );
+		var result = CUT.removeNonKeywords( thestring="Morbi at felis quis metus scelerisque venenatis. Curabitur ut tellus nec massa eleifend vestibulum! In non lectus sem; ut lacinia." );
+		assertEquals( "morbi at felis quis metus scelerisque venenatis curabitur ut tellus nec massa eleifend vestibulum! non lectus sem; ut lacinia", result  );
 	}
 	
 	function testRemoveUnrequiredCharacters()
 	{
-		var result = CUT.removeUnrequiredCharacters( "
-		The  Hoff 
+		var result = CUT.removeUnrequiredCharacters( thestring="
+		Morbi at felis quis 
 		
-		and   I are    
+		metus scelerisque venenatis. 
 		
-		going to    the beach. The Hoff said he would like an ice cream.		
+		Curabitur ut tellus nec massa eleifend 
+		
+		vestibulum! In non lectus sem; ut lacinia.	
 		" );
-		assertEquals( "the  hoff       and   i are          going to    the beach. the hoff said he would like an ice cream.", result );		
+		assertEquals( "morbi at felis quis       metus scelerisque venenatis.       curabitur ut tellus nec massa eleifend       vestibulum! in non lectus sem; ut lacinia.", result );		
 	}	
 	
 	function testReplaceMultipleSpacesWithSingleSpace()
 	{
-		var result = CUT.replaceMultipleSpacesWithSingleSpace( "The Hoff and I     are going to the beach. The Hoff said  he would like    an ice cream." );
-		assertEquals( "the hoff and i are going to the beach. the hoff said he would like an ice cream.", result );
+		var result = CUT.replaceMultipleSpacesWithSingleSpace( thestring="Morbi at felis quis metus   scelerisque venenatis. Curabitur ut tellus nec massa eleifend   vestibulum! In non lectus sem; ut lacinia." );
+		assertEquals( "Morbi at felis quis metus scelerisque venenatis. Curabitur ut tellus nec massa eleifend vestibulum! In non lectus sem; ut lacinia.", result );
 	}
 
 	function testStripHTML()
 	{
-		var result = CUT.stripHTML( "<p>The Hoff and I are going to the beach. The Hoff said he would like an ice cream.</p>" );
-		assertEquals( "The Hoff and I are going to the beach. The Hoff said he would like an ice cream.", result );
+		var result = CUT.stripHTML( thestring="<p>Morbi at felis quis metus scelerisque venenatis. Curabitur ut tellus nec massa eleifend vestibulum! In non lectus sem; ut lacinia.</p>" );
+		assertEquals( "Morbi at felis quis metus scelerisque venenatis. Curabitur ut tellus nec massa eleifend vestibulum! In non lectus sem; ut lacinia.", result );
 	}
 	
 	// ------------------------ IMPLICIT ------------------------ // 

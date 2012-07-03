@@ -19,59 +19,70 @@
 component extends="mxunit.framework.TestCase"{
 			
 	// ------------------------ INTEGRATION TESTS ------------------------ //
-	
-	function testDeleteEnquiryWhereEnquiryExists(){
-		var result = CUT.deleteEnquiry( enquiryid=1 );
-		assertTrue( StructKeyExists( result.messages, "success" ) );
-	}
 
 	function testDeleteEnquiryWhereEnquiryDoesNotExist(){
-		var result = CUT.deleteEnquiry( enquiryid=4 );
-		assertTrue( StructKeyExists( result.messages, "error" ) );
+		var deleteenquiryresult = CUT.deleteEnquiry( enquiryid=4 );
+		var result = StructKeyExists( deleteenquiryresult.messages, "error" );
+		assertTrue( result );
 	}
-	
+		
+	function testDeleteEnquiryWhereEnquiryExists(){
+		var deleteenquiryresult = CUT.deleteEnquiry( enquiryid=1 );
+		var result = StructKeyExists( deleteenquiryresult.messages, "success" );
+		assertTrue( result );
+	}
+
 	function testGetEnquiries(){
 		var enquiries = CUT.getEnquiries();
-		assertEquals( 3, ArrayLen( enquiries ) );
+		var result = ArrayLen( enquiries );
+		assertEquals( 3, result );
 	}
 
 	function testGetEnquiriesWithMaxResults(){
 		var enquiries = CUT.getEnquiries( maxresults=2 );
-		assertEquals( 2, ArrayLen( enquiries ) );
+		var result = ArrayLen( enquiries );
+		assertEquals( 2, result );
 	}
 	
 	function testGetEnquiryByID(){
 		var Enquiry = CUT.getEnquiryByID( enquiryid=2 );
-		assertTrue( Enquiry.isPersisted() );
+		var result = Enquiry.isPersisted();
+		assertTrue( result );
 	}
 
 	function testGetUnreadCount(){
-		assertEquals( 3, CUT.getUnreadCount() );
+		var result = CUT.getUnreadCount();
+		assertEquals( 3, result );
 	}
 	
 	function testMarkAllRead(){
-		var result = CUT.markAllRead();
-		assertTrue( StructKeyExists( result.messages, "success" ) );
+		var markallreadresult = CUT.markAllRead();
+		var result = StructKeyExists( markallreadresult.messages, "success" );
+		assertTrue( result );
 	}
 	
 	function testMarkRead(){
-		var result = CUT.markRead( enquiryid=3 );
-		assertTrue( StructKeyExists( result.messages, "success" ) );
+		var markreadresult = CUT.markRead( enquiryid=3 );
+		var result = StructKeyExists( markreadresult.messages, "success" );
+		assertTrue( result );
 	}
 	
 	function testNewEnquiry(){
-		var result = CUT.newEnquiry();
-		assertFalse( result.isPersisted() );
+		var Enquiry = CUT.newEnquiry();
+		var result = Enquiry.isPersisted();
+		assertFalse( result );
 	}
 	
 	function testSendEnquiryWhereEnquiryIsInvalid(){
-		var result = CUT.sendEnquiry( properties={ firstname="", lastname="", email="", message="" }, config={ subject="Test", emailto="example@example.com" }, emailtemplatepath="../../public/views/enquiry/email.cfm" );
-		assertTrue( StructKeyExists( result.messages, "error" ) );
+		var sendenquiryresult = CUT.sendEnquiry( properties={ firstname="", lastname="", email="", message="" }, config={ subject="Test", emailto="example@example.com" }, emailtemplatepath="../../public/views/enquiry/email.cfm" );
+		var result = StructKeyExists( sendenquiryresult.messages, "error" );
+		assertTrue( result );
 	}
 
 	function testSendEnquiryWhereEnquiryIsValid(){
-		var result = CUT.sendEnquiry( properties={ firstname="Test", lastname="User", email="example@example.com", message="This is a test message." }, config={ subject="Test", emailto="example@example.com" }, emailtemplatepath="../../public/views/enquiry/email.cfm" );
-		assertTrue( StructKeyExists( result.messages, "success" ) );
+		var sendenquiryresult = CUT.sendEnquiry( properties={ firstname="Test", lastname="User", email="example@example.com", message="This is a test message." }, config={ subject="Test", emailto="example@example.com" }, emailtemplatepath="../../public/views/enquiry/email.cfm" );
+		var result = StructKeyExists( sendenquiryresult.messages, "success" );
+		assertTrue( result );
 	}
  
 	// ------------------------ IMPLICIT ------------------------ // 
@@ -113,7 +124,7 @@ component extends="mxunit.framework.TestCase"{
 		q.execute();
 		
 		// clear first level cache and remove any unsaved objects
-		ORMClearSession( "xindi_testsuite" );			
+		ORMClearSession();			
 	}
 	
 	/**

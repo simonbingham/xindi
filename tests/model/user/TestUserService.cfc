@@ -21,23 +21,27 @@ component extends="mxunit.framework.TestCase"{
 	// ------------------------ INTEGRATION TESTS ------------------------ //
 	
 	function testDeleteUserWhereUserDoesNotExist(){
-		result = CUT.deleteUser( 2 );
-		assertTrue( StructKeyExists( result.messages, "error" ) );
+		var deleteuserresult = CUT.deleteUser( 2 );
+		var result = StructKeyExists( deleteuserresult.messages, "error" );
+		assertTrue( result );
 	}
 
 	function testDeleteUserWhereUserExists(){
-		result = CUT.deleteUser( 1 );
-		assertTrue( StructKeyExists( result.messages, "success" ) );
+		var deleteuserresult = CUT.deleteUser( 1 );
+		var result = StructKeyExists( deleteuserresult.messages, "success" );
+		assertTrue( result );
 	}
 
 	function testGetUserByIDWhereUserDoesNotExist(){
 		var User = CUT.getUserByID( 2 );
-		assertFalse( User.isPersisted() );
+		var result = User.isPersisted();
+		assertFalse( result );
 	}	
 	
 	function testGetUserByIDWhereUserExists(){
 		var User = CUT.getUserByID( 1 );
-		assertTrue( User.isPersisted() );
+		var result = User.isPersisted();
+		assertTrue( result );
 	}	
 	
 	function testGetUserByCredentialsReturnsUserForCorrectCredentialsByEmail(){
@@ -45,9 +49,11 @@ component extends="mxunit.framework.TestCase"{
 		User.setUsername( "" );
 		User.setEmail( "example@example.com" );
 		User.setPassword( "admin" );
-		result = CUT.getUserByCredentials( User );
-		assertFalse( IsNull( result ) );
-		assertEquals( "example@example.com", result.getEmail() );
+		var User = CUT.getUserByCredentials( User );
+		var result = IsNull( User );
+		assertFalse( result );
+		result = User.getEmail();
+		assertEquals( "example@example.com", result );
 	}
 
 	function testGetUserByCredentialsReturnsUserForCorrectCredentialsByUsername(){
@@ -55,9 +61,11 @@ component extends="mxunit.framework.TestCase"{
 		User.setUsername( "admin" );
 		User.setEmail( "" );
 		User.setPassword( "admin" );
-		result = CUT.getUserByCredentials( User );
-		assertFalse( IsNull( result ) );
-		assertEquals( "example@example.com", result.getEmail() );
+		var User = CUT.getUserByCredentials( User );
+		var result = IsNull( User );
+		assertFalse( result );
+		result = User.getEmail();
+		assertEquals( "example@example.com", result );
 	}
 
 	function testGetUserByCredentialsReturnsNullForInCorrectCredentials(){
@@ -65,49 +73,57 @@ component extends="mxunit.framework.TestCase"{
 		User.setUsername( "aliaspooryorik" );
 		User.setEmail( "" );
 		User.setPassword( "1111111111111111111111111111111111111111111111111111111111111111" );		
-		result = CUT.getUserByCredentials( User );
-		assertFalse( result.isPersisted() );
+		var User = CUT.getUserByCredentials( User );
+		var result = User.isPersisted();
+		assertFalse( result );
 	}
 	
 	function testGetUserByEmailOrUsernameWhereEmailIsSpecified(){
 		var User = CUT.newUser();
 		User.setEmail( "example@example.com" );
 		User = CUT.getUserByEmailOrUsername( User );
-		assertTrue( User.isPersisted() );
+		var result = User.isPersisted();
+		assertTrue( result );
 	}
 
 	function testGetUserByEmailOrUsernameWhereUsernameIsSpecified(){
 		var User = CUT.newUser();
 		User.setUsername( "admin" );
 		User = CUT.getUserByEmailOrUsername( User );
-		assertTrue( User.isPersisted() );
+		var result = User.isPersisted();
+		assertTrue( result );
 	}
 	
 	function testGetUsers(){
 		var users = CUT.getUsers();
-		assertTrue( ArrayLen( users ) == 1 );
+		var result = ArrayLen( users ); 
+		assertTrue( result );
 	}	
 	
 	function testGetValidator(){
 		var User = new model.user.User();
-		assertTrue( IsObject( CUT.getValidator( User ) ) );
+		var result = IsObject( CUT.getValidator( User ) );
+		assertTrue( result );
 	}
 	
 	function testNewUser(){
 		var User = CUT.newUser();
-		assertFalse( User.isPersisted() );
+		var result = User.isPersisted();
+		assertFalse( result );
 	}
 
 	function testSaveUserWhereUserIsInvalid(){
 		var properties = { firstname="Simon", lastname="Bingham", email="foobarfoobarcom", username="foo", password="bar"  };
-		var result = CUT.saveUser( properties, "create" );
-		assertTrue( StructKeyExists( result.messages, "error" ) );
+		var saveuserresult = CUT.saveUser( properties, "create" );
+		var result = StructKeyExists( saveuserresult.messages, "error" );
+		assertTrue( result );
 	}
 	
 	function testSaveUserWhereUserIsValid(){
 		var properties = { firstname="Simon", lastname="Bingham", email="foobar@foobar.com", username="foo", password="bar"  };
-		var result = CUT.saveUser( properties, "create" );
-		assertTrue( StructKeyExists( result.messages, "success" ) );
+		var saveuserresult = CUT.saveUser( properties, "create" );
+		var result = StructKeyExists( saveuserresult.messages, "success" );
+		assertTrue( result );
 	}
 	
 	// ------------------------ IMPLICIT ------------------------ //
@@ -146,7 +162,7 @@ component extends="mxunit.framework.TestCase"{
 		q.execute();
 		
 		// clear first level cache and remove any unsaved objects
-		ORMClearSession( "xindi_testsuite" );		
+		ORMClearSession();		
 	}
 	
 	/**

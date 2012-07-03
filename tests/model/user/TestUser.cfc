@@ -22,44 +22,52 @@ component extends="mxunit.framework.TestCase"{
 
 	function testBlankPasswordDoesNotChangeHashedPassword(){
 		CUT.setPassword( "admin" );
-		assertEquals( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB", CUT.getPassword() );
+		var result = CUT.getPassword();
+		assertEquals( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB", result );
 		CUT.setPassword( "" );
-		assertEquals( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB", CUT.getPassword() );
+		result = CUT.getPassword();
+		assertEquals( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB", result );
 	}
 
 	function testGetFullName(){
 		CUT.setFirstName( "john" );
 		CUT.setLastName( "whish" );
-		assertEquals( "john whish", CUT.getFullname() );
+		var result = CUT.getFullname();
+		assertEquals( "john whish", result );
 	}
 
 	function testIsNotUniqueEmail(){
 		CUT.setEmail( "example@example.com" );
-		var result = CUT.IsEmailUnique();
-		assertEquals( false, result.issuccess );
+		var isemailuniqueresult = CUT.IsEmailUnique();
+		var result = isemailuniqueresult.issuccess;
+		assertEquals( false, result );
 	}
 
 	function testIsNotUniqueUsername(){
 		CUT.setUsername( "admin" );
-		var result = CUT.isUsernameUnique();
-		assertEquals( false, result.issuccess );
+		var isusernameuniqueresult = CUT.isUsernameUnique();
+		var result = isusernameuniqueresult.issuccess;
+		assertEquals( false, result );
 	}
 	
 	function testIsUniqueEmail(){
 		CUT.setEmail( "asdhakjsdas@badkjasld.com" );
-		var result = CUT.IsEmailUnique();
-		assertEquals( true, result.issuccess );
+		var isemailuniqueresult = CUT.IsEmailUnique();
+		var result = isemailuniqueresult.issuccess;
+		assertEquals( true, result );
 	}
 
 	function testIsUniqueUsername(){
 		CUT.setUsername( "sdjalkdjakdjasd" );
-		var result = CUT.isUsernameUnique();
-		assertEquals( true, result.issuccess );
+		var isusernameuniqueresult = CUT.isUsernameUnique();
+		var result = isusernameuniqueresult.issuccess;
+		assertEquals( true, result );
 	}
 
 	function testPasswordHashing(){
 		CUT.setPassword( "admin" );
-		assertEquals( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB", CUT.getPassword() );
+		var result = CUT.getPassword();
+		assertEquals( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB", result );
 	}
 
 	// ------------------------ IMPLICIT ------------------------ //
@@ -93,7 +101,7 @@ component extends="mxunit.framework.TestCase"{
 		q.execute();
 		
 		// clear first level cache and remove any unsaved objects
-		ORMClearSession( "xindi_testsuite" );		
+		ORMClearSession();		
 	}
 	
 	/**

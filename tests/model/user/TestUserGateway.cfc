@@ -21,33 +21,49 @@ component extends="mxunit.framework.TestCase"{
 	// ------------------------ UNIT TESTS ------------------------ //
 	
 	function testDeleteUserWhereUserDoesNotExist(){
-		result = CUT.deleteUser( 2 );
-		assertTrue( StructKeyExists( result.messages, "error" ) );
+		var deleteuserresult = CUT.deleteUser( 2 );
+		var result = StructKeyExists( deleteuserresult.messages, "error" );
+		assertTrue( result );
 	}
 
 	function testDeleteUserWhereUserExists(){
-		result = CUT.deleteUser( 1 );
-		assertTrue( StructKeyExists( result.messages, "success" ) );
+		var deleteuserresult = CUT.deleteUser( 1 );
+		var result = StructKeyExists( deleteuserresult.messages, "success" );
+		assertTrue( result );
 	}
 
 	function testGetUserByIDWhereUserDoesNotExist(){
 		var User = CUT.getUserByID( 2 );
-		assertFalse( User.isPersisted() );
+		var result = User.isPersisted();
+		assertFalse( result );
 	}	
 	
 	function testGetUserByIDWhereUserExists(){
 		var User = CUT.getUserByID( 1 );
-		assertTrue( User.isPersisted() );
+		var result = User.isPersisted();
+		assertTrue( result );
 	}	
+
+	function testGetUserByCredentialsReturnsNullForInCorrectCredentials(){
+		var $LoginUser = mock( "model.user.User" );
+		$LoginUser.getUsername().returns( "aliaspooryorik" );
+		$LoginUser.getEmail().returns( "" );
+		$LoginUser.getPassword().returns( "1111111111111111111111111111111111111111111111111111111111111111" );		
+		var User = CUT.getUserByCredentials( User=$LoginUser );
+		var result = User.isPersisted();
+		assertFalse( result );
+	}
 	
 	function testGetUserByCredentialsReturnsUserForCorrectCredentialsByEmail(){
 		var $LoginUser = mock( "model.user.User" );
 		$LoginUser.getUsername().returns( "" );
 		$LoginUser.getEmail().returns( "example@example.com" );
 		$LoginUser.getPassword().returns( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB" );
-		result = CUT.getUserByCredentials( $LoginUser );
-		assertEquals( false, IsNull( result ) );
-		assertEquals( "example@example.com", result.getEmail() );
+		var User = CUT.getUserByCredentials( User=$LoginUser );
+		var result = IsNull( User );
+		assertEquals( false, result );
+		result = User.getEmail();
+		assertEquals( "example@example.com", result );
 	}
 
 	function testGetUserByCredentialsReturnsUserForCorrectCredentialsByUsername(){
@@ -55,67 +71,67 @@ component extends="mxunit.framework.TestCase"{
 		$LoginUser.getUsername().returns( "admin" );
 		$LoginUser.getEmail().returns( "" );
 		$LoginUser.getPassword().returns( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB" );
-		result = CUT.getUserByCredentials( $LoginUser );
-		assertEquals( false, IsNull( result ) );
-		assertEquals( "example@example.com", result.getEmail() );
+		var User = CUT.getUserByCredentials( User=$LoginUser );
+		var result = IsNull( User );
+		assertEquals( false, result );
+		result = User.getEmail();
+		assertEquals( "example@example.com", result );
 	}
 
-	function testGetUserByCredentialsReturnsNullForInCorrectCredentials(){
-		var $LoginUser = mock( "model.user.User" );
-		$LoginUser.getUsername().returns( "aliaspooryorik" );
-		$LoginUser.getEmail().returns( "" );
-		$LoginUser.getPassword().returns( "1111111111111111111111111111111111111111111111111111111111111111" );		
-		result = CUT.getUserByCredentials( $LoginUser );
-		assertFalse( result.isPersisted() );
-	}
-	
 	function testGetUserByEmailOrUsernameWhereEmailIsSpecified(){
 		var User = CUT.newUser();
 		User.setEmail( "example@example.com" );
-		User = CUT.getUserByEmailOrUsername( User );
-		assertTrue( User.isPersisted() );
+		User = CUT.getUserByEmailOrUsername( User=User );
+		var result = User.isPersisted();
+		assertTrue( result );
 	}
 
 	function testGetUserByEmailOrUsernameWhereUsernameIsSpecified(){
 		var User = CUT.newUser();
 		User.setUsername( "admin" );
-		User = CUT.getUserByEmailOrUsername( User );
-		assertTrue( User.isPersisted() );
+		User = CUT.getUserByEmailOrUsername( User=User );
+		var result = User.isPersisted();
+		assertTrue( result );
 	}
 	
 	function testGetUsers(){
 		var users = CUT.getUsers();
-		assertTrue( ArrayLen( users ) == 1 );
+		var result = ArrayLen( users ) == 1;
+		assertTrue( result );
 	}	
 	
 	function testGetValidator(){
 		var $Validator = mock( "Validator" );
 		var User = CUT.newUser();
 		CUT.setValidator( $Validator );
-		assertTrue( IsObject( CUT.getValidator( User ) ) );
+		var result = IsObject( CUT.getValidator( User=User ) );
+		assertTrue( result );
 	}
 	
 	function testNewUser(){
 		var User = CUT.newUser();
-		assertFalse( User.isPersisted() );
+		var result = User.isPersisted();
+		assertFalse( result );
 	}
 
 	function testSaveUserWhereUserIsInvalid(){
 		var properties = { firstname="Simon", lastname="Bingham", email="foobarfoobarcom", username="foo", password="bar"  };
 		var $ValidationResult = mock( "Validator" ).hasErrors().returns( true );
-		var $Validator = mock( "Validator" ).validate( theObject='{any}', Context='{string}' ).returns( $ValidationResult );
-		CUT.setValidator( $Validator );		
-		var result = CUT.saveUser( properties, "create" );
-		assertTrue( StructKeyExists( result.messages, "error" ) );
+		var $Validator = mock( "Validator" ).validate( theObject='{any}', Context='{string}' ).returns( ValidationResult=$ValidationResult );
+		CUT.setValidator( Validator=$Validator );		
+		var saveuserresult = CUT.saveUser( properties, "create" );
+		var result = StructKeyExists( saveuserresult.messages, "error" );
+		assertTrue( result );
 	}
 	
 	function testSaveUserWhereUserIsValid(){
 		var properties = { firstname="Simon", lastname="Bingham", email="foobar@foobar.com", username="foo", password="bar"  };
 		var $ValidationResult = mock( "Validator" ).hasErrors().returns( false );
-		var $Validator = mock( "Validator" ).validate( theObject='{any}', Context='{string}' ).returns( $ValidationResult );
-		CUT.setValidator( $Validator );	
-		var result = CUT.saveUser( properties, "create" );
-		assertTrue( StructKeyExists( result.messages, "success" ) );
+		var $Validator = mock( "Validator" ).validate( theObject='{any}', Context='{string}' ).returns( ValidationResult=$ValidationResult );
+		CUT.setValidator( Validator=$Validator );	
+		var saveuserresult = CUT.saveUser( properties, "create" );
+		var result = StructKeyExists( saveuserresult.messages, "success" );
+		assertTrue( result );
 	}	
 
 	// ------------------------ IMPLICIT ------------------------ //
@@ -149,7 +165,7 @@ component extends="mxunit.framework.TestCase"{
 		q.execute();
 		
 		// clear first level cache and remove any unsaved objects
-		ORMClearSession( "xindi_testsuite" );		
+		ORMClearSession();		
 	}
 	
 	/**

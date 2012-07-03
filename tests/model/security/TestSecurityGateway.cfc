@@ -24,21 +24,24 @@ component extends="mxunit.framework.TestCase"{
 		assertFalse( CUT.hasCurrentUser() );
 		var User = EntityLoadByPK( "User", 1 );
 		CUT.setCurrentUser( User=User );
-		assertTrue( CUT.hasCurrentUser() );
+		var result = CUT.hasCurrentUser();
+		assertTrue( result );
 		CUT.deleteCurrentUser();
-		assertFalse( CUT.hasCurrentUser() );
+		result = CUT.hasCurrentUser();
+		assertFalse( result );
 	}
 	
 	function testHasCurrentUser(){
 		assertFalse( CUT.hasCurrentUser() );
 		var User = EntityLoadByPK( "User", 1 );
 		CUT.setCurrentUser( User=User );
-		assertTrue( CUT.hasCurrentUser() );
+		var result = CUT.hasCurrentUser();
+		assertTrue( result );
 	}
 	
 	function testIsAllowedForSecureActionWhereUserIsLoggedIn(){
 		var $config = { security={ whitelist="^admin:security,^public:" } };
-		CUT.setConfig( $config );
+		CUT.setConfig( config=$config );
 		var User = EntityLoadByPK( "User", 1 );
 		CUT.setCurrentUser( User=User );
 		var result = CUT.isAllowed( action="admin:pages", whitelist="^admin:security,^public:" );
@@ -47,14 +50,14 @@ component extends="mxunit.framework.TestCase"{
 
 	function testIsAllowedForSecureActionWhereUserIsNotLoggedIn(){
 		var $config = { security={ whitelist="^admin:security,^public:" } };
-		CUT.setConfig( $config );
+		CUT.setConfig( config=$config );
 		var result = CUT.isAllowed( action="admin:pages", whitelist="^admin:security,^public:" );
 		assertFalse( result );
 	}	
 
 	function testIsAllowedForUnsecureActionWhereUserIsLoggedIn(){
 		var $config = { security={ whitelist="^admin:security,^public:" } };
-		CUT.setConfig( $config );
+		CUT.setConfig( config=$config );
 		var User = EntityLoadByPK( "User", 1 );
 		CUT.setCurrentUser( User=User );
 		var result = CUT.isAllowed( action="admin:security", whitelist="^admin:security,^public:" );
@@ -63,92 +66,100 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testIsAllowedForUnsecureActionWhereUserIsNotLoggedIn(){
 		var $config = { security={ whitelist="^admin:security,^public:" } };
-		CUT.setConfig( $config );
+		CUT.setConfig( config=$config );
 		var result = CUT.isAllowed( action="admin:security", whitelist="^admin:security,^public:" );
 		assertTrue( result );
 	}		
 	
-	function testLoginUserForValidUser(){
-		var $User = mock( "model.user.User" ).getFirstName().returns( "" ).populate( "{struct}" ).isPersisted().returns( true );
-		var $UserGateway = mock( "model.user.UserGateway" ).newUser().returns( $User ).getUserByCredentials( "{any}" ).returns( $User );
-		CUT.setUserGateway( $UserGateway );
-		var $ValidationResult = mock( "ValidateThis" ).hasErrors().returns( false );
-		var $Validator = mock( "ValidateThis" ).validate( theObject="{any}", Context="{string}" ).returns( $ValidationResult );
-		CUT.setValidator( $Validator );
-		var properties = { username="", password="" };
-		var result = CUT.loginUser( properties=properties );
-		assertTrue( StructKeyExists( result.messages, "success" ) ); 
-	}
-
 	function testLoginUserForInvalidUser(){
 		var $User = mock( "model.user.User" ).getFirstName().returns( "" ).populate( "{struct}" ).isPersisted().returns( false );
 		var $UserGateway = mock( "model.user.UserGateway" ).newUser().returns( $User ).getUserByCredentials( "{any}" ).returns( $User );
-		CUT.setUserGateway( $UserGateway );
+		CUT.setUserGateway( UserGateway=$UserGateway );
 		var $ValidationResult = mock( "ValidateThis" ).hasErrors().returns( false );
-		var $Validator = mock( "ValidateThis" ).validate( theObject="{any}", Context="{string}" ).returns( $ValidationResult );
-		CUT.setValidator( $Validator );
+		var $Validator = mock( "ValidateThis" ).validate( theObject="{any}", Context="{string}" ).returns( ValidationResult=$ValidationResult );
+		CUT.setValidator( Validator=$Validator );
 		var properties = { username="", password="" };
-		var result = CUT.loginUser( properties=properties );
-		assertTrue( StructKeyExists( result.messages, "error" ) );
+		var loginuserresult = CUT.loginUser( properties=properties );
+		var result = StructKeyExists( loginuserresult.messages, "error" );
+		assertTrue( result );
+	}
+	
+	function testLoginUserForValidUser(){
+		var $User = mock( "model.user.User" ).getFirstName().returns( "" ).populate( "{struct}" ).isPersisted().returns( true );
+		var $UserGateway = mock( "model.user.UserGateway" ).newUser().returns( $User ).getUserByCredentials( "{any}" ).returns( $User );
+		CUT.setUserGateway( UserGateway=$UserGateway );
+		var $ValidationResult = mock( "ValidateThis" ).hasErrors().returns( false );
+		var $Validator = mock( "ValidateThis" ).validate( theObject="{any}", Context="{string}" ).returns( ValidationResult=$ValidationResult );
+		CUT.setValidator( Validator=$Validator );
+		var properties = { username="", password="" };
+		var loginuserresult = CUT.loginUser( properties=properties );
+		var result = StructKeyExists( loginuserresult.messages, "success" );
+		assertTrue( result ); 
 	}
 
 	function testResetPasswordByEmailWhereUsernameIsInvalid(){
 		var $ValidationResult = mock( "ValidateThis" ).hasErrors().returns( true );
-		var $Validator = mock( "ValidateThis" ).validate( theObject="{any}", context="{string}" ).returns( $ValidationResult );
-		CUT.setValidator( $Validator );
+		var $Validator = mock( "ValidateThis" ).validate( theObject="{any}", context="{string}" ).returns( ValidationResult=$ValidationResult );
+		CUT.setValidator( Validator=$Validator );
 		var $User = mock( "model.user.User" ).populate( "{struct}" ).isPersisted().returns( false ).getEmail().returns( "example@example.com" );
 		var $UserGateway = mock( "model.user.UserGateway" ).newUser().returns( $User ).getUserByEmailOrUsername( "{any}" ).returns( $User );
-		CUT.setUserGateway( $UserGateway );
-		var $Config = { security = { resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" } };
-		CUT.setConfig( $Config );
-		var result = CUT.resetPassword( properties={ email="foo@bar.com" }, name="Default", config={ resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, emailtemplatepath="../../admin/views/security/email.cfm" );
-		assertTrue( StructKeyExists( result.messages, "error" ) );
+		CUT.setUserGateway( UserGateway=$UserGateway );
+		var $config = { security = { resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" } };
+		CUT.setConfig( config=$config );
+		var resetpasswordresult = CUT.resetPassword( properties={ email="foo@bar.com" }, name="Default", config={ resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, emailtemplatepath="../../admin/views/security/email.cfm" );
+		var result = StructKeyExists( resetpasswordresult.messages, "error" );
+		assertTrue( result );
 	}
 	
 	function testResetPasswordByEmailWhereUsernameIsValid(){
 		var $ValidationResult = mock( "ValidateThis" ).hasErrors().returns( false );
-		var $Validator = mock( "ValidateThis" ).validate( theObject="{any}", context="{string}" ).returns( $ValidationResult );
-		CUT.setValidator( $Validator );
+		var $Validator = mock( "ValidateThis" ).validate( theObject="{any}", context="{string}" ).returns( ValidationResult=$ValidationResult );
+		CUT.setValidator( Validator=$Validator );
 		var $User = mock( "model.user.User" ).populate( "{struct}" ).isPersisted().returns( true ).getEmail().returns( "example@example.com" );
 		var $UserGateway = mock( "model.user.UserGateway" ).newUser().returns( $User ).getUserByEmailOrUsername( "{any}" ).returns( $User );
-		CUT.setUserGateway( $UserGateway );
-		var $Config = { security = { resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" } };
-		CUT.setConfig( $Config );
-		var result = CUT.resetPassword( properties={ email="example@example.com" }, name="Default", config={ resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, emailtemplatepath="../../admin/views/security/email.cfm" );
-		assertTrue( StructKeyExists( result.messages, "success" ) );
+		CUT.setUserGateway( UserGateway=$UserGateway );
+		var $config = { security = { resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" } };
+		CUT.setConfig( config=$config );
+		var resetpasswordresult = CUT.resetPassword( properties={ email="example@example.com" }, name="Default", config={ resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, emailtemplatepath="../../admin/views/security/email.cfm" );
+		var result = StructKeyExists( resetpasswordresult.messages, "success" );
+		assertTrue( result );
 	}
 
 	function testResetPasswordByUsernameWhereUsernameIsInvalid(){
 		var $ValidationResult = mock( "ValidateThis" ).hasErrors().returns( true );
-		var $Validator = mock( "ValidateThis" ).validate( theObject="{any}", context="{string}" ).returns( $ValidationResult );
-		CUT.setValidator( $Validator );
+		var $Validator = mock( "ValidateThis" ).validate( theObject="{any}", context="{string}" ).returns( ValidationResult=$ValidationResult );
+		CUT.setValidator( Validator=$Validator );
 		var $User = mock( "model.user.User" ).populate( "{struct}" ).isPersisted().returns( false ).getEmail().returns( "example@example.com" );
 		var $UserGateway = mock( "model.user.UserGateway" ).newUser().returns( $User ).getUserByEmailOrUsername( "{any}" ).returns( $User );
-		CUT.setUserGateway( $UserGateway );
-		var $Config = { security = { resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" } };
-		CUT.setConfig( $Config );
-		var result = CUT.resetPassword( properties={ username="foobar" }, name="Default", config={ resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, emailtemplatepath="../../admin/views/security/email.cfm" );
-		assertTrue( StructKeyExists( result.messages, "error" ) );
+		CUT.setUserGateway( UserGateway=$UserGateway );
+		var $config = { security = { resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" } };
+		CUT.setConfig( config=$config );
+		var resetpasswordresult = CUT.resetPassword( properties={ username="foobar" }, name="Default", config={ resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, emailtemplatepath="../../admin/views/security/email.cfm" );
+		var result = StructKeyExists( resetpasswordresult.messages, "error" );
+		assertTrue( result );
 	}
 	
 	function testResetPasswordByUsernameWhereUsernameIsValid(){
 		var $ValidationResult = mock( "ValidateThis" ).hasErrors().returns( false );
-		var $Validator = mock( "ValidateThis" ).validate( theObject="{any}", context="{string}" ).returns( $ValidationResult );
-		CUT.setValidator( $Validator );
+		var $Validator = mock( "ValidateThis" ).validate( theObject="{any}", context="{string}" ).returns( ValidationResult=$ValidationResult );
+		CUT.setValidator( Validator=$Validator );
 		var $User = mock( "model.user.User" ).populate( "{struct}" ).isPersisted().returns( true ).getEmail().returns( "example@example.com" );
 		var $UserGateway = mock( "model.user.UserGateway" ).newUser().returns( $User ).getUserByEmailOrUsername( "{any}" ).returns( $User );
-		CUT.setUserGateway( $UserGateway );
-		var $Config = { security = { resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" } };
-		CUT.setConfig( $Config );
-		var result = CUT.resetPassword( properties={ username="admin" }, name="Default", config={ resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, emailtemplatepath="../../admin/views/security/email.cfm" );
-		assertTrue( StructKeyExists( result.messages, "success" ) );
+		CUT.setUserGateway( UserGateway=$UserGateway );
+		var $config = { security = { resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" } };
+		CUT.setConfig( config=$config );
+		var resetpasswordresult = CUT.resetPassword( properties={ username="admin" }, name="Default", config={ resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, emailtemplatepath="../../admin/views/security/email.cfm" );
+		var result = StructKeyExists( resetpasswordresult.messages, "success" );
+		assertTrue( result );
 	}
 	
 	function testSetCurrentUser(){
-		assertFalse( CUT.hasCurrentUser() );
+		var User = CUT.hasCurrentUser();
+		assertFalse( User );
 		var User = EntityLoadByPK( "User", 1 );
 		CUT.setCurrentUser( User=User );
-		assertTrue( CUT.hasCurrentUser() );
+		var result = CUT.hasCurrentUser();
+		assertTrue( result );
 	}
 
 	// ------------------------ IMPLICIT ------------------------ //
@@ -182,7 +193,7 @@ component extends="mxunit.framework.TestCase"{
 		q.execute();
 		
 		// clear first level cache and remove any unsaved objects
-		ORMClearSession( "xindi_testsuite" );
+		ORMClearSession();
 	}
 	
 	/**
