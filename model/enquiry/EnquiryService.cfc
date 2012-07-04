@@ -30,16 +30,17 @@ component accessors="true"{
 
 	struct function deleteEnquiry( required enquiryid ){
 		transaction{
-			return variables.EnquiryGateway.deleteEnquiry( Val( arguments.enquiryid ) );
-		}		
+			var result = variables.EnquiryGateway.deleteEnquiry( enquiryid=Val( arguments.enquiryid ) );
+		}
+		return result;
 	}
 	
 	array function getEnquiries( maxresults=0 ){
-		return variables.EnquiryGateway.getEnquiries( Val( arguments.maxresults ) );
+		return variables.EnquiryGateway.getEnquiries( maxresults=Val( arguments.maxresults ) );
 	}	
 
 	function getEnquiryByID( required enquiryid ){
-		return variables.EnquiryGateway.getEnquiryByID( Val( arguments.enquiryid ) );
+		return variables.EnquiryGateway.getEnquiryByID( enquiryid=Val( arguments.enquiryid ) );
 	}
 
 	numeric function getUnreadCount(){
@@ -52,14 +53,16 @@ component accessors="true"{
 	
 	struct function markAllRead(){
 		transaction{
-			return variables.EnquiryGateway.markAllRead();
+			var result = variables.EnquiryGateway.markAllRead();
 		}
+		return result;
 	}
 
 	struct function markRead( required enquiryid ){
 		transaction{
-			return variables.EnquiryGateway.markRead( Val( arguments.enquiryid ) );
+			var result = variables.EnquiryGateway.markRead( enquiryid=Val( arguments.enquiryid ) );
 		}
+		return result;
 	}	
 	
 	function newEnquiry(){
@@ -68,8 +71,9 @@ component accessors="true"{
 	
 	struct function sendEnquiry( required struct properties, required struct config, required string emailtemplatepath ){
 		transaction{
-			return variables.EnquiryGateway.sendEnquiry( argumentCollection=arguments );
+			var result = variables.EnquiryGateway.sendEnquiry( argumentCollection=arguments );
 		}
+		return result;
 	}
 	
 }

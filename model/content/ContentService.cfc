@@ -30,12 +30,13 @@ component accessors="true"{
 	 	
 	struct function deletePage( required pageid ){
 		transaction{
-			return variables.ContentGateway.deletePage( Val( arguments.pageid ) );
+			var result = variables.ContentGateway.deletePage( pageid=Val( arguments.pageid ) );
 		}
+		return result;
 	}
 	
 	function getPageByID( required pageid ){
-		return variables.ContentGateway.getPageByID( Val( arguments.pageid ) );
+		return variables.ContentGateway.getPageByID( pageid=Val( arguments.pageid ) );
 	}
 	
 	function getPageBySlug( required string slug ){
@@ -58,15 +59,17 @@ component accessors="true"{
 	struct function movePage( required pageid, required string direction ){
 		transaction{
 			arguments.pageid = Val( arguments.pageid );
-			return variables.ContentGateway.movePage( argumentCollection=arguments );
+			var result = variables.ContentGateway.movePage( argumentCollection=arguments );
 		}
+		return result;
 	}
 	
 	function savePage( required struct properties, required ancestorid, required string context ){
 		transaction{
 			arguments.ancestorid = Val( arguments.ancestorid );
-			return variables.ContentGateway.savePage( argumentCollection=arguments );
+			var Page = variables.ContentGateway.savePage( argumentCollection=arguments );
 		}
+		return Page;
 	}
 	
 }

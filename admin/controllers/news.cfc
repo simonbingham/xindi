@@ -42,7 +42,7 @@ component accessors="true" extends="abstract"{
 	void function maintain( required struct rc ){
 		param name="rc.articleid" default="0";
 		if( !StructKeyExists( rc, "Article" ) ) rc.Article = variables.NewsService.getArticleByID( articleid=rc.articleid );
-		rc.Validator = variables.NewsService.getValidator( theObject=rc.Article );
+		rc.Validator = variables.NewsService.getValidator( Article=rc.Article );
 		if( !StructKeyExists( rc, "result" ) ) rc.result = rc.Validator.newResult();
 	}	
 	

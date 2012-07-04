@@ -62,7 +62,7 @@ component accessors="true"{
 	
 	void function password( required rc ){
 		rc.User = variables.UserService.newUser();
-		rc.Validator = variables.UserService.getValidator( theObject=rc.User );
+		rc.Validator = variables.UserService.getValidator( User=rc.User );
 		if( !StructKeyExists( rc, "result" ) ) rc.result = rc.Validator.newResult();
 	}
 	

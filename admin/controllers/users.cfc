@@ -44,7 +44,7 @@ component accessors="true" extends="abstract"{
 		param name="rc.context" default="create";
 		if( !StructKeyExists( rc, "User" ) ) rc.User = variables.UserService.getUserByID( userid=rc.userid );
 		if( rc.User.isPersisted() ) rc.context = "update";
-		rc.Validator = variables.UserService.getValidator( theObject=rc.User );
+		rc.Validator = variables.UserService.getValidator( User=rc.User );
 		if( !StructKeyExists( rc, "result" ) ) rc.result = rc.Validator.newResult();
 	}	
 	

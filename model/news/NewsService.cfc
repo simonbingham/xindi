@@ -30,12 +30,13 @@ component accessors="true"{
 	 	
 	struct function deleteArticle( required articleid ){
 		transaction{
-			return variables.NewsGateway.deleteArticle( Val( arguments.articleid ) );
+			var result = variables.NewsGateway.deleteArticle( articleid=Val( arguments.articleid ) );
 		}
+		return result;
 	}
 	
 	function getArticleByID( required articleid ){
-		return variables.NewsGateway.getArticleByID( Val( arguments.articleid ) );
+		return variables.NewsGateway.getArticleByID( articleid=Val( arguments.articleid ) );
 	}
 	
 	function getArticleByUUID( required string uuid ){
@@ -58,8 +59,9 @@ component accessors="true"{
 	
 	function saveArticle( required struct properties ){
 		transaction{
-			return variables.NewsGateway.saveArticle( argumentCollection=arguments );
+			var Article = variables.NewsGateway.saveArticle( argumentCollection=arguments );
 		}
+		return Article;
 	}
 	
 }

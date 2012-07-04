@@ -55,7 +55,7 @@ component accessors="true"{
 	}	
 	 	
 	function getValidator( required any Enquiry ){
-		return variables.Validator.getValidator( arguments.Enquiry );
+		return variables.Validator.getValidator( theObject=arguments.Enquiry );
 	}	
 	
 	struct function markAllRead(){

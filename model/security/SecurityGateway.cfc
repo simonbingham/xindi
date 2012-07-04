@@ -73,7 +73,7 @@ component accessors="true"{
 		var User = variables.UserGateway.newUser();
 		User.populate( arguments.properties );
 		var result = variables.Validator.validate( theObject=User, context="login" );
-		User = variables.UserGateway.getUserByCredentials( User );
+		User = variables.UserGateway.getUserByCredentials( User=User );
 		if( User.isPersisted() ){
 			setCurrentUser( User );
 			result.messages.success = "Welcome #User.getFirstName()#. You have been logged in.";
@@ -94,7 +94,7 @@ component accessors="true"{
 		var User = variables.UserGateway.newUser();
 		User.populate( arguments.properties );
 		var result = variables.Validator.validate( theObject=User, context="password" );
-		User = variables.UserGateway.getUserByEmailOrUsername( User );
+		User = variables.UserGateway.getUserByEmailOrUsername( User=User );
 		if( User.isPersisted() ){
 			var password = Left( CreateUUID(), 8 );
 			User.setPassword( password );

@@ -34,7 +34,7 @@ component accessors="true" extends="abstract"{
 
 	void function delete( required struct rc ){
 		param name="rc.pageid" default="0";
-		var result = variables.ContentService.deletePage( rc.pageid );
+		var result = variables.ContentService.deletePage( pageid=rc.pageid );
 		rc.messages = result.messages;
 		if( StructKeyExists( result.messages, "success" ) ){
 			var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:navigation/xml", method="get" );
@@ -48,7 +48,7 @@ component accessors="true" extends="abstract"{
 		param name="rc.context" default="create";
 		if( !StructKeyExists( rc, "Page" ) ) rc.Page = variables.ContentService.getPageByID( pageid=rc.pageid );
 		if( rc.Page.isPersisted() && !rc.Page.hasRoute( variables.fw.getRoutes() ) ) rc.context = "update";
-		rc.Validator = variables.ContentService.getValidator( theObject=rc.Page );
+		rc.Validator = variables.ContentService.getValidator( Page=rc.Page );
 		if( !StructKeyExists( rc, "result" ) ) rc.result = rc.Validator.newResult();
 	}	
 	

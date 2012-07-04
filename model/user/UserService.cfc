@@ -30,12 +30,13 @@ component accessors="true"{
 	 	
 	struct function deleteUser( required userid ){
 		transaction{
-			return variables.UserGateway.deleteUser( Val( arguments.userid ) );
+			var result = variables.UserGateway.deleteUser( userid=Val( arguments.userid ) );
 		}
+		return result;
 	}
 	
 	function getUserByID( required userid ){
-		return variables.UserGateway.getUserByID( Val( arguments.userid ) );
+		return variables.UserGateway.getUserByID( userid=Val( arguments.userid ) );
 	}
 
 	function getUserByCredentials( required User ){
@@ -60,8 +61,9 @@ component accessors="true"{
 	
 	struct function saveUser( required struct properties, required string context ){
 		transaction{
-			return variables.UserGateway.saveUser( argumentCollection=arguments );
+			var User = variables.UserGateway.saveUser( argumentCollection=arguments );
 		}
+		return User;
 	}
 	
 }

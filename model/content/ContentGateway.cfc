@@ -141,7 +141,7 @@
 		}
 		
 		function savePage( required struct properties, required numeric ancestorid, required string context ){
-			param name="arguments.properties.pageid" default="0";
+			arguments.properties.pageid = Val( arguments.properties.pageid );
 			var Page = "";
 			Page = getPageByID( arguments.properties.pageid );
 			Page.populate( arguments.properties );
