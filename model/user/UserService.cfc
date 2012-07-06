@@ -28,7 +28,7 @@ component accessors="true"{
 	 * Public methods
 	 */
 	 	
-	struct function deleteUser( required userid ){
+	function deleteUser( required userid ){
 		transaction{
 			var result = variables.UserGateway.deleteUser( userid=Val( arguments.userid ) );
 		}
@@ -59,7 +59,7 @@ component accessors="true"{
 		return variables.UserGateway.newUser();
 	}
 	
-	struct function saveUser( required struct properties, required string context ){
+	function saveUser( required struct properties, required string context ){
 		transaction{
 			var User = variables.UserGateway.saveUser( argumentCollection=arguments );
 		}

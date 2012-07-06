@@ -28,7 +28,7 @@ component accessors="true"{
 	 * Public methods
 	 */
 
-	struct function deleteCurrentUser(){
+	function deleteCurrentUser(){
 		return variables.SecurityGateway.deleteCurrentUser();
 	}
 
@@ -40,11 +40,11 @@ component accessors="true"{
 		return variables.SecurityGateway.isAllowed( argumentCollection=arguments );
 	}	
 
-	struct function loginUser( required struct properties ){
+	function loginUser( required struct properties ){
 		return variables.SecurityGateway.loginUser( argumentCollection=arguments );
 	}	
 	
-	struct function resetPassword( required struct properties, required string name, required struct config, required string emailtemplatepath ){
+	function resetPassword( required struct properties, required string name, required struct config, required string emailtemplatepath ){
 		transaction{
 			var result = variables.SecurityGateway.resetPassword( argumentCollection=arguments );
 		}

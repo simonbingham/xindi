@@ -29,17 +29,17 @@
 		 * Public methods
 		 */			
 		
-		struct function deletePage( required numeric pageid ){
+		function deletePage( required numeric pageid ){
 			var Page = getPageByID( arguments.pageid );
-			var result = {};
+			var result = variables.Validator.newResult();
 			if( Page.isPersisted() ){
 				var startvalue = Page.getLeftValue();
 				ORMExecuteQuery( "update Page set leftvalue = leftvalue - 2 where leftvalue > :startvalue", { startvalue=startvalue });
 				ORMExecuteQuery( "update Page set rightvalue = rightvalue - 2 where rightvalue > :startvalue", { startvalue=startvalue });
 				EntityDelete( Page );
-				result.messages.success = "The page &quot;#Page.getTitle()#&quot; has been deleted.";
+				result.setSuccessMessage( "The page &quot;#Page.getTitle()#&quot; has been deleted." );
 			}else{
-				result.messages.error = "The page could not be deleted.";
+				result.setErrorMessage( "The page could not be deleted." );
 			}
 			return result;
 		}
@@ -91,7 +91,7 @@
 			return variables.Validator.getValidator( theObject=arguments.Page );
 		}		
 		
-		struct function movePage( required numeric pageid, required string direction ){
+		function movePage( required numeric pageid, required string direction ){
 			var decreaseamount = "";
 			var increaseamount = "";
 			var nextsibling = "";
@@ -99,7 +99,8 @@
 			var previoussibling = "";
 			var previoussiblingdescendentidlist = "";
 			var Page = getPageByID( arguments.pageid );
-			var result = { Page=Page, messages={ error="The page could not be moved." } };
+			var result = variables.Validator.newResult();
+			result.setErrorMessage( "The page could not be moved." );
 			if( Page.isPersisted() && ListFindNoCase( "up,down", Trim( arguments.direction ) ) ){
 				if( arguments.direction eq "up" ){
 					if( Page.hasPreviousSibling() ){
@@ -115,8 +116,7 @@
 						previoussibling.setRightValue( previoussibling.getRightValue() + increaseamount );
 						EntitySave( Page );
 						EntitySave( previoussibling );
-						result.messages.success = "The page &quot;#Page.getTitle()#&quot; has been moved.";
-						StructDelete( result.messages, "error" );
+						result.setSuccessMessage( "The page &quot;#Page.getTitle()#&quot; has been moved." );
 					}
 				}else{
 					if( Page.hasNextSibling() ){
@@ -132,15 +132,16 @@
 						nextsibling.setRightValue( nextsibling.getRightValue() - decreaseamount );
 						EntitySave( Page );
 						EntitySave( nextsibling );
-						result.messages.success = "The page &quot;#Page.getTitle()#&quot; has been moved.";
-						StructDelete( result.messages, "error" );
+						result.setSuccessMessage( "The page &quot;#Page.getTitle()#&quot; has been moved." );
 					}
 				}
 			}
+			result.setTheObject( Page );
 			return result;
 		}
 		
 		function savePage( required struct properties, required numeric ancestorid, required string context ){
+			param name="arguments.properties.pageid" default="";
 			arguments.properties.pageid = Val( arguments.properties.pageid );
 			var Page = "";
 			Page = getPageByID( arguments.properties.pageid );
@@ -162,9 +163,9 @@
 				}else if( Page.isPersisted() ){
 					EntitySave( Page );
 				}
-				result.messages.success = "The page &quot;#Page.getTitle()#&quot; has been saved.";
+				result.setSuccessMessage( "The page &quot;#Page.getTitle()#&quot; has been saved." );
 			}else{
-				result.messages.error = "Your page could not be saved. Please amend the highlighted fields.";
+				result.setErrorMessage( "Your page could not be saved. Please amend the highlighted fields." );
 			}
 			return result;
 		}

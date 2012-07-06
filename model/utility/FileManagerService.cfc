@@ -22,25 +22,25 @@ component accessors="true"{
 	 * Public methods
 	 */
 	 	
-	struct function createDirectory( required string directory )
+	function createDirectory( required string directory )
 	{
-		var result = {};
+		var result = variables.Validator.newResult();
 		if( Len( Trim( arguments.directory ) ) ) {
 			result.theobject = CreateObject( "java", "java.io.File" ).init( JavaCast( "string", arguments.directory ) );
-			result.messages.success = "The directory &quot;" & arguments.directory & "&quot; has been created.";
+			result.setSuccessMessage( "The directory &quot;" & arguments.directory & "&quot; has been created." );
 		}else{
-			result.messages.error = "The directory &quot;" & newdirectorypath & "&quot; could not be created.";
+			result.setErrorMessage( "The directory &quot;" & newdirectorypath & "&quot; could not be created." );
 		}
 		return result;
 	}
 	
-	struct function deleteFile( required string file ){
-		result = {};
+	function deleteFile( required string file ){
+		var result = variables.Validator.newResult();
 		if( isFile( arguments.file ) ){
 			getFile( arguments.file ).delete();
-			result.messages.success = "The file &quot;" & arguments.file & "&quot; has been deleted.";
+			result.setSuccessMessage( "The file &quot;" & arguments.file & "&quot; has been deleted." );
 		}else{
-			result.messages.error = "The file &quot;" & arguments.file & "&quot; could not be deleted.";
+			result.setErrorMessage( "The file &quot;" & arguments.file & "&quot; could not be deleted." );
 		}
 		return result;
 	}	
@@ -65,15 +65,15 @@ component accessors="true"{
 		return getFile( arguments.directory ).isDirectory();
 	}
 	
-	struct function uploadFile( required string file, required string destination, required string allowedextensions ){
-		var result = {};
+	function uploadFile( required string file, required string destination, required string allowedextensions ){
+		var result = variables.Validator.newResult();
 		try{
 			result = FileUpload( arguments.destination, arguments.file, "", "MakeUnique" );
-			result.messages.success = "The file &quot;" & result.serverfile & "&quot; has been uploaded.";
+			result.setSuccessMessage( "The file &quot;" & result.serverfile & "&quot; has been uploaded." );
 			if( !ListFindNoCase( arguments.allowedextensions, result.serverfileext ) ) deleteFile( result.serverdirectory & "/" & result.serverfile );
 		}
 		catch( any e ){ 
-			result.messages.error = "Sorry, you are not permitted to upload this type of file.";
+			result.setErrorMessage( "Sorry, you are not permitted to upload this type of file." );
 		}
 		return result;
 	}

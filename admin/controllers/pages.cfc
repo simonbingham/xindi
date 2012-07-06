@@ -34,13 +34,12 @@ component accessors="true" extends="abstract"{
 
 	void function delete( required struct rc ){
 		param name="rc.pageid" default="0";
-		var result = variables.ContentService.deletePage( pageid=rc.pageid );
-		rc.messages = result.messages;
-		if( StructKeyExists( result.messages, "success" ) ){
+		rc.result = variables.ContentService.deletePage( pageid=rc.pageid );
+		if( result.getIsSuccess() ){
 			var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:navigation/xml", method="get" );
 			refreshsitemap.send();
 		}
-		variables.fw.redirect( "pages", "messages" );
+		variables.fw.redirect( "pages", "result" );
 	}	
 	
 	void function maintain( required struct rc ){
@@ -55,9 +54,8 @@ component accessors="true" extends="abstract"{
 	void function move( required struct rc ){
 		param name="rc.pageid" default="0";
 		param name="rc.direction" default="";
-		var result = variables.ContentService.movePage( pageid=rc.pageid, direction=rc.direction );
-		rc.messages = result.messages;
-		variables.fw.redirect( "pages", "messages" );
+		rc.result = variables.ContentService.movePage( pageid=rc.pageid, direction=rc.direction );
+		variables.fw.redirect( "pages", "result" );
 	}	
 	
 	void function save( required struct rc ){
@@ -73,15 +71,14 @@ component accessors="true" extends="abstract"{
 		param name="rc.submit" default="Save & exit";
 		var properties = { pageid=rc.pageid, title=rc.title, content=rc.content, metagenerated=rc.metagenerated, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
 		rc.result = variables.ContentService.savePage( properties=properties, ancestorid=rc.ancestorid, context=rc.context );
-		rc.messages = rc.result.messages;
 		rc.Page = rc.result.getTheObject();
 		if( StructKeyExists( rc.messages, "success" ) ){
 			var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:navigation/xml", method="get" );
 			refreshsitemap.send();
-			if( rc.submit == "Save & Continue" )  variables.fw.redirect( "pages.maintain", "messages,Page,ancestorid", "pageid" );
-			else variables.fw.redirect( "pages", "messages" );
+			if( rc.submit == "Save & Continue" )  variables.fw.redirect( "pages.maintain", "result,Page,ancestorid", "pageid" );
+			else variables.fw.redirect( "pages", "result" );
 		}else{
-			variables.fw.redirect( "pages.maintain", "messages,Page,ancestorid,result", "pageid" );
+			variables.fw.redirect( "pages.maintain", "result,Page,ancestorid", "pageid" );
 		}
 	}
 	

@@ -21,14 +21,20 @@ component extends="mxunit.framework.TestCase"{
 	// ------------------------ UNIT TESTS ------------------------ //
 	
 	function testDeleteEnquiryWhereEnquiryDoesNotExist(){
-		var result = CUT.deleteEnquiry( enquiryid=4 );
-		result = StructKeyExists( result.messages, "error" );
-		assertTrue( result );
+		var $ValidationResult = mock().getIsSuccess().returns( false );
+		var $Validator = mock().newResult().returns( $ValidationResult );
+		CUT.setValidator( Validator=$Validator );			
+		var deleteenquiryresult = CUT.deleteEnquiry( enquiryid=4 );
+		var result = deleteenquiryresult.getIsSuccess();
+		assertFalse( result );
 	}
 
 	function testDeleteEnquiryWhereEnquiryExists(){
-		var result = CUT.deleteEnquiry( enquiryid=1 );
-		result = StructKeyExists( result.messages, "success" );
+		var $ValidationResult = mock().getIsSuccess().returns( true );
+		var $Validator = mock().newResult().returns( $ValidationResult );
+		CUT.setValidator( Validator=$Validator );		
+		var deleteenquiryresult = CUT.deleteEnquiry( enquiryid=1 );
+		var result = deleteenquiryresult.getIsSuccess();
 		assertTrue( result );
 	}
 		
@@ -56,14 +62,20 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testMarkAllRead(){
-		var result = CUT.markAllRead();
-		result = StructKeyExists( result.messages, "success" );
+		var $ValidationResult = mock().getIsSuccess().returns( true );
+		var $Validator = mock().newResult().returns( $ValidationResult );
+		CUT.setValidator( Validator=$Validator );			
+		var markallreadresult = CUT.markRead();
+		var result = markallreadresult.getIsSuccess();
 		assertTrue( result );
 	}
 	
 	function testMarkRead(){
-		var result = CUT.markRead( enquiryid=3 );
-		result = StructKeyExists( result.messages, "success" );
+		var $ValidationResult = mock().getIsSuccess().returns( true );
+		var $Validator = mock().newResult().returns( $ValidationResult );
+		CUT.setValidator( Validator=$Validator );			
+		var markreadresult = CUT.markRead( enquiryid=3 );
+		var result = markreadresult.getIsSuccess();
 		assertTrue( result );
 	}
 	
@@ -74,20 +86,20 @@ component extends="mxunit.framework.TestCase"{
 	}
 
 	function testSendEnquiryWhereEnquiryIsInvalid(){
-		var $ValidationResult = mock( "ValidateThis" ).hasErrors().returns( true );
-		var $Validator = mock( "ValidateThis" ).validate( theObject="{any}" ).returns( $ValidationResult );
+		var $ValidationResult = mock().hasErrors().returns( true ).getIsSuccess().returns( false );
+		var $Validator = mock().validate( theObject="{any}" ).returns( $ValidationResult );
 		CUT.setValidator( Validator=$Validator );
-		var result = CUT.sendEnquiry( properties={ firstname="", lastname="", email="", message="" }, config={ subject="Test", emailto="example@example.com" }, emailtemplatepath="../../public/views/enquiry/email.cfm" );
-		result = StructKeyExists( result.messages, "error" );
-		assertTrue( result );
+		var sendenquiryresult = CUT.sendEnquiry( properties={ firstname="", lastname="", email="", message="" }, config={ subject="Test", emailto="example@example.com" }, emailtemplatepath="../../public/views/enquiry/email.cfm" );
+		var result = sendenquiryresult.getIsSuccess();
+		assertFalse( result );
 	}
 
 	function testSendEnquiryWhereEnquiryIsValid(){
-		var $ValidationResult = mock( "ValidateThis" ).hasErrors().returns( false );
-		var $Validator = mock( "ValidateThis" ).validate( theObject="{any}" ).returns( $ValidationResult );
+		var $ValidationResult = mock().hasErrors().returns( false ).getIsSuccess().returns( true );
+		var $Validator = mock().validate( theObject="{any}" ).returns( $ValidationResult );
 		CUT.setValidator( Validator=$Validator );
-		var result = CUT.sendEnquiry( properties={ firstname="Test", lastname="User", email="example@example.com", message="This is a test message." }, config={ subject="Test", emailto="example@example.com" }, emailtemplatepath="../../public/views/enquiry/email.cfm" );
-		result = StructKeyExists( result.messages, "success" );
+		var sendenquiryresult = CUT.sendEnquiry( properties={ firstname="Test", lastname="User", email="example@example.com", message="This is a test message." }, config={ subject="Test", emailto="example@example.com" }, emailtemplatepath="../../public/views/enquiry/email.cfm" );
+		var result = sendenquiryresult.getIsSuccess();
 		assertTrue( result );
 	}
  

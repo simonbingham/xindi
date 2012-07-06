@@ -34,9 +34,8 @@ component accessors="true" extends="abstract"{
 
 	void function delete( required struct rc ){
 		param name="rc.articleid" default="0";
-		var result = variables.NewsService.deleteArticle( articleid=rc.articleid );
-		rc.messages = result.messages;
-		variables.fw.redirect( "news", "messages" );
+		rc.result = variables.NewsService.deleteArticle( articleid=rc.articleid );
+		variables.fw.redirect( "news", "result" );
 	}
 	
 	void function maintain( required struct rc ){
@@ -58,13 +57,12 @@ component accessors="true" extends="abstract"{
 		param name="rc.submit" default="Save & exit";
 		var properties = { articleid=rc.articleid, title=rc.title, published=rc.published, content=rc.content, metagenerated=rc.metagenerated, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
 		rc.result = variables.NewsService.saveArticle( properties=properties );
-		rc.messages = rc.result.messages;
 		rc.Article = rc.result.getTheObject();
 		if( StructKeyExists( rc.messages, "success" ) ){
-			if( rc.submit == "Save & Continue" ) variables.fw.redirect( "news.maintain", "messages,Article", "articleid" );
-			else variables.fw.redirect( "news", "messages" );
+			if( rc.submit == "Save & Continue" ) variables.fw.redirect( "news.maintain", "Article,result", "articleid" );
+			else variables.fw.redirect( "news", "result" );
 		}else{
-			variables.fw.redirect( "news.maintain", "messages,Article,result", "articleid" );
+			variables.fw.redirect( "news.maintain", "Article,result", "articleid" );
 		}
 	}
 	

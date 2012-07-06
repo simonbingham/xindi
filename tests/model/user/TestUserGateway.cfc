@@ -21,14 +21,20 @@ component extends="mxunit.framework.TestCase"{
 	// ------------------------ UNIT TESTS ------------------------ //
 	
 	function testDeleteUserWhereUserDoesNotExist(){
+		var $ValidationResult = mock().getIsSuccess().returns( false );
+		var $Validator = mock().newResult().returns( ValidationResult=$ValidationResult );
+		CUT.setValidator( Validator=$Validator );
 		var deleteuserresult = CUT.deleteUser( 2 );
-		var result = StructKeyExists( deleteuserresult.messages, "error" );
-		assertTrue( result );
+		var result = deleteuserresult.getIsSuccess();
+		assertFalse( result );
 	}
 
 	function testDeleteUserWhereUserExists(){
+		var $ValidationResult = mock().getIsSuccess().returns( true );
+		var $Validator = mock().newResult().returns( ValidationResult=$ValidationResult );
+		CUT.setValidator( Validator=$Validator );
 		var deleteuserresult = CUT.deleteUser( 1 );
-		var result = StructKeyExists( deleteuserresult.messages, "success" );
+		var result = deleteuserresult.getIsSuccess();
 		assertTrue( result );
 	}
 
@@ -45,7 +51,7 @@ component extends="mxunit.framework.TestCase"{
 	}	
 
 	function testGetUserByCredentialsReturnsNullForInCorrectCredentials(){
-		var $LoginUser = mock( "model.user.User" );
+		var $LoginUser = mock();
 		$LoginUser.getUsername().returns( "aliaspooryorik" );
 		$LoginUser.getEmail().returns( "" );
 		$LoginUser.getPassword().returns( "1111111111111111111111111111111111111111111111111111111111111111" );		
@@ -55,7 +61,7 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testGetUserByCredentialsReturnsUserForCorrectCredentialsByEmail(){
-		var $LoginUser = mock( "model.user.User" );
+		var $LoginUser = mock();
 		$LoginUser.getUsername().returns( "" );
 		$LoginUser.getEmail().returns( "example@example.com" );
 		$LoginUser.getPassword().returns( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB" );
@@ -67,7 +73,7 @@ component extends="mxunit.framework.TestCase"{
 	}
 
 	function testGetUserByCredentialsReturnsUserForCorrectCredentialsByUsername(){
-		var $LoginUser = mock( "model.user.User" );
+		var $LoginUser = mock();
 		$LoginUser.getUsername().returns( "admin" );
 		$LoginUser.getEmail().returns( "" );
 		$LoginUser.getPassword().returns( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB" );
@@ -101,7 +107,7 @@ component extends="mxunit.framework.TestCase"{
 	}	
 	
 	function testGetValidator(){
-		var $Validator = mock( "Validator" );
+		var $Validator = mock();
 		var User = CUT.newUser();
 		CUT.setValidator( $Validator );
 		var result = IsObject( CUT.getValidator( User=User ) );
@@ -116,21 +122,21 @@ component extends="mxunit.framework.TestCase"{
 
 	function testSaveUserWhereUserIsInvalid(){
 		var properties = { firstname="Simon", lastname="Bingham", email="foobarfoobarcom", username="foo", password="bar"  };
-		var $ValidationResult = mock( "Validator" ).hasErrors().returns( true );
-		var $Validator = mock( "Validator" ).validate( theObject='{any}', Context='{string}' ).returns( ValidationResult=$ValidationResult );
+		var $ValidationResult = mock().hasErrors().returns( true ).getIsSuccess().returns( false );
+		var $Validator = mock().validate( theObject='{any}', Context='{string}' ).returns( ValidationResult=$ValidationResult );
 		CUT.setValidator( Validator=$Validator );		
 		var saveuserresult = CUT.saveUser( properties, "create" );
-		var result = StructKeyExists( saveuserresult.messages, "error" );
-		assertTrue( result );
+		var result = saveuserresult.getIsSuccess();
+		assertFalse( result );
 	}
 	
 	function testSaveUserWhereUserIsValid(){
 		var properties = { firstname="Simon", lastname="Bingham", email="foobar@foobar.com", username="foo", password="bar"  };
-		var $ValidationResult = mock( "Validator" ).hasErrors().returns( false );
-		var $Validator = mock( "Validator" ).validate( theObject='{any}', Context='{string}' ).returns( ValidationResult=$ValidationResult );
+		var $ValidationResult = mock().hasErrors().returns( false ).getIsSuccess().returns( true );
+		var $Validator = mock().validate( theObject='{any}', Context='{string}' ).returns( ValidationResult=$ValidationResult );
 		CUT.setValidator( Validator=$Validator );	
 		var saveuserresult = CUT.saveUser( properties, "create" );
-		var result = StructKeyExists( saveuserresult.messages, "success" );
+		var result = saveuserresult.getIsSuccess();
 		assertTrue( result );
 	}	
 

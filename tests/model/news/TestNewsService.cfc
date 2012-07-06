@@ -22,13 +22,13 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testDeleteArticleWhereArticleDoesNotExist(){
 		var deletearticleresult = CUT.deleteArticle( articleid=4 );
-		var result = StructKeyExists( deletearticleresult.messages, "error" );
-		assertTrue( result );
+		var result = deletearticleresult.getIsSuccess();
+		assertFalse( result );
 	}
 	
 	function testDeleteArticleWhereArticleExists(){
 		var deletearticleresult = CUT.deleteArticle( articleid=1 );
-		var result = StructKeyExists( deletearticleresult.messages, "success" );
+		var result = deletearticleresult.getIsSuccess();
 		assertTrue( result );
 	}	
 
@@ -94,13 +94,13 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testSaveArticleWhereArticleIsInvalid(){
 		var savearticleresult = CUT.saveArticle( { title="", published="27/6/2012", content="bar" } );
-		var result = StructKeyExists( savearticleresult.messages, "error" );
-		assertTrue( result );
+		var result = savearticleresult.getIsSuccess();
+		assertFalse( result );
 	}
 
 	function testSaveArticleWhereArticleIsValid(){
 		var savearticleresult = CUT.saveArticle( { title="foo", published="27/6/2012", content="bar" } );
-		var result = StructKeyExists( savearticleresult.messages, "success" );
+		var result = savearticleresult.getIsSuccess();
 		assertTrue( result );
 	}
 	
@@ -113,8 +113,8 @@ component extends="mxunit.framework.TestCase"{
 		// initialise component under test
 		CUT = new model.news.NewsService();
 		var NewsGateway = new model.news.NewsGateway();
-		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
-		Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
+		var validatorconfig = { definitionPath="/model/", JSIncludes=false, resultPath="model.utility.ValidatorResult" };
+		Validator = new ValidateThis.ValidateThis( validatorconfig );
 		NewsGateway.setValidator( Validator );
 		var MetaData = new model.content.MetaData();
 		NewsGateway.setMetaData( MetaData );

@@ -35,25 +35,20 @@ component accessors="true" extends="abstract"{
 	
 	void function delete( required struct rc ){
 		param name="rc.enquiryid" default="0";
-		var result = variables.EnquiryService.deleteEnquiry( enquiryid=rc.enquiryid );
-		rc.messages = result.messages;
-		variables.fw.redirect( "enquiries", "messages" );
+		rc.result = variables.EnquiryService.deleteEnquiry( enquiryid=rc.enquiryid );
+		variables.fw.redirect( "enquiries", "result" );
 	}	
 	
 	void function enquiry( required struct rc ){
 		param name="rc.enquiryid" default="0";
 		rc.Enquiry = variables.EnquiryService.getEnquiryByID( enquiryid=rc.enquiryid );
-		if( !IsNull( rc.Enquiry ) ){
-			variables.EnquiryService.markRead( enquiryid=rc.Enquiry.getEnquiryID() );
-		}else{
-			variables.fw.redirect( "main.notfound" );
-		}
+		if( !IsNull( rc.Enquiry ) ) variables.EnquiryService.markRead( enquiryid=rc.Enquiry.getEnquiryID() );
+		else variables.fw.redirect( "main.notfound" );
 	}
 	
-	void function markallread( required struct rc ){
-		var result = variables.EnquiryService.markAllRead();
-		rc.messages = result.messages;
-		variables.fw.redirect( "enquiries", "messages" );
+	void function markread( required struct rc ){
+		rc.result = variables.EnquiryService.markRead();
+		variables.fw.redirect( "enquiries", "result" );
 	}	
 	
 }

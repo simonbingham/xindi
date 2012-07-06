@@ -23,14 +23,20 @@ component extends="mxunit.framework.TestCase"{
 	// public methods
 	 
 	function testDeletePageWherePageDoesNotExist(){
+		var $ValidationResult = mock().getIsSuccess().returns( true );
+		var $Validator = mock().newResult().returns( $ValidationResult );
+		CUT.setValidator( Validator=$Validator );		
 		var deletepageresult = CUT.deletePage( pageid=100 );
-		var result = StructKeyExists( deletepageresult.messages, "error" );
-		assertTrue( result );		
+		var result = deletepageresult.getIsSuccess();
+		assertTrue( result );
 	}
 	
 	function testDeletePageWherePageExists(){
+		var $ValidationResult = mock().getIsSuccess().returns( true );
+		var $Validator = mock().newResult().returns( $ValidationResult );
+		CUT.setValidator( Validator=$Validator );		
 		var deletepageresult = CUT.deletePage( pageid=13 );
-		var result = StructKeyExists( deletepageresult.messages, "success" );
+		var result = deletepageresult.getIsSuccess();
 		assertTrue( result );
 	}
 
@@ -95,64 +101,68 @@ component extends="mxunit.framework.TestCase"{
 	}
 
 	function testGetValidator(){
-		var $Validator = mock( "ValidateThis" ).getValidator( theObject="{any}" ).returns( mock( "model.content.Page" ) );
+		var $Validator = mock().getValidator( theObject="{any}" ).returns( mock() );
 		CUT.setValidator( Validator=$Validator );		
-		var $Page = mock( "model.content.Page" );
-		var result = IsObject( CUT.getValidator( $Page ) );
+		var result = IsObject( CUT.getValidator( mock() ) );
 		assertTrue( result );
 	}
 
 	function testMovePageWherePageCanBeMovedDown(){
+		var $ValidationResult = mock().getIsSuccess().returns( true );
+		var $Validator = mock().newResult().returns( $ValidationResult );
+		CUT.setValidator( Validator=$Validator );		
 		var movepageresult = CUT.movePage( pageid=12, direction="down" );
-		var result = StructKeyExists( movepageresult.messages, "success" );
+		var result = movepageresult.getIsSuccess();
 		assertTrue( result );
-		result = movepageresult.Page.getLeftValue();
-		assertEquals( 23, result );
-		result = movepageresult.Page.getRightValue();
-		assertEquals( 24, result );
+		result = movepageresult.getTheObject().getLeftValue();
 	}
 
 	function testMovePageWherePageCanBeMovedUp(){
+		var $ValidationResult = mock().getIsSuccess().returns( true );
+		var $Validator = mock().newResult().returns( $ValidationResult );
+		CUT.setValidator( Validator=$Validator );		
 		var movepageresult = CUT.movePage( pageid=7, direction="up" );
-		var result = StructKeyExists( movepageresult.messages, "success" );
+		var result = movepageresult.getIsSuccess();
 		assertTrue( result );
-		result = movepageresult.Page.getLeftValue();
-		assertEquals( 5, result );
-		result = movepageresult.Page.getRightValue();
-		assertEquals( 6, result );
 	}
 
 	function testMovePageWherePageCannotBeMovedDown(){
+		var $ValidationResult = mock().getIsSuccess().returns( true );
+		var $Validator = mock().newResult().returns( $ValidationResult );
+		CUT.setValidator( Validator=$Validator );		
 		var movepageresult = CUT.movePage( pageid=13, direction="down" );
-		var result = StructKeyExists( movepageresult.messages, "error" );
+		var result = movepageresult.getIsSuccess();
 		assertTrue( result );
 	}
 
 	function testMovePageWherePageCannotBeMovedUp(){
+		var $ValidationResult = mock().getIsSuccess().returns( false );
+		var $Validator = mock().newResult().returns( $ValidationResult );
+		CUT.setValidator( Validator=$Validator );		
 		var movepageresult = CUT.movePage( pageid=11, direction="up" );
-		var result = StructKeyExists( movepageresult.messages, "error" );
-		assertTrue( result );
+		var result = movepageresult.getIsSuccess();
+		assertFalse( result );
 	}
 
 	function testSavePageWherePageIsInvalid(){
 		var $MetaData = new model.content.MetaData();
 		CUT.setMetaData( MetaData=$MetaData );		
-		var $ValidationResult = mock( "ValidateThis" ).hasErrors().returns( true );
-		var $Validator = mock( "ValidateThis" ).validate( theObject="{any}", Context="{string}" ).returns( $ValidationResult );
+		var $ValidationResult = mock().hasErrors().returns( true ).getIsSuccess().returns( false );
+		var $Validator = mock().validate( theObject="{any}", Context="{string}" ).returns( $ValidationResult );
 		CUT.setValidator( Validator=$Validator );		
 		var savepageresult = CUT.savePage( { title="", content="" }, 1, "create" );
-		var result = StructKeyExists( savepageresult.messages, "error" );
-		assertTrue( result );
+		var result = savepageresult.getIsSuccess();
+		assertFalse( result );
 	}
 	 
 	function testSavePageWherePageIsValid(){
-		var $MetaData = mock( "model.content.MetaData" ).generateMetaDescription( description="{string}" ).returns( "" ).generateMetaKeywords( keywords="{string}" ).returns( "" );
+		var $MetaData = mock().generateMetaDescription( description="{string}" ).returns( "" ).generateMetaKeywords( keywords="{string}" ).returns( "" );
 		CUT.setMetaData( MetaData=$MetaData );		
-		var $ValidationResult = mock( "ValidateThis" ).hasErrors().returns( false );
-		var $Validator = mock( "ValidateThis" ).validate( theObject="{any}", Context="{string}" ).returns( $ValidationResult );
+		var $ValidationResult = mock().hasErrors().returns( false ).getIsSuccess().returns( true );
+		var $Validator = mock().validate( theObject="{any}", Context="{string}" ).returns( $ValidationResult );
 		CUT.setValidator( Validator=$Validator );
 		var savepageresult = CUT.savePage( { title="foo", content="bar" }, 1, "create" );
-		var result = StructKeyExists( savepageresult.messages, "success" );
+		var result = savepageresult.getIsSuccess();
 		assertTrue( result );
 	}
 

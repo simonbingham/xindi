@@ -29,14 +29,14 @@
 		 * Public methods
 		 */	
 		
-		struct function deleteArticle( required articleid ){
+		function deleteArticle( required articleid ){
 			var Article = getArticleByID( Val( arguments.articleid ) );
-			var result = {};
+			var result = variables.Validator.newResult();
 			if( Article.isPersisted() ){ 
 				EntityDelete( Article );
-				result.messages.success = "The article &quot;#Article.getTitle()#&quot; has been deleted.";
+				result.setSuccessMessage( "The article &quot;#Article.getTitle()#&quot; has been deleted." );
 			}else{
-				result.messages.error = "The article could not be deleted.";
+				result.setErrorMessage( "The article could not be deleted." );
 			}
 			return result;
 		}
@@ -116,9 +116,9 @@
 			var result = variables.Validator.validate( theObject=Article );
 			if( !result.hasErrors() ){
 				EntitySave( Article );
-				result.messages.success = "The article &quot;#Article.getTitle()#&quot; has been saved.";
+				result.setSuccessMessage( "The article &quot;#Article.getTitle()#&quot; has been saved." );
 			}else{
-				result.messages.error = "Your article could not be saved. Please amend the highlighted fields.";
+				result.setErrorMessage( "Your article could not be saved. Please amend the highlighted fields." );
 			}
 			return result;
 		}

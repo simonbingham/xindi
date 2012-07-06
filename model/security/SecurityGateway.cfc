@@ -32,13 +32,13 @@ component accessors="true"{
 	 * Public methods
 	 */
 
-	struct function deleteCurrentUser(){
-		var result = {};
+	function deleteCurrentUser(){
+		var result = variables.Validator.newResult();
 		if( hasCurrentUser() ){
 			StructDelete( session, variables.userkey );
-			result.messages.success = "You have been logged out.";	
+			result.setSuccessMessage( "You have been logged out." );	
 		}else{
-			result.messages.error = "You are not logged in.";
+			result.setErrorMessage( "You are not logged in." );
 		}
 		return result;
 	}
@@ -76,16 +76,17 @@ component accessors="true"{
 		User = variables.UserGateway.getUserByCredentials( User=User );
 		if( User.isPersisted() ){
 			setCurrentUser( User );
-			result.messages.success = "Welcome #User.getFirstName()#. You have been logged in.";
+			result.setSuccessMessage( "Welcome #User.getFirstName()#. You have been logged in." );
 		}else{
-			result.messages.error = "Sorry, your login details have not been recognised.";
-			var failure = { propertyName="username", clientFieldname="username", message=result.messages.error };
+			var message = "Sorry, your login details have not been recognised.";
+			result.setErrorMessage( message );
+			var failure = { propertyName="username", clientFieldname="username", message=message };
 			result.addFailure( failure );
 		}
 		return result;
 	}	
 	
-	struct function resetPassword( required struct properties, required string name, required struct config, required string emailtemplatepath ){
+	function resetPassword( required struct properties, required string name, required struct config, required string emailtemplatepath ){
 		param name="arguments.properties.username" default="";
 		if( IsValid( "email", arguments.properties.username ) ){
 			arguments.properties.email = arguments.properties.username;
@@ -106,10 +107,11 @@ component accessors="true"{
 	    	Email.setBody( emailtemplate );
 	    	Email.setType( "html" );
 	        Email.send();				
-			result.messages.success = "A new password has been sent to #User.getEmail()#.";
+			result.setSuccessMessage( "A new password has been sent to #User.getEmail()#." );
 		}else{
-			result.messages.error = "Sorry, your username or email address has not been recognised.";
-			var failure = { propertyName="username", clientFieldname="username", message=result.messages.error };
+			var message = "Sorry, your username or email address has not been recognised.";
+			result.setErrorMessage( message );
+			var failure = { propertyName="username", clientFieldname="username", message=message };
 			result.addFailure( failure );
 		}
 		return result;

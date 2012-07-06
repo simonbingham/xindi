@@ -46,12 +46,11 @@ component accessors="true" extends="abstract"{
 		var properties = { firstname=rc.firstname, lastname=rc.lastname, email=rc.email, message=rc.message };
 		var emailtemplatepath = "../../public/views/enquiry/email.cfm";
 		rc.result = variables.EnquiryService.sendEnquiry( properties=properties, config=variables.config.enquiry, emailtemplatepath=emailtemplatepath );
-		rc.messages = rc.result.messages;
-		if( StructKeyExists( rc.messages, "success" ) ){
+		if( rc.result.getIsSuccess() ){
 			variables.fw.redirect( "enquiry.thanks" );	
 		}else{
 			rc.Enquiry = rc.result.getTheObject();
-			variables.fw.redirect( "enquiry", "messages,Enquiry,result" );
+			variables.fw.redirect( "enquiry", "Enquiry,result" );
 		}		
 	}
 	

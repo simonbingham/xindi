@@ -48,16 +48,14 @@ component accessors="true"{
 		param name="rc.username" default="";
 		param name="rc.password" default="";
 		var properties = { username=rc.username, password=rc.password };
-		var result = variables.SecurityService.loginUser( properties=properties );
-		rc.messages = result.messages;
-		if( StructKeyExists( rc.messages, "success" ) ) variables.fw.redirect( "main", "messages" );
-		else variables.fw.redirect( "security", "messages" );
+		rc.result = variables.SecurityService.loginUser( properties=properties );
+		if( rc.result.getIsSuccess() ) variables.fw.redirect( "main", "result" );
+		else variables.fw.redirect( "security", "result" );
 	}
 
 	void function logout( required rc ){
-		var result = variables.SecurityService.deleteCurrentUser();
-		rc.messages = result.messages;
-		variables.fw.redirect( "security", "messages" );
+		rc.result = variables.SecurityService.deleteCurrentUser();
+		variables.fw.redirect( "security", "result" );
 	}
 	
 	void function password( required rc ){
@@ -70,10 +68,9 @@ component accessors="true"{
 		param name="rc.username" default="";
 		var properties = { username=rc.username };
 		var emailtemplatepath = "../../admin/views/security/email.cfm";
-		var result = variables.SecurityService.resetPassword( properties=properties, name=rc.config.name, config=rc.config.security, emailtemplatepath=emailtemplatepath );
-		rc.messages = result.messages;
-		if( StructKeyExists( rc.messages, "success" ) ) variables.fw.redirect( "security", "messages" );
-		else variables.fw.redirect( "security.password", "messages" );
+		rc.result = variables.SecurityService.resetPassword( properties=properties, name=rc.config.name, config=rc.config.security, emailtemplatepath=emailtemplatepath );
+		if( rc.result.getIsSuccess() ) variables.fw.redirect( "security", "result" );
+		else variables.fw.redirect( "security.password", "result" );
 	}
 
 }

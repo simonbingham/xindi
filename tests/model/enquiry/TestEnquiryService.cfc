@@ -22,13 +22,13 @@ component extends="mxunit.framework.TestCase"{
 
 	function testDeleteEnquiryWhereEnquiryDoesNotExist(){
 		var deleteenquiryresult = CUT.deleteEnquiry( enquiryid=4 );
-		var result = StructKeyExists( deleteenquiryresult.messages, "error" );
-		assertTrue( result );
+		var result = deleteenquiryresult.getIsSuccess();
+		assertFalse( result );
 	}
 		
 	function testDeleteEnquiryWhereEnquiryExists(){
 		var deleteenquiryresult = CUT.deleteEnquiry( enquiryid=1 );
-		var result = StructKeyExists( deleteenquiryresult.messages, "success" );
+		var result = deleteenquiryresult.getIsSuccess();
 		assertTrue( result );
 	}
 
@@ -56,14 +56,14 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testMarkAllRead(){
-		var markallreadresult = CUT.markAllRead();
-		var result = StructKeyExists( markallreadresult.messages, "success" );
+		var markallreadresult = CUT.markRead();
+		var result = markallreadresult.getIsSuccess();
 		assertTrue( result );
 	}
 	
 	function testMarkRead(){
 		var markreadresult = CUT.markRead( enquiryid=3 );
-		var result = StructKeyExists( markreadresult.messages, "success" );
+		var result = markreadresult.getIsSuccess();
 		assertTrue( result );
 	}
 	
@@ -75,13 +75,13 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testSendEnquiryWhereEnquiryIsInvalid(){
 		var sendenquiryresult = CUT.sendEnquiry( properties={ firstname="", lastname="", email="", message="" }, config={ subject="Test", emailto="example@example.com" }, emailtemplatepath="../../public/views/enquiry/email.cfm" );
-		var result = StructKeyExists( sendenquiryresult.messages, "error" );
-		assertTrue( result );
+		var result = sendenquiryresult.getIsSuccess();
+		assertFalse( result );
 	}
 
 	function testSendEnquiryWhereEnquiryIsValid(){
 		var sendenquiryresult = CUT.sendEnquiry( properties={ firstname="Test", lastname="User", email="example@example.com", message="This is a test message." }, config={ subject="Test", emailto="example@example.com" }, emailtemplatepath="../../public/views/enquiry/email.cfm" );
-		var result = StructKeyExists( sendenquiryresult.messages, "success" );
+		var result = sendenquiryresult.getIsSuccess();
 		assertTrue( result );
 	}
  
@@ -94,8 +94,8 @@ component extends="mxunit.framework.TestCase"{
 		// initialise component under test
 		CUT = new model.enquiry.EnquiryService();
 		var EnquiryGateway = new model.enquiry.EnquiryGateway();
-		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
-		Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
+		var validatorconfig = { definitionPath="/model/", JSIncludes=false, resultPath="model.utility.ValidatorResult" };
+		Validator = new ValidateThis.ValidateThis( validatorconfig );
 		EnquiryGateway.setValidator( Validator );
 		CUT.setEnquiryGateway( EnquiryGateway );
 		

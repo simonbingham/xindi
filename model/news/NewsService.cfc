@@ -28,7 +28,7 @@ component accessors="true"{
 	 * Public methods
 	 */
 	 	
-	struct function deleteArticle( required articleid ){
+	function deleteArticle( required articleid ){
 		transaction{
 			var result = variables.NewsGateway.deleteArticle( articleid=Val( arguments.articleid ) );
 		}

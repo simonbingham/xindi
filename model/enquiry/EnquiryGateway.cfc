@@ -28,14 +28,14 @@ component accessors="true"{
 	 * Public methods
 	 */
 
-	struct function deleteEnquiry( required numeric enquiryid ){
+	function deleteEnquiry( required numeric enquiryid ){
 		var Enquiry = getEnquiryByID( arguments.enquiryid );
-		var result = {};
+		var result = variables.Validator.newResult();
 		if( !IsNull( Enquiry ) ){ 
 			EntityDelete( Enquiry );
-			result.messages.success = "The enquiry from &quot;#Enquiry.getFullName()#&quot; has been deleted.";
+			result.setSuccessMessage( "The enquiry from &quot;#Enquiry.getFullName()#&quot; has been deleted." );
 		}else{
-			result.messages.error = "The enquiry could not be deleted.";
+			result.setErrorMessage( "The enquiry could not be deleted." );
 		}
 		return result;
 	}
@@ -58,21 +58,20 @@ component accessors="true"{
 		return variables.Validator.getValidator( theObject=arguments.Enquiry );
 	}	
 	
-	struct function markAllRead(){
-		var result = { messages={ success="All messages have been marked as read." } };
-		ORMExecuteQuery( "update Enquiry set unread=false" );
-		return result;
-	}
-
-	struct function markRead( required numeric enquiryid ){
-		var result = {};
-		var Enquiry = getEnquiryByID( arguments.enquiryid );
-		if( !IsNull( Enquiry ) ){ 
-			Enquiry.setRead();
-			EntitySave( Enquiry );
-			result.messages.success = "The message has been marked as read.";
+	function markRead( numeric enquiryid=0 ){
+		var result = variables.Validator.newResult();
+		if( arguments.enquiryid ){
+			var Enquiry = getEnquiryByID( arguments.enquiryid );
+			if( !IsNull( Enquiry ) ){ 
+				Enquiry.setRead();
+				EntitySave( Enquiry );
+				result.setSuccessMessage( "The message has been marked as read." );
+			}else{
+				result.setErrorMessage( "The message could not be marked as read." );
+			}
 		}else{
-			result.messages.error = "The message could not be marked as read.";
+			result.setSuccessMessage( "All messages have been marked as read." );
+			ORMExecuteQuery( "update Enquiry set unread=false" );		
 		}
 		return result;
 	}	
@@ -81,7 +80,7 @@ component accessors="true"{
 		return new model.enquiry.Enquiry();
 	}
 	
-	struct function sendEnquiry( required struct properties, required struct config, required string emailtemplatepath ){
+	function sendEnquiry( required struct properties, required struct config, required string emailtemplatepath ){
 		var emailtemplate = "";
 		var Enquiry = newEnquiry(); 
 		Enquiry.populate( arguments.properties );
@@ -96,9 +95,9 @@ component accessors="true"{
 	    	Email.setType( "html" );
 	        Email.send();
 	        EntitySave( Enquiry );
-	        result.messages.success = "Your enquiry has been sent.";
+	        result.setSuccessMessage( "Your enquiry has been sent." );
 		}else{
-			result.messages.error = "Your enquiry could not be sent. Please amend the highlighted fields.";
+			result.setErrorMessage( "Your enquiry could not be sent. Please amend the highlighted fields." );
 		}
 		return result;
 	}

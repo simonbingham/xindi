@@ -28,7 +28,7 @@ component accessors="true"{
 	 * Public methods
 	 */
 	 	
-	struct function deletePage( required pageid ){
+	function deletePage( required pageid ){
 		transaction{
 			var result = variables.ContentGateway.deletePage( pageid=Val( arguments.pageid ) );
 		}
@@ -56,7 +56,7 @@ component accessors="true"{
 		return variables.ContentGateway.getValidator( argumentCollection=arguments );
 	}
 	
-	struct function movePage( required pageid, required string direction ){
+	function movePage( required pageid, required string direction ){
 		transaction{
 			arguments.pageid = Val( arguments.pageid );
 			var result = variables.ContentGateway.movePage( argumentCollection=arguments );

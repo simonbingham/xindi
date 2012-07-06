@@ -22,13 +22,13 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testDeleteUserWhereUserDoesNotExist(){
 		var deleteuserresult = CUT.deleteUser( 2 );
-		var result = StructKeyExists( deleteuserresult.messages, "error" );
-		assertTrue( result );
+		var result = deleteuserresult.getIsSuccess();
+		assertFalse( result );
 	}
 
 	function testDeleteUserWhereUserExists(){
 		var deleteuserresult = CUT.deleteUser( 1 );
-		var result = StructKeyExists( deleteuserresult.messages, "success" );
+		var result = deleteuserresult.getIsSuccess();
 		assertTrue( result );
 	}
 
@@ -115,14 +115,14 @@ component extends="mxunit.framework.TestCase"{
 	function testSaveUserWhereUserIsInvalid(){
 		var properties = { firstname="Simon", lastname="Bingham", email="foobarfoobarcom", username="foo", password="bar"  };
 		var saveuserresult = CUT.saveUser( properties, "create" );
-		var result = StructKeyExists( saveuserresult.messages, "error" );
-		assertTrue( result );
+		var result = saveuserresult.getIsSuccess();
+		assertFalse( result );
 	}
 	
 	function testSaveUserWhereUserIsValid(){
 		var properties = { firstname="Simon", lastname="Bingham", email="foobar@foobar.com", username="foo", password="bar"  };
 		var saveuserresult = CUT.saveUser( properties, "create" );
-		var result = StructKeyExists( saveuserresult.messages, "success" );
+		var result = saveuserresult.getIsSuccess();
 		assertTrue( result );
 	}
 	
@@ -135,8 +135,8 @@ component extends="mxunit.framework.TestCase"{
 		// initialise component under test
 		CUT = new model.user.UserService();
 		var UserGateway = new model.user.UserGateway();
-		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
-		Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
+		var validatorconfig = { definitionPath="/model/", JSIncludes=false, resultPath="model.utility.ValidatorResult" };
+		Validator = new ValidateThis.ValidateThis( validatorconfig );
 		UserGateway.setValidator( Validator );
 		CUT.setUserGateway( UserGateway );
 		

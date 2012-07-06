@@ -84,8 +84,8 @@ component extends="frameworks.org.corfield.framework"{
 		setBeanFactory( beanfactory );
 
 		// add validator bean to factory
-		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
-		beanFactory.addBean( "Validator", new ValidateThis.ValidateThis( ValidateThisConfig ) );
+		var validatorconfig = { definitionPath="/model/", JSIncludes=false, resultPath="model.utility.ValidatorResult" };
+		beanFactory.addBean( "Validator", new ValidateThis.ValidateThis( validatorconfig ) );
 
 		// add meta data bean to factory
 		beanFactory.addBean( "MetaData", new model.content.MetaData() );

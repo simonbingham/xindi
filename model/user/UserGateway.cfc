@@ -28,14 +28,14 @@ component accessors="true"{
 	 * Public methods
 	 */
 	 	
-	struct function deleteUser( required userid ){
+	function deleteUser( required userid ){
 		var User = getUserByID( Val( arguments.userid ) );
-		var result = {};
+		var result = variables.Validator.newResult();
 		if( User.isPersisted() ){
 			EntityDelete( User );
-			result.messages.success = "The user &quot;#User.getFullName()#&quot; has been deleted.";
+			result.setSuccessMessage( "The user &quot;#User.getFullName()#&quot; has been deleted." );
 		}else{
-			result.messages.error = "The user could not be deleted.";
+			result.setErrorMessage( "The user could not be deleted." );
 		}
 		return result;
 	}
@@ -71,18 +71,18 @@ component accessors="true"{
 		return EntityNew( "User" );
 	}
 	
-	struct function saveUser( required struct properties, required string context ){
+	function saveUser( required struct properties, required string context ){
 		param name="arguments.properties.userid" default="0";
-		var result = {};
+		var result = variables.Validator.newResult();
 		var User = ""; 
 		User = getUserByID( Val( arguments.properties.userid ) );
 		User.populate( arguments.properties );
 		var result = variables.Validator.validate( theObject=User, context=arguments.context );
 		if( !result.hasErrors() ){
-			result.messages.success = "The user &quot;#User.getFullName()#&quot; has been saved.";
+			result.setSuccessMessage( "The user &quot;#User.getFullName()#&quot; has been saved." );
 			EntitySave( User );
 		}else{
-			result.messages.error = "The user could not be saved. Please amend the highlighted fields.";
+			result.setErrorMessage( "The user could not be saved. Please amend the highlighted fields." );
 		}
 		return result;
 	}

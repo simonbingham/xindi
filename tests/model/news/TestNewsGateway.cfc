@@ -23,14 +23,20 @@ component extends="mxunit.framework.TestCase"{
 	// public methods
 
 	function testDeleteArticleWhereArticleDoesNotExist(){
+		var $ValidationResult = mock().getIsSuccess().returns( false );
+		var $Validator = mock().newResult().returns( $ValidationResult );
+		CUT.setValidator( Validator=$Validator );
 		var deletearticleresult = CUT.deleteArticle( articleid=4 );
-		var result = StructKeyExists( deletearticleresult.messages, "error" );
-		assertTrue( result );
+		var result = deletearticleresult.getIsSuccess();
+		assertFalse( result );
 	}
 		
 	function testDeleteArticleWhereArticleExists(){
+		var $ValidationResult = mock().getIsSuccess().returns( true );
+		var $Validator = mock().newResult().returns( $ValidationResult );
+		CUT.setValidator( Validator=$Validator );
 		var deletearticleresult = CUT.deleteArticle( articleid=1 );
-		var result = StructKeyExists( deletearticleresult.messages, "success" );
+		var result = deletearticleresult.getIsSuccess();
 		assertTrue( result );
 	}
 
@@ -88,10 +94,10 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testGetValidator(){
-		var $ValidationResult = mock( "ValidateThis" );
-		var $Validator = mock( "ValidateThis" ).getValidator( theObject='{any}' ).returns( ValidationResult=$ValidationResult );
+		var $ValidationResult = mock();
+		var $Validator = mock().getValidator( theObject='{any}' ).returns( ValidationResult=$ValidationResult );
 		CUT.setValidator( Validator=$Validator );	
-		var $Article = mock( "model.news.Article" );
+		var $Article = mock();
 		var Validator = CUT.getValidator( Article=$Article );
 		var result = IsObject( Validator );
 		assertTrue( result );
@@ -100,22 +106,22 @@ component extends="mxunit.framework.TestCase"{
 	function testSaveArticleWhereArticleIsInvalid(){
 		var $MetaData = new model.content.MetaData();
 		CUT.setMetaData( MetaData=$MetaData );		
-		var $ValidationResult = mock( "ValidateThis" ).hasErrors().returns( true );
-		var $Validator = mock( "ValidateThis" ).validate( theObject='{any}' ).returns( ValidationResult=$ValidationResult );
+		var $ValidationResult = mock().hasErrors().returns( true ).getIsSuccess().returns( false );
+		var $Validator = mock().validate( theObject='{any}' ).returns( ValidationResult=$ValidationResult );
 		CUT.setValidator( Validator=$Validator );		
 		var savearticleresult = CUT.saveArticle( { title="", published="27/6/2012", content="bar" } );
-		var result = StructKeyExists( savearticleresult.messages, "error" );
-		assertTrue( result );
+		var result = savearticleresult.getIsSuccess();
+		assertFalse( result );
 	}
 
 	function testSaveArticleWhereArticleIsValid(){
 		var $MetaData = new model.content.MetaData();
 		CUT.setMetaData( MetaData=$MetaData );		
-		var $ValidationResult = mock( "ValidateThis" ).hasErrors().returns( false );
-		var $Validator = mock( "ValidateThis" ).validate( theObject='{any}' ).returns( ValidationResult=$ValidationResult );
+		var $ValidationResult = mock().hasErrors().returns( false ).getIsSuccess().returns( true );
+		var $Validator = mock().validate( theObject='{any}' ).returns( ValidationResult=$ValidationResult );
 		CUT.setValidator( Validator=$Validator );		
 		var savearticleresult = CUT.saveArticle( { title="foo", published="27/6/2012", content="bar" } );
-		var result = StructKeyExists( savearticleresult.messages, "success" );
+		var result = savearticleresult.getIsSuccess();
 		assertTrue( result );
 	}
 	

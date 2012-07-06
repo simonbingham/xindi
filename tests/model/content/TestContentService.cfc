@@ -22,13 +22,14 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testDeletePageWherePageDoesNotExist(){
 		var deletepageresult = CUT.deletePage( pageid=100 );
-		var result = StructKeyExists( deletepageresult.messages, "error" );
-		assertTrue( result );
+		var result = deletepageresult.getIsSuccess();
+		debug(result);
+		assertFalse( result );
 	}
 	
 	function testDeletePageWherePageExists(){
 		var deletepageresult = CUT.deletePage( pageid=13 );
-		var result = StructKeyExists( deletepageresult.messages, "success" );
+		var result = deletepageresult.getIsSuccess();
 		assertTrue( result );
 	}
 
@@ -100,45 +101,45 @@ component extends="mxunit.framework.TestCase"{
 
 	function testMovePageWherePageCanBeMovedDown(){
 		var movepageresult = CUT.movePage( pageid=12, direction="down" );
-		var result = StructKeyExists( movepageresult.messages, "success" );
+		var result = movepageresult.getIsSuccess();
 		assertTrue( result );
-		result = movepageresult.Page.getLeftValue();
+		result = movepageresult.getTheObject().getLeftValue();
 		assertEquals( 23, result );
-		result = movepageresult.Page.getRightValue();
+		result = movepageresult.getTheObject().getRightValue();
 		assertEquals( 24, result );
 	}
 
 	function testMovePageWherePageCanBeMovedUp(){
 		var movepageresult = CUT.movePage( pageid=7, direction="up" );
-		var result = StructKeyExists( movepageresult.messages, "success" );
+		var result = movepageresult.getIsSuccess();
 		assertTrue( result );
-		result = movepageresult.Page.getLeftValue();
+		result = movepageresult.getTheObject().getLeftValue();
 		assertEquals( 5, result );
-		result = movepageresult.Page.getRightValue();
+		result = movepageresult.getTheObject().getRightValue();
 		assertEquals( 6, result );
 	}
 
 	function testMovePageWherePageCannotBeMovedDown(){
 		var movepageresult = CUT.movePage( pageid=13, direction="down" );
-		var result = StructKeyExists( movepageresult.messages, "error" );
-		assertTrue( result );
+		var result = movepageresult.getIsSuccess();
+		assertFalse( result );
 	}
 
 	function testMovePageWherePageCannotBeMovedUp(){
 		var movepageresult = CUT.movePage( pageid=11, direction="up" );
-		var result = StructKeyExists( movepageresult.messages, "error" );
-		assertTrue( result );
+		var result = movepageresult.getIsSuccess();
+		assertFalse( result );
 	}
 
 	function testSavePageWherePageIsInvalid(){
 		var savepageresult = CUT.savePage( { title="", content="" }, 1, "create" );
-		var result = StructKeyExists( savepageresult.messages, "error" );
-		assertTrue( result );
+		var result = savepageresult.getIsSuccess();
+		assertFalse( result );
 	}
 	 
 	function testSavePageWherePageIsValid(){
 		var savepageresult = CUT.savePage( { title="foo", content="bar" }, 1, "create" );
-		var result = StructKeyExists( savepageresult.messages, "success" );
+		var result = savepageresult.getIsSuccess();
 		assertTrue( result );
 	}
 	
@@ -151,8 +152,8 @@ component extends="mxunit.framework.TestCase"{
 		// initialise component under test
 		CUT = new model.content.ContentService();
 		var ContentGateway = new model.content.ContentGateway();
-		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
-		Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
+		var validatorconfig = { definitionPath="/model/", JSIncludes=false, resultPath="model.utility.ValidatorResult" };
+		Validator = new ValidateThis.ValidateThis( validatorconfig );
 		ContentGateway.setValidator( Validator );
 		var MetaData = new model.content.MetaData();
 		ContentGateway.setMetaData( MetaData );

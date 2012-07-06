@@ -70,38 +70,38 @@ component extends="mxunit.framework.TestCase"{
 	function testLoginUserForInvalidUser(){
 		var properties = { username="", password="" };
 		var loginuserresult = CUT.loginUser( properties=properties );
-		var result = StructKeyExists( loginuserresult.messages, "error" );
-		assertTrue( result );
+		var result = loginuserresult.getIsSuccess();
+		assertFalse( result );
 	}
 		
 	function testLoginUserForValidUser(){
 		var properties = { username="admin", password="admin" };
 		var loginuserresult = CUT.loginUser( properties=properties );
-		var result = StructKeyExists( loginuserresult.messages, "success" );
+		var result = loginuserresult.getIsSuccess();
 		assertTrue( result ); 
 	}
 
 	function testResetPasswordByEmailWhereUsernameIsInvalid(){
 		var resetpasswordresult = CUT.resetPassword( properties={ email="foo@bar.com" }, name="Default", config={ resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, emailtemplatepath="../../admin/views/security/email.cfm" );
-		var result = StructKeyExists( resetpasswordresult.messages, "error" );
-		assertTrue( result );
+		var result = resetpasswordresult.getIsSuccess();
+		assertFalse( result );
 	}
 	
 	function testResetPasswordByEmailWhereUsernameIsValid(){
 		var resetpasswordresult = CUT.resetPassword( properties={ email="example@example.com" }, name="Default", config={ resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, emailtemplatepath="../../admin/views/security/email.cfm" );
-		var result = StructKeyExists( resetpasswordresult.messages, "success" );
+		var result = resetpasswordresult.getIsSuccess();
 		assertTrue( result );
 	}
 	
 	function testResetPasswordByUsernameWhereUsernameIsInvalid(){
 		var resetpasswordresult = CUT.resetPassword( properties={ username="foobar" }, name="Default", config={ resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, emailtemplatepath="../../admin/views/security/email.cfm" );
-		var result = StructKeyExists( resetpasswordresult.messages, "error" );
-		assertTrue( result );
+		var result = resetpasswordresult.getIsSuccess();
+		assertFalse( result );
 	}
 	
 	function testResetPasswordByUsernameWhereUsernameIsValid(){
 		var resetpasswordresult = CUT.resetPassword( properties={ username="admin" }, name="Default", config={ resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, emailtemplatepath="../../admin/views/security/email.cfm" );
-		var result = StructKeyExists( resetpasswordresult.messages, "success" );
+		var result = resetpasswordresult.getIsSuccess();
 		assertTrue( result );
 	}
 	
@@ -120,8 +120,8 @@ component extends="mxunit.framework.TestCase"{
 	function setUp(){
 		// initialise component under test
 		CUT = new model.security.SecurityService();
-		var ValidateThisConfig = { definitionPath="/model/", JSIncludes=false };
-		Validator = new ValidateThis.ValidateThis( ValidateThisConfig );
+		var validatorconfig = { definitionPath="/model/", JSIncludes=false, resultPath="model.utility.ValidatorResult" };
+		Validator = new ValidateThis.ValidateThis( validatorconfig );
 		var SecurityGateway = new model.security.SecurityGateway();
 		var UserGateway = new model.user.UserGateway();
 		UserGateway.setValidator( Validator );
