@@ -58,7 +58,7 @@ component accessors="true" extends="abstract"{
 		var properties = { articleid=rc.articleid, title=rc.title, published=rc.published, content=rc.content, metagenerated=rc.metagenerated, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
 		rc.result = variables.NewsService.saveArticle( properties=properties );
 		rc.Article = rc.result.getTheObject();
-		if( StructKeyExists( rc.messages, "success" ) ){
+		if( rc.result.getIsSuccess() ){
 			if( rc.submit == "Save & Continue" ) variables.fw.redirect( "news.maintain", "Article,result", "articleid" );
 			else variables.fw.redirect( "news", "result" );
 		}else{
