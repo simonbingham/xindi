@@ -150,7 +150,7 @@ component extends="frameworks.org.corfield.framework"{
 	}
 	
 	/**
-	* configuration
+	* configuration - refer to https://github.com/simonbingham/xindi/wiki/2.-Configuration for more information
 	*/		
 	private struct function getConfig(){
 		var config = {
@@ -179,7 +179,7 @@ component extends="frameworks.org.corfield.framework"{
 			, page = { 
 				enableadddelete = true
 				, excludefromnavigation = "" // comma delimited list of page ids to exclude from navigation
-				, maxlevels = 2 // number of page tiers that can be added - Bootstrap dropdown only supports 2
+				, maxlevels = 2 // number of page tiers that can be added - Bootstrap dropdown supports a maximum of 2
 				, suppressaddpage = "" // comma delimited list of page ids for pages that cannot have child pages added
 				, suppressdeletepage = "1" // comma delimited list of page ids for pages that cannot be deleted
 				, suppressmovepage = "" // comma delimited list of page ids for pages that cannot be moved
@@ -189,7 +189,7 @@ component extends="frameworks.org.corfield.framework"{
 			, security = {
 				resetpasswordemailfrom = ""
 				, resetpasswordemailsubject = ""
-				, whitelist = "^admin:security,^public:" // list of unsecure actions - other requests require authentication
+				, whitelist = "^admin:security,^public:" // list of unsecure actions - by default all requests require authentication
 			}
 		};
 		// override config in development mode
