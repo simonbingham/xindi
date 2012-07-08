@@ -3,22 +3,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="selenium.base" href="" />
-<title>Test add user</title>
+<link rel="selenium.base" href="http://127.0.0.1:8500/" />
+<title>Test contact form</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">Test add user</td></tr>
+<tr><td rowspan="1" colspan="3">Test contact form</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
-	<td>/xindi/index.cfm/admin:users</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Add user</td>
+	<td>/xindi/index.cfm/enquiry</td>
 	<td></td>
 </tr>
 <tr>
@@ -38,12 +33,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>id=username</td>
-	<td>test</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>id=password</td>
+	<td>id=message</td>
 	<td>test</td>
 </tr>
 <tr>
@@ -54,8 +44,9 @@
 <tr>
 	<td>verifyTextPresent</td>
 	<td></td>
-	<td>The user &quot;test test&quot; has been saved.</td>
+	<td>Attribute validation error for CFMAIL.The value of the TO attribute is invalid. The length of the string, 0 character(s), must be greater than or equal to 1 character(s).</td>
 </tr>
+
 </tbody></table>
 </body>
 </html>

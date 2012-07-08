@@ -9,6 +9,10 @@
 <table id="suiteTable" cellpadding="1" cellspacing="1" border="1" class="selenium"><tbody>
 <tr><td><b>Test Suite</b></td></tr>
 <tr><td><a href="setup.html">Setup</a></td></tr>
+<tr><td><a href="testshowpage.html">Test show page</a></td></tr>
+<tr><td><a href="testshowarticle.html">Test show article</a></td></tr>
+<tr><td><a href="testcontactform.html">Test contact form</a></td></tr>
+<tr><td><a href="testsitemap.html">Test site map</a></td></tr>
 <tr><td><a href="testinvalidlogin.html">Test invalid login</a></td></tr>
 <tr><td><a href="testvalidlogin.html">Test valid login</a></td></tr>
 <tr><td><a href="testaddpage.html">Test add page</a></td></tr>

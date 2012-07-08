@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="selenium.base" href="http://localhost/" />
+<link rel="selenium.base" href="" />
 <title>Test edit user</title>
 </head>
 <body>
@@ -11,7 +11,31 @@
 <thead>
 <tr><td rowspan="1" colspan="3">Test edit user</td></tr>
 </thead><tbody>
-
+<tr>
+	<td>open</td>
+	<td>/xindi/index.cfm/admin:users</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=test test</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=firstname</td>
+	<td>test 1</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=submit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td></td>
+	<td>The user &quot;test 1 test&quot; has been saved.</td>
+</tr>
 </tbody></table>
 </body>
 </html>
