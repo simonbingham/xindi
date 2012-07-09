@@ -33,7 +33,7 @@ component accessors="true"{
 		variables.fw = arguments.fw;
 	}
 
-	void function default( required rc ){
+	void function default( required struct rc ){
 		rc.loggedin = variables.SecurityService.hasCurrentUser( session=session );
 		if( rc.loggedin ){
 			variables.fw.redirect( "main" );
@@ -44,7 +44,7 @@ component accessors="true"{
 		}
 	}
 	
-	void function login( required rc ){
+	void function login( required struct rc ){
 		param name="rc.username" default="";
 		param name="rc.password" default="";
 		var properties = { username=rc.username, password=rc.password };
@@ -53,18 +53,18 @@ component accessors="true"{
 		else variables.fw.redirect( "security", "result" );
 	}
 
-	void function logout( required rc ){
+	void function logout( required struct rc ){
 		rc.result = variables.SecurityService.deleteCurrentUser( session=session );
 		variables.fw.redirect( "security", "result" );
 	}
 	
-	void function password( required rc ){
+	void function password( required struct rc ){
 		rc.User = variables.UserService.newUser();
 		rc.Validator = variables.UserService.getValidator( User=rc.User );
 		if( !StructKeyExists( rc, "result" ) ) rc.result = rc.Validator.newResult();
 	}
 	
-	void function resetpassword( required rc ){
+	void function resetpassword( required struct rc ){
 		param name="rc.username" default="";
 		var properties = { username=rc.username };
 		var emailtemplatepath = "../../admin/views/security/email.cfm";

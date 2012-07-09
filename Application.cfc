@@ -115,8 +115,6 @@ component extends="frameworks.org.corfield.framework"{
 	*/		
 	void function setupView(){
 		rc.navigation = getBeanFactory().getBean( "ContentService" ).getPages();
-		
-		if( StructKeyExists( session, "userid" ) ) rc.CurrentUser = getBeanFactory().getBean( "UserService" ).getUserByID( session.userid );
 	}	
 	
 	/**

@@ -25,5 +25,5 @@ component accessors="true"{
 	void function init( required any fw ){
 		variables.fw = arguments.fw;
 	}
-
+	
 }

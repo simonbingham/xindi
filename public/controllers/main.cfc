@@ -23,7 +23,7 @@ component accessors="true" extends="abstract"{
 	 */	
 
 	property name="ContentService" setter="true" getter="false";
-	
+
 	/*
 	 * Public methods
 	 */		

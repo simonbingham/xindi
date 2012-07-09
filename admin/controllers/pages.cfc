@@ -23,7 +23,7 @@ component accessors="true" extends="abstract"{
 	 */	
 
 	void function before( required struct rc ){
-		super.before(arguments.rc);
+		super.before( arguments.rc );
 	}
 
 	void function default( required struct rc ){
