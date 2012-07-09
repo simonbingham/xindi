@@ -33,7 +33,7 @@ component accessors="true" extends="abstract"{
 	void function delete( required struct rc ){
 		param name="rc.pageid" default="0";
 		rc.result = variables.ContentService.deletePage( pageid=rc.pageid );
-		if( rc.result.getIsSuccess() ){
+		if( !rc.config.development && rc.result.getIsSuccess() ){
 			var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:navigation/xml", method="get" );
 			refreshsitemap.send();
 		}
@@ -71,8 +71,10 @@ component accessors="true" extends="abstract"{
 		rc.result = variables.ContentService.savePage( properties=properties, ancestorid=rc.ancestorid, context=rc.context );
 		rc.Page = rc.result.getTheObject();
 		if( rc.result.getIsSuccess() ){
-			var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:navigation/xml", method="get" );
-			refreshsitemap.send();
+			if( !rc.config.development ){
+				var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:navigation/xml", method="get" );
+				refreshsitemap.send();
+			}
 			if( rc.submit == "Save & Continue" )  variables.fw.redirect( "pages.maintain", "result,Page,ancestorid", "pageid" );
 			else variables.fw.redirect( "pages", "result" );
 		}else{
