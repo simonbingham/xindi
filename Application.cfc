@@ -108,9 +108,6 @@ component extends="frameworks.org.corfield.framework"{
 		
 		// store config in request context
 		rc.config = getBeanFactory().getBean( "Config" );
-		
-		// call admin on every request (used for security)
-		controller( "admin:main" );
 	}
 	
 	/**

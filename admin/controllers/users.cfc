@@ -28,6 +28,10 @@ component accessors="true" extends="abstract"{
 	 * Public methods
 	 */	
 	 
+	void function before( required struct rc ){
+		super.before(arguments.rc);
+	}
+	 
 	void function default( required struct rc ){
 		rc.users = variables.UserService.getUsers();
 	}
