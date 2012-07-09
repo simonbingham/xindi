@@ -53,7 +53,7 @@
 					<div class="container">
 						<a class="brand" href="#rc.basehref#" title="Return to home page"><img src="public/assets/img/global/xindi-logo.png" alt="Xindi logo" /></a>
 						
-					    <form action="#buildURL( 'search' )#" method="post" class="navbar-search pull-right">
+					    <form action="#buildURL( 'search' )#" method="post" class="navbar-search pull-right" id="search">
 					    	<input type="text" name="searchterm" id="searchterm" class="search-query" placeholder="Search">
 					    </form>							
 					</div>
