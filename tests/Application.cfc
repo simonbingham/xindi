@@ -21,10 +21,12 @@ component{
 	this.applicationroot = ReReplace( getDirectoryFromPath( getCurrentTemplatePath() ), "tests.$", "", "all" );
 	this.name = ReReplace( "[^W]", this.applicationroot & "tests", "", "all" );
 	this.sessionmanagement = true;
+	this.mappings[ "/frameworks" ] = this.applicationroot & "frameworks/";
 	this.mappings[ "/model" ] = this.applicationroot & "model/";
+	this.mappings[ "/ValidateThis" ] = this.applicationroot & "frameworks/ValidateThis/";
 	this.datasource = "xindi_testsuite";
 	this.ormenabled = true;
-	this.ormsettings ={
+	this.ormsettings = {
 		flushatrequestend = false
 		, automanagesession = false
 		, cfclocation = this.mappings[ "/model" ]

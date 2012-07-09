@@ -98,8 +98,8 @@ component extends="model.abstract.BaseEntity" persistent="true" table="articles"
 
 	private boolean function isUUIDUnique(){
 		var matches = []; 
-		if( isPersisted() ) matches = ORMExecuteQuery( "from Article where articleid <> :articleid and uuid = :uuid",{ articleid=getArticleID(), uuid=getUUID()});
-		else matches = ORMExecuteQuery( "from Article where uuid=:uuid",{ uuid=getUUID() });
+		if( isPersisted() ) matches = ORMExecuteQuery( "from Article where articleid <> :articleid and uuid = :uuid", { articleid=getArticleID(), uuid=getUUID()});
+		else matches = ORMExecuteQuery( "from Article where uuid=:uuid", { uuid=getUUID() });
 		return !ArrayLen( matches );
 	}
 

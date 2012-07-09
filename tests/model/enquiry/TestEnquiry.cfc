@@ -17,38 +17,58 @@
 */
 
 component extends="mxunit.framework.TestCase"{
-	// ------------------------ TESTS ------------------------ //
+			
+	// ------------------------ UNIT TESTS ------------------------ //
+
+	function testGetDisplayMessageHTMLShouldBeEscaped(){
+		CUT.setMessage( "<script>alert('hack');</script>" );
+		var result = CUT.getDisplayMessage();
+		assertEquals( "&lt;script&gt;alert('hack');&lt;/script&gt;", result );		
+	}	
 	 
-	function testLineFeedAndCarriageReturnReplace(){
-		var Enquiry = new model.enquiry.Enquiry();
-		Enquiry.setMessage( "
+	function testGetDisplayMessageLineFeedsAndCarriageReturnsShouldBeReplace(){
+		CUT.setMessage( "
 		This
 		
 		is
 		
 		a" );
-		assertTrue( FindNoCase( "<br />", Enquiry.getDisplayMessage() ) );
-	}
-	 
-	function testHTMLisEscaped(){
-		var Enquiry = new model.enquiry.Enquiry();
-		Enquiry.setMessage( "<script>alert('hack');</script>" );
-		assertEquals( "&lt;script&gt;alert('hack');&lt;/script&gt;", Enquiry.getDisplayMessage() );
-	}
-
-	function testGetFullName(){
-		var Enquiry = new model.enquiry.Enquiry();
-		Enquiry.setFirstName( "simon" );
-		Enquiry.setLastName( "bingham" );
-		assertEquals( "simon bingham", Enquiry.getFullname() );
+		var result = FindNoCase( "<br />", CUT.getDisplayMessage() );
+		assertTrue( result );
 	}
 	
-	// ------------------------ IMPLICIT ------------------------ // 
+	function testGetFullName(){
+		CUT.setFirstName( "simon" );
+		CUT.setLastName( "bingham" );
+		var result = CUT.getFullname();
+		assertEquals( "simon bingham", result );
+	}
+	
+	function testIsPersisted(){
+		var result = CUT.isPersisted();
+		assertFalse( result );
+	}
+	
+	function testIsUnread(){
+		var result = CUT.isUnread();
+		assertTrue( result );
+	}	
+
+	function testSetRead(){
+		CUT.setRead( true );
+		var result = CUT.isUnread();
+		assertFalse( result );
+	}	
+	
+	// ------------------------ IMPLICIT ------------------------ //
 	
 	/**
 	* this will run before every single test in this test case
 	*/
-	function setUp(){}
+	function setUp(){
+		// initialise component under test
+		CUT = new model.enquiry.Enquiry(); 
+	}
 	
 	/**
 	* this will run after every single test in this test case

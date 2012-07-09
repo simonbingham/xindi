@@ -18,7 +18,6 @@
 
 component{
 	
-	// this method was sourced from https://gist.github.com/947636
 	void function populate( required struct memento, boolean trustedSetter=false, string include="", string exclude="" ){
 		var object = this;
 		var key = "";

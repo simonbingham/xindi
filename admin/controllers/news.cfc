@@ -19,14 +19,12 @@
 component accessors="true" extends="abstract"{
 	
 	/*
-	 * Dependency injection
-	 */		
-
-	property name="NewsService" setter="true" getter="false";
-
-	/*
 	 * Public methods
 	 */	
+
+	void function before( required struct rc ){
+		super.before(arguments.rc);
+	}
 
 	void function default( required struct rc ){
 		rc.articles = variables.NewsService.getArticles();
@@ -34,15 +32,14 @@ component accessors="true" extends="abstract"{
 
 	void function delete( required struct rc ){
 		param name="rc.articleid" default="0";
-		var result = variables.NewsService.deleteArticle( Val( rc.articleid ) );
-		rc.messages = result.messages;
-		variables.fw.redirect( "news", "messages" );
+		rc.result = variables.NewsService.deleteArticle( articleid=rc.articleid );
+		variables.fw.redirect( "news", "result" );
 	}
 	
 	void function maintain( required struct rc ){
 		param name="rc.articleid" default="0";
-		if( !StructKeyExists( rc, "Article" ) ) rc.Article = variables.NewsService.getArticleByID( Val( rc.articleid ) );
-		rc.Validator = variables.NewsService.getValidator( rc.Article );
+		if( !StructKeyExists( rc, "Article" ) ) rc.Article = variables.NewsService.getArticleByID( articleid=rc.articleid );
+		rc.Validator = variables.NewsService.getValidator( Article=rc.Article );
 		if( !StructKeyExists( rc, "result" ) ) rc.result = rc.Validator.newResult();
 	}	
 	
@@ -56,15 +53,14 @@ component accessors="true" extends="abstract"{
 		param name="rc.metadescription" default="";
 		param name="rc.metakeywords" default="";
 		param name="rc.submit" default="Save & exit";
-		var properties ={ articleid=rc.articleid, title=rc.title, published=rc.published, content=rc.content, metagenerated=rc.metagenerated, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
-		rc.result = variables.NewsService.saveArticle( properties );
-		rc.messages = rc.result.messages;
+		var properties = { articleid=rc.articleid, title=rc.title, published=rc.published, content=rc.content, metagenerated=rc.metagenerated, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
+		rc.result = variables.NewsService.saveArticle( properties=properties );
 		rc.Article = rc.result.getTheObject();
-		if( StructKeyExists( rc.messages, "success" ) ){
-			if( rc.submit == "Save & Continue" ) variables.fw.redirect( "news.maintain", "messages,Article", "articleid" );
-			else variables.fw.redirect( "news", "messages" );
+		if( rc.result.getIsSuccess() ){
+			if( rc.submit == "Save & Continue" ) variables.fw.redirect( "news.maintain", "Article,result", "articleid" );
+			else variables.fw.redirect( "news", "result" );
 		}else{
-			variables.fw.redirect( "news.maintain", "messages,Article,result", "articleid" );
+			variables.fw.redirect( "news.maintain", "Article,result", "articleid" );
 		}
 	}
 	

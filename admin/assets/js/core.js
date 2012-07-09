@@ -46,7 +46,10 @@ jQuery( function($) {
 		}
 	});
 	var currentURI = document.location.href;
-	CKEDITOR.config[ "baseHref" ] = currentURI.substring( 0, currentURI.indexOf( "index.cfm" ) );
+	// if SESOmitIndex is enabled in FW/1 index.cfm will not be present in url
+	if( currentURI.indexOf( "index.cfm" ) != -1 ) currentURI = currentURI.substring( 0, currentURI.indexOf( "index.cfm" ) );
+	else currentURI = currentURI.substring( 0, currentURI.indexOf( "admin:" ) );
+	CKEDITOR.config[ "baseHref" ] = currentURI;
 	CKEDITOR.config.toolbar_Custom =
 	[
 		{ name: "document", items : [ "Source" ] },
@@ -77,7 +80,7 @@ jQuery( function($) {
 	CKEDITOR.config[ "toolbar" ] = "Custom";
 	CKEDITOR.config[ "height" ] = 400;
 	CKEDITOR.config[ "uiColor" ] = "##ddd"; 
-	CKEDITOR.config[ "contentsCss" ] = CKEDITOR.config[ "baseHref" ] + "assets/css/editor.css";
+	CKEDITOR.config[ "contentsCss" ] = CKEDITOR.config[ "baseHref" ] + "public/assets/css/editor.css";
 	CKEDITOR.config[ "skin" ] = "kama";
 	CKEDITOR.config[ "bodyId" ] = "content";
 	fileBrowserpath = CKEDITOR.config[ "baseHref" ] + "index.cfm?action=admin:filemanager.configure&";

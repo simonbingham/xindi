@@ -18,90 +18,100 @@
 
 component extends="mxunit.framework.TestCase"{
 
-	// ------------------------ TESTS ------------------------ // 
-	function testPasswordHashing(){
-		var User = EntityNew( "User" );
-		User.setPassword( "admin" );
-		assertEquals( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB", User.getPassword() );
-	}
+	// ------------------------ UNIT TESTS ------------------------ //
 
 	function testBlankPasswordDoesNotChangeHashedPassword(){
-		var User = EntityNew( "User" );
-		User.setPassword( "admin" );
-		assertEquals( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB", User.getPassword() );
-		User.setPassword( "" );
-		assertEquals( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB", User.getPassword() );
-	}
-	
-	function testGetFullName(){
-		var User = EntityNew( "User" );
-		User.setFirstName( "john" );
-		User.setLastName( "whish" );
-		assertEquals( "john whish", User.getFullname() );
+		CUT.setPassword( "admin" );
+		var result = CUT.getPassword();
+		assertEquals( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB", result );
+		CUT.setPassword( "" );
+		result = CUT.getPassword();
+		assertEquals( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB", result );
 	}
 
-	function testIsUniqueEmail(){
-		var User = EntityNew( "User" );
-		User.setEmail( "asdhakjsdas@badkjasld.com" );
-		var result = User.IsEmailUnique();
-		assertEquals( true, result.issuccess );
+	function testGetFullName(){
+		CUT.setFirstName( "john" );
+		CUT.setLastName( "whish" );
+		var result = CUT.getFullname();
+		assertEquals( "john whish", result );
 	}
 
 	function testIsNotUniqueEmail(){
-		var User = EntityNew( "User" );
-		User.setEmail( "foo@bar.moo" );
-		var result = User.IsEmailUnique();
-		assertEquals( false, result.issuccess );
-	}
-	
-	function testIsUniqueUsername(){
-		var User = EntityNew( "User" );
-		User.setUsername( "sdjalkdjakdjasd" );
-		var result = User.isUsernameUnique();
-		assertEquals( true, result.issuccess );
+		CUT.setEmail( "example@example.com" );
+		var isemailuniqueresult = CUT.IsEmailUnique();
+		var result = isemailuniqueresult.issuccess;
+		assertEquals( false, result );
 	}
 
 	function testIsNotUniqueUsername(){
-		var User = EntityNew( "User" );
-		User.setUsername( "aliaspooryorik" );
-		var result = User.isUsernameUnique();
-		assertEquals( false, result.issuccess );
+		CUT.setUsername( "admin" );
+		var isusernameuniqueresult = CUT.isUsernameUnique();
+		var result = isusernameuniqueresult.issuccess;
+		assertEquals( false, result );
 	}
 	
-	// ------------------------ IMPLICIT ------------------------ // 
+	function testIsUniqueEmail(){
+		CUT.setEmail( "asdhakjsdas@badkjasld.com" );
+		var isemailuniqueresult = CUT.IsEmailUnique();
+		var result = isemailuniqueresult.issuccess;
+		assertEquals( true, result );
+	}
+
+	function testIsUniqueUsername(){
+		CUT.setUsername( "sdjalkdjakdjasd" );
+		var isusernameuniqueresult = CUT.isUsernameUnique();
+		var result = isusernameuniqueresult.issuccess;
+		assertEquals( true, result );
+	}
+
+	function testPasswordHashing(){
+		CUT.setPassword( "admin" );
+		var result = CUT.getPassword();
+		assertEquals( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB", result );
+	}
+
+	// ------------------------ IMPLICIT ------------------------ //
+
 	/**
 	* this will run before every single test in this test case
 	*/
-	function setUp(){}
-	
-	/**
-	* this will run after every single test in this test case
-	*/
-	function tearDown(){}
-	
-	/**
-	* this will run once after initialization and before setUp()
-	*/
-	function beforeTests(){
+	function setUp(){
+		// initialise component under test
+		CUT = new model.user.User();
+		
+		// reinitialise ORM for the application (create database table)
+		ORMReload();
+		
+		// insert test data into database
 		var q = new Query();
 		q.setSQL( "
-			insert into Users (
-				user_firstname, user_lastname, user_email, user_username, user_password
-			) 
-			values (
-				'John', 'Whish', 'foo@bar.moo', 'aliaspooryorik', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB'
-			)
+			INSERT INTO Users ( user_id, user_firstname, user_lastname, user_email, user_username, user_password, user_created, user_updated ) 
+			VALUES ( 1, 'Default', 'User', 'example@example.com', 'admin', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB', '2012-04-22 08:39:07', '2012-04-22 08:39:09' );
 		" );
 		q.execute();
 	}
 	
 	/**
+	* this will run after every single test in this test case
+	*/
+	function tearDown(){
+		// destroy test data
+		var q = new Query();
+		q.setSQL( "DROP TABLE Users;");
+		q.execute();
+		
+		// clear first level cache and remove any unsaved objects
+		ORMClearSession();		
+	}
+	
+	/**
+	* this will run once after initialization and before setUp()
+	*/
+	function beforeTests(){}
+	
+	/**
 	* this will run once after all tests have been run
 	*/
-	function afterTests(){
-		var q = new Query();
-		q.setSQL( "delete from Users where user_username = 'aliaspooryorik'");
-		q.execute();
-	}
+	function afterTests(){}
 	
 }

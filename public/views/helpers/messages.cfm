@@ -17,29 +17,7 @@
 --->
 
 <cfoutput>
-	<cfif StructKeyExists( rc, "messages" )>
-		<cfif StructKeyExists( rc.messages, "error" )>
-	    	<div class="alert alert-error">
-				#rc.messages.error#
-	    	</div>
-		</cfif>
-		
-		<cfif StructKeyExists( rc.messages, "information" )>
-	    	<div class="alert alert-info">
-	    		#rc.messages.information#
-	    	</div>
-		</cfif>
-		
-		<cfif StructKeyExists( rc.messages, "success" )>
-	    	<div class="alert alert-success">
-	    		#rc.messages.success#
-	    	</div>
-		</cfif>
-		
-		<cfif StructKeyExists( rc.messages, "warning" )>
-	    	<div class="alert">
-	    		#rc.messages.warning#
-	    	</div>
-		</cfif>
+	<cfif StructKeyExists( rc, "result" ) and rc.result.hasMessage()>
+    	<div class="alert alert-#rc.result.getMessageType()#">#rc.result.getMessage()#</div>
 	</cfif>
 </cfoutput>

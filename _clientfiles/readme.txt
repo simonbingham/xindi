@@ -1,1 +1,0 @@
-Files uploaded using the text editor file manager are stored here.

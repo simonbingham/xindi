@@ -32,17 +32,17 @@
 
 			<title>#rc.MetaData.getMetaTitle()#</title>
 
-			<link href="assets/css/core.css?r=#rc.config.revision#" rel="stylesheet">
+			<link href="public/assets/css/core.css?r=#rc.config.revision#" rel="stylesheet">
 
 			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-			<script src="common/bootstrap/js/bootstrap.min.js"></script>
-			<script src="assets/js/bootstrap-dropdown.js"></script>
-			<script src="assets/js/core.js?r=#rc.config.revision#"></script>
+			<script src="public/assets/bootstrap/js/bootstrap.min.js"></script>
+			<script src="public/assets/js/bootstrap-dropdown.js"></script>
+			<script src="public/assets/js/core.js?r=#rc.config.revision#"></script>
 			
 			<link rel="shortcut icon" href="favicon.ico">
-			<link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
-			<link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
-			<link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
+			<link rel="apple-touch-icon-precomposed" sizes="114x114" href="public/assets/ico/apple-touch-icon-114-precomposed.png">
+			<link rel="apple-touch-icon-precomposed" sizes="72x72" href="public/assets/ico/apple-touch-icon-72-precomposed.png">
+			<link rel="apple-touch-icon-precomposed" href="public/assets/ico/apple-touch-icon-57-precomposed.png">
 			
 			<cfif rc.config.news.enabled><link rel="alternate" type="application/rss+xml" href="#buildURL( 'news.rss' )#"></cfif>			
 		</head>		
@@ -51,7 +51,7 @@
 			<div class="navbar navbar-fixed-top">
 				<div class="navbar-inner">
 					<div class="container">
-						<a class="brand" href="#rc.basehref#" title="Return to home page"><img src="assets/img/global/xindi-logo.png" alt="Xindi logo" /></a>
+						<a class="brand" href="#rc.basehref#" title="Return to home page"><img src="public/assets/img/global/xindi-logo.png" alt="Xindi logo" /></a>
 						
 					    <form action="#buildURL( 'search' )#" method="post" class="navbar-search pull-right">
 					    	<input type="text" name="searchterm" id="searchterm" class="search-query" placeholder="Search">

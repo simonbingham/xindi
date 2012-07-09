@@ -28,23 +28,26 @@ component accessors="true" extends="abstract"{
 	 * Public methods
 	 */	
 	 
+	void function before( required struct rc ){
+		super.before(arguments.rc);
+	}
+	 
 	void function default( required struct rc ){
 		rc.users = variables.UserService.getUsers();
 	}
 
 	void function delete( required struct rc ){
 		param name="rc.userid" default="0";
-		var result = variables.UserService.deleteUser( Val( rc.userid ) );
-		rc.messages = result.messages;
-		variables.fw.redirect( "users", "messages" );
+		rc.result = variables.UserService.deleteUser( userid=rc.userid );
+		variables.fw.redirect( "users", "result" );
 	}	
 	
 	void function maintain( required struct rc ){
 		param name="rc.userid" default="0";
 		param name="rc.context" default="create";
-		if( !StructKeyExists( rc, "User" ) ) rc.User = variables.UserService.getUserByID( Val( rc.userid ) );
+		if( !StructKeyExists( rc, "User" ) ) rc.User = variables.UserService.getUserByID( userid=rc.userid );
 		if( rc.User.isPersisted() ) rc.context = "update";
-		rc.Validator = variables.UserService.getValidator( rc.User );
+		rc.Validator = variables.UserService.getValidator( User=rc.User );
 		if( !StructKeyExists( rc, "result" ) ) rc.result = rc.Validator.newResult();
 	}	
 	
@@ -57,15 +60,14 @@ component accessors="true" extends="abstract"{
 		param name="rc.password" default="";
 		param name="rc.context" default="create";
 		param name="rc.submit" default="Save & exit";
-		var properties ={ userid=rc.userid, firstname=rc.firstname, lastname=rc.lastname, email=rc.email, username=rc.username, password=rc.password };
-		rc.result = variables.UserService.saveUser( properties, rc.context );
-		rc.messages = rc.result.messages;
+		var properties = { userid=rc.userid, firstname=rc.firstname, lastname=rc.lastname, email=rc.email, username=rc.username, password=rc.password };
+		rc.result = variables.UserService.saveUser( properties=properties, context=rc.context );
 		rc.User = rc.result.getTheObject();
-		if( StructKeyExists( rc.messages, "success" ) ){
-			if( rc.submit == "Save & Continue" )  variables.fw.redirect( "users.maintain", "messages,User", "userid" );
-			else variables.fw.redirect( "users", "messages" );
+		if( rc.result.getIsSuccess() ){
+			if( rc.submit == "Save & Continue" )  variables.fw.redirect( "users.maintain", "result,User", "userid" );
+			else variables.fw.redirect( "users", "result" );
 		}else{
-			variables.fw.redirect( "users.maintain", "messages,User,result", "userid" );
+			variables.fw.redirect( "users.maintain", "result,User", "userid" );
 		}
 	}
 	

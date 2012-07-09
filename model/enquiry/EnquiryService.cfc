@@ -22,93 +22,51 @@ component accessors="true"{
 	 * Dependency injection
 	 */	
 	
-	property name="Validator" getter="false";
-	
+	property name="EnquiryGateway" getter="false";
+
 	/*
 	 * Public methods
 	 */
 
-	struct function deleteEnquiry( required numeric enquiryid ){
-		var Enquiry = getEnquiryByID( arguments.enquiryid );
-		var result ={};
-		if( !IsNull( Enquiry ) ){ 
-			transaction{
-				EntityDelete( Enquiry );
-				result.messages.success = "The enquiry from &quot;#Enquiry.getFullName()#&quot; has been deleted.";
-			}
-		}else{
-			result.messages.error = "The enquiry could not be deleted.";
+	function deleteEnquiry( required enquiryid ){
+		transaction{
+			var result = variables.EnquiryGateway.deleteEnquiry( enquiryid=Val( arguments.enquiryid ) );
 		}
 		return result;
 	}
 	
-	array function getEnquiries( numeric maxresults=0 ){
-		var ormoptions ={};
-		if( arguments.maxresults ) ormoptions.maxresults = arguments.maxresults;	
-		return EntityLoad( "Enquiry",{}, "unread DESC, created DESC", ormoptions );
+	array function getEnquiries( maxresults=0 ){
+		return variables.EnquiryGateway.getEnquiries( maxresults=Val( arguments.maxresults ) );
 	}	
 
-	function getEnquiryByID( required numeric enquiryid ){
-		return EntityLoadByPK( "Enquiry", arguments.enquiryid );
+	function getEnquiryByID( required enquiryid ){
+		return variables.EnquiryGateway.getEnquiryByID( enquiryid=Val( arguments.enquiryid ) );
 	}
 
-	numeric function getUnreadEnquiryCount(){
-		return Val( ORMExecuteQuery( "select count( * ) from Enquiry where unread = true", true ) );
+	numeric function getUnreadCount(){
+		return variables.EnquiryGateway.getUnreadCount();		
 	}	
 	 	
 	function getValidator( required any Enquiry ){
-		return variables.Validator.getValidator( theObject=arguments.Enquiry );
+		return variables.EnquiryGateway.getValidator( argumentCollection=arguments );		
 	}	
 	
-	struct function markAllRead(){
+	function markRead( numeric enquiryid=0 ){
 		transaction{
-			var result ={};
-			result.messages.success = "All messages have been marked as read.";
-			ORMExecuteQuery( "update Enquiry set unread=false" );
+			var result = variables.EnquiryGateway.markRead( enquiryid=Val( arguments.enquiryid ) );
 		}
 		return result;
-	}
-
-	void function markRead( required numeric enquiryid ){
-		var Enquiry = getEnquiryByID( arguments.enquiryid );
-		var result ={};
-		if( !IsNull( Enquiry ) ){ 
-			transaction{
-				Enquiry.setRead();
-				EntitySave( Enquiry );
-			}
-		}
 	}	
 	
 	function newEnquiry(){
-		return new model.enquiry.Enquiry();
+		return variables.EnquiryGateway.newEnquiry();		
 	}
 	
-	struct function sendEnquiry( required struct properties, required struct config, required string emailtemplatepath ){
+	function sendEnquiry( required struct properties, required struct config, required string emailtemplatepath ){
 		transaction{
-			var emailtemplate = "";
-			var Enquiry = newEnquiry(); 
-			Enquiry.populate( arguments.properties );
-			var result = variables.Validator.validate( theObject=Enquiry );
-			result.messages ={};
-			if( !result.hasErrors() ){
-				savecontent variable="emailtemplate"{ include arguments.emailtemplatepath; }
-				var Email = new mail();
-			    Email.setSubject( arguments.config.subject );
-		    	Email.setTo( arguments.config.emailto );
-		    	Email.setFrom( Enquiry.getEmail() );
-		    	Email.setBody( emailtemplate );
-		    	Email.setType( "html" );
-		        Email.send();
-		        EntitySave( Enquiry );
-		        transaction action="commit";
-		        result.messages.success = "Your enquiry has been sent.";
-			}else{
-				transaction action="rollback";
-				result.messages.error = "Your enquiry could not be sent. Please amend the highlighted fields.";
-			}
-			return result;
+			var result = variables.EnquiryGateway.sendEnquiry( argumentCollection=arguments );
 		}
+		return result;
 	}
 	
 }

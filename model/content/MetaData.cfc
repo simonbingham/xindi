@@ -37,11 +37,11 @@ component accessors="true"{
 		return this;
 	}
 
-	string function generateMetaDescription( required string description ){
+	string function generateMetaDescription( string description="" ){
 		return Left( Trim( replaceMultipleSpacesWithSingleSpace( removeUnrequiredCharacters( stripHTML( arguments.description ) ) ) ), 169 );
 	}
 
-	string function generateMetaKeywords( required string keywords ){
+	string function generateMetaKeywords( string keywords="" ){
 		return Left( replaceMultipleSpacesWithSingleSpace( removeUnrequiredCharacters( listDeleteDuplicatesNoCase( ListChangeDelims( removeNonKeywords( stripHTML( arguments.keywords ) ), ",", " ." ) ) ) ), 169 );
 	}
 
@@ -72,7 +72,7 @@ component accessors="true"{
 	}
 	
 	string function removeUnrequiredCharacters( required string thestring ){
-		return Trim( REReplaceNoCase( arguments.thestring, "([#Chr(09)#-#Chr(30)#])", " ", "all" ) );
+		return replaceMultipleSpacesWithSingleSpace( REReplaceNoCase( arguments.thestring, "([#Chr(09)#-#Chr(30)#])", " ", "all" ) );
 	}	
 
 	string function replaceMultipleSpacesWithSingleSpace( required string thestring ){

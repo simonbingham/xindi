@@ -19,14 +19,12 @@
 component accessors="true" extends="abstract"{
 	
 	/*
-	 * Dependency injection
-	 */		
-
-	property name="ContentService" setter="true" getter="false";
-
-	/*
 	 * Public methods
 	 */	
+
+	void function before( required struct rc ){
+		super.before(arguments.rc);
+	}
 
 	void function default( required struct rc ){
 		rc.pages = variables.ContentService.getPages();
@@ -34,30 +32,28 @@ component accessors="true" extends="abstract"{
 
 	void function delete( required struct rc ){
 		param name="rc.pageid" default="0";
-		var result = variables.ContentService.deletePage( Val( rc.pageid ) );
-		rc.messages = result.messages;
-		if( StructKeyExists( result.messages, "success" ) ){
+		rc.result = variables.ContentService.deletePage( pageid=rc.pageid );
+		if( rc.result.getIsSuccess() ){
 			var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:navigation/xml", method="get" );
 			refreshsitemap.send();
 		}
-		variables.fw.redirect( "pages", "messages" );
+		variables.fw.redirect( "pages", "result" );
 	}	
 	
 	void function maintain( required struct rc ){
 		param name="rc.pageid" default="0";
 		param name="rc.context" default="create";
-		if( !StructKeyExists( rc, "Page" ) ) rc.Page = variables.ContentService.getPageByID( Val( rc.pageid ) );
+		if( !StructKeyExists( rc, "Page" ) ) rc.Page = variables.ContentService.getPageByID( pageid=rc.pageid );
 		if( rc.Page.isPersisted() && !rc.Page.hasRoute( variables.fw.getRoutes() ) ) rc.context = "update";
-		rc.Validator = variables.ContentService.getValidator( rc.Page );
+		rc.Validator = variables.ContentService.getValidator( Page=rc.Page );
 		if( !StructKeyExists( rc, "result" ) ) rc.result = rc.Validator.newResult();
 	}	
 	
 	void function move( required struct rc ){
 		param name="rc.pageid" default="0";
 		param name="rc.direction" default="";
-		var result = variables.ContentService.movePage( Val( rc.pageid ), rc.direction );
-		rc.messages = result.messages;
-		variables.fw.redirect( "pages", "messages" );
+		rc.result = variables.ContentService.movePage( pageid=rc.pageid, direction=rc.direction );
+		variables.fw.redirect( "pages", "result" );
 	}	
 	
 	void function save( required struct rc ){
@@ -71,17 +67,16 @@ component accessors="true" extends="abstract"{
 		param name="rc.metakeywords" default="";
 		param name="rc.context" default="create";
 		param name="rc.submit" default="Save & exit";
-		var properties ={ pageid=rc.pageid, title=rc.title, content=rc.content, metagenerated=rc.metagenerated, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
-		rc.result = variables.ContentService.savePage( properties, rc.ancestorid, rc.context );
-		rc.messages = rc.result.messages;
+		var properties = { pageid=rc.pageid, title=rc.title, content=rc.content, metagenerated=rc.metagenerated, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
+		rc.result = variables.ContentService.savePage( properties=properties, ancestorid=rc.ancestorid, context=rc.context );
 		rc.Page = rc.result.getTheObject();
-		if( StructKeyExists( rc.messages, "success" ) ){
+		if( rc.result.getIsSuccess() ){
 			var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:navigation/xml", method="get" );
 			refreshsitemap.send();
-			if( rc.submit == "Save & Continue" )  variables.fw.redirect( "pages.maintain", "messages,Page,ancestorid", "pageid" );
-			else variables.fw.redirect( "pages", "messages" );
+			if( rc.submit == "Save & Continue" )  variables.fw.redirect( "pages.maintain", "result,Page,ancestorid", "pageid" );
+			else variables.fw.redirect( "pages", "result" );
 		}else{
-			variables.fw.redirect( "pages.maintain", "messages,Page,ancestorid,result", "pageid" );
+			variables.fw.redirect( "pages.maintain", "result,Page,ancestorid", "pageid" );
 		}
 	}
 	

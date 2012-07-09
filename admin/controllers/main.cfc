@@ -16,44 +16,14 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true"{
-	
-	/*
-	 * Dependency injection
-	 */	
-
-	property name="ContentService" setter="true" getter="false";
-	property name="EnquiryService" setter="true" getter="false";
-	property name="NewsService" setter="true" getter="false";
-	property name="SecurityService" setter="true" getter="false";
-	property name="config" setter="true" getter="false";
+component accessors="true" extends="abstract"{
 	
 	/*
 	 * Public methods
-	 */		
-	
-	void function init( required any fw ){
-		variables.fw = arguments.fw;
+	 */	
+
+	void function before( required struct rc ){
+		super.before(arguments.rc);
 	}
 
-	void function default( required rc ){
-		var securearea = true; 
-		var whitelist = variables.config.security.whitelist;
-		rc.loggedin = variables.SecurityService.hasCurrentUser();
-		if( !rc.loggedin ){
-			for ( var unsecured in ListToArray( whitelist ) ){
-				if( ReFindNoCase( unsecured, variables.fw.getFullyQualifiedAction() ) ){
-					securearea = false;
-					break;
-				}
-			}
-			if( securearea ) variables.fw.redirect( "admin:security" );
-		}else{
-			rc.unreadenquirycount = variables.EnquiryService.getUnreadEnquiryCount();
-			rc.unreadenquiries = variables.EnquiryService.getEnquiries( maxresults=10 );
-			rc.updatedpages = variables.ContentService.getPages( sortorder="updated desc", maxresults=10 );
-			rc.updatedarticles = variables.NewsService.getArticles( sortorder="updated desc", maxresults=10 );
-		}
-	}
-  
 }

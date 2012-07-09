@@ -1,5 +1,5 @@
-/*
-	Xindi - http://www.getxindi.com/ - Version 2012.6.15
+/* 
+	Xindi - http://www.getxindi.com/ - Version 2012.7.9 
 	
 	Copyright (c) 2012, Simon Bingham
 	
@@ -32,12 +32,13 @@ component extends="frameworks.org.corfield.framework"{
 	this.mappings[ "/ValidateThis" ] = this.applicationroot & "frameworks/ValidateThis/";
 	this.datasource = ListLast( this.applicationroot, "\/" );
 	this.ormenabled = true;
-	this.ormsettings ={
+	this.ormsettings = {
 		flushatrequestend = false
 		, automanagesession = false
 		, cfclocation = this.mappings[ "/model" ]
 		, eventhandling = true
-		, eventhandler = "model.aop.GlobalEventHandler"		
+		, eventhandler = "model.aop.GlobalEventHandler"
+		, secondarycacheenabled = true 		
 	};
 	this.development = IsLocalHost( CGI.REMOTE_ADDR );
 	// create database and populate when the application starts in development environment
@@ -50,7 +51,7 @@ component extends="frameworks.org.corfield.framework"{
 	/**
 	* FW/1 framework settings (https://github.com/seancorfield/fw1)
 	*/
-	variables.framework ={
+	variables.framework = {
 		cacheFileExists = !this.development
 		, defaultSubsystem = "public"
 		, generateSES = true
@@ -83,8 +84,8 @@ component extends="frameworks.org.corfield.framework"{
 		setBeanFactory( beanfactory );
 
 		// add validator bean to factory
-		var ValidateThisConfig ={ definitionPath="/model/", JSIncludes=false };
-		beanFactory.addBean( "Validator", new ValidateThis.ValidateThis( ValidateThisConfig ) );
+		var validatorconfig = { definitionPath="/model/", JSIncludes=false, resultPath="model.utility.ValidatorResult" };
+		beanFactory.addBean( "Validator", new ValidateThis.ValidateThis( validatorconfig ) );
 
 		// add meta data bean to factory
 		beanFactory.addBean( "MetaData", new model.content.MetaData() );
@@ -107,9 +108,6 @@ component extends="frameworks.org.corfield.framework"{
 		
 		// store config in request context
 		rc.config = getBeanFactory().getBean( "Config" );
-		
-		// call admin on every request (used for security)
-		controller( "admin:main.default" );		 
 	}
 	
 	/**
@@ -149,10 +147,10 @@ component extends="frameworks.org.corfield.framework"{
 	}
 	
 	/**
-	* configuration
+	* configuration - refer to https://github.com/simonbingham/xindi/wiki/2.-Configuration for more information
 	*/		
 	private struct function getConfig(){
-		var config ={
+		var config = {
 			development = this.development
 			, enquiry = {
 				enabled = true
@@ -177,18 +175,18 @@ component extends="frameworks.org.corfield.framework"{
 			}
 			, page = { 
 				enableadddelete = true
-				, excludefromprimarynavigation = "" // comma delimited list of page ids to exclude from primary navigation
-				, levellimit = 2 // number of page tiers that can be added - Bootstrap dropdown only supports 2
+				, excludefromnavigation = "" // comma delimited list of page ids to exclude from navigation
+				, maxlevels = 2 // number of page tiers that can be added - Bootstrap dropdown supports a maximum of 2
 				, suppressaddpage = "" // comma delimited list of page ids for pages that cannot have child pages added
 				, suppressdeletepage = "1" // comma delimited list of page ids for pages that cannot be deleted
 				, suppressmovepage = "" // comma delimited list of page ids for pages that cannot be moved
-				, touchscreenfriendlynavigation = true // ancestor page links toggle dropdown - duplicated ancestor page links appear in sub menu
+				, touchfriendlynavigation = true // if true ancestor page links toggle dropdown - duplicated ancestor page links appear in sub menu
 			}
 			, revision = Hash( Now() )
 			, security = {
 				resetpasswordemailfrom = ""
 				, resetpasswordemailsubject = ""
-				, whitelist = "^admin:security,^public:" // list of unsecure actions - other requests require authentication
+				, whitelist = "^admin:security,^public:" // list of unsecure actions - by default all requests require authentication
 			}
 		};
 		// override config in development mode

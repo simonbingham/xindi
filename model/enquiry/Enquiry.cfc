@@ -47,6 +47,10 @@ component extends="model.abstract.BaseEntity" persistent="true" table="enquiries
 	string function getFullName(){
 		return variables.firstname & " " & variables.lastname;
 	}
+
+	boolean function isPersisted(){
+		return !IsNull( variables.enquiryid );
+	}
 	
 	boolean function isUnread(){
 		return getUnread();

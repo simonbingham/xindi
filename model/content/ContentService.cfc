@@ -21,148 +21,55 @@ component accessors="true"{
 	/*
 	 * Dependency injection
 	 */	
-	
+
 	property name="ContentGateway" getter="false";
-	property name="MetaData" getter="false";
-	property name="Validator" getter="false";
 
 	/*
 	 * Public methods
 	 */
 	 	
-	struct function deletePage( required numeric pageid ){
-		var Page = getPageByID( arguments.pageid );
-		var result ={};
-		if( Page.isPersisted() ){
-			transaction{
-				var startvalue = Page.getLeftValue();
-				ORMExecuteQuery( "update Page set leftvalue = leftvalue - 2 where leftvalue > :startvalue",{ startvalue=startvalue });
-				ORMExecuteQuery( "update Page set rightvalue = rightvalue - 2 where rightvalue > :startvalue",{ startvalue=startvalue });
-				EntityDelete( Page );
-				result.messages.success = "The page &quot;#Page.getTitle()#&quot; has been deleted.";
-			}
-		}else{
-			result.messages.error = "The page could not be deleted.";
+	function deletePage( required pageid ){
+		transaction{
+			var result = variables.ContentGateway.deletePage( pageid=Val( arguments.pageid ) );
 		}
 		return result;
 	}
 	
-	function getPageByID( required numeric pageid ){
-		var Page = EntityLoadByPK( "Page", arguments.pageid );
-		if( IsNull( Page ) ) Page = newPage();
-		return Page;
+	function getPageByID( required pageid ){
+		return variables.ContentGateway.getPageByID( pageid=Val( arguments.pageid ) );
 	}
 	
 	function getPageBySlug( required string slug ){
-		var Page = EntityLoad( "Page",{ uuid=Trim( ListLast( arguments.slug, "/" ) ) }, TRUE );
-		if( IsNull( Page ) ) Page = newPage();
-		return Page;
+		return variables.ContentGateway.getPageBySlug( argumentCollection=arguments );
 	}
 
-	array function getPages( string searchterm="", sortorder="leftvalue", numeric maxresults="0" ){
+	array function getPages( string searchterm="", sortorder="leftvalue", maxresults=0 ){
+		arguments.maxresults = Val( arguments.maxresults );
 		return variables.ContentGateway.getPages( argumentCollection=arguments );
 	}
-		
+
 	function getRoot(){
-		return EntityLoad( "Page",{ leftvalue = 1 }, true );
+		return variables.ContentGateway.getRoot();
 	}	
 	
 	function getValidator( required any Page ){
-		return variables.Validator.getValidator( theObject=arguments.Page );
+		return variables.ContentGateway.getValidator( argumentCollection=arguments );
 	}
 	
-	struct function movePage( required numeric pageid, required string direction ){
-		var decreaseamount = "";
-		var increaseamount = "";
-		var nextsibling = "";
-		var nextsiblingdescendentidlist = "";
-		var previoussibling = "";
-		var previoussiblingdescendentidlist = "";
-		var Page = getPageByID( arguments.pageid );
-		var result ={};
-		if( Page.isPersisted() && ListFindNoCase( "up,down", Trim( arguments.direction ) ) ){
-			if( arguments.direction eq "up" ){
-				if( Page.hasPreviousSibling() ){
-					increaseamount = Page.getRightValue() - Page.getLeftValue() + 1;
-					previoussibling = Page.getPreviousSibling();
-					previoussiblingdescendentidlist = previoussibling.getDescendentPageIDList();
-					decreaseamount = previoussibling.getRightValue() - previoussibling.getLeftValue() + 1;
-					transaction{
-						if( ListLen( Page.getDescendentPageIDList() ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue - :decreaseamount, rightvalue = rightvalue - :decreaseamount where pageid in ( #Page.getDescendentPageIDList()# )",{ decreaseamount=Val( decreaseamount ) });
-						if( ListLen( previoussiblingdescendentidlist ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue + :increaseamount, rightvalue = rightvalue + :increaseamount where pageid in ( #previoussiblingdescendentidlist# )",{ increaseamount=Val( increaseamount ) });
-						Page.setLeftValue( Page.getLeftValue() - decreaseamount );
-						Page.setRightValue( Page.getRightValue() - decreaseamount );
-						previoussibling.setLeftValue( previoussibling.getLeftValue() + increaseamount );
-						previoussibling.setRightValue( previoussibling.getRightValue() + increaseamount );
-						EntitySave( Page );
-						EntitySave( previoussibling );
-					}
-					result.messages.success = "The page &quot;#Page.getTitle()#&quot; has been moved.";
-				}
-			}else{
-				if( Page.hasNextSibling() ){
-					decreaseamount = Page.getRightValue() - Page.getLeftValue() + 1;
-					nextsibling = Page.getNextSibling();
-					nextsiblingdescendentidlist = nextsibling.getDescendentPageIDList();
-					increaseamount = nextsibling.getRightValue() - nextsibling.getLeftValue() + 1;
-					transaction{
-						if( ListLen( Page.getDescendentPageIDList() ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue + :increaseamount, rightvalue = rightvalue + :increaseamount where pageid in ( #Page.getDescendentPageIDList()# )",{ increaseamount=Val( increaseamount ) });
-						if( ListLen( nextsiblingdescendentidlist ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue - :decreaseamount, rightvalue = rightvalue - :decreaseamount where pageid in ( #nextsiblingdescendentidlist# )",{ decreaseamount=Val( decreaseamount ) });
-						Page.setLeftValue( Page.getLeftValue() + increaseamount );
-						Page.setRightValue( Page.getRightValue() + increaseamount );
-						nextsibling.setLeftValue( nextsibling.getLeftValue() - decreaseamount );
-						nextsibling.setRightValue( nextsibling.getRightValue() - decreaseamount );
-						EntitySave( Page );
-						EntitySave( nextsibling );
-					}
-					result.messages.success = "The page &quot;#Page.getTitle()#&quot; has been moved.";
-				}
-			}
-		}else{
-			result.messages.error = "The page could not be moved.";
-		}
-		return result;
-	}
-	
-	function savePage( required struct properties, required numeric ancestorid, required string context ){
+	function movePage( required pageid, required string direction ){
 		transaction{
-			var Page = "";
-			Page = getPageByID( Val( arguments.properties.pageid ) );
-			Page.populate( arguments.properties );
-			if( Page.isMetaGenerated() ){
-				Page.setMetaTitle( Page.getTitle() );
-				Page.setMetaDescription( variables.MetaData.generateMetaDescription( Page.getContent() ) );
-				Page.setMetaKeywords( variables.MetaData.generateMetaKeywords( Page.getContent() ) );
-			}			
-			var result = variables.Validator.validate( theObject=Page, Context=arguments.context );
-			if( !result.hasErrors() ){
-				if( !Page.isPersisted() && arguments.ancestorid ){
-					var Ancestor = getPageByID( arguments.ancestorid );
-					Page.setLeftValue( Val( Ancestor.getRightValue() ) );
-					Page.setRightValue( Val( Ancestor.getRightValue() + 1 ) );
-					ORMExecuteQuery( "update Page set leftvalue = leftvalue + 2 where leftvalue > :startingvalue",{ startingvalue=Val( Ancestor.getRightValue() - 1 ) });
-					ORMExecuteQuery( "update Page set rightvalue = rightvalue + 2 where rightvalue > :startingvalue",{ startingvalue=Val( Ancestor.getRightValue() - 1 ) });
-					EntitySave( Page );
-					transaction action="commit";
-				}else if( Page.isPersisted() ){
-					EntitySave( Page );
-					transaction action="commit";
-				}
-				result.messages.success = "The page &quot;#Page.getTitle()#&quot; has been saved.";
-			}else{
-				transaction action="rollback";
-				result.messages.error = "Your page could not be saved. Please amend the highlighted fields.";
-			}
+			arguments.pageid = Val( arguments.pageid );
+			var result = variables.ContentGateway.movePage( argumentCollection=arguments );
 		}
 		return result;
 	}
 	
-	/*
-	 * Private methods
-	 */	
-	
-	private function newPage(){
-		return EntityNew( "Page" );
-	}	
+	function savePage( required struct properties, required ancestorid, required string context ){
+		transaction{
+			arguments.ancestorid = Val( arguments.ancestorid );
+			var Page = variables.ContentGateway.savePage( argumentCollection=arguments );
+		}
+		return Page;
+	}
 	
 }
