@@ -34,7 +34,7 @@ component accessors="true"{
 	}
 
 	void function default( required rc ){
-		rc.loggedin = variables.SecurityService.hasCurrentUser();
+		rc.loggedin = variables.SecurityService.hasCurrentUser( session=session );
 		if( rc.loggedin ){
 			variables.fw.redirect( "main" );
 		}else{
@@ -48,13 +48,13 @@ component accessors="true"{
 		param name="rc.username" default="";
 		param name="rc.password" default="";
 		var properties = { username=rc.username, password=rc.password };
-		rc.result = variables.SecurityService.loginUser( properties=properties );
+		rc.result = variables.SecurityService.loginUser( session=session, properties=properties );
 		if( rc.result.getIsSuccess() ) variables.fw.redirect( "main", "result" );
 		else variables.fw.redirect( "security", "result" );
 	}
 
 	void function logout( required rc ){
-		rc.result = variables.SecurityService.deleteCurrentUser();
+		rc.result = variables.SecurityService.deleteCurrentUser( session=session );
 		variables.fw.redirect( "security", "result" );
 	}
 	

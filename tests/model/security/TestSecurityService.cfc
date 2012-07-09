@@ -22,61 +22,61 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testDeleteCurrentUser(){
 		StructClear( session );
-		var User = CUT.hasCurrentUser();
+		var User = CUT.hasCurrentUser( session=session );
 		assertFalse( User );
 		var User = EntityLoadByPK( "User", 1 );
-		CUT.setCurrentUser( User=User );
-		var result = CUT.hasCurrentUser();
+		CUT.setCurrentUser(  session=session, User=User );
+		var result = CUT.hasCurrentUser( session=session );
 		assertTrue( result );
-		CUT.deleteCurrentUser();
-		result = CUT.hasCurrentUser();
+		CUT.deleteCurrentUser( session=session );
+		result = CUT.hasCurrentUser( session=session );
 		assertFalse( result );
 	}
 	
 	function testHasCurrentUser(){
 		StructClear( session );
-		var result = CUT.hasCurrentUser();
+		var result = CUT.hasCurrentUser( session=session );
 		assertFalse( result );
 		var User = EntityLoadByPK( "User", 1 );
-		CUT.setCurrentUser( User=User );
-		result = CUT.hasCurrentUser();
+		CUT.setCurrentUser( session=session, User=User );
+		result = CUT.hasCurrentUser( session=session );
 		assertTrue( result );
 	}
 	
 	function testIsAllowedForSecureActionWhereUserIsLoggedIn(){
 		StructClear( session );
 		var User = EntityLoadByPK( "User", 1 );
-		CUT.setCurrentUser( User=User );
-		var result = CUT.isAllowed( action="admin:pages", whitelist="^admin:security,^public:" );
+		CUT.setCurrentUser( session=session, User=User );
+		var result = CUT.isAllowed( session=session, action="admin:pages", whitelist="^admin:security,^public:" );
 		assertTrue( result );
 	}	
 
 	function testIsAllowedForSecureActionWhereUserIsNotLoggedIn(){
 		StructClear( session );
-		var result = CUT.isAllowed( action="admin:pages", whitelist="^admin:security,^public:" );
+		var result = CUT.isAllowed( session=session, action="admin:pages", whitelist="^admin:security,^public:" );
 		assertFalse( result );
 	}	
 
 	function testIsAllowedForUnsecureActionWhereUserIsLoggedIn(){
-		var result = CUT.isAllowed( action="admin:security", whitelist="^admin:security,^public:" );
+		var result = CUT.isAllowed( session=session, action="admin:security", whitelist="^admin:security,^public:" );
 		assertTrue( result );
 	}	
 	
 	function testIsAllowedForUnsecureActionWhereUserIsNotLoggedIn(){
-		var result = CUT.isAllowed( action="admin:security", whitelist="^admin:security,^public:" );
+		var result = CUT.isAllowed( session=session, action="admin:security", whitelist="^admin:security,^public:" );
 		assertTrue( result );
 	}		
 
 	function testLoginUserForInvalidUser(){
 		var properties = { username="", password="" };
-		var loginuserresult = CUT.loginUser( properties=properties );
+		var loginuserresult = CUT.loginUser( session=session, properties=properties );
 		var result = loginuserresult.getIsSuccess();
 		assertFalse( result );
 	}
 		
 	function testLoginUserForValidUser(){
 		var properties = { username="admin", password="admin" };
-		var loginuserresult = CUT.loginUser( properties=properties );
+		var loginuserresult = CUT.loginUser( session=session, properties=properties );
 		var result = loginuserresult.getIsSuccess();
 		assertTrue( result ); 
 	}
@@ -107,8 +107,8 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testSetCurrentUser(){
 		var User = EntityLoadByPK( "User", 1 );
-		CUT.setCurrentUser( User=User );
-		var result = CUT.hasCurrentUser();
+		CUT.setCurrentUser( session=session, User=User );
+		var result = CUT.hasCurrentUser( session=session );
 		assertTrue( result );
 	}
 

@@ -32,10 +32,10 @@ component accessors="true"{
 	 * Public methods
 	 */
 
-	function deleteCurrentUser(){
+	function deleteCurrentUser( required struct session ){
 		var result = variables.Validator.newResult();
-		if( hasCurrentUser() ){
-			StructDelete( session, variables.userkey );
+		if( hasCurrentUser( arguments.session ) ){
+			StructDelete( arguments.session, variables.userkey );
 			result.setSuccessMessage( "You have been logged out." );	
 		}else{
 			result.setErrorMessage( "You are not logged in." );
@@ -43,27 +43,27 @@ component accessors="true"{
 		return result;
 	}
 
-	boolean function hasCurrentUser(){
-		return StructKeyExists( session, variables.userkey );
+	boolean function hasCurrentUser( required struct session ){
+		return StructKeyExists( arguments.session, variables.userkey );
 	}
 	
-	boolean function isAllowed( required string action, string whitelist ){
+	boolean function isAllowed( required struct session, required string action, string whitelist ){
 		param name="arguments.whitelist" default=variables.config.security.whitelist; 
 		// user is not logged in
-		if( !hasCurrentUser() ){
+		if( !hasCurrentUser( session=arguments.session ) ){
 			// if the requested action is in the whitelist allow access
 			for ( var unsecured in ListToArray( arguments.whitelist ) ){
 				if( ReFindNoCase( unsecured, arguments.action ) ) return true;
 			}
 		// user is logged in so allow access to requested action 
-		}else if( hasCurrentUser() ){
+		}else if( hasCurrentUser( session=arguments.session ) ){
 			return true;
 		}
 		// previous conditions not met so deny access to requested action
 		return false;
 	}	
 
-	function loginUser( required struct properties ){
+	function loginUser( required struct session, required struct properties ){
 		param name="arguments.properties.username" default="";
 		param name="arguments.properties.password" default="";
 		if( IsValid( "email", arguments.properties.username ) ){
@@ -75,7 +75,7 @@ component accessors="true"{
 		var result = variables.Validator.validate( theObject=User, context="login" );
 		User = variables.UserGateway.getUserByCredentials( User=User );
 		if( User.isPersisted() ){
-			setCurrentUser( User );
+			setCurrentUser( session=arguments.session, User=User );
 			result.setSuccessMessage( "Welcome #User.getFirstName()#. You have been logged in." );
 		}else{
 			var message = "Sorry, your login details have not been recognised.";
@@ -117,8 +117,8 @@ component accessors="true"{
 		return result;
 	}	
 	
-	void function setCurrentUser( required any User ){
-		session[ variables.userkey ] = arguments.User.getUserID();
+	void function setCurrentUser( required struct session, required any User ){
+		arguments.session[ variables.userkey ] = arguments.User.getUserID();
 	}
 	
 }

@@ -24,21 +24,21 @@ component extends="mxunit.framework.TestCase"{
 		var $ValidationResult = mock();
 		var $Validator = mock().newResult().returns( $ValidationResult );
 		CUT.setValidator( Validator=$Validator );
-		assertFalse( CUT.hasCurrentUser() );
+		assertFalse( CUT.hasCurrentUser( session=session ) );
 		var User = EntityLoadByPK( "User", 1 );
-		CUT.setCurrentUser( User=User );
-		var result = CUT.hasCurrentUser();
+		CUT.setCurrentUser( session=session, User=User );
+		var result = CUT.hasCurrentUser( session=session );
 		assertTrue( result );
-		CUT.deleteCurrentUser();
-		result = CUT.hasCurrentUser();
+		CUT.deleteCurrentUser( session=session );
+		result = CUT.hasCurrentUser( session=session );
 		assertFalse( result );
 	}
 	
 	function testHasCurrentUser(){
-		assertFalse( CUT.hasCurrentUser() );
+		assertFalse( CUT.hasCurrentUser( session=session ) );
 		var User = EntityLoadByPK( "User", 1 );
-		CUT.setCurrentUser( User=User );
-		var result = CUT.hasCurrentUser();
+		CUT.setCurrentUser( session=session, User=User );
+		var result = CUT.hasCurrentUser( session=session );
 		assertTrue( result );
 	}
 	
@@ -46,15 +46,15 @@ component extends="mxunit.framework.TestCase"{
 		var $config = { security={ whitelist="^admin:security,^public:" } };
 		CUT.setConfig( config=$config );
 		var User = EntityLoadByPK( "User", 1 );
-		CUT.setCurrentUser( User=User );
-		var result = CUT.isAllowed( action="admin:pages", whitelist="^admin:security,^public:" );
+		CUT.setCurrentUser( session=session, User=User );
+		var result = CUT.isAllowed( session=session, action="admin:pages", whitelist="^admin:security,^public:" );
 		assertTrue( result );
 	}	
 
 	function testIsAllowedForSecureActionWhereUserIsNotLoggedIn(){
 		var $config = { security={ whitelist="^admin:security,^public:" } };
 		CUT.setConfig( config=$config );
-		var result = CUT.isAllowed( action="admin:pages", whitelist="^admin:security,^public:" );
+		var result = CUT.isAllowed( session=session, action="admin:pages", whitelist="^admin:security,^public:" );
 		assertFalse( result );
 	}	
 
@@ -62,15 +62,15 @@ component extends="mxunit.framework.TestCase"{
 		var $config = { security={ whitelist="^admin:security,^public:" } };
 		CUT.setConfig( config=$config );
 		var User = EntityLoadByPK( "User", 1 );
-		CUT.setCurrentUser( User=User );
-		var result = CUT.isAllowed( action="admin:security", whitelist="^admin:security,^public:" );
+		CUT.setCurrentUser( session=session, User=User );
+		var result = CUT.isAllowed( session=session, action="admin:security", whitelist="^admin:security,^public:" );
 		assertTrue( result );
 	}	
 	
 	function testIsAllowedForUnsecureActionWhereUserIsNotLoggedIn(){
 		var $config = { security={ whitelist="^admin:security,^public:" } };
 		CUT.setConfig( config=$config );
-		var result = CUT.isAllowed( action="admin:security", whitelist="^admin:security,^public:" );
+		var result = CUT.isAllowed( session=session, action="admin:security", whitelist="^admin:security,^public:" );
 		assertTrue( result );
 	}		
 	
@@ -82,7 +82,7 @@ component extends="mxunit.framework.TestCase"{
 		var $Validator = mock().validate( theObject="{any}", Context="{string}" ).returns( ValidationResult=$ValidationResult );
 		CUT.setValidator( Validator=$Validator );
 		var properties = { username="", password="" };
-		var loginuserresult = CUT.loginUser( properties=properties );
+		var loginuserresult = CUT.loginUser( session=session, properties=properties );
 		var result = loginuserresult.getIsSuccess();
 		assertFalse( result );
 	}
@@ -95,7 +95,7 @@ component extends="mxunit.framework.TestCase"{
 		var $Validator = mock().validate( theObject="{any}", Context="{string}" ).returns( ValidationResult=$ValidationResult );
 		CUT.setValidator( Validator=$Validator );
 		var properties = { username="", password="" };
-		var loginuserresult = CUT.loginUser( properties=properties );
+		var loginuserresult = CUT.loginUser( session=session, properties=properties );
 		var result = loginuserresult.getIsSuccess();
 		assertTrue( result ); 
 	}
@@ -157,11 +157,11 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testSetCurrentUser(){
-		var User = CUT.hasCurrentUser();
+		var User = CUT.hasCurrentUser( session=session );
 		assertFalse( User );
 		var User = EntityLoadByPK( "User", 1 );
-		CUT.setCurrentUser( User=User );
-		var result = CUT.hasCurrentUser();
+		CUT.setCurrentUser( session=session, User=User );
+		var result = CUT.hasCurrentUser( session=session );
 		assertTrue( result );
 	}
 

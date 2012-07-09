@@ -28,19 +28,19 @@ component accessors="true"{
 	 * Public methods
 	 */
 
-	function deleteCurrentUser(){
-		return variables.SecurityGateway.deleteCurrentUser();
+	function deleteCurrentUser( required struct session ){
+		return variables.SecurityGateway.deleteCurrentUser( session=arguments.session );
 	}
 
-	boolean function hasCurrentUser(){
-		return variables.SecurityGateway.hasCurrentUser();
+	boolean function hasCurrentUser( required struct session ){
+		return variables.SecurityGateway.hasCurrentUser( session=arguments.session );
 	}
 	
-	boolean function isAllowed( required string action, string whitelist ){
+	boolean function isAllowed( required struct session, required string action, string whitelist ){
 		return variables.SecurityGateway.isAllowed( argumentCollection=arguments );
 	}	
 
-	function loginUser( required struct properties ){
+	function loginUser( required struct session, required struct properties ){
 		return variables.SecurityGateway.loginUser( argumentCollection=arguments );
 	}	
 	
@@ -51,7 +51,7 @@ component accessors="true"{
 		return result;
 	}	
 	
-	void function setCurrentUser( required any User ){
+	void function setCurrentUser( required struct session, required any User ){
 		variables.SecurityGateway.setCurrentUser( argumentCollection=arguments );
 	}
 	
