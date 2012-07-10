@@ -29,7 +29,7 @@ component accessors="true"{
 	 */
 
 	function deleteEnquiry( required numeric enquiryid ){
-		var Enquiry = getEnquiryByID( arguments.enquiryid );
+		var Enquiry = getEnquiry( arguments.enquiryid );
 		var result = variables.Validator.newResult();
 		if( !IsNull( Enquiry ) ){ 
 			EntityDelete( Enquiry );
@@ -46,7 +46,7 @@ component accessors="true"{
 		return EntityLoad( "Enquiry", {}, "unread DESC, created DESC", ormoptions );
 	}	
 
-	function getEnquiryByID( required numeric enquiryid ){
+	function getEnquiry( required numeric enquiryid ){
 		return EntityLoadByPK( "Enquiry", arguments.enquiryid );
 	}
 
@@ -61,7 +61,7 @@ component accessors="true"{
 	function markRead( numeric enquiryid=0 ){
 		var result = variables.Validator.newResult();
 		if( arguments.enquiryid ){
-			var Enquiry = getEnquiryByID( arguments.enquiryid );
+			var Enquiry = getEnquiry( arguments.enquiryid );
 			if( !IsNull( Enquiry ) ){ 
 				Enquiry.setRead();
 				EntitySave( Enquiry );

@@ -39,8 +39,8 @@ component accessors="true"{
 		return variables.EnquiryGateway.getEnquiries( maxresults=Val( arguments.maxresults ) );
 	}	
 
-	function getEnquiryByID( required enquiryid ){
-		return variables.EnquiryGateway.getEnquiryByID( enquiryid=Val( arguments.enquiryid ) );
+	function getEnquiry( required enquiryid ){
+		return variables.EnquiryGateway.getEnquiry( enquiryid=Val( arguments.enquiryid ) );
 	}
 
 	numeric function getUnreadCount(){

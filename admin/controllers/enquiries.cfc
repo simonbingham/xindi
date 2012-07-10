@@ -39,7 +39,7 @@ component accessors="true" extends="abstract"{
 	
 	void function enquiry( required struct rc ){
 		param name="rc.enquiryid" default="0";
-		rc.Enquiry = variables.EnquiryService.getEnquiryByID( enquiryid=rc.enquiryid );
+		rc.Enquiry = variables.EnquiryService.getEnquiry( enquiryid=rc.enquiryid );
 		if( !IsNull( rc.Enquiry ) ) variables.EnquiryService.markRead( enquiryid=rc.Enquiry.getEnquiryID() );
 		else variables.fw.redirect( "main.notfound" );
 	}

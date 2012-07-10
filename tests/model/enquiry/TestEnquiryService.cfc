@@ -44,8 +44,8 @@ component extends="mxunit.framework.TestCase"{
 		assertEquals( 2, result );
 	}
 	
-	function testGetEnquiryByID(){
-		var Enquiry = CUT.getEnquiryByID( enquiryid=2 );
+	function testGetEnquiry(){
+		var Enquiry = CUT.getEnquiry( enquiryid=2 );
 		var result = Enquiry.isPersisted();
 		assertTrue( result );
 	}
