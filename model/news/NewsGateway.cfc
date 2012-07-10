@@ -16,7 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 --->
 
-<cfcomponent accessors="true" output="false">
+<cfcomponent accessors="true" output="false" extends="model.abstract.BaseGateway">
 	<!---
 		Dependency injection
 	--->	
@@ -29,11 +29,11 @@
 		 * Public methods
 		 */	
 		
-		function deleteArticle( required articleid ){
-			var Article = getArticle( Val( arguments.articleid ) );
+		function deleteArticle( required numeric articleid ){
+			var Article = get( "Article", arguments.articleid );
 			var result = variables.Validator.newResult();
 			if( Article.isPersisted() ){ 
-				EntityDelete( Article );
+				delete( Article );
 				result.setSuccessMessage( "The article &quot;#Article.getTitle()#&quot; has been deleted." );
 			}else{
 				result.setErrorMessage( "The article could not be deleted." );
@@ -41,20 +41,18 @@
 			return result;
 		}
 		
-		function getArticle( required articleid ){
-			var Article = EntityLoadByPK( "Article", Val( arguments.articleid ) );
-			if( IsNull( Article ) ) Article = newArticle();
-			return Article;
+		function getArticle( required numeric articleid ){
+			return get( "Article", arguments.articleid );
 		}
 		
 		function getArticleByUUID( required string uuid ){
 			var Article = ORMExecuteQuery( "from Article where uuid=:uuid and published<=:published", { uuid=arguments.uuid, published=Now() }, true );
-			if( IsNull( Article ) ) Article = newArticle();
+			if( IsNull( Article ) ) Article = new( "Article" );
 			return Article;
 		}
 		
 		numeric function getArticleCount(){
-			return Val( ORMExecuteQuery( "select count( * ) from Article", true ) );
+			return ORMExecuteQuery( "select count( * ) from Article", true );
 		}
 	</cfscript>
 	
@@ -92,14 +90,14 @@
 	</cffunction> 
 	
 	<cfscript>
-		function getValidator( required any Article ){
+		function getValidator( required Article ){
 			return variables.Validator.getValidator( theObject=arguments.Article );
 		}
 		
 		function saveArticle( required struct properties ){
 			param name="arguments.properties.articleid" default="0";
 			var Article = ""; 
-			Article = getArticle( Val( arguments.properties.articleid ) );
+			Article = get( "Article", arguments.properties.articleid );
 			try{
 				arguments.properties.published = CreateDate( ListGetAt( arguments.properties.published, 3, "/" ), ListGetAt( arguments.properties.published, 2, "/" ), ListGetAt( arguments.properties.published, 1, "/" ) );
 			}
@@ -115,20 +113,12 @@
 			}
 			var result = variables.Validator.validate( theObject=Article );
 			if( !result.hasErrors() ){
-				EntitySave( Article );
+				save( Article );
 				result.setSuccessMessage( "The article &quot;#Article.getTitle()#&quot; has been saved." );
 			}else{
 				result.setErrorMessage( "Your article could not be saved. Please amend the highlighted fields." );
 			}
 			return result;
 		}
-		
-		/*
-		 * Private methods
-		 */	
-		
-		private function newArticle(){
-			return EntityNew( "Article" );
-		}				
 	</cfscript>
 </cfcomponent>

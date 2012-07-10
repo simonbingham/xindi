@@ -125,15 +125,6 @@ component extends="mxunit.framework.TestCase"{
 		assertTrue( result );
 	}
 	
-	// private methods
-	
-	function testNewArticle(){
-		makePublic( CUT, "newArticle" );
-		var Article = CUT.newArticle();
-		var result = Article.isPersisted();
-		assertFalse( result );
-	}
- 
 	// ------------------------ IMPLICIT ------------------------ // 
 	
 	/**

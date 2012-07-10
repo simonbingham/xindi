@@ -16,7 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true"{
+component accessors="true" extends="model.abstract.BaseGateway"{
 
 	/*
 	 * Dependency injection
@@ -28,11 +28,11 @@ component accessors="true"{
 	 * Public methods
 	 */
 	 	
-	function deleteUser( required userid ){
-		var User = getUser( Val( arguments.userid ) );
+	function deleteUser( required numeric userid ){
+		var User = get( "User", arguments.userid );
 		var result = variables.Validator.newResult();
 		if( User.isPersisted() ){
-			EntityDelete( User );
+			delete( User );
 			result.setSuccessMessage( "The user &quot;#User.getFullName()#&quot; has been deleted." );
 		}else{
 			result.setErrorMessage( "The user could not be deleted." );
@@ -40,22 +40,20 @@ component accessors="true"{
 		return result;
 	}
 	
-	function getUser( required userid ){
-		var User = EntityLoadByPK( "User", Val( arguments.userid ) );
-		if( IsNull( User ) ) User = newUser();
-		return User;
+	function getUser( required numeric userid ){
+		return get( "User", arguments.userid );
 	}
 
 	function getUserByCredentials( required User ){
 		User = ORMExecuteQuery( "from User where ( username=:username or email=:email ) and password=:password", { username=arguments.User.getUsername(), email=arguments.User.getEmail(), password=arguments.User.getPassword() }, true );
-		if( IsNull( User ) ) User = newUser();
+		if( IsNull( User ) ) User = new( "User" );
 		return User;
 	}
 
 	// TODO: might be able to remove this
 	function getUserByEmailOrUsername( required User ){
 		User = ORMExecuteQuery( "from User where username=:username or email=:email", { username=arguments.User.getUsername(), email=arguments.User.getEmail() }, true );
-		if( IsNull( User ) ) User = newUser();
+		if( IsNull( User ) ) User = new( "User" );
 		return User;		
 	}
 
@@ -63,24 +61,24 @@ component accessors="true"{
 		return EntityLoad( "User", {}, "firstname" );	
 	}
 		
-	function getValidator( required any User ){
+	function getValidator( required User ){
 		return variables.Validator.getValidator( theObject=arguments.User );
 	}
 	
 	function newUser(){
-		return EntityNew( "User" );
+		return new( "User" );
 	}
 	
 	function saveUser( required struct properties, required string context ){
 		param name="arguments.properties.userid" default="0";
 		var result = variables.Validator.newResult();
 		var User = ""; 
-		User = getUser( Val( arguments.properties.userid ) );
+		User = get( "User", arguments.properties.userid );
 		User.populate( arguments.properties );
 		var result = variables.Validator.validate( theObject=User, context=arguments.context );
 		if( !result.hasErrors() ){
 			result.setSuccessMessage( "The user &quot;#User.getFullName()#&quot; has been saved." );
-			EntitySave( User );
+			save( User );
 		}else{
 			result.setErrorMessage( "The user could not be saved. Please amend the highlighted fields." );
 		}

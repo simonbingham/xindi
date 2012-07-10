@@ -16,7 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 --->
 
-<cfcomponent accessors="true" output="false">
+<cfcomponent accessors="true" output="false" extends="model.abstract.BaseGateway">
 	<!---
 		Dependency injection
 	--->	
@@ -30,13 +30,13 @@
 		 */			
 		
 		function deletePage( required numeric pageid ){
-			var Page = getPage( arguments.pageid );
+			var Page = get( "Page", arguments.pageid );
 			var result = variables.Validator.newResult();
 			if( Page.isPersisted() ){
 				var startvalue = Page.getLeftValue();
 				ORMExecuteQuery( "update Page set leftvalue = leftvalue - 2 where leftvalue > :startvalue", { startvalue=startvalue });
 				ORMExecuteQuery( "update Page set rightvalue = rightvalue - 2 where rightvalue > :startvalue", { startvalue=startvalue });
-				EntityDelete( Page );
+				delete( Page );
 				result.setSuccessMessage( "The page &quot;#Page.getTitle()#&quot; has been deleted." );
 			}else{
 				result.setErrorMessage( "The page could not be deleted." );
@@ -45,14 +45,12 @@
 		}
 		
 		function getPage( required numeric pageid ){
-			var Page = EntityLoadByPK( "Page", arguments.pageid );
-			if( IsNull( Page ) ) Page = newPage();
-			return Page;
+			return get( "Page", arguments.pageid );
 		}
 		
 		function getPageBySlug( required string slug ){
 			var Page = EntityLoad( "Page", { uuid=Trim( ListLast( arguments.slug, "/" ) ) }, TRUE );
-			if( IsNull( Page ) ) Page = newPage();
+			if( IsNull( Page ) ) Page = new( "Page" );
 			return Page;
 		}
 		
@@ -98,7 +96,7 @@
 			var nextsiblingdescendentidlist = "";
 			var previoussibling = "";
 			var previoussiblingdescendentidlist = "";
-			var Page = getPage( arguments.pageid );
+			var Page = get( "Page", arguments.pageid );
 			var result = variables.Validator.newResult();
 			result.setErrorMessage( "The page could not be moved." );
 			if( Page.isPersisted() && ListFindNoCase( "up,down", Trim( arguments.direction ) ) ){
@@ -114,8 +112,8 @@
 						Page.setRightValue( Page.getRightValue() - decreaseamount );
 						previoussibling.setLeftValue( previoussibling.getLeftValue() + increaseamount );
 						previoussibling.setRightValue( previoussibling.getRightValue() + increaseamount );
-						EntitySave( Page );
-						EntitySave( previoussibling );
+						save( Page );
+						save( previoussibling );
 						result.setSuccessMessage( "The page &quot;#Page.getTitle()#&quot; has been moved." );
 					}
 				}else{
@@ -130,8 +128,8 @@
 						Page.setRightValue( Page.getRightValue() + increaseamount );
 						nextsibling.setLeftValue( nextsibling.getLeftValue() - decreaseamount );
 						nextsibling.setRightValue( nextsibling.getRightValue() - decreaseamount );
-						EntitySave( Page );
-						EntitySave( nextsibling );
+						save( Page );
+						save( nextsibling );
 						result.setSuccessMessage( "The page &quot;#Page.getTitle()#&quot; has been moved." );
 					}
 				}
@@ -144,7 +142,7 @@
 			param name="arguments.properties.pageid" default="";
 			arguments.properties.pageid = Val( arguments.properties.pageid );
 			var Page = "";
-			Page = getPage( arguments.properties.pageid );
+			Page = get( "Page", arguments.properties.pageid );
 			Page.populate( arguments.properties );
 			if( Page.isMetaGenerated() ){
 				Page.setMetaTitle( Page.getTitle() );
@@ -154,14 +152,14 @@
 			var result = variables.Validator.validate( theObject=Page, context=arguments.context );
 			if( !result.hasErrors() ){
 				if( !Page.isPersisted() && arguments.ancestorid ){
-					var Ancestor = getPage( arguments.ancestorid );
+					var Ancestor = get( "Page", arguments.ancestorid );
 					Page.setLeftValue( Ancestor.getRightValue() );
 					Page.setRightValue( Ancestor.getRightValue() + 1 );
 					ORMExecuteQuery( "update Page set leftvalue = leftvalue + 2 where leftvalue > :startingvalue", { startingvalue=Ancestor.getRightValue() - 1 } );
 					ORMExecuteQuery( "update Page set rightvalue = rightvalue + 2 where rightvalue > :startingvalue", { startingvalue=Ancestor.getRightValue() - 1 } );
-					EntitySave( Page );
+					save( Page );
 				}else if( Page.isPersisted() ){
-					EntitySave( Page );
+					save( Page );
 				}
 				result.setSuccessMessage( "The page &quot;#Page.getTitle()#&quot; has been saved." );
 			}else{
@@ -169,13 +167,5 @@
 			}
 			return result;
 		}
-		
-		/*
-		 * Private methods
-		 */	
-		
-		private function newPage(){
-			return EntityNew( "Page" );
-		}		
 	</cfscript>
 </cfcomponent>

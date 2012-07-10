@@ -16,7 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true"{
+component accessors="true" extends="model.abstract.BaseGateway"{
 
 	/*
 	 * Dependency injection
@@ -29,10 +29,10 @@ component accessors="true"{
 	 */
 
 	function deleteEnquiry( required numeric enquiryid ){
-		var Enquiry = getEnquiry( arguments.enquiryid );
+		var Enquiry = get( "Enquiry", arguments.enquiryid );
 		var result = variables.Validator.newResult();
-		if( !IsNull( Enquiry ) ){ 
-			EntityDelete( Enquiry );
+		if( Enquiry.isPersisted() ){ 
+			delete( Enquiry );
 			result.setSuccessMessage( "The enquiry from &quot;#Enquiry.getFullName()#&quot; has been deleted." );
 		}else{
 			result.setErrorMessage( "The enquiry could not be deleted." );
@@ -47,24 +47,24 @@ component accessors="true"{
 	}	
 
 	function getEnquiry( required numeric enquiryid ){
-		return EntityLoadByPK( "Enquiry", arguments.enquiryid );
+		return get( "Enquiry", arguments.enquiryid );
 	}
 
 	numeric function getUnreadCount(){
 		return ORMExecuteQuery( "select count( * ) from Enquiry where unread = true", true );
 	}	
 	 	
-	function getValidator( required any Enquiry ){
+	function getValidator( required Enquiry ){
 		return variables.Validator.getValidator( theObject=arguments.Enquiry );
 	}	
 	
 	function markRead( numeric enquiryid=0 ){
 		var result = variables.Validator.newResult();
 		if( arguments.enquiryid ){
-			var Enquiry = getEnquiry( arguments.enquiryid );
+			var Enquiry = get( "Enquiry", arguments.enquiryid );
 			if( !IsNull( Enquiry ) ){ 
 				Enquiry.setRead();
-				EntitySave( Enquiry );
+				save( Enquiry );
 				result.setSuccessMessage( "The message has been marked as read." );
 			}else{
 				result.setErrorMessage( "The message could not be marked as read." );
@@ -77,7 +77,7 @@ component accessors="true"{
 	}	
 	
 	function newEnquiry(){
-		return new model.enquiry.Enquiry();
+		return new( "Enquiry" );
 	}
 	
 	function sendEnquiry( required struct properties, required struct config, required string emailtemplatepath ){
@@ -94,7 +94,7 @@ component accessors="true"{
 	    	Email.setBody( emailtemplate );
 	    	Email.setType( "html" );
 	        Email.send();
-	        EntitySave( Enquiry );
+	        save( Enquiry );
 	        result.setSuccessMessage( "Your enquiry has been sent." );
 		}else{
 			result.setErrorMessage( "Your enquiry could not be sent. Please amend the highlighted fields." );

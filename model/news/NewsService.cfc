@@ -35,7 +35,7 @@ component accessors="true"{
 		return result;
 	}
 	
-	function getArticleByID( required articleid ){
+	function getArticle( required articleid ){
 		return variables.NewsGateway.getArticle( articleid=Val( arguments.articleid ) );
 	}
 	
@@ -53,7 +53,7 @@ component accessors="true"{
 		return variables.NewsGateway.getArticles( argumentCollection=arguments );
 	}
 		
-	function getValidator( required any Article ){
+	function getValidator( required Article ){
 		return variables.NewsGateway.getValidator( argumentCollection=arguments );
 	}
 	

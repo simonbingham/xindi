@@ -36,6 +36,8 @@ component extends="model.abstract.BaseEntity" persistent="true" table="enquiries
 	 */
 	 	
 	Enquiry function init(){
+		variables.firstname = "";
+		variables.lastname = "";
 		variables.unread = true;
 		return this;
 	}

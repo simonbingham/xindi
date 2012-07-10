@@ -166,15 +166,6 @@ component extends="mxunit.framework.TestCase"{
 		assertTrue( result );
 	}
 
-	// private methods
-	
-	function testNewPage(){
-		makePublic( CUT, "newPage" );
-		var Page = CUT.newPage();
-		var result = Page.isPersisted();
-		assertFalse( result );
-	}
-	
 	// ------------------------ IMPLICIT ------------------------ // 
 	
 	/**

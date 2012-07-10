@@ -18,52 +18,22 @@
 
 component accessors="true"{
 
-	/*
-	 * Dependency injection
-	 */	
-	
-	property name="UserGateway" getter="false";
-
-	/*
-	 * Public methods
-	 */
-	 	
-	function deleteUser( required userid ){
-		transaction{
-			var result = variables.UserGateway.deleteUser( userid=Val( arguments.userid ) );
-		}
-		return result;
-	}
-	
-	function getUser( required userid ){
-		return variables.UserGateway.getUser( userid=Val( arguments.userid ) );
+	void function delete( required entity ){
+		EntityDelete( arguments.entity );
 	}
 
-	function getUserByCredentials( required User ){
-		return variables.UserGateway.getUserByCredentials( argumentCollection=arguments );
+	function get( required string entityname, required numeric id ){
+		var Entity = EntityLoadByPK( arguments.entityname, arguments.id );
+		if( IsNull( Entity ) ) Entity = new( arguments.entityname );
+		return Entity;
 	}
 
-	function getUserByEmailOrUsername( required User ){
-		return variables.UserGateway.getUserByEmailOrUsername( argumentCollection=arguments );
+	function new( required string entityname ){
+		return EntityNew( arguments.entityname );
 	}
 
-	array function getUsers(){
-		return variables.UserGateway.getUsers();
+	void function save( required entity ){
+		EntitySave( arguments.entity );
 	}
-		
-	function getValidator( required any User ){
-		return variables.UserGateway.getValidator( User=arguments.User );
-	}
-	
-	function newUser(){
-		return variables.UserGateway.newUser();
-	}
-	
-	function saveUser( required struct properties, required string context ){
-		transaction{
-			var User = variables.UserGateway.saveUser( argumentCollection=arguments );
-		}
-		return User;
-	}
-	
+
 }
