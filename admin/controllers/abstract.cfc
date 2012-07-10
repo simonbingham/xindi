@@ -45,7 +45,7 @@ component accessors="true"{
 			rc.unreadenquiries = variables.EnquiryService.getEnquiries( maxresults=10 );
 			rc.updatedpages = variables.ContentService.getPages( sortorder="updated desc", maxresults=10 );
 			rc.updatedarticles = variables.NewsService.getArticles( sortorder="updated desc", maxresults=10 );
-			rc.CurrentUser = variables.UserService.getUserByID( userid=session.userid );
+			rc.CurrentUser = variables.UserService.getUser( userid=session.userid );
 		}
 	}
 

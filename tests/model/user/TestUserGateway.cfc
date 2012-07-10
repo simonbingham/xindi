@@ -38,14 +38,14 @@ component extends="mxunit.framework.TestCase"{
 		assertTrue( result );
 	}
 
-	function testGetUserByIDWhereUserDoesNotExist(){
-		var User = CUT.getUserByID( 2 );
+	function testGetUserWhereUserDoesNotExist(){
+		var User = CUT.getUser( 2 );
 		var result = User.isPersisted();
 		assertFalse( result );
 	}	
 	
-	function testGetUserByIDWhereUserExists(){
-		var User = CUT.getUserByID( 1 );
+	function testGetUserWhereUserExists(){
+		var User = CUT.getUser( 1 );
 		var result = User.isPersisted();
 		assertTrue( result );
 	}	

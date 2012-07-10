@@ -29,7 +29,7 @@ component accessors="true"{
 	 */
 	 	
 	function deleteUser( required userid ){
-		var User = getUserByID( Val( arguments.userid ) );
+		var User = getUser( Val( arguments.userid ) );
 		var result = variables.Validator.newResult();
 		if( User.isPersisted() ){
 			EntityDelete( User );
@@ -40,7 +40,7 @@ component accessors="true"{
 		return result;
 	}
 	
-	function getUserByID( required userid ){
+	function getUser( required userid ){
 		var User = EntityLoadByPK( "User", Val( arguments.userid ) );
 		if( IsNull( User ) ) User = newUser();
 		return User;
@@ -75,7 +75,7 @@ component accessors="true"{
 		param name="arguments.properties.userid" default="0";
 		var result = variables.Validator.newResult();
 		var User = ""; 
-		User = getUserByID( Val( arguments.properties.userid ) );
+		User = getUser( Val( arguments.properties.userid ) );
 		User.populate( arguments.properties );
 		var result = variables.Validator.validate( theObject=User, context=arguments.context );
 		if( !result.hasErrors() ){

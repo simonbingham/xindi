@@ -36,7 +36,7 @@ component accessors="true"{
 	}
 	
 	function getUserByID( required userid ){
-		return variables.UserGateway.getUserByID( userid=Val( arguments.userid ) );
+		return variables.UserGateway.getUser( userid=Val( arguments.userid ) );
 	}
 
 	function getUserByCredentials( required User ){
