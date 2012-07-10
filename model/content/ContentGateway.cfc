@@ -17,31 +17,16 @@
 --->
 
 <cfcomponent accessors="true" output="false" extends="model.abstract.BaseGateway">
-	<!---
-		Dependency injection
-	--->	
-		
-	<cfproperty name="MetaData" getter="false">
-	<cfproperty name="Validator" getter="false">	
-	
 	<cfscript>
 		/*
 		 * Public methods
 		 */			
 		
-		function deletePage( required numeric pageid ){
-			var Page = get( "Page", arguments.pageid );
-			var result = variables.Validator.newResult();
-			if( Page.isPersisted() ){
-				var startvalue = Page.getLeftValue();
-				ORMExecuteQuery( "update Page set leftvalue = leftvalue - 2 where leftvalue > :startvalue", { startvalue=startvalue });
-				ORMExecuteQuery( "update Page set rightvalue = rightvalue - 2 where rightvalue > :startvalue", { startvalue=startvalue });
-				delete( Page );
-				result.setSuccessMessage( "The page &quot;#Page.getTitle()#&quot; has been deleted." );
-			}else{
-				result.setErrorMessage( "The page could not be deleted." );
-			}
-			return result;
+		function deletePage( required Page ){
+			var startvalue = arguments.Page.getLeftValue();
+			ORMExecuteQuery( "update Page set leftvalue = leftvalue - 2 where leftvalue > :startvalue", { startvalue=startvalue });
+			ORMExecuteQuery( "update Page set rightvalue = rightvalue - 2 where rightvalue > :startvalue", { startvalue=startvalue });
+			delete( arguments.Page );
 		}
 		
 		function getPage( required numeric pageid ){
@@ -85,87 +70,57 @@
 	</cffunction>
 	
 	<cfscript>
-		function getValidator( required any Page ){
-			return variables.Validator.getValidator( theObject=arguments.Page );
-		}		
-		
-		function movePage( required numeric pageid, required string direction ){
+		function movePage( required Page, required string direction ){
 			var decreaseamount = "";
 			var increaseamount = "";
 			var nextsibling = "";
 			var nextsiblingdescendentidlist = "";
 			var previoussibling = "";
 			var previoussiblingdescendentidlist = "";
-			var Page = get( "Page", arguments.pageid );
-			var result = variables.Validator.newResult();
-			result.setErrorMessage( "The page could not be moved." );
-			if( Page.isPersisted() && ListFindNoCase( "up,down", Trim( arguments.direction ) ) ){
-				if( arguments.direction eq "up" ){
-					if( Page.hasPreviousSibling() ){
-						increaseamount = Page.getRightValue() - Page.getLeftValue() + 1;
-						previoussibling = Page.getPreviousSibling();
-						previoussiblingdescendentidlist = previoussibling.getDescendentPageIDList();
-						decreaseamount = previoussibling.getRightValue() - previoussibling.getLeftValue() + 1;
-						if( ListLen( Page.getDescendentPageIDList() ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue - :decreaseamount, rightvalue = rightvalue - :decreaseamount where pageid in ( #Page.getDescendentPageIDList()# )", { decreaseamount=decreaseamount });
-						if( ListLen( previoussiblingdescendentidlist ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue + :increaseamount, rightvalue = rightvalue + :increaseamount where pageid in ( #previoussiblingdescendentidlist# )", { increaseamount=increaseamount });
-						Page.setLeftValue( Page.getLeftValue() - decreaseamount );
-						Page.setRightValue( Page.getRightValue() - decreaseamount );
-						previoussibling.setLeftValue( previoussibling.getLeftValue() + increaseamount );
-						previoussibling.setRightValue( previoussibling.getRightValue() + increaseamount );
-						save( Page );
-						save( previoussibling );
-						result.setSuccessMessage( "The page &quot;#Page.getTitle()#&quot; has been moved." );
-					}
-				}else{
-					if( Page.hasNextSibling() ){
-						decreaseamount = Page.getRightValue() - Page.getLeftValue() + 1;
-						nextsibling = Page.getNextSibling();
-						nextsiblingdescendentidlist = nextsibling.getDescendentPageIDList();
-						increaseamount = nextsibling.getRightValue() - nextsibling.getLeftValue() + 1;
-						if( ListLen( Page.getDescendentPageIDList() ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue + :increaseamount, rightvalue = rightvalue + :increaseamount where pageid in ( #Page.getDescendentPageIDList()# )", { increaseamount=increaseamount });
-						if( ListLen( nextsiblingdescendentidlist ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue - :decreaseamount, rightvalue = rightvalue - :decreaseamount where pageid in ( #nextsiblingdescendentidlist# )", { decreaseamount=decreaseamount });
-						Page.setLeftValue( Page.getLeftValue() + increaseamount );
-						Page.setRightValue( Page.getRightValue() + increaseamount );
-						nextsibling.setLeftValue( nextsibling.getLeftValue() - decreaseamount );
-						nextsibling.setRightValue( nextsibling.getRightValue() - decreaseamount );
-						save( Page );
-						save( nextsibling );
-						result.setSuccessMessage( "The page &quot;#Page.getTitle()#&quot; has been moved." );
-					}
+			if( arguments.direction eq "up" ){
+				if( Page.hasPreviousSibling() ){
+					increaseamount = Page.getRightValue() - Page.getLeftValue() + 1;
+					previoussibling = Page.getPreviousSibling();
+					previoussiblingdescendentidlist = previoussibling.getDescendentPageIDList();
+					decreaseamount = previoussibling.getRightValue() - previoussibling.getLeftValue() + 1;
+					if( ListLen( Page.getDescendentPageIDList() ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue - :decreaseamount, rightvalue = rightvalue - :decreaseamount where pageid in ( #Page.getDescendentPageIDList()# )", { decreaseamount=decreaseamount });
+					if( ListLen( previoussiblingdescendentidlist ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue + :increaseamount, rightvalue = rightvalue + :increaseamount where pageid in ( #previoussiblingdescendentidlist# )", { increaseamount=increaseamount });
+					Page.setLeftValue( Page.getLeftValue() - decreaseamount );
+					Page.setRightValue( Page.getRightValue() - decreaseamount );
+					previoussibling.setLeftValue( previoussibling.getLeftValue() + increaseamount );
+					previoussibling.setRightValue( previoussibling.getRightValue() + increaseamount );
+					save( Page );
+					save( previoussibling );
+				}
+			}else{
+				if( Page.hasNextSibling() ){
+					decreaseamount = Page.getRightValue() - Page.getLeftValue() + 1;
+					nextsibling = Page.getNextSibling();
+					nextsiblingdescendentidlist = nextsibling.getDescendentPageIDList();
+					increaseamount = nextsibling.getRightValue() - nextsibling.getLeftValue() + 1;
+					if( ListLen( Page.getDescendentPageIDList() ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue + :increaseamount, rightvalue = rightvalue + :increaseamount where pageid in ( #Page.getDescendentPageIDList()# )", { increaseamount=increaseamount });
+					if( ListLen( nextsiblingdescendentidlist ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue - :decreaseamount, rightvalue = rightvalue - :decreaseamount where pageid in ( #nextsiblingdescendentidlist# )", { decreaseamount=decreaseamount });
+					Page.setLeftValue( Page.getLeftValue() + increaseamount );
+					Page.setRightValue( Page.getRightValue() + increaseamount );
+					nextsibling.setLeftValue( nextsibling.getLeftValue() - decreaseamount );
+					nextsibling.setRightValue( nextsibling.getRightValue() - decreaseamount );
+					save( Page );
+					save( nextsibling );
 				}
 			}
-			result.setTheObject( Page );
-			return result;
 		}
 		
-		function savePage( required struct properties, required numeric ancestorid, required string context ){
-			param name="arguments.properties.pageid" default="";
-			arguments.properties.pageid = Val( arguments.properties.pageid );
-			var Page = "";
-			Page = get( "Page", arguments.properties.pageid );
-			Page.populate( arguments.properties );
-			if( Page.isMetaGenerated() ){
-				Page.setMetaTitle( Page.getTitle() );
-				Page.setMetaDescription( variables.MetaData.generateMetaDescription( Page.getContent() ) );
-				Page.setMetaKeywords( variables.MetaData.generateMetaKeywords( Page.getContent() ) );
-			}			
-			var result = variables.Validator.validate( theObject=Page, context=arguments.context );
-			if( !result.hasErrors() ){
-				if( !Page.isPersisted() && arguments.ancestorid ){
-					var Ancestor = get( "Page", arguments.ancestorid );
-					Page.setLeftValue( Ancestor.getRightValue() );
-					Page.setRightValue( Ancestor.getRightValue() + 1 );
-					ORMExecuteQuery( "update Page set leftvalue = leftvalue + 2 where leftvalue > :startingvalue", { startingvalue=Ancestor.getRightValue() - 1 } );
-					ORMExecuteQuery( "update Page set rightvalue = rightvalue + 2 where rightvalue > :startingvalue", { startingvalue=Ancestor.getRightValue() - 1 } );
-					save( Page );
-				}else if( Page.isPersisted() ){
-					save( Page );
-				}
-				result.setSuccessMessage( "The page &quot;#Page.getTitle()#&quot; has been saved." );
-			}else{
-				result.setErrorMessage( "Your page could not be saved. Please amend the highlighted fields." );
+		function savePage( required Page, required numeric ancestorid ){
+			if( !arguments.Page.isPersisted() && arguments.ancestorid ){
+				var Ancestor = get( "Page", arguments.ancestorid );
+				arguments.Page.setLeftValue( Ancestor.getRightValue() );
+				arguments.Page.setRightValue( Ancestor.getRightValue() + 1 );
+				ORMExecuteQuery( "update Page set leftvalue = leftvalue + 2 where leftvalue > :startingvalue", { startingvalue=Ancestor.getRightValue() - 1 } );
+				ORMExecuteQuery( "update Page set rightvalue = rightvalue + 2 where rightvalue > :startingvalue", { startingvalue=Ancestor.getRightValue() - 1 } );
+				save( arguments.Page );
+			}else if( arguments.Page.isPersisted() ){
+				save( arguments.Page );
 			}
-			return result;
 		}
 	</cfscript>
 </cfcomponent>

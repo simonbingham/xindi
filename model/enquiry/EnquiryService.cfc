@@ -23,6 +23,7 @@ component accessors="true"{
 	 */	
 	
 	property name="EnquiryGateway" getter="false";
+	property name="Validator" getter="false";
 
 	/*
 	 * Public methods
@@ -30,7 +31,14 @@ component accessors="true"{
 
 	function deleteEnquiry( required enquiryid ){
 		transaction{
-			var result = variables.EnquiryGateway.deleteEnquiry( enquiryid=Val( arguments.enquiryid ) );
+			var Enquiry = variables.EnquiryGateway.getEnquiry( Val( arguments.enquiryid ) );
+			var result = variables.Validator.newResult();
+			if( Enquiry.isPersisted() ){ 
+				variables.EnquiryGateway.deleteEnquiry( Enquiry );
+				result.setSuccessMessage( "The enquiry from &quot;#Enquiry.getFullName()#&quot; has been deleted." );
+			}else{
+				result.setErrorMessage( "The enquiry could not be deleted." );
+			}
 		}
 		return result;
 	}
@@ -47,24 +55,54 @@ component accessors="true"{
 		return variables.EnquiryGateway.getUnreadCount();		
 	}	
 	 	
-	function getValidator( required any Enquiry ){
-		return variables.EnquiryGateway.getValidator( argumentCollection=arguments );		
+	function getValidator( required Enquiry ){
+		return variables.Validator.getValidator( theObject=arguments.Enquiry );
 	}	
 	
-	function markRead( numeric enquiryid=0 ){
+	function markRead( enquiryid=0 ){
 		transaction{
-			var result = variables.EnquiryGateway.markRead( enquiryid=Val( arguments.enquiryid ) );
+			arguments.enquiryid = Val( arguments.enquiryid );
+			var result = variables.Validator.newResult();
+			if( arguments.enquiryid ){
+				var Enquiry = variables.EnquiryGateway.getEnquiry( arguments.enquiryid );
+				if( !IsNull( Enquiry ) ){
+					variables.EnquiryGateway.markRead( Enquiry );
+					result.setSuccessMessage( "The message has been marked as read." );
+				}else{
+					result.setErrorMessage( "The message could not be marked as read." );
+				}
+			}else{
+				variables.EnquiryGateway.markRead();
+				result.setSuccessMessage( "All messages have been marked as read." );
+			}
 		}
 		return result;
 	}	
 	
 	function newEnquiry(){
-		return variables.EnquiryGateway.newEnquiry();		
+		return variables.EnquiryGateway.newEnquiry();
 	}
 	
 	function sendEnquiry( required struct properties, required struct config, required string emailtemplatepath ){
 		transaction{
-			var result = variables.EnquiryGateway.sendEnquiry( argumentCollection=arguments );
+			var emailtemplate = "";
+			var Enquiry = variables.EnquiryGateway.newEnquiry(); 
+			Enquiry.populate( arguments.properties );
+			var result = variables.Validator.validate( theObject=Enquiry );
+			if( !result.hasErrors() ){
+				savecontent variable="emailtemplate"{ include arguments.emailtemplatepath; }
+				var Email = new mail();
+			    Email.setSubject( arguments.config.subject );
+		    	Email.setTo( arguments.config.emailto );
+		    	Email.setFrom( Enquiry.getEmail() );
+		    	Email.setBody( emailtemplate );
+		    	Email.setType( "html" );
+		        Email.send();
+		        variables.EnquiryGateway.saveEnquiry( Enquiry );
+		        result.setSuccessMessage( "Your enquiry has been sent." );
+			}else{
+				result.setErrorMessage( "Your enquiry could not be sent. Please amend the highlighted fields." );
+			}
 		}
 		return result;
 	}

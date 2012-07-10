@@ -152,12 +152,12 @@ component extends="mxunit.framework.TestCase"{
 		// initialise component under test
 		CUT = new model.content.ContentService();
 		var ContentGateway = new model.content.ContentGateway();
+		CUT.setContentGateway( ContentGateway );
 		var validatorconfig = { definitionPath="/model/", JSIncludes=false, resultPath="model.utility.ValidatorResult" };
 		Validator = new ValidateThis.ValidateThis( validatorconfig );
-		ContentGateway.setValidator( Validator );
+		CUT.setValidator( Validator );
 		var MetaData = new model.content.MetaData();
-		ContentGateway.setMetaData( MetaData );
-		CUT.setContentGateway( ContentGateway );
+		CUT.setMetaData( MetaData );
 		
 		// reinitialise ORM for the application (create database table)
 		ORMReload();

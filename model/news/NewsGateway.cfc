@@ -17,28 +17,13 @@
 --->
 
 <cfcomponent accessors="true" output="false" extends="model.abstract.BaseGateway">
-	<!---
-		Dependency injection
-	--->	
-	
-	<cfproperty name="MetaData" getter="false">
-	<cfproperty name="Validator" getter="false">	
-		
 	<cfscript>
 		/*
 		 * Public methods
 		 */	
 		
-		function deleteArticle( required numeric articleid ){
-			var Article = get( "Article", arguments.articleid );
-			var result = variables.Validator.newResult();
-			if( Article.isPersisted() ){ 
-				delete( Article );
-				result.setSuccessMessage( "The article &quot;#Article.getTitle()#&quot; has been deleted." );
-			}else{
-				result.setErrorMessage( "The article could not be deleted." );
-			}
-			return result;
+		function deleteArticle( required Article Article ){
+			delete( arguments.Article );
 		}
 		
 		function getArticle( required numeric articleid ){
@@ -90,35 +75,8 @@
 	</cffunction> 
 	
 	<cfscript>
-		function getValidator( required Article ){
-			return variables.Validator.getValidator( theObject=arguments.Article );
-		}
-		
-		function saveArticle( required struct properties ){
-			param name="arguments.properties.articleid" default="0";
-			var Article = ""; 
-			Article = get( "Article", arguments.properties.articleid );
-			try{
-				arguments.properties.published = CreateDate( ListGetAt( arguments.properties.published, 3, "/" ), ListGetAt( arguments.properties.published, 2, "/" ), ListGetAt( arguments.properties.published, 1, "/" ) );
-			}
-			catch(any e){
-				arguments.properties.published = "";
-			}
-			Article.populate( arguments.properties );
-			if( IsNull( Article.getContent() ) ) Article.setContent( "" );
-			if( Article.isMetaGenerated() ){
-				Article.setMetaTitle( Article.getTitle() );
-				Article.setMetaDescription( variables.MetaData.generateMetaDescription( Article.getContent() ) );
-				Article.setMetaKeywords( variables.MetaData.generateMetaKeywords( Article.getContent() ) );
-			}
-			var result = variables.Validator.validate( theObject=Article );
-			if( !result.hasErrors() ){
-				save( Article );
-				result.setSuccessMessage( "The article &quot;#Article.getTitle()#&quot; has been saved." );
-			}else{
-				result.setErrorMessage( "Your article could not be saved. Please amend the highlighted fields." );
-			}
-			return result;
+		function saveArticle( required Article Article ){
+			save( arguments.Article );
 		}
 	</cfscript>
 </cfcomponent>

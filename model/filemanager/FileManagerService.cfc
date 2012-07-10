@@ -19,34 +19,75 @@
 component accessors="true"{
 
 	/*
-	 * Dependency injection
-	 */	
-	
-	property name="FileManagerGateway" getter="false";
-
-	/*
 	 * Public methods
 	 */
 	 	
 	function createDirectory( required string directory )
 	{
-		return variables.FileManagerGateway.createDirectory( argumentCollection=arguments );
+		var result = variables.Validator.newResult();
+		if( Len( Trim( arguments.directory ) ) ) {
+			result.theobject = CreateObject( "java", "java.io.File" ).init( JavaCast( "string", arguments.directory ) );
+			result.setSuccessMessage( "The directory &quot;" & arguments.directory & "&quot; has been created." );
+		}else{
+			result.setErrorMessage( "The directory &quot;" & newdirectorypath & "&quot; could not be created." );
+		}
+		return result;
 	}
 	
 	function deleteFile( required string file ){
-		return variables.FileManagerGateway.deleteFile( argumentCollection=arguments );
+		var result = variables.Validator.newResult();
+		if( isFile( arguments.file ) ){
+			getFile( arguments.file ).delete();
+			result.setSuccessMessage( "The file &quot;" & arguments.file & "&quot; has been deleted." );
+		}else{
+			result.setErrorMessage( "The file &quot;" & arguments.file & "&quot; could not be deleted." );
+		}
+		return result;
 	}	
 	
 	query function getDirectoryList( required string directory, required string allowedextensions ){
-		return variables.FileManagerGateway.getDirectoryList( argumentCollection=arguments );
+		var fileListing = DirectoryList( arguments.directory, false, "query", "*." & Replace( arguments.allowedextensions, ",", "|*.", "all" ) );
+		var fullListing = DirectoryList( arguments.directory, false, "query" );
+		var queryobject = new query();
+		queryobject.setDBType( "query" );
+		queryobject.setAttributes( fileListing=fileListing );
+		queryobject.setAttributes( fullListing=fullListing );
+		queryobject.setSQL( "
+			select * from fileListing where name not like '.%'
+			union
+			select * from fullListing where type = 'Dir' 
+			order by type, name " 
+		);
+		return queryobject.execute().getResult();
 	}	
 	
 	boolean function isDirectory( required string directory ){
-		return variables.FileManagerGateway.isDirectory( argumentCollection=arguments );
+		return getFile( arguments.directory ).isDirectory();
 	}
 	
 	function uploadFile( required string file, required string destination, required string allowedextensions ){
-		return variables.FileManagerGateway.uploadFile( argumentCollection=arguments );
+		var result = variables.Validator.newResult();
+		try{
+			result = FileUpload( arguments.destination, arguments.file, "", "MakeUnique" );
+			result.setSuccessMessage( "The file &quot;" & result.serverfile & "&quot; has been uploaded." );
+			if( !ListFindNoCase( arguments.allowedextensions, result.serverfileext ) ) deleteFile( result.serverdirectory & "/" & result.serverfile );
+		}
+		catch( any e ){ 
+			result.setErrorMessage( "Sorry, you are not permitted to upload this type of file." );
+		}
+		return result;
+	}
+	
+	/*
+	 * Private methods
+	 */	
+
+	private function getFile( required string file ){
+		return CreateObject( "java", "java.io.File" ).init( JavaCast( "String", arguments.file ) );
+	}	
+	
+	private boolean function isFile( required string file ){
+		return getFile( arguments.file ).isFile();
 	}
 	
 }

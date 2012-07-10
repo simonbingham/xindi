@@ -19,25 +19,11 @@
 component accessors="true" extends="model.abstract.BaseGateway"{
 
 	/*
-	 * Dependency injection
-	 */	
-	
-	property name="Validator" getter="false";
-	
-	/*
 	 * Public methods
 	 */
 
-	function deleteEnquiry( required numeric enquiryid ){
-		var Enquiry = get( "Enquiry", arguments.enquiryid );
-		var result = variables.Validator.newResult();
-		if( Enquiry.isPersisted() ){ 
-			delete( Enquiry );
-			result.setSuccessMessage( "The enquiry from &quot;#Enquiry.getFullName()#&quot; has been deleted." );
-		}else{
-			result.setErrorMessage( "The enquiry could not be deleted." );
-		}
-		return result;
+	function deleteEnquiry( required Enquiry Enquiry ){
+		delete( Enquiry );
 	}
 	
 	array function getEnquiries( numeric maxresults=0 ){
@@ -52,54 +38,23 @@ component accessors="true" extends="model.abstract.BaseGateway"{
 
 	numeric function getUnreadCount(){
 		return ORMExecuteQuery( "select count( * ) from Enquiry where unread = true", true );
-	}	
+	}
 	 	
-	function getValidator( required Enquiry ){
-		return variables.Validator.getValidator( theObject=arguments.Enquiry );
-	}	
-	
-	function markRead( numeric enquiryid=0 ){
-		var result = variables.Validator.newResult();
-		if( arguments.enquiryid ){
-			var Enquiry = get( "Enquiry", arguments.enquiryid );
-			if( !IsNull( Enquiry ) ){ 
-				Enquiry.setRead();
-				save( Enquiry );
-				result.setSuccessMessage( "The message has been marked as read." );
-			}else{
-				result.setErrorMessage( "The message could not be marked as read." );
-			}
+	function markRead( Enquiry Enquiry="" ){
+		if( arguments.Enquiry ){
+			arguments.Enquiry.setRead();
+			save( arguments.Enquiry );
 		}else{
-			result.setSuccessMessage( "All messages have been marked as read." );
 			ORMExecuteQuery( "update Enquiry set unread=false" );		
 		}
-		return result;
-	}	
+	}
 	
 	function newEnquiry(){
 		return new( "Enquiry" );
 	}
 	
-	function sendEnquiry( required struct properties, required struct config, required string emailtemplatepath ){
-		var emailtemplate = "";
-		var Enquiry = newEnquiry(); 
-		Enquiry.populate( arguments.properties );
-		var result = variables.Validator.validate( theObject=Enquiry );
-		if( !result.hasErrors() ){
-			savecontent variable="emailtemplate"{ include arguments.emailtemplatepath; }
-			var Email = new mail();
-		    Email.setSubject( arguments.config.subject );
-	    	Email.setTo( arguments.config.emailto );
-	    	Email.setFrom( Enquiry.getEmail() );
-	    	Email.setBody( emailtemplate );
-	    	Email.setType( "html" );
-	        Email.send();
-	        save( Enquiry );
-	        result.setSuccessMessage( "Your enquiry has been sent." );
-		}else{
-			result.setErrorMessage( "Your enquiry could not be sent. Please amend the highlighted fields." );
-		}
-		return result;
+	function saveEnquiry( required Enquiry Enquiry ){
+        save( arguments.Enquiry );
 	}
 	
 }

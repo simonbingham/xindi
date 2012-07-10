@@ -21,8 +21,10 @@ component accessors="true"{
 	/*
 	 * Dependency injection
 	 */	
-	
+
+	property name="MetaData" getter="false";
 	property name="NewsGateway" getter="false";
+	property name="Validator" getter="false";	
 
 	/*
 	 * Public methods
@@ -30,7 +32,14 @@ component accessors="true"{
 	 	
 	function deleteArticle( required articleid ){
 		transaction{
-			var result = variables.NewsGateway.deleteArticle( articleid=Val( arguments.articleid ) );
+			var Article = variables.NewsGateway.getArticle( "Article", Val( arguments.articleid ) );
+			var result = variables.Validator.newResult();
+			if( Article.isPersisted() ){ 
+				variables.NewsGateway.deleteArticle( Article );
+				result.setSuccessMessage( "The article &quot;#Article.getTitle()#&quot; has been deleted." );
+			}else{
+				result.setErrorMessage( "The article could not be deleted." );
+			}
 		}
 		return result;
 	}
@@ -54,12 +63,33 @@ component accessors="true"{
 	}
 		
 	function getValidator( required Article ){
-		return variables.NewsGateway.getValidator( argumentCollection=arguments );
+		return variables.Validator.getValidator( theObject=arguments.Article );
 	}
 	
 	function saveArticle( required struct properties ){
 		transaction{
-			var Article = variables.NewsGateway.saveArticle( argumentCollection=arguments );
+			param name="arguments.properties.articleid" default="0";
+			var Article = variables.NewsGateway.getArticle( "Article", Val( arguments.properties.articleid ) );
+			try{
+				arguments.properties.published = CreateDate( ListGetAt( arguments.properties.published, 3, "/" ), ListGetAt( arguments.properties.published, 2, "/" ), ListGetAt( arguments.properties.published, 1, "/" ) );
+			}
+			catch(any e){
+				arguments.properties.published = "";
+			}
+			Article.populate( arguments.properties );
+			if( IsNull( Article.getContent() ) ) Article.setContent( "" );
+			if( Article.isMetaGenerated() ){
+				Article.setMetaTitle( Article.getTitle() );
+				Article.setMetaDescription( variables.MetaData.generateMetaDescription( Article.getContent() ) );
+				Article.setMetaKeywords( variables.MetaData.generateMetaKeywords( Article.getContent() ) );
+			}
+			var result = variables.Validator.validate( theObject=Article );
+			if( !result.hasErrors() ){
+				variables.NewsGateway.saveArticle( Article );
+				result.setSuccessMessage( "The article &quot;#Article.getTitle()#&quot; has been saved." );
+			}else{
+				result.setErrorMessage( "Your article could not be saved. Please amend the highlighted fields." );
+			}
 		}
 		return Article;
 	}
