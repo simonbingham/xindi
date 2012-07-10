@@ -43,7 +43,7 @@ component accessors="true" extends="abstract"{
 	void function maintain( required struct rc ){
 		param name="rc.pageid" default="0";
 		param name="rc.context" default="create";
-		if( !StructKeyExists( rc, "Page" ) ) rc.Page = variables.ContentService.getPageByID( pageid=rc.pageid );
+		if( !StructKeyExists( rc, "Page" ) ) rc.Page = variables.ContentService.getPage( pageid=rc.pageid );
 		if( rc.Page.isPersisted() && !rc.Page.hasRoute( variables.fw.getRoutes() ) ) rc.context = "update";
 		rc.Validator = variables.ContentService.getValidator( Page=rc.Page );
 		if( !StructKeyExists( rc, "result" ) ) rc.result = rc.Validator.newResult();

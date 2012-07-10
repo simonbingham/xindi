@@ -30,7 +30,7 @@
 		 */			
 		
 		function deletePage( required numeric pageid ){
-			var Page = getPageByID( arguments.pageid );
+			var Page = getPage( arguments.pageid );
 			var result = variables.Validator.newResult();
 			if( Page.isPersisted() ){
 				var startvalue = Page.getLeftValue();
@@ -44,7 +44,7 @@
 			return result;
 		}
 		
-		function getPageByID( required numeric pageid ){
+		function getPage( required numeric pageid ){
 			var Page = EntityLoadByPK( "Page", arguments.pageid );
 			if( IsNull( Page ) ) Page = newPage();
 			return Page;
@@ -98,7 +98,7 @@
 			var nextsiblingdescendentidlist = "";
 			var previoussibling = "";
 			var previoussiblingdescendentidlist = "";
-			var Page = getPageByID( arguments.pageid );
+			var Page = getPage( arguments.pageid );
 			var result = variables.Validator.newResult();
 			result.setErrorMessage( "The page could not be moved." );
 			if( Page.isPersisted() && ListFindNoCase( "up,down", Trim( arguments.direction ) ) ){
@@ -144,7 +144,7 @@
 			param name="arguments.properties.pageid" default="";
 			arguments.properties.pageid = Val( arguments.properties.pageid );
 			var Page = "";
-			Page = getPageByID( arguments.properties.pageid );
+			Page = getPage( arguments.properties.pageid );
 			Page.populate( arguments.properties );
 			if( Page.isMetaGenerated() ){
 				Page.setMetaTitle( Page.getTitle() );
@@ -154,7 +154,7 @@
 			var result = variables.Validator.validate( theObject=Page, context=arguments.context );
 			if( !result.hasErrors() ){
 				if( !Page.isPersisted() && arguments.ancestorid ){
-					var Ancestor = getPageByID( arguments.ancestorid );
+					var Ancestor = getPage( arguments.ancestorid );
 					Page.setLeftValue( Ancestor.getRightValue() );
 					Page.setRightValue( Ancestor.getRightValue() + 1 );
 					ORMExecuteQuery( "update Page set leftvalue = leftvalue + 2 where leftvalue > :startingvalue", { startingvalue=Ancestor.getRightValue() - 1 } );

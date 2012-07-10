@@ -33,14 +33,14 @@ component extends="mxunit.framework.TestCase"{
 		assertTrue( result );
 	}
 
-	function testGetPageByIDWherePageDoesNotExists(){
-		var Page = CUT.getPageByID( pageid=14 );
+	function testGetPageWherePageDoesNotExists(){
+		var Page = CUT.getPage( pageid=14 );
 		var result = Page.isPersisted();
 		assertFalse( result );
 	}
 	
-	function testGetPageByIDWherePageExists(){
-		var Page = CUT.getPageByID( pageid=1 );
+	function testGetPageWherePageExists(){
+		var Page = CUT.getPage( pageid=1 );
 		var result = Page.isPersisted();
 		assertTrue( result );
 	}

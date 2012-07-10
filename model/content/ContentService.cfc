@@ -35,8 +35,8 @@ component accessors="true"{
 		return result;
 	}
 	
-	function getPageByID( required pageid ){
-		return variables.ContentGateway.getPageByID( pageid=Val( arguments.pageid ) );
+	function getPage( required pageid ){
+		return variables.ContentGateway.getPage( pageid=Val( arguments.pageid ) );
 	}
 	
 	function getPageBySlug( required string slug ){
