@@ -135,10 +135,10 @@ component extends="mxunit.framework.TestCase"{
 		// initialise component under test
 		CUT = new model.user.UserService();
 		var UserGateway = new model.user.UserGateway();
+		CUT.setUserGateway( UserGateway );
 		var validatorconfig = { definitionPath="/model/", JSIncludes=false, resultPath="model.utility.ValidatorResult" };
 		Validator = new ValidateThis.ValidateThis( validatorconfig );
-		UserGateway.setValidator( Validator );
-		CUT.setUserGateway( UserGateway );
+		CUT.setValidator( Validator );
 		
 		// reinitialise ORM for the application (create database table)
 		ORMReload();

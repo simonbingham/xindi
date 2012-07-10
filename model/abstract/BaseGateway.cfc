@@ -32,8 +32,9 @@ component accessors="true"{
 		return EntityNew( arguments.entityname );
 	}
 
-	void function save( required entity ){
+	function save( required entity ){
 		EntitySave( arguments.entity );
+		return arguments.entity;
 	}
 
 }

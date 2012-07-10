@@ -22,15 +22,15 @@
 		 * Public methods
 		 */	
 		
-		function deleteArticle( required Article Article ){
-			delete( arguments.Article );
+		void function deleteArticle( required Article theArticle ){
+			delete( arguments.theArticle );
 		}
 		
-		function getArticle( required numeric articleid ){
+		Article function getArticle( required numeric articleid ){
 			return get( "Article", arguments.articleid );
 		}
 		
-		function getArticleByUUID( required string uuid ){
+		Article function getArticleByUUID( required string uuid ){
 			var Article = ORMExecuteQuery( "from Article where uuid=:uuid and published<=:published", { uuid=arguments.uuid, published=Now() }, true );
 			if( IsNull( Article ) ) Article = new( "Article" );
 			return Article;
@@ -75,8 +75,8 @@
 	</cffunction> 
 	
 	<cfscript>
-		function saveArticle( required Article Article ){
-			save( arguments.Article );
+		Article function saveArticle( required Article theArticle ){
+			return save( arguments.theArticle );
 		}
 	</cfscript>
 </cfcomponent>

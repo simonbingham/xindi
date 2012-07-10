@@ -50,13 +50,13 @@ component accessors="true" extends="model.abstract.BaseGateway"{
 	boolean function isAllowed( required struct session, required string action, string whitelist ){
 		param name="arguments.whitelist" default=variables.config.security.whitelist; 
 		// user is not logged in
-		if( !hasCurrentUser( session=arguments.session ) ){
+		if( !hasCurrentUser( arguments.session ) ){
 			// if the requested action is in the whitelist allow access
 			for ( var unsecured in ListToArray( arguments.whitelist ) ){
 				if( ReFindNoCase( unsecured, arguments.action ) ) return true;
 			}
 		// user is logged in so allow access to requested action 
-		}else if( hasCurrentUser( session=arguments.session ) ){
+		}else if( hasCurrentUser( arguments.session ) ){
 			return true;
 		}
 		// previous conditions not met so deny access to requested action
@@ -75,7 +75,7 @@ component accessors="true" extends="model.abstract.BaseGateway"{
 		var result = variables.Validator.validate( theObject=User, context="login" );
 		User = variables.UserGateway.getUserByCredentials( User=User );
 		if( User.isPersisted() ){
-			setCurrentUser( session=arguments.session, User=User );
+			setCurrentUser( arguments.session, User );
 			result.setSuccessMessage( "Welcome #User.getFirstName()#. You have been logged in." );
 		}else{
 			var message = "Sorry, your login details have not been recognised.";
@@ -95,7 +95,7 @@ component accessors="true" extends="model.abstract.BaseGateway"{
 		var User = new( "User" );
 		User.populate( arguments.properties );
 		var result = variables.Validator.validate( theObject=User, context="password" );
-		User = variables.UserGateway.getUserByEmailOrUsername( User=User );
+		User = variables.UserGateway.getUserByEmailOrUsername( User );
 		if( User.isPersisted() ){
 			var password = Left( CreateUUID(), 8 );
 			User.setPassword( password );

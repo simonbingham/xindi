@@ -19,70 +19,39 @@
 component accessors="true" extends="model.abstract.BaseGateway"{
 
 	/*
-	 * Dependency injection
-	 */	
-	
-	property name="Validator" getter="false";
-
-	/*
 	 * Public methods
 	 */
 	 	
-	function deleteUser( required numeric userid ){
-		var User = get( "User", arguments.userid );
-		var result = variables.Validator.newResult();
-		if( User.isPersisted() ){
-			delete( User );
-			result.setSuccessMessage( "The user &quot;#User.getFullName()#&quot; has been deleted." );
-		}else{
-			result.setErrorMessage( "The user could not be deleted." );
-		}
-		return result;
+	void function deleteUser( required User theUser ){
+		delete( arguments.theUser );
 	}
 	
-	function getUser( required numeric userid ){
+	User function getUser( required numeric userid ){
 		return get( "User", arguments.userid );
 	}
 
-	function getUserByCredentials( required User ){
-		User = ORMExecuteQuery( "from User where ( username=:username or email=:email ) and password=:password", { username=arguments.User.getUsername(), email=arguments.User.getEmail(), password=arguments.User.getPassword() }, true );
+	User function getUserByCredentials( required User theUser ){
+		var User = ORMExecuteQuery( "from User where username=:username or email=:email ) and password=:password", { username=arguments.theUser.getUsername(), email=arguments.theUser.getEmail(), password=arguments.theUser.getPassword() }, true );
 		if( IsNull( User ) ) User = new( "User" );
 		return User;
 	}
 
-	// TODO: might be able to remove this
-	function getUserByEmailOrUsername( required User ){
-		User = ORMExecuteQuery( "from User where username=:username or email=:email", { username=arguments.User.getUsername(), email=arguments.User.getEmail() }, true );
+	User function getUserByEmailOrUsername( required User theUser ){
+		var User = ORMExecuteQuery( "from User where username=:username or email=:email", { username=arguments.theUser.getUsername(), email=arguments.theUser.getEmail() }, true );
 		if( IsNull( User ) ) User = new( "User" );
 		return User;		
 	}
 
 	array function getUsers(){
-		return EntityLoad( "User", {}, "firstname" );	
+		return EntityLoad( "User", {}, "firstname" );
 	}
 		
-	function getValidator( required User ){
-		return variables.Validator.getValidator( theObject=arguments.User );
-	}
-	
-	function newUser(){
+	User function newUser(){
 		return new( "User" );
 	}
 	
-	function saveUser( required struct properties, required string context ){
-		param name="arguments.properties.userid" default="0";
-		var result = variables.Validator.newResult();
-		var User = ""; 
-		User = get( "User", arguments.properties.userid );
-		User.populate( arguments.properties );
-		var result = variables.Validator.validate( theObject=User, context=arguments.context );
-		if( !result.hasErrors() ){
-			result.setSuccessMessage( "The user &quot;#User.getFullName()#&quot; has been saved." );
-			save( User );
-		}else{
-			result.setErrorMessage( "The user could not be saved. Please amend the highlighted fields." );
-		}
-		return result;
+	User function saveUser( required User theUser ){
+		return save( arguments.theUser );
 	}
 	
 }

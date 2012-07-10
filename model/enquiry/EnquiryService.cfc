@@ -48,23 +48,22 @@ component accessors="true"{
 	}	
 
 	function getEnquiry( required enquiryid ){
-		return variables.EnquiryGateway.getEnquiry( enquiryid=Val( arguments.enquiryid ) );
+		return variables.EnquiryGateway.getEnquiry( Val( arguments.enquiryid ) );
 	}
 
 	numeric function getUnreadCount(){
 		return variables.EnquiryGateway.getUnreadCount();		
 	}	
 	 	
-	function getValidator( required Enquiry ){
-		return variables.Validator.getValidator( theObject=arguments.Enquiry );
+	function getValidator( required Enquiry theEnquiry ){
+		return variables.Validator.getValidator( theObject=arguments.theEnquiry );
 	}	
 	
 	function markRead( enquiryid=0 ){
 		transaction{
-			arguments.enquiryid = Val( arguments.enquiryid );
 			var result = variables.Validator.newResult();
-			if( arguments.enquiryid ){
-				var Enquiry = variables.EnquiryGateway.getEnquiry( arguments.enquiryid );
+			if( Val( arguments.enquiryid ) ){
+				var Enquiry = variables.EnquiryGateway.getEnquiry( Val( arguments.enquiryid ) );
 				if( !IsNull( Enquiry ) ){
 					variables.EnquiryGateway.markRead( Enquiry );
 					result.setSuccessMessage( "The message has been marked as read." );
@@ -79,7 +78,7 @@ component accessors="true"{
 		return result;
 	}	
 	
-	function newEnquiry(){
+	Enquiry function newEnquiry(){
 		return variables.EnquiryGateway.newEnquiry();
 	}
 	

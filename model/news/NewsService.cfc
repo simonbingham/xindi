@@ -30,7 +30,7 @@ component accessors="true"{
 	 * Public methods
 	 */
 	 	
-	function deleteArticle( required articleid ){
+	void function deleteArticle( required articleid ){
 		transaction{
 			var Article = variables.NewsGateway.getArticle( "Article", Val( arguments.articleid ) );
 			var result = variables.Validator.newResult();
@@ -44,11 +44,11 @@ component accessors="true"{
 		return result;
 	}
 	
-	function getArticle( required articleid ){
-		return variables.NewsGateway.getArticle( articleid=Val( arguments.articleid ) );
+	Article function getArticle( required articleid ){
+		return variables.NewsGateway.getArticle( Val( arguments.articleid ) );
 	}
 	
-	function getArticleByUUID( required string uuid ){
+	Article function getArticleByUUID( required string uuid ){
 		return variables.NewsGateway.getArticleByUUID( argumentCollection=arguments );
 	}
 	
@@ -62,8 +62,8 @@ component accessors="true"{
 		return variables.NewsGateway.getArticles( argumentCollection=arguments );
 	}
 		
-	function getValidator( required Article ){
-		return variables.Validator.getValidator( theObject=arguments.Article );
+	function getValidator( required Article theArticle ){
+		return variables.Validator.getValidator( theObject=arguments.theArticle );
 	}
 	
 	function saveArticle( required struct properties ){
