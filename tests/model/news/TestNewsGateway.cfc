@@ -40,14 +40,14 @@ component extends="mxunit.framework.TestCase"{
 		assertTrue( result );
 	}
 
-	function testGetArticleByIDWhereArticleDoesNotExist(){
-		var Article = CUT.getArticleByID( articleid=100 );
+	function testGetArticleWhereArticleDoesNotExist(){
+		var Article = CUT.getArticle( articleid=100 );
 		var result = Article.isPersisted();
 		assertFalse( result );
 	}
 		
-	function testGetArticleByIDWhereArticleExists(){
-		var Article = CUT.getArticleByID( articleid=1 );
+	function testGetArticleWhereArticleExists(){
+		var Article = CUT.getArticle( articleid=1 );
 		var result = Article.isPersisted();
 		assertTrue( result );
 	}

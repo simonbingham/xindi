@@ -30,7 +30,7 @@
 		 */	
 		
 		function deleteArticle( required articleid ){
-			var Article = getArticleByID( Val( arguments.articleid ) );
+			var Article = getArticle( Val( arguments.articleid ) );
 			var result = variables.Validator.newResult();
 			if( Article.isPersisted() ){ 
 				EntityDelete( Article );
@@ -41,7 +41,7 @@
 			return result;
 		}
 		
-		function getArticleByID( required articleid ){
+		function getArticle( required articleid ){
 			var Article = EntityLoadByPK( "Article", Val( arguments.articleid ) );
 			if( IsNull( Article ) ) Article = newArticle();
 			return Article;
@@ -99,7 +99,7 @@
 		function saveArticle( required struct properties ){
 			param name="arguments.properties.articleid" default="0";
 			var Article = ""; 
-			Article = getArticleByID( Val( arguments.properties.articleid ) );
+			Article = getArticle( Val( arguments.properties.articleid ) );
 			try{
 				arguments.properties.published = CreateDate( ListGetAt( arguments.properties.published, 3, "/" ), ListGetAt( arguments.properties.published, 2, "/" ), ListGetAt( arguments.properties.published, 1, "/" ) );
 			}

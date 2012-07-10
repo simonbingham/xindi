@@ -36,7 +36,7 @@ component accessors="true"{
 	}
 	
 	function getArticleByID( required articleid ){
-		return variables.NewsGateway.getArticleByID( articleid=Val( arguments.articleid ) );
+		return variables.NewsGateway.getArticle( articleid=Val( arguments.articleid ) );
 	}
 	
 	function getArticleByUUID( required string uuid ){
