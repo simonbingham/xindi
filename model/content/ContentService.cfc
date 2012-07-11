@@ -44,11 +44,11 @@ component accessors="true"{
 		return result;
 	}
 	
-	function getPage( required pageid ){
+	Page function getPage( required pageid ){
 		return variables.ContentGateway.getPage( Val( arguments.pageid ) );
 	}
 	
-	function getPageBySlug( required string slug ){
+	Page function getPageBySlug( required string slug ){
 		return variables.ContentGateway.getPageBySlug( argumentCollection=arguments );
 	}
 
@@ -57,11 +57,11 @@ component accessors="true"{
 		return variables.ContentGateway.getPages( argumentCollection=arguments );
 	}
 
-	function getRoot(){
+	Page function getRoot(){
 		return variables.ContentGateway.getRoot();
 	}	
 	
-	function getValidator( required any Page ){
+	function getValidator( required Page ){
 		return variables.Validator.getValidator( theObject=arguments.Page );
 	}
 	

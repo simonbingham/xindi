@@ -93,10 +93,10 @@ component extends="mxunit.framework.TestCase"{
 	function setUp(){
 		// initialise component under test
 		CUT = new model.enquiry.EnquiryService();
-		var EnquiryGateway = new model.enquiry.EnquiryGateway();
 		var validatorconfig = { definitionPath="/model/", JSIncludes=false, resultPath="model.utility.ValidatorResult" };
 		Validator = new ValidateThis.ValidateThis( validatorconfig );
-		EnquiryGateway.setValidator( Validator );
+		CUT.setValidator( Validator );
+		var EnquiryGateway = new model.enquiry.EnquiryGateway();
 		CUT.setEnquiryGateway( EnquiryGateway );
 		
 		// reinitialise ORM for the application (create database table)

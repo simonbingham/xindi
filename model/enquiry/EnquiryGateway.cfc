@@ -22,8 +22,8 @@ component accessors="true" extends="model.abstract.BaseGateway"{
 	 * Public methods
 	 */
 
-	function deleteEnquiry( required Enquiry Enquiry ){
-		delete( Enquiry );
+	void function deleteEnquiry( required Enquiry theEnquiry ){
+		delete( arguments.theEnquiry );
 	}
 	
 	array function getEnquiries( numeric maxresults=0 ){
@@ -32,7 +32,7 @@ component accessors="true" extends="model.abstract.BaseGateway"{
 		return EntityLoad( "Enquiry", {}, "unread DESC, created DESC", ormoptions );
 	}	
 
-	function getEnquiry( required numeric enquiryid ){
+	Enquiry function getEnquiry( required numeric enquiryid ){
 		return get( "Enquiry", arguments.enquiryid );
 	}
 
@@ -40,21 +40,21 @@ component accessors="true" extends="model.abstract.BaseGateway"{
 		return ORMExecuteQuery( "select count( * ) from Enquiry where unread = true", true );
 	}
 	 	
-	function markRead( Enquiry Enquiry="" ){
-		if( arguments.Enquiry ){
-			arguments.Enquiry.setRead();
-			save( arguments.Enquiry );
+	void function markRead( theEnquiry="" ){
+		if( IsObject( arguments.theEnquiry ) ){
+			arguments.theEnquiry.setRead();
+			save( arguments.theEnquiry );
 		}else{
 			ORMExecuteQuery( "update Enquiry set unread=false" );		
 		}
 	}
 	
-	function newEnquiry(){
+	Enquiry function newEnquiry(){
 		return new( "Enquiry" );
 	}
 	
-	function saveEnquiry( required Enquiry Enquiry ){
-        save( arguments.Enquiry );
+	Enquiry function saveEnquiry( required Enquiry theEnquiry ){
+        return save( arguments.theEnquiry );
 	}
 	
 }

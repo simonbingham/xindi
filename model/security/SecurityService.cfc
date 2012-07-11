@@ -29,11 +29,11 @@ component accessors="true"{
 	 */
 
 	function deleteCurrentUser( required struct session ){
-		return variables.SecurityGateway.deleteCurrentUser( session=arguments.session );
+		return variables.SecurityGateway.deleteCurrentUser( arguments.session );
 	}
 
 	boolean function hasCurrentUser( required struct session ){
-		return variables.SecurityGateway.hasCurrentUser( session=arguments.session );
+		return variables.SecurityGateway.hasCurrentUser( arguments.session );
 	}
 	
 	boolean function isAllowed( required struct session, required string action, string whitelist ){

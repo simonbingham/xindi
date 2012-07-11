@@ -22,38 +22,39 @@ component extends="mxunit.framework.TestCase"{
 	
 	// public methods
 	 
-	function testDeletePageWherePageDoesNotExist(){
-		var deletepageresult = CUT.deletePage( pageid=100 );
-		var result = deletepageresult.getIsSuccess();
-		assertTrue( result );
-	}
-	
-	function testDeletePageWherePageExists(){
-		var deletepageresult = CUT.deletePage( pageid=13 );
-		var result = deletepageresult.getIsSuccess();
-		assertTrue( result );
+	function testDeletePage(){
+		var pages = EntityLoad( "Page" );
+		var pagecount = ArrayLen( pages );
+		assertEquals( 13, pagecount );
+		var Page = EntityLoadByPK( "Page", 13 );
+		transaction{
+			CUT.deletePage( Page );
+		}
+		pages = EntityLoad( "Page" );
+		pagecount = ArrayLen( pages );
+		assertEquals( 12, pagecount );
 	}
 
 	function testGetPageWherePageDoesNotExists(){
-		var Page = CUT.getPage( pageid=14 );
+		var Page = CUT.getPage( 14 );
 		var result = Page.isPersisted();
 		assertFalse( result );		
 	}
 	
 	function testGetPageWherePageExists(){
-		var Page = CUT.getPage( pageid=1 );
+		var Page = CUT.getPage( 1 );
 		var result = Page.isPersisted();
 		assertTrue( result );
 	}
 
-	function testGetPageSlugWherePageDoesNotExist(){
-		var Page = CUT.getPageBySlug( slug="foobar" );
+	function testGetPageBySlugWherePageDoesNotExist(){
+		var Page = CUT.getPageBySlug( "foo" );
 		var result = Page.isPersisted();
-		assertFalse( result );	
+		assertFalse( result );
 	}
 	
 	function testGetPageSlugWherePageExists(){
-		var Page = CUT.getPageBySlug( slug="home" );
+		var Page = CUT.getPageBySlug( "home" );
 		var result = Page.isPersisted();
 		assertTrue( result );
 	}
@@ -94,41 +95,36 @@ component extends="mxunit.framework.TestCase"{
 		assertEquals( 1, result );
 	}
 
-	function testMovePageWherePageCanBeMovedDown(){
-		var movepageresult = CUT.movePage( pageid=12, direction="down" );
-		var result = movepageresult.getIsSuccess();
-		assertTrue( result );
-		result = movepageresult.getTheObject().getLeftValue();
+	function testMovePageDown(){
+		var Page = EntityLoadByPK( "Page", 12 );
+		var result = Page.getLeftValue();
+		assertEquals( 21, result );
+		Page = CUT.movePage( Page, "down" );
+		result = Page.getLeftValue();
+		assertEquals( 23, result );
 	}
 
-	function testMovePageWherePageCanBeMovedUp(){
-		var movepageresult = CUT.movePage( pageid=7, direction="up" );
-		var result = movepageresult.getIsSuccess();
-		assertTrue( result );
+	function testMovePageUp(){
+		var Page = EntityLoadByPK( "Page", 7 );
+		var result = Page.getLeftValue();
+		assertEquals( 7, result );
+		Page = CUT.movePage( Page, "up" );
+		result = Page.getLeftValue();
+		assertEquals( 5, result );
+
 	}
 
-	function testMovePageWherePageCannotBeMovedDown(){
-		var movepageresult = CUT.movePage( pageid=13, direction="down" );
-		var result = movepageresult.getIsSuccess();
-		assertTrue( result );
-	}
-
-	function testMovePageWherePageCannotBeMovedUp(){
-		var movepageresult = CUT.movePage( pageid=11, direction="up" );
-		var result = movepageresult.getIsSuccess();
-		assertFalse( result );
-	}
-
-	function testSavePageWherePageIsInvalid(){
-		var savepageresult = CUT.savePage( { title="", content="" }, 1, "create" );
-		var result = savepageresult.getIsSuccess();
-		assertFalse( result );
-	}
-	 
-	function testSavePageWherePageIsValid(){
-		var savepageresult = CUT.savePage( { title="foo", content="bar" }, 1, "create" );
-		var result = savepageresult.getIsSuccess();
-		assertTrue( result );
+	function testSavePage(){
+		var pages = EntityLoad( "Page" );
+		var pagecount = ArrayLen( pages );
+		assertEquals( 13, pagecount );		
+		var Page = EntityNew( "Page" );
+		Page.setTitle( "foo" );
+		Page.setContent( "bar" );
+		CUT.savePage( Page, 1 );
+		pages = EntityLoad( "Page" );
+		pagecount = ArrayLen( pages );
+		assertEquals( 14, pagecount );
 	}
 
 	// ------------------------ IMPLICIT ------------------------ // 

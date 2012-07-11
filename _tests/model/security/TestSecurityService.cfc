@@ -124,11 +124,10 @@ component extends="mxunit.framework.TestCase"{
 		Validator = new ValidateThis.ValidateThis( validatorconfig );
 		var SecurityGateway = new model.security.SecurityGateway();
 		var UserGateway = new model.user.UserGateway();
-		UserGateway.setValidator( Validator );
 		var $config = { security={ whitelist="^admin:security,^public:" } };
-		SecurityGateway.setConfig( $config );
-		SecurityGateway.setValidator( Validator );
-		SecurityGateway.setUserGateway( UserGateway );
+		CUT.setConfig( $config );
+		CUT.setValidator( Validator );
+		CUT.setUserGateway( UserGateway );
 		CUT.setSecurityGateway( SecurityGateway );
 		
 		// reinitialise ORM for the application (create database table)

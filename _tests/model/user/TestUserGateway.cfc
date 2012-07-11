@@ -20,22 +20,17 @@ component extends="mxunit.framework.TestCase"{
 
 	// ------------------------ UNIT TESTS ------------------------ //
 	
-	function testDeleteUserWhereUserDoesNotExist(){
-		var $ValidationResult = mock().getIsSuccess().returns( false );
-		var $Validator = mock().newResult().returns( ValidationResult=$ValidationResult );
-		CUT.setValidator( Validator=$Validator );
-		var deleteuserresult = CUT.deleteUser( 2 );
-		var result = deleteuserresult.getIsSuccess();
-		assertFalse( result );
-	}
-
-	function testDeleteUserWhereUserExists(){
-		var $ValidationResult = mock().getIsSuccess().returns( true );
-		var $Validator = mock().newResult().returns( ValidationResult=$ValidationResult );
-		CUT.setValidator( Validator=$Validator );
-		var deleteuserresult = CUT.deleteUser( 1 );
-		var result = deleteuserresult.getIsSuccess();
-		assertTrue( result );
+	function testDeleteUser(){
+		var users = EntityLoad( "User" );
+		var usercount = ArrayLen( users );
+		assertEquals( 1, usercount );
+		var User = EntityLoadByPK( "User", 1 );
+		transaction{
+			CUT.deleteUser( User );
+		}
+		users = EntityLoad( "User" );
+		usercount = ArrayLen( users );
+		assertEquals( 0, usercount );
 	}
 
 	function testGetUserWhereUserDoesNotExist(){
@@ -51,43 +46,39 @@ component extends="mxunit.framework.TestCase"{
 	}	
 
 	function testGetUserByCredentialsReturnsNullForInCorrectCredentials(){
-		var $LoginUser = mock();
-		$LoginUser.getUsername().returns( "aliaspooryorik" );
-		$LoginUser.getEmail().returns( "" );
-		$LoginUser.getPassword().returns( "1111111111111111111111111111111111111111111111111111111111111111" );		
-		var User = CUT.getUserByCredentials( User=$LoginUser );
+		var User = EntityNew( "User" );
+		User.setUsername( "foo" );
+		User.setEmail( "foo@bar.com" );
+		User.setPassword( "1111111111111111111111111111111111111111111111111111111111111111" );
+		User = CUT.getUserByCredentials( theUser=User );
 		var result = User.isPersisted();
 		assertFalse( result );
 	}
 	
 	function testGetUserByCredentialsReturnsUserForCorrectCredentialsByEmail(){
-		var $LoginUser = mock();
-		$LoginUser.getUsername().returns( "" );
-		$LoginUser.getEmail().returns( "example@example.com" );
-		$LoginUser.getPassword().returns( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB" );
-		var User = CUT.getUserByCredentials( User=$LoginUser );
-		var result = IsNull( User );
-		assertEquals( false, result );
-		result = User.getEmail();
-		assertEquals( "example@example.com", result );
+		var User = EntityNew( "User" );
+		User.setUsername( "" );
+		User.setEmail( "example@example.com" );
+		User.setPassword( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB" );		
+		User = CUT.getUserByCredentials( theUser=User );
+		var result = User.isPersisted();
+		assertTrue( result );
 	}
 
 	function testGetUserByCredentialsReturnsUserForCorrectCredentialsByUsername(){
-		var $LoginUser = mock();
-		$LoginUser.getUsername().returns( "admin" );
-		$LoginUser.getEmail().returns( "" );
-		$LoginUser.getPassword().returns( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB" );
-		var User = CUT.getUserByCredentials( User=$LoginUser );
-		var result = IsNull( User );
-		assertEquals( false, result );
-		result = User.getEmail();
-		assertEquals( "example@example.com", result );
+		var User = EntityNew( "User" );
+		User.setUsername( "admin" );
+		User.setEmail( "" );
+		User.setPassword( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB" );		
+		User = CUT.getUserByCredentials( theUser=User );
+		var result = User.isPersisted();
+		assertTrue( result );
 	}
 
 	function testGetUserByEmailOrUsernameWhereEmailIsSpecified(){
 		var User = CUT.newUser();
 		User.setEmail( "example@example.com" );
-		User = CUT.getUserByEmailOrUsername( User=User );
+		User = CUT.getUserByEmailOrUsername( theUser=User );
 		var result = User.isPersisted();
 		assertTrue( result );
 	}
@@ -95,7 +86,7 @@ component extends="mxunit.framework.TestCase"{
 	function testGetUserByEmailOrUsernameWhereUsernameIsSpecified(){
 		var User = CUT.newUser();
 		User.setUsername( "admin" );
-		User = CUT.getUserByEmailOrUsername( User=User );
+		User = CUT.getUserByEmailOrUsername( theUser=User );
 		var result = User.isPersisted();
 		assertTrue( result );
 	}
@@ -106,38 +97,26 @@ component extends="mxunit.framework.TestCase"{
 		assertTrue( result );
 	}	
 	
-	function testGetValidator(){
-		var $Validator = mock();
-		var User = CUT.newUser();
-		CUT.setValidator( $Validator );
-		var result = IsObject( CUT.getValidator( User=User ) );
-		assertTrue( result );
-	}
-	
 	function testNewUser(){
 		var User = CUT.newUser();
 		var result = User.isPersisted();
 		assertFalse( result );
 	}
 
-	function testSaveUserWhereUserIsInvalid(){
-		var properties = { firstname="Simon", lastname="Bingham", email="foobarfoobarcom", username="foo", password="bar"  };
-		var $ValidationResult = mock().hasErrors().returns( true ).getIsSuccess().returns( false );
-		var $Validator = mock().validate( theObject='{any}', Context='{string}' ).returns( ValidationResult=$ValidationResult );
-		CUT.setValidator( Validator=$Validator );		
-		var saveuserresult = CUT.saveUser( properties, "create" );
-		var result = saveuserresult.getIsSuccess();
-		assertFalse( result );
-	}
-	
-	function testSaveUserWhereUserIsValid(){
-		var properties = { firstname="Simon", lastname="Bingham", email="foobar@foobar.com", username="foo", password="bar"  };
-		var $ValidationResult = mock().hasErrors().returns( false ).getIsSuccess().returns( true );
-		var $Validator = mock().validate( theObject='{any}', Context='{string}' ).returns( ValidationResult=$ValidationResult );
-		CUT.setValidator( Validator=$Validator );	
-		var saveuserresult = CUT.saveUser( properties, "create" );
-		var result = saveuserresult.getIsSuccess();
-		assertTrue( result );
+	function testSaveUser(){
+		var users = EntityLoad( "User" );
+		var usercount = ArrayLen( users );
+		assertEquals( 1, usercount );
+		var User = EntityNew( "User" );
+		User.setFirstName( "Simon" );
+		User.setLastName( "Bingham" );
+		User.setEmail( "foo@bar.com" );
+		User.setUsername( "foo" );
+		User.setPassword( "bar" );
+		CUT.saveUser( User );
+		users = EntityLoad( "User" );
+		usercount = ArrayLen( users );
+		assertEquals( 2, usercount );
 	}	
 
 	// ------------------------ IMPLICIT ------------------------ //

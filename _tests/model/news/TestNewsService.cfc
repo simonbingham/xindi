@@ -21,37 +21,37 @@ component extends="mxunit.framework.TestCase"{
 	// ------------------------ INTEGRATION TESTS ------------------------ //
 	
 	function testDeleteArticleWhereArticleDoesNotExist(){
-		var deletearticleresult = CUT.deleteArticle( articleid=4 );
+		var deletearticleresult = CUT.deleteArticle( 4 );
 		var result = deletearticleresult.getIsSuccess();
 		assertFalse( result );
 	}
 	
 	function testDeleteArticleWhereArticleExists(){
-		var deletearticleresult = CUT.deleteArticle( articleid=1 );
+		var deletearticleresult = CUT.deleteArticle( 1 );
 		var result = deletearticleresult.getIsSuccess();
 		assertTrue( result );
 	}	
 
 	function testGetArticleWhereArticleDoesNotExist(){
-		var Article = CUT.getArticle( articleid=100 );
+		var Article = CUT.getArticle( 100 );
 		var result = Article.isPersisted();
 		assertFalse( result );
 	}
 		
 	function testGetArticleWhereArticleExists(){
-		var Article = CUT.getArticle( articleid=1 );
+		var Article = CUT.getArticle( 1 );
 		var result = Article.isPersisted();
 		assertTrue( result );
 	}
 
 	function testGetArticleByUUIDWhereArticleDoesNotExist(){
-		var Article = CUT.getArticleByUUID( uuid="foobar" );
+		var Article = CUT.getArticleByUUID( "foobar" );
 		var result = Article.isPersisted();
 		assertFalse( result );
 	}	
 	
 	function testGetArticleByUUIDWhereArticleExists(){
-		var Article = CUT.getArticleByUUID( uuid="sample-article-a" );
+		var Article = CUT.getArticleByUUID( "sample-article-a" );
 		var result = Article.isPersisted();
 		assertTrue( result );
 	}
@@ -86,7 +86,7 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testGetValidator(){
-		var Article = CUT.getArticle( articleid=1 );
+		var Article = CUT.getArticle( 1 );
 		var Validator = CUT.getValidator( Article );
 		var result = IsObject( Validator );	
 		assertTrue( result );
@@ -113,12 +113,12 @@ component extends="mxunit.framework.TestCase"{
 		// initialise component under test
 		CUT = new model.news.NewsService();
 		var NewsGateway = new model.news.NewsGateway();
+		CUT.setNewsGateway( NewsGateway );		
 		var validatorconfig = { definitionPath="/model/", JSIncludes=false, resultPath="model.utility.ValidatorResult" };
 		Validator = new ValidateThis.ValidateThis( validatorconfig );
-		NewsGateway.setValidator( Validator );
+		CUT.setValidator( Validator );
 		var MetaData = new model.content.MetaData();
-		NewsGateway.setMetaData( MetaData );
-		CUT.setNewsGateway( NewsGateway );		
+		CUT.setMetaData( MetaData );
 		
 		// reinitialise ORM for the application (create database table)
 		ORMReload();

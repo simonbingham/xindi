@@ -22,22 +22,17 @@ component extends="mxunit.framework.TestCase"{
 	
 	// public methods
 
-	function testDeleteArticleWhereArticleDoesNotExist(){
-		var $ValidationResult = mock().getIsSuccess().returns( false );
-		var $Validator = mock().newResult().returns( $ValidationResult );
-		CUT.setValidator( Validator=$Validator );
-		var deletearticleresult = CUT.deleteArticle( articleid=4 );
-		var result = deletearticleresult.getIsSuccess();
-		assertFalse( result );
-	}
-		
-	function testDeleteArticleWhereArticleExists(){
-		var $ValidationResult = mock().getIsSuccess().returns( true );
-		var $Validator = mock().newResult().returns( $ValidationResult );
-		CUT.setValidator( Validator=$Validator );
-		var deletearticleresult = CUT.deleteArticle( articleid=1 );
-		var result = deletearticleresult.getIsSuccess();
-		assertTrue( result );
+	function testDeleteArticle(){
+		var articles = EntityLoad( "Article" );
+		var articlecount = ArrayLen( articles );
+		assertEquals( 3, articlecount );
+		var Article = EntityLoadByPK( "Article", 1 );		
+		transaction{
+			CUT.deleteArticle( Article );
+		}
+		articles = EntityLoad( "Article" );
+		articlecount = ArrayLen( articles );
+		assertEquals( 2, articlecount );
 	}
 
 	function testGetArticleWhereArticleDoesNotExist(){
@@ -93,36 +88,20 @@ component extends="mxunit.framework.TestCase"{
 		assertEquals( 2, result );
 	}
 	
-	function testGetValidator(){
-		var $ValidationResult = mock();
-		var $Validator = mock().getValidator( theObject='{any}' ).returns( ValidationResult=$ValidationResult );
-		CUT.setValidator( Validator=$Validator );	
-		var $Article = mock();
-		var Validator = CUT.getValidator( Article=$Article );
-		var result = IsObject( Validator );
-		assertTrue( result );
-	}
-	
-	function testSaveArticleWhereArticleIsInvalid(){
-		var $MetaData = new model.content.MetaData();
-		CUT.setMetaData( MetaData=$MetaData );		
-		var $ValidationResult = mock().hasErrors().returns( true ).getIsSuccess().returns( false );
-		var $Validator = mock().validate( theObject='{any}' ).returns( ValidationResult=$ValidationResult );
-		CUT.setValidator( Validator=$Validator );		
-		var savearticleresult = CUT.saveArticle( { title="", published="27/6/2012", content="bar" } );
-		var result = savearticleresult.getIsSuccess();
-		assertFalse( result );
-	}
-
-	function testSaveArticleWhereArticleIsValid(){
-		var $MetaData = new model.content.MetaData();
-		CUT.setMetaData( MetaData=$MetaData );		
-		var $ValidationResult = mock().hasErrors().returns( false ).getIsSuccess().returns( true );
-		var $Validator = mock().validate( theObject='{any}' ).returns( ValidationResult=$ValidationResult );
-		CUT.setValidator( Validator=$Validator );		
-		var savearticleresult = CUT.saveArticle( { title="foo", published="27/6/2012", content="bar" } );
-		var result = savearticleresult.getIsSuccess();
-		assertTrue( result );
+	function testSaveArticle(){
+		var articles = EntityLoad( "Article" );
+		var articlecount = ArrayLen( articles );
+		assertEquals( 3, articlecount );
+		var Article = EntityNew( "Article" );
+		Article.setTitle( "foo" );
+		Article.setPublished( CreateDate( 2012, 6, 27 ) );
+		Article.setContent( "bar" );
+		transaction{
+			CUT.saveArticle( Article );
+		}
+		articles = EntityLoad( "Article" );
+		articlecount = ArrayLen( articles );
+		assertEquals( 4, articlecount );
 	}
 	
 	// ------------------------ IMPLICIT ------------------------ // 

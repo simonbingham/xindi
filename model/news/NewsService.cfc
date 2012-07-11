@@ -32,7 +32,7 @@ component accessors="true"{
 	 	
 	function deleteArticle( required articleid ){
 		transaction{
-			var Article = variables.NewsGateway.getArticle( "Article", Val( arguments.articleid ) );
+			var Article = variables.NewsGateway.getArticle( Val( arguments.articleid ) );
 			var result = variables.Validator.newResult();
 			if( Article.isPersisted() ){ 
 				variables.NewsGateway.deleteArticle( Article );
@@ -44,11 +44,11 @@ component accessors="true"{
 		return result;
 	}
 	
-	function getArticle( required articleid ){
-		return variables.NewsGateway.getArticle( articleid=Val( arguments.articleid ) );
+	Article function getArticle( required articleid ){
+		return variables.NewsGateway.getArticle( Val( arguments.articleid ) );
 	}
 	
-	function getArticleByUUID( required string uuid ){
+	Article function getArticleByUUID( required string uuid ){
 		return variables.NewsGateway.getArticleByUUID( argumentCollection=arguments );
 	}
 	
@@ -62,14 +62,14 @@ component accessors="true"{
 		return variables.NewsGateway.getArticles( argumentCollection=arguments );
 	}
 		
-	function getValidator( required Article ){
-		return variables.Validator.getValidator( theObject=arguments.Article );
+	function getValidator( required Article theArticle ){
+		return variables.Validator.getValidator( theObject=arguments.theArticle );
 	}
 	
 	function saveArticle( required struct properties ){
 		transaction{
 			param name="arguments.properties.articleid" default="0";
-			var Article = variables.NewsGateway.getArticle( "Article", Val( arguments.properties.articleid ) );
+			var Article = variables.NewsGateway.getArticle( Val( arguments.properties.articleid ) );
 			try{
 				arguments.properties.published = CreateDate( ListGetAt( arguments.properties.published, 3, "/" ), ListGetAt( arguments.properties.published, 2, "/" ), ListGetAt( arguments.properties.published, 1, "/" ) );
 			}
@@ -91,7 +91,7 @@ component accessors="true"{
 				result.setErrorMessage( "Your article could not be saved. Please amend the highlighted fields." );
 			}
 		}
-		return Article;
+		return result;
 	}
 	
 }

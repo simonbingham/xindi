@@ -20,22 +20,17 @@ component extends="mxunit.framework.TestCase"{
 			
 	// ------------------------ UNIT TESTS ------------------------ //
 	
-	function testDeleteEnquiryWhereEnquiryDoesNotExist(){
-		var $ValidationResult = mock().getIsSuccess().returns( false );
-		var $Validator = mock().newResult().returns( $ValidationResult );
-		CUT.setValidator( Validator=$Validator );			
-		var deleteenquiryresult = CUT.deleteEnquiry( enquiryid=4 );
-		var result = deleteenquiryresult.getIsSuccess();
-		assertFalse( result );
-	}
-
-	function testDeleteEnquiryWhereEnquiryExists(){
-		var $ValidationResult = mock().getIsSuccess().returns( true );
-		var $Validator = mock().newResult().returns( $ValidationResult );
-		CUT.setValidator( Validator=$Validator );		
-		var deleteenquiryresult = CUT.deleteEnquiry( enquiryid=1 );
-		var result = deleteenquiryresult.getIsSuccess();
-		assertTrue( result );
+	function testDeleteEnquiry(){
+		var enquiries = EntityLoad( "Enquiry" );
+		var enquirycount = ArrayLen( enquiries );
+		assertEquals( 3, enquirycount );
+		var Enquiry = EntityLoadByPK( "Enquiry", 1 );
+		transaction{
+			CUT.deleteEnquiry( Enquiry );
+		}
+		enquiries = EntityLoad( "Enquiry" );
+		enquirycount = ArrayLen( enquiries );
+		assertEquals( 2, enquirycount );
 	}
 		
 	function testGetEnquiries(){
@@ -51,7 +46,7 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testGetEnquiry(){
-		var Enquiry = CUT.getEnquiry( enquiryid=2 );
+		var Enquiry = CUT.getEnquiry( 2 );
 		var result = Enquiry.isPersisted();
 		assertTrue( result );
 	}
@@ -62,21 +57,30 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testMarkAllRead(){
-		var $ValidationResult = mock().getIsSuccess().returns( true );
-		var $Validator = mock().newResult().returns( $ValidationResult );
-		CUT.setValidator( Validator=$Validator );			
-		var markallreadresult = CUT.markRead();
-		var result = markallreadresult.getIsSuccess();
-		assertTrue( result );
+		var unreadenquiries = EntityLoad( "Enquiry", { unread=true } );
+		debug(unreadenquiries);
+		var result = ArrayLen( unreadenquiries );
+		assertEquals( 3, result );
+		transaction{
+			CUT.markRead();
+		}
+		unreadenquiries = EntityLoad( "Enquiry", { unread=true } );
+		result = ArrayLen( unreadenquiries );
+		assertEquals( 0, result );
 	}
 	
 	function testMarkRead(){
-		var $ValidationResult = mock().getIsSuccess().returns( true );
-		var $Validator = mock().newResult().returns( $ValidationResult );
-		CUT.setValidator( Validator=$Validator );			
-		var markreadresult = CUT.markRead( enquiryid=3 );
-		var result = markreadresult.getIsSuccess();
-		assertTrue( result );
+		var unreadenquiries = EntityLoad( "Enquiry", { unread=true } );
+		debug(unreadenquiries);
+		var result = ArrayLen( unreadenquiries );
+		assertEquals( 3, result );
+		var Enquiry = EntityLoadByPK( "Enquiry", 1 );
+		transaction{
+			CUT.markRead( Enquiry );
+		}
+		unreadenquiries = EntityLoad( "Enquiry", { unread=true } );
+		result = ArrayLen( unreadenquiries );
+		assertEquals( 2, result );
 	}
 	
 	function testNewEnquiry(){
@@ -85,22 +89,19 @@ component extends="mxunit.framework.TestCase"{
 		assertFalse( result );
 	}
 
-	function testSendEnquiryWhereEnquiryIsInvalid(){
-		var $ValidationResult = mock().hasErrors().returns( true ).getIsSuccess().returns( false );
-		var $Validator = mock().validate( theObject="{any}" ).returns( $ValidationResult );
-		CUT.setValidator( Validator=$Validator );
-		var sendenquiryresult = CUT.sendEnquiry( properties={ firstname="", lastname="", email="", message="" }, config={ subject="Test", emailto="example@example.com" }, emailtemplatepath="../../public/views/enquiry/email.cfm" );
-		var result = sendenquiryresult.getIsSuccess();
-		assertFalse( result );
-	}
-
-	function testSendEnquiryWhereEnquiryIsValid(){
-		var $ValidationResult = mock().hasErrors().returns( false ).getIsSuccess().returns( true );
-		var $Validator = mock().validate( theObject="{any}" ).returns( $ValidationResult );
-		CUT.setValidator( Validator=$Validator );
-		var sendenquiryresult = CUT.sendEnquiry( properties={ firstname="Test", lastname="User", email="example@example.com", message="This is a test message." }, config={ subject="Test", emailto="example@example.com" }, emailtemplatepath="../../public/views/enquiry/email.cfm" );
-		var result = sendenquiryresult.getIsSuccess();
-		assertTrue( result );
+	function testSaveEnquiry(){
+		var enquiries = EntityLoad( "Enquiry" );
+		var enquirycount = ArrayLen( enquiries );
+		assertEquals( 3, enquirycount );
+		var Enquiry = EntityNew( "Enquiry" );
+		Enquiry.setFirstName( "foo" );
+		Enquiry.setLastName( "bar" );
+		Enquiry.setEmail( "example@example.com" );
+		Enquiry.setMessage( "foobar" );
+		CUT.saveEnquiry( Enquiry );
+		enquiries = EntityLoad( "Enquiry" );
+		enquirycount = ArrayLen( enquiries );
+		assertEquals( 4, enquirycount );
 	}
  
 	// ------------------------ IMPLICIT ------------------------ // 

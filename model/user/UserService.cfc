@@ -23,6 +23,7 @@ component accessors="true"{
 	 */	
 	
 	property name="UserGateway" getter="false";
+	property name="Validator" getter="false";
 
 	/*
 	 * Public methods
@@ -30,40 +31,56 @@ component accessors="true"{
 	 	
 	function deleteUser( required userid ){
 		transaction{
-			var result = variables.UserGateway.deleteUser( userid=Val( arguments.userid ) );
+			var User = variables.UserGateway.getUser( Val( arguments.userid ) );
+			var result = variables.Validator.newResult();
+			if( User.isPersisted() ){
+				variables.UserGateway.deleteUser( User );
+				result.setSuccessMessage( "The user &quot;#User.getFullName()#&quot; has been deleted." );
+			}else{
+				result.setErrorMessage( "The user could not be deleted." );
+			}
 		}
 		return result;
 	}
 	
-	function getUser( required userid ){
-		return variables.UserGateway.getUser( userid=Val( arguments.userid ) );
+	User function getUser( required userid ){
+		return variables.UserGateway.getUser( Val( arguments.userid ) );
 	}
 
-	function getUserByCredentials( required User ){
-		return variables.UserGateway.getUserByCredentials( argumentCollection=arguments );
+	User function getUserByCredentials( required User theUser ){
+		return variables.UserGateway.getUserByCredentials( theUser );
 	}
 
-	function getUserByEmailOrUsername( required User ){
-		return variables.UserGateway.getUserByEmailOrUsername( argumentCollection=arguments );
+	User function getUserByEmailOrUsername( required User theUser ){
+		return variables.UserGateway.getUserByEmailOrUsername( theUser );
 	}
 
 	array function getUsers(){
 		return variables.UserGateway.getUsers();
 	}
 		
-	function getValidator( required any User ){
-		return variables.UserGateway.getValidator( User=arguments.User );
+	function getValidator( required User theUser ){
+		return variables.Validator.getValidator( theObject=arguments.theUser );
 	}
 	
-	function newUser(){
+	User function newUser(){
 		return variables.UserGateway.newUser();
 	}
 	
 	function saveUser( required struct properties, required string context ){
 		transaction{
-			var User = variables.UserGateway.saveUser( argumentCollection=arguments );
+			param name="arguments.properties.userid" default="0";
+			var User = variables.UserGateway.getUser( Val( arguments.properties.userid ) );
+			User.populate( arguments.properties );
+			var result = variables.Validator.validate( theObject=User, context=arguments.context );
+			if( !result.hasErrors() ){
+				result.setSuccessMessage( "The user &quot;#User.getFullName()#&quot; has been saved." );
+				variables.UserGateway.saveUser( User );
+			}else{
+				result.setErrorMessage( "The user could not be saved. Please amend the highlighted fields." );
+			}
 		}
-		return User;
+		return result;
 	}
 	
 }
