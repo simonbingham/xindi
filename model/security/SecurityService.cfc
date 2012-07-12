@@ -19,19 +19,24 @@
 component accessors="true"{
 	
 	/*
-	 * Dependency injection
+	 * DEPENDENCY INJECTION
 	 */	
 	
+	property name="NotificationService" getter="false";
 	property name="UserGateway" getter="false";
+	property name="UserService" getter="false";
 	property name="Validator" getter="false";
 	property name="config" getter="false";
 	
 	variables.userkey = "userid";
 
 	/*
-	 * Public methods
+	 * PUBLIC METHODS
 	 */
 
+	/**
+     * I delete the current user from the session
+	 */	
 	struct function deleteCurrentUser( required struct session ){
 		var result = variables.Validator.newResult();
 		if( hasCurrentUser( arguments.session ) ){
@@ -43,10 +48,16 @@ component accessors="true"{
 		return result;
 	}
 
+	/**
+     * I return true if the session has a user
+	 */	
 	boolean function hasCurrentUser( required struct session ){
 		return StructKeyExists( arguments.session, variables.userkey );
 	}
 	
+	/**
+     * I return true if the user is permitted access to an action
+	 */		
 	boolean function isAllowed( required struct session, required string action, string whitelist ){
 		param name="arguments.whitelist" default=variables.config.security.whitelist; 
 		// user is not logged in
@@ -63,6 +74,9 @@ component accessors="true"{
 		return false;
 	}	
 
+	/**
+     * I verify and login a user
+	 */	
 	struct function loginUser( required struct session, required struct properties ){
 		param name="arguments.properties.username" default="";
 		param name="arguments.properties.password" default="";
@@ -86,6 +100,9 @@ component accessors="true"{
 		return result;
 	}	
 	
+	/**
+     * I reset the password of a user and send a notification email
+	 */		
 	struct function resetPassword( required struct properties, required string name, required struct config, required string emailtemplatepath ){
 		transaction{
 			param name="arguments.properties.username" default="";
@@ -98,16 +115,10 @@ component accessors="true"{
 			var result = variables.Validator.validate( theObject=User, context="password" );
 			User = variables.UserGateway.getUserByEmailOrUsername( User );
 			if( User.isPersisted() ){
-				var password = Left( CreateUUID(), 8 );
+				var password = variables.UserService.newPassword();
 				User.setPassword( password );
 				savecontent variable="emailtemplate"{ include arguments.emailtemplatepath; }
-				var Email = new mail();
-			    Email.setSubject( arguments.config.resetpasswordemailsubject );
-		    	Email.setTo( User.getEmail() );
-		    	Email.setFrom( arguments.config.resetpasswordemailfrom );
-		    	Email.setBody( emailtemplate );
-		    	Email.setType( "html" );
-		        Email.send();				
+				variables.NotificationService.send( arguments.config.resetpasswordemailsubject, User.getEmail(), arguments.config.resetpasswordemailfrom, emailtemplate );
 				result.setSuccessMessage( "A new password has been sent to #User.getEmail()#." );
 			}else{
 				var message = "Sorry, your username or email address has not been recognised.";
@@ -118,7 +129,10 @@ component accessors="true"{
 		}
 		return result;
 	}	
-	
+
+	/**
+     * I add a user to the session
+	 */		
 	void function setCurrentUser( required struct session, required any User ){
 		arguments.session[ variables.userkey ] = arguments.User.getUserID();
 	}

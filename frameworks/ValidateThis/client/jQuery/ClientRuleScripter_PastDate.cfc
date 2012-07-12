@@ -58,6 +58,7 @@
 
 		<cfset var args = [arguments.validation.getPropertyDesc()] />
 		<cfset var msgKey = "defaultMessage_PastDate" />
+		<cfset var theDate = "" />
 
 		<cfif arguments.validation.hasParameter("before")>
 			<cfset theDate = arguments.validation.getParameterValue("before")/>

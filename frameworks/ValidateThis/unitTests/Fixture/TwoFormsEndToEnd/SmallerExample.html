@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+	<head>
+		<script src="jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="jquery.validate.min.js" type="text/javascript"></script>
+			
+		<script type="text/javascript">
+			$.noConflict();
+			jQuery(document).ready(function($) {
+				$("#Register").validate();
+				$("#Profile").validate();
+				$("#Profile").find(":input[name='FirstName']").rules('add',{required: true});
+				// using addClass works 
+				// $("#Profile").find(":input[name='FirstName']").addClass('required');
+			});
+		</script>
+	</head>
+	<body>
+		<form id="Register">
+			<label for="FirstName">First Name</label>
+			<input name="FirstName" id="FirstNameRegister" size="35" maxlength="50" type="text" />
+			<button type="submit" class="submitButton"> Submit </button>
+		</form> 
+		<form id="Profile">
+			<label for="FirstName">First Name</label>
+			<input name="FirstName" id="FirstNameProfile" size="35" maxlength="50" type="text" />
+			<button type="submit" class="submitButton"> Submit </button>
+		</form> 
+	</body>
+</html>

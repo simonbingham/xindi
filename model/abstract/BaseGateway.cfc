@@ -16,22 +16,34 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true"{
+component{
 
+	/**
+     * I delete an entity
+	 */
 	void function delete( required entity ){
 		EntityDelete( arguments.entity );
 	}
 
+	/**
+     * I return an entity matching an id
+	 */
 	function get( required string entityname, required numeric id ){
 		var Entity = EntityLoadByPK( arguments.entityname, arguments.id );
 		if( IsNull( Entity ) ) Entity = new( arguments.entityname );
 		return Entity;
 	}
 
+	/**
+     * I return a new entity
+	 */
 	function new( required string entityname ){
 		return EntityNew( arguments.entityname );
 	}
 
+	/**
+     * I save an entity and return it
+	 */
 	function save( required entity ){
 		EntitySave( arguments.entity );
 		return arguments.entity;

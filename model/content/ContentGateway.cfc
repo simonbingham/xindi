@@ -19,9 +19,12 @@
 <cfcomponent accessors="true" output="false" extends="model.abstract.BaseGateway">
 	<cfscript>
 		/*
-		 * Public methods
+		 * PUBLIC METHODS
 		 */			
 		
+		/**
+	     * I delete a page
+		 */			
 		void function deletePage( required Page thePage ){
 			var startvalue = arguments.thePage.getLeftValue();
 			ORMExecuteQuery( "update Page set leftvalue = leftvalue - 2 where leftvalue > :startvalue", { startvalue=startvalue });
@@ -29,22 +32,31 @@
 			delete( arguments.thePage );
 		}
 		
+		/**
+	     * I return a page matching an id
+		 */			
 		Page function getPage( required numeric pageid ){
 			return get( "Page", arguments.pageid );
 		}
-		
+
+		/**
+	     * I return a page matching a slug
+		 */			
 		Page function getPageBySlug( required string slug ){
 			var Page = EntityLoad( "Page", { uuid=Trim( ListLast( arguments.slug, "/" ) ) }, TRUE );
 			if( IsNull( Page ) ) Page = new( "Page" );
 			return Page;
 		}
 		
+		/**
+	     * I return the root page
+		 */			
 		Page function getRoot(){
 			return EntityLoad( "Page", { leftvalue=1 }, true );
 		}
 	</cfscript>
 	
-	<cffunction name="getPages" output="false" returntype="Array">
+	<cffunction name="getPages" output="false" returntype="Array" hint="I return an array of pages">
 		<cfargument name="searchterm" type="string" required="false" default="">
 		<cfargument name="sortorder" type="string" required="false" default="leftvalue">
 		<cfargument name="maxresults" type="numeric" required="false" default="0">
@@ -70,6 +82,9 @@
 	</cffunction>
 	
 	<cfscript>
+		/**
+	     * I move a page
+		 */			
 		Page function movePage( required Page thePage, required string direction ){
 			var decreaseamount = "";
 			var increaseamount = "";
@@ -107,6 +122,9 @@
 			return thePage;
 		}
 		
+		/**
+	     * I save a page
+		 */			
 		Page function savePage( required Page thePage, required numeric ancestorid ){
 			if( !arguments.thePage.isPersisted() && arguments.ancestorid ){
 				var Ancestor = get( "Page", arguments.ancestorid );

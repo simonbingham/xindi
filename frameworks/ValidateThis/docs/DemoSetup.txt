@@ -1,0 +1,26 @@
+ValidateThis Demo Setup Guide
+
+To run the demo applications you need:
+- ColdFusion 8.0.1 or Railo 3.1 or higher
+- A database.  Scripts to create the required database objects for both SQL Server and MySQL can be found in the root of the distribution, entitled mssql-setup.sql and mysql-setup.sql, respectively.  Although the scripts only exist for SQL server and MySQL, they only create two tables, so it should be simple for anyone to create the required database and tables in any dbms that is supported by Transfer.
+- Note that you'll need either a mapping for Transfer and Coldspring/Reactor, or have them as sub-folders of the demo applications that require them.
+
+For the BODemo, you'll also need:
+- Transfer ORM (http://www.transfer-orm.com) v1.0 or higher
+- Coldspring (http://www.coldspringframework.org) v.1.2
+
+For the ServiceDemo, you'll need:
+- Reactor (http://trac.reactorframework.com/)
+
+For the i18nDemo, you'll need:
+- Reactor (http://trac.reactorframework.com/)
+
+
+To setup the demo:
+1. Make sure you have met the requirements listed above.
+2. Unzip the contents of the /samples folder into the webroot from which you wish to run the demo.
+3. Create a DSN in ColdFusion called VTDemo that points to the database that you created (see requirements above).  You can change the DSN that the demo points to by editing /samples/BODemo/model/config/datasource.xml.cfm and/or /samples/ServiceDemo/model/config/datasource.xml.cfm and/or /samples/i18nDemo/model/config/datasource.xml.cfm
+4. Browse to the /samples folder in the webroot and you should be presented with a page that will allow you to run all of the demos.
+
+Note that the folders /samples/commonassets and /samples/BODemo/tags hold files related to the cfUniForm custom tag library developed by Matt Quackenbush which is not part of the framework.  More info on that library can be found here:
+http://cfuniform.riaforge.org/

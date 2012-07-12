@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validateThis xsi:noNamespaceSchemaLocation="validateThis.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<objectProperties>
+		<property name="UserName">
+			<rule type="required" processOn="server" />
+		</property>
+		<property name="FirstName">
+			<rule type="required" processOn="client" />
+		</property>
+		<property name="LastName">
+			<rule type="required" processOn="both" />
+		</property>
+		<property name="UserPass">
+			<rule type="required" />
+		</property>
+	</objectProperties>
+</validateThis>

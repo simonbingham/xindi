@@ -17,17 +17,17 @@
 component implements="cfide.orm.IEventHandler"{
 
 	/**
-     * called before injecting property values into a newly loaded entity instance.
+	 * I am called before injecting property values into a newly loaded entity instance
 	 */
 	void function preLoad( any entity ){}
 	
     /**
-     * called after an entity is fully loaded.
+     * I am called after an entity is fully loaded
      */
 	void function postLoad( any entity ){}
 
    /**
-    * called before inserting the entity into the database.
+    * I am called before inserting the entity into the database
     */
 	void function preInsert( any entity ){
 		var timestamp = now();
@@ -36,12 +36,12 @@ component implements="cfide.orm.IEventHandler"{
 	}   
 	
     /**
-     * called after the entity is inserted into the database. 
+     * I am called after the entity is inserted into the database 
      */
 	void function postInsert( any entity ){}
     
     /**
-     * called before the entity is updated in the database.
+     * I am called before the entity is updated in the database
      */
 	void function preUpdate( any entity, struct oldData ){
 		var timestamp = now();
@@ -49,17 +49,17 @@ component implements="cfide.orm.IEventHandler"{
 	}    
 	
     /**
-     * called after the entity is updated in the database. 
+     * I am called after the entity is updated in the database 
      */
     void function postUpdate( any entity ){}
 	
     /**
-     * called before the entity is deleted from the database. 
+     * I am called before the entity is deleted from the database 
      */
     void function preDelete( any entity ){}
 	
     /**
-     * called after deleting an item from the datastore
+     * I am called after deleting an item from the datastore
      */
     void function postDelete( any entity ){}
 		

@@ -19,7 +19,7 @@
 component accessors="true"{
 
 	/*
-	 * Dependency injection
+	 * DEPENDENCY INJECTION
 	 */	
 
 	property name="MetaData" getter="false";
@@ -27,9 +27,12 @@ component accessors="true"{
 	property name="Validator" getter="false";	
 
 	/*
-	 * Public methods
+	 * PUBLIC METHODS
 	 */
-	 	
+
+	/**
+     * I delete an article
+	 */				
 	struct function deleteArticle( required articleid ){
 		transaction{
 			var Article = variables.NewsGateway.getArticle( Val( arguments.articleid ) );
@@ -43,29 +46,47 @@ component accessors="true"{
 		}
 		return result;
 	}
-	
+
+	/**
+     * I return an article matching an id
+	 */		
 	Article function getArticle( required articleid ){
 		return variables.NewsGateway.getArticle( Val( arguments.articleid ) );
 	}
 	
+	/**
+     * I return an article matching a unique id
+	 */		
 	Article function getArticleByUUID( required string uuid ){
 		return variables.NewsGateway.getArticleByUUID( argumentCollection=arguments );
 	}
 	
+	/**
+     * I return the count of articles
+	 */		
 	numeric function getArticleCount(){
 		return variables.NewsGateway.getArticleCount();
 	}
 
+	/**
+     * I return an array of articles
+	 */	
 	array function getArticles( string searchterm="", string sortorder="published desc", boolean published=false, maxresults=0, offset=0 ){
 		arguments.maxresults = Val( arguments.maxresults );
 		arguments.offset = Val( arguments.offset );
 		return variables.NewsGateway.getArticles( argumentCollection=arguments );
 	}
 		
+	/**
+     * I return the article validator
+	 */			
 	function getValidator( required Article theArticle ){
 		return variables.Validator.getValidator( theObject=arguments.theArticle );
 	}
 	
+	/**
+     * I validate and save an article
+	 */		
 	struct function saveArticle( required struct properties ){
 		transaction{
 			param name="arguments.properties.articleid" default="0";

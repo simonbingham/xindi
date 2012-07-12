@@ -19,16 +19,20 @@
 component accessors="true"{
 
 	/*
-	 * Dependency injection
+	 * DEPENDENCY INJECTION
 	 */	
 	
 	property name="EnquiryGateway" getter="false";
+	property name="NotificationService" getter="false";
 	property name="Validator" getter="false";
 
 	/*
-	 * Public methods
+	 * PUBLIC METHODS
 	 */
 
+	/**
+     * I delete an enquiry
+	 */	
 	struct function deleteEnquiry( required enquiryid ){
 		transaction{
 			var Enquiry = variables.EnquiryGateway.getEnquiry( Val( arguments.enquiryid ) );
@@ -42,23 +46,38 @@ component accessors="true"{
 		}
 		return result;
 	}
-	
+
+	/**
+     * I return an array of enquiries
+	 */		
 	array function getEnquiries( maxresults=0 ){
 		return variables.EnquiryGateway.getEnquiries( maxresults=Val( arguments.maxresults ) );
 	}	
 
+	/**
+     * I return an enquiry matching an id
+	 */	
 	Enquiry function getEnquiry( required enquiryid ){
 		return variables.EnquiryGateway.getEnquiry( Val( arguments.enquiryid ) );
 	}
 
+	/**
+     * I return a count of unread enquiries
+	 */	
 	numeric function getUnreadCount(){
 		return variables.EnquiryGateway.getUnreadCount();		
 	}	
 	 	
+	/**
+     * I return the enquiry validator
+	 */		 	
 	function getValidator( required Enquiry theEnquiry ){
 		return variables.Validator.getValidator( theObject=arguments.theEnquiry );
 	}	
 	
+	/**
+     * I mark an enquiry, or all enquiries, as read
+	 */		
 	struct function markRead( enquiryid=0 ){
 		transaction{
 			var result = variables.Validator.newResult();
@@ -78,10 +97,16 @@ component accessors="true"{
 		return result;
 	}	
 	
+	/**
+     * I return a new enquiry
+	 */		
 	Enquiry function newEnquiry(){
 		return variables.EnquiryGateway.newEnquiry();
 	}
-	
+
+	/**
+     * I validate and send an enquiry
+	 */		
 	struct function sendEnquiry( required struct properties, required struct config, required string emailtemplatepath ){
 		transaction{
 			var emailtemplate = "";
@@ -90,13 +115,7 @@ component accessors="true"{
 			var result = variables.Validator.validate( theObject=Enquiry );
 			if( !result.hasErrors() ){
 				savecontent variable="emailtemplate"{ include arguments.emailtemplatepath; }
-				var Email = new mail();
-			    Email.setSubject( arguments.config.subject );
-		    	Email.setTo( arguments.config.emailto );
-		    	Email.setFrom( Enquiry.getEmail() );
-		    	Email.setBody( emailtemplate );
-		    	Email.setType( "html" );
-		        Email.send();
+		        variables.NotificationService.send( arguments.config.subject, arguments.config.emailto, Enquiry.getEmail(), emailtemplate );
 		        variables.EnquiryGateway.saveEnquiry( Enquiry );
 		        result.setSuccessMessage( "Your enquiry has been sent." );
 			}else{

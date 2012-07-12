@@ -19,29 +19,41 @@
 <cfcomponent accessors="true" output="false" extends="model.abstract.BaseGateway">
 	<cfscript>
 		/*
-		 * Public methods
+		 * PUBLIC METHODS
 		 */	
 		
+		/**
+	     * I delete an article
+		 */				
 		void function deleteArticle( required Article theArticle ){
 			delete( arguments.theArticle );
 		}
-		
+
+		/**
+	     * I return an article matching an id
+		 */				
 		Article function getArticle( required numeric articleid ){
 			return get( "Article", arguments.articleid );
 		}
 		
+		/**
+	     * I return an article matching a unique id
+		 */				
 		Article function getArticleByUUID( required string uuid ){
 			var Article = ORMExecuteQuery( "from Article where uuid=:uuid and published<=:published", { uuid=arguments.uuid, published=Now() }, true );
 			if( IsNull( Article ) ) Article = new( "Article" );
 			return Article;
 		}
 		
+		/**
+	     * I return the count of articles
+		 */				
 		numeric function getArticleCount(){
 			return ORMExecuteQuery( "select count( * ) from Article", true );
 		}
 	</cfscript>
 	
-	<cffunction name="getArticles" output="false" returntype="Array">
+	<cffunction name="getArticles" output="false" returntype="Array" hint="I return an array of articles">
 		<cfargument name="searchterm" type="string" required="false" default="">
 		<cfargument name="sortorder" type="string" required="false" default="published desc">
 		<cfargument name="published" type="boolean" required="false" default="false">
@@ -75,6 +87,9 @@
 	</cffunction> 
 	
 	<cfscript>
+		/**
+	     * I save an article
+		 */				
 		Article function saveArticle( required Article theArticle ){
 			return save( arguments.theArticle );
 		}

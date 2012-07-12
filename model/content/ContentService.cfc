@@ -19,7 +19,7 @@
 component accessors="true"{
 
 	/*
-	 * Dependency injection
+	 * DEPENDENCY INJECTION
 	 */	
 
 	property name="ContentGateway" getter="false";
@@ -27,9 +27,12 @@ component accessors="true"{
 	property name="Validator" getter="false";
 
 	/*
-	 * Public methods
+	 * PUBLIC METHODS
 	 */
-	 	
+
+	/**
+     * I delete a page
+	 */		 	
 	struct function deletePage( required pageid ){
 		transaction{
 			var Page = variables.ContentGateway.getPage( Val( arguments.pageid ) );
@@ -44,27 +47,45 @@ component accessors="true"{
 		return result;
 	}
 	
+	/**
+     * I return a page matching an id
+	 */		
 	Page function getPage( required pageid ){
 		return variables.ContentGateway.getPage( Val( arguments.pageid ) );
 	}
 	
+	/**
+     * I return a page matching a slug
+	 */		
 	Page function getPageBySlug( required string slug ){
 		return variables.ContentGateway.getPageBySlug( argumentCollection=arguments );
 	}
 
+	/**
+     * I return an array of pages
+	 */	
 	array function getPages( string searchterm="", sortorder="leftvalue", maxresults=0 ){
 		arguments.maxresults = Val( arguments.maxresults );
 		return variables.ContentGateway.getPages( argumentCollection=arguments );
 	}
 
+	/**
+     * I return the root page
+	 */	
 	Page function getRoot(){
 		return variables.ContentGateway.getRoot();
 	}	
 	
+	/**
+     * I return a page validator
+	 */		
 	function getValidator( required Page ){
 		return variables.Validator.getValidator( theObject=arguments.Page );
 	}
 	
+	/**
+     * I move a page
+	 */		
 	struct function movePage( required pageid, required string direction ){
 		transaction{
 			var result = variables.Validator.newResult();
@@ -88,6 +109,9 @@ component accessors="true"{
 		return result;
 	}
 	
+	/**
+     * I validate and save a page
+	 */		
 	struct function savePage( required struct properties, required ancestorid, required string context ){
 		transaction{
 			param name="arguments.properties.pageid" default="";

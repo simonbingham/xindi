@@ -19,7 +19,7 @@
 component extends="model.abstract.BaseEntity" persistent="true" table="enquiries" cacheuse="transactional"{
 	
 	/*
-	 * Properties
+	 * PROPERTIES
 	 */	
 	
 	property name="enquiryid" column="enquiry_id" fieldtype="id" setter="false" generator="native";
@@ -32,9 +32,12 @@ component extends="model.abstract.BaseEntity" persistent="true" table="enquiries
 	property name="created" column="enquiry_created" ormtype="timestamp";
 
 	/*
-	 * Public methods
+	 * PUBLIC METHODS
 	 */
-	 	
+
+	/**
+     * I initialise this component
+	 */	
 	Enquiry function init(){
 		variables.firstname = "";
 		variables.lastname = "";
@@ -42,18 +45,30 @@ component extends="model.abstract.BaseEntity" persistent="true" table="enquiries
 		return this;
 	}
 	
+	/**
+     * I return the message formatted for display
+	 */	
 	string function getDisplayMessage(){
 		return REReplace( HTMLEditFormat( variables.message ), "[\r\n]+", "<br /><br />", "ALL" );
 	}	
-	
+
+	/**
+     * I return the full name
+	 */		
 	string function getFullName(){
 		return variables.firstname & " " & variables.lastname;
 	}
 
+	/**
+     * I return true if the enquiry is persisted
+	 */	
 	boolean function isPersisted(){
 		return !IsNull( variables.enquiryid );
 	}
 	
+	/**
+     * I return true if the enquiry is unread
+	 */		
 	boolean function isUnread(){
 		return getUnread();
 	}	
