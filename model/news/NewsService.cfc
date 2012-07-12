@@ -53,8 +53,8 @@ component accessors="true"{
 	/**
      * I return an article matching a unique id
 	 */		
-	Article function getArticleByUUID( required string uuid ){
-		return variables.NewsGateway.getArticleByUUID( argumentCollection=arguments );
+	Article function getArticleByLabel( required string label ){
+		return variables.NewsGateway.getArticleByLabel( argumentCollection=arguments );
 	}
 	
 	/**

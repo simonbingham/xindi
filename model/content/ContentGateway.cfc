@@ -41,7 +41,7 @@
 	     * I return a page matching a slug
 		 */			
 		Page function getPageBySlug( required string slug ){
-			var Page = EntityLoad( "Page", { uuid=Trim( ListLast( arguments.slug, "/" ) ) }, TRUE );
+			var Page = EntityLoad( "Page", { label=Trim( ListLast( arguments.slug, "/" ) ) }, TRUE );
 			if( IsNull( Page ) ) Page = new( "Page" );
 			return Page;
 		}

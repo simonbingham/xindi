@@ -22,7 +22,7 @@ component extends="model.abstract.BaseEntity" persistent="true" table="pages" ca
 
 	property name="pageid" column="page_id" fieldtype="id" setter="false" generator="native";
 	
-	property name="uuid" column="page_uuid" ormtype="string" length="150";
+	property name="label" column="page_label" ormtype="string" length="150";
 	property name="leftvalue" column="page_left" ormtype="int";
 	property name="rightvalue" column="page_right" ormtype="int";
 	property name="title" column="page_title" ormtype="string" length="150";
@@ -95,9 +95,9 @@ component extends="model.abstract.BaseEntity" persistent="true" table="pages" ca
 		var slug = "";
 		if( !isRoot() ){
 			for( var Page in getPath() ){
-				if( !Page.isRoot() ) slug &= Page.getUUID() & "/";
+				if( !Page.isRoot() ) slug &= Page.getLabel() & "/";
 			}
-			slug &= getUUID();
+			slug &= getLabel();
 		}
 		return slug;
 	}
@@ -204,7 +204,7 @@ component extends="model.abstract.BaseEntity" persistent="true" table="pages" ca
      * I am called after the page is inserted into the database 
 	 */		
 	void function preInsert(){
-		setUUID();
+		setLabel();
 	}
 
 	// ------------------------ PRIVATE METHODS ------------------------ //
@@ -261,19 +261,19 @@ component extends="model.abstract.BaseEntity" persistent="true" table="pages" ca
 	/**
      * I return true if the id of the page is unique
 	 */		
-	private boolean function isUUIDUnique(){
+	private boolean function isLabelUnique(){
 		var matches = []; 
-		if( isPersisted() ) matches = ORMExecuteQuery( "from Page where pageid <> :pageid and uuid = :uuid", { pageid=getPageID(), uuid=getUUID()});
-		else matches = ORMExecuteQuery( "from Page where uuid=:uuid", { uuid=getUUID() });
+		if( isPersisted() ) matches = ORMExecuteQuery( "from Page where pageid <> :pageid and label = :label", { pageid=getPageID(), label=getLabel()});
+		else matches = ORMExecuteQuery( "from Page where label=:label", { label=getLabel() });
 		return !ArrayLen( matches );
 	}
 	
 	/**
      * I generate a unique id for the page
 	 */		
-	private void function setUUID(){
-		variables.uuid = ReReplace( LCase( getTitle() ), "[^a-z0-9]{1,}", "-", "all" );
-		while ( !isUUIDUnique() ) variables.uuid &= "-"; 
+	private void function setLabel(){
+		variables.label = ReReplace( LCase( getTitle() ), "[^a-z0-9]{1,}", "-", "all" );
+		while ( !isLabelUnique() ) variables.label &= "-"; 
 	}
 		
 }

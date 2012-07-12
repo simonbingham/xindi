@@ -72,7 +72,7 @@
 					<tr>
 						<td>#local.Article.getTitle()#</td>
 						<td>#DateFormat( local.Article.getUpdated(), "full" )# #TimeFormat( local.Article.getUpdated() )#</td>
-						<td class="center"><a href="#buildURL( action='public:news.article', querystring='uuid=#local.Article.getUUID()#' )#" title="View" target="_blank"><i class="icon-eye-open"></i></a></td>
+						<td class="center"><a href="#buildURL( action='public:news.article', querystring='label=#local.Article.getLabel()#' )#" title="View" target="_blank"><i class="icon-eye-open"></i></a></td>
 					</tr>
 				</cfloop>
 			</tbody>

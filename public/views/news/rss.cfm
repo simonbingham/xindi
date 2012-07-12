@@ -34,7 +34,7 @@
 <cfloop array="#rc.articles#" index="local.Article">
 	<cfset local.myStruct.item[ local.currentrow ] = {}>
 	<cfset local.myStruct.item[ local.currentrow ].title = local.Article.getTitle()>
-	<cfset local.myStruct.item[ local.currentrow ].link = buildURL( action='news.article', path=rc.basehref & "index.cfm", queryString='uuid=#local.Article.getUUID()#' )>
+	<cfset local.myStruct.item[ local.currentrow ].link = buildURL( action='news.article', path=rc.basehref & "index.cfm", queryString='label=#local.Article.getLabel()#' )>
 	<cfset local.myStruct.item[ local.currentrow ].description = {}>
 	<cfset local.myStruct.item[ local.currentrow ].description.value = local.Article.getRSSSummary()>
 	<cfset local.myStruct.item[ local.currentrow ].pubDate = DateFormat( local.Article.getPublished() )>

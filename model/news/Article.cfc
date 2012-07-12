@@ -22,7 +22,7 @@ component extends="model.abstract.BaseEntity" persistent="true" table="articles"
 
 	property name="articleid" column="article_id" fieldtype="id" setter="false" generator="native";
 	
-	property name="uuid" column="article_uuid" ormtype="string" length="150";
+	property name="label" column="article_label" ormtype="string" length="150";
 	property name="title" column="article_title" ormtype="string" length="150";
 	property name="content" column="article_content" ormtype="text";
 	property name="metagenerated" column="article_metagenerated" ormtype="boolean";
@@ -114,14 +114,14 @@ component extends="model.abstract.BaseEntity" persistent="true" table="articles"
 	* I am called before inserting the article into the database
 	*/
 	void function preInsert(){
-		setUUID();
+		setLabel();
 	}
 	
 	/**
 	 * I am called before the article is updated in the database
 	 */	
 	void function preUpdate(){
-		setUUID();
+		setLabel();
 	}
 
 	// ------------------------ PRIVATE METHODS ------------------------ //
@@ -129,19 +129,19 @@ component extends="model.abstract.BaseEntity" persistent="true" table="articles"
 	/**
      * I return true if the id of the article is unique
 	 */	
-	private boolean function isUUIDUnique(){
+	private boolean function isLabelUnique(){
 		var matches = []; 
-		if( isPersisted() ) matches = ORMExecuteQuery( "from Article where articleid <> :articleid and uuid = :uuid", { articleid=getArticleID(), uuid=getUUID()});
-		else matches = ORMExecuteQuery( "from Article where uuid=:uuid", { uuid=getUUID() });
+		if( isPersisted() ) matches = ORMExecuteQuery( "from Article where articleid <> :articleid and label = :label", { articleid=getArticleID(), label=getLabel()});
+		else matches = ORMExecuteQuery( "from Article where label=:label", { label=getLabel() });
 		return !ArrayLen( matches );
 	}
 
 	/**
      * I generate a unique id for the article
 	 */		
-	private void function setUUID(){
-		variables.uuid = ReReplace( LCase( getTitle() ), "[^a-z0-9]{1,}", "-", "all" );
-		while ( !isUUIDUnique() ) variables.uuid &= "-"; 
+	private void function setLabel(){
+		variables.label = ReReplace( LCase( getTitle() ), "[^a-z0-9]{1,}", "-", "all" );
+		while ( !isLabelUnique() ) variables.label &= "-"; 
 	}
 		
 }
