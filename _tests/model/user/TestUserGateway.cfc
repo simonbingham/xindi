@@ -49,29 +49,29 @@ component extends="mxunit.framework.TestCase"{
 		var User = EntityNew( "User" );
 		User.setUsername( "foo" );
 		User.setEmail( "foo@bar.com" );
-		User.setPassword( "1111111111111111111111111111111111111111111111111111111111111111" );
-		User = CUT.getUserByCredentials( theUser=User );
-		var result = User.isPersisted();
+		User.setPassword( "bar" );
+		var getuserbycredentialsresult = CUT.getUserByCredentials( theUser=User );
+		var result = getuserbycredentialsresult.isPersisted();
 		assertFalse( result );
 	}
 	
 	function testGetUserByCredentialsReturnsUserForCorrectCredentialsByEmail(){
 		var User = EntityNew( "User" );
-		User.setUsername( "" );
 		User.setEmail( "example@example.com" );
-		User.setPassword( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB" );		
-		User = CUT.getUserByCredentials( theUser=User );
-		var result = User.isPersisted();
+		User.setPassword( "admin" );		
+		var getuserbycredentialsresult = CUT.getUserByCredentials( theUser=User );
+		debug(getuserbycredentialsresult);
+		var result = getuserbycredentialsresult.isPersisted();
+		debug(result);
 		assertTrue( result );
 	}
 
 	function testGetUserByCredentialsReturnsUserForCorrectCredentialsByUsername(){
 		var User = EntityNew( "User" );
 		User.setUsername( "admin" );
-		User.setEmail( "" );
-		User.setPassword( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB" );		
-		User = CUT.getUserByCredentials( theUser=User );
-		var result = User.isPersisted();
+		User.setPassword( "admin" );		
+		var getuserbycredentialsresult = CUT.getUserByCredentials( theUser=User );
+		var result = getuserbycredentialsresult.isPersisted();
 		assertTrue( result );
 	}
 

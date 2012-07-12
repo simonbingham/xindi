@@ -30,7 +30,7 @@ component accessors="true"{
 	 * Public methods
 	 */
 	 	
-	void function deleteArticle( required articleid ){
+	struct function deleteArticle( required articleid ){
 		transaction{
 			var Article = variables.NewsGateway.getArticle( Val( arguments.articleid ) );
 			var result = variables.Validator.newResult();
@@ -66,7 +66,7 @@ component accessors="true"{
 		return variables.Validator.getValidator( theObject=arguments.theArticle );
 	}
 	
-	function saveArticle( required struct properties ){
+	struct function saveArticle( required struct properties ){
 		transaction{
 			param name="arguments.properties.articleid" default="0";
 			var Article = variables.NewsGateway.getArticle( Val( arguments.properties.articleid ) );

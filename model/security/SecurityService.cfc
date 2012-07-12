@@ -22,37 +22,105 @@ component accessors="true"{
 	 * Dependency injection
 	 */	
 	
-	property name="SecurityGateway" getter="false";
+	property name="UserGateway" getter="false";
+	property name="Validator" getter="false";
+	property name="config" getter="false";
+	
+	variables.userkey = "userid";
 
 	/*
 	 * Public methods
 	 */
 
-	function deleteCurrentUser( required struct session ){
-		return variables.SecurityGateway.deleteCurrentUser( arguments.session );
+	struct function deleteCurrentUser( required struct session ){
+		var result = variables.Validator.newResult();
+		if( hasCurrentUser( arguments.session ) ){
+			StructDelete( arguments.session, variables.userkey );
+			result.setSuccessMessage( "You have been logged out." );	
+		}else{
+			result.setErrorMessage( "You are not logged in." );
+		}
+		return result;
 	}
 
 	boolean function hasCurrentUser( required struct session ){
-		return variables.SecurityGateway.hasCurrentUser( arguments.session );
+		return StructKeyExists( arguments.session, variables.userkey );
 	}
 	
 	boolean function isAllowed( required struct session, required string action, string whitelist ){
-		return variables.SecurityGateway.isAllowed( argumentCollection=arguments );
+		param name="arguments.whitelist" default=variables.config.security.whitelist; 
+		// user is not logged in
+		if( !hasCurrentUser( arguments.session ) ){
+			// if the requested action is in the whitelist allow access
+			for ( var unsecured in ListToArray( arguments.whitelist ) ){
+				if( ReFindNoCase( unsecured, arguments.action ) ) return true;
+			}
+		// user is logged in so allow access to requested action 
+		}else if( hasCurrentUser( arguments.session ) ){
+			return true;
+		}
+		// previous conditions not met so deny access to requested action
+		return false;
 	}	
 
-	function loginUser( required struct session, required struct properties ){
-		return variables.SecurityGateway.loginUser( argumentCollection=arguments );
+	struct function loginUser( required struct session, required struct properties ){
+		param name="arguments.properties.username" default="";
+		param name="arguments.properties.password" default="";
+		if( IsValid( "email", arguments.properties.username ) ){
+			arguments.properties.email = arguments.properties.username;
+			StructDelete( arguments.properties, "username" );
+		}
+		var User = variables.UserGateway.newUser();
+		User.populate( arguments.properties );
+		var result = variables.Validator.validate( theObject=User, context="login" );
+		User = variables.UserGateway.getUserByCredentials( User );
+		if( User.isPersisted() ){
+			setCurrentUser( arguments.session, User );
+			result.setSuccessMessage( "Welcome #User.getFirstName()#. You have been logged in." );
+		}else{
+			var message = "Sorry, your login details have not been recognised.";
+			result.setErrorMessage( message );
+			var failure = { propertyName="username", clientFieldname="username", message=message };
+			result.addFailure( failure );
+		}
+		return result;
 	}	
 	
-	function resetPassword( required struct properties, required string name, required struct config, required string emailtemplatepath ){
+	struct function resetPassword( required struct properties, required string name, required struct config, required string emailtemplatepath ){
 		transaction{
-			var result = variables.SecurityGateway.resetPassword( argumentCollection=arguments );
+			param name="arguments.properties.username" default="";
+			if( IsValid( "email", arguments.properties.username ) ){
+				arguments.properties.email = arguments.properties.username;
+				StructDelete( arguments.properties, "username" );
+			}
+			var User = variables.UserGateway.newUser();
+			User.populate( arguments.properties );
+			var result = variables.Validator.validate( theObject=User, context="password" );
+			User = variables.UserGateway.getUserByEmailOrUsername( User );
+			if( User.isPersisted() ){
+				var password = Left( CreateUUID(), 8 );
+				User.setPassword( password );
+				savecontent variable="emailtemplate"{ include arguments.emailtemplatepath; }
+				var Email = new mail();
+			    Email.setSubject( arguments.config.resetpasswordemailsubject );
+		    	Email.setTo( User.getEmail() );
+		    	Email.setFrom( arguments.config.resetpasswordemailfrom );
+		    	Email.setBody( emailtemplate );
+		    	Email.setType( "html" );
+		        Email.send();				
+				result.setSuccessMessage( "A new password has been sent to #User.getEmail()#." );
+			}else{
+				var message = "Sorry, your username or email address has not been recognised.";
+				result.setErrorMessage( message );
+				var failure = { propertyName="username", clientFieldname="username", message=message };
+				result.addFailure( failure );
+			}
 		}
 		return result;
 	}	
 	
 	void function setCurrentUser( required struct session, required any User ){
-		variables.SecurityGateway.setCurrentUser( argumentCollection=arguments );
+		arguments.session[ variables.userkey ] = arguments.User.getUserID();
 	}
 	
 }

@@ -31,7 +31,7 @@ component accessors="true" extends="model.abstract.BaseGateway"{
 	}
 
 	User function getUserByCredentials( required User theUser ){
-		var User = ORMExecuteQuery( "from User where username=:username or email=:email ) and password=:password", { username=arguments.theUser.getUsername(), email=arguments.theUser.getEmail(), password=arguments.theUser.getPassword() }, true );
+		var User = ORMExecuteQuery( "from User where ( username=:username or email=:email ) and password=:password", { username=arguments.theUser.getUsername(), email=arguments.theUser.getEmail(), password=arguments.theUser.getPassword() }, true );
 		if( IsNull( User ) ) User = new( "User" );
 		return User;
 	}

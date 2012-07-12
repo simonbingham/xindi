@@ -22,7 +22,7 @@ component accessors="true"{
 	 * Public methods
 	 */
 	 	
-	function createDirectory( required string directory )
+	struct function createDirectory( required string directory )
 	{
 		var result = variables.Validator.newResult();
 		if( Len( Trim( arguments.directory ) ) ) {
@@ -34,7 +34,7 @@ component accessors="true"{
 		return result;
 	}
 	
-	function deleteFile( required string file ){
+	struct function deleteFile( required string file ){
 		var result = variables.Validator.newResult();
 		if( isFile( arguments.file ) ){
 			getFile( arguments.file ).delete();
@@ -65,7 +65,7 @@ component accessors="true"{
 		return getFile( arguments.directory ).isDirectory();
 	}
 	
-	function uploadFile( required string file, required string destination, required string allowedextensions ){
+	struct function uploadFile( required string file, required string destination, required string allowedextensions ){
 		var result = variables.Validator.newResult();
 		try{
 			result = FileUpload( arguments.destination, arguments.file, "", "MakeUnique" );

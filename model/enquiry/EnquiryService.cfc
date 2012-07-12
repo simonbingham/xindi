@@ -29,7 +29,7 @@ component accessors="true"{
 	 * Public methods
 	 */
 
-	function deleteEnquiry( required enquiryid ){
+	struct function deleteEnquiry( required enquiryid ){
 		transaction{
 			var Enquiry = variables.EnquiryGateway.getEnquiry( Val( arguments.enquiryid ) );
 			var result = variables.Validator.newResult();
@@ -47,7 +47,7 @@ component accessors="true"{
 		return variables.EnquiryGateway.getEnquiries( maxresults=Val( arguments.maxresults ) );
 	}	
 
-	function getEnquiry( required enquiryid ){
+	Enquiry function getEnquiry( required enquiryid ){
 		return variables.EnquiryGateway.getEnquiry( Val( arguments.enquiryid ) );
 	}
 
@@ -59,7 +59,7 @@ component accessors="true"{
 		return variables.Validator.getValidator( theObject=arguments.theEnquiry );
 	}	
 	
-	function markRead( enquiryid=0 ){
+	struct function markRead( enquiryid=0 ){
 		transaction{
 			var result = variables.Validator.newResult();
 			if( Len( Trim( arguments.enquiryid ) ) ){
@@ -82,7 +82,7 @@ component accessors="true"{
 		return variables.EnquiryGateway.newEnquiry();
 	}
 	
-	function sendEnquiry( required struct properties, required struct config, required string emailtemplatepath ){
+	struct function sendEnquiry( required struct properties, required struct config, required string emailtemplatepath ){
 		transaction{
 			var emailtemplate = "";
 			var Enquiry = variables.EnquiryGateway.newEnquiry(); 

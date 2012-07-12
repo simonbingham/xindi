@@ -68,15 +68,13 @@ component extends="mxunit.framework.TestCase"{
 	}		
 
 	function testLoginUserForInvalidUser(){
-		var properties = { username="", password="" };
-		var loginuserresult = CUT.loginUser( session=session, properties=properties );
+		var loginuserresult = CUT.loginUser( session=session, properties={ username="", password="" } );
 		var result = loginuserresult.getIsSuccess();
 		assertFalse( result );
 	}
 		
 	function testLoginUserForValidUser(){
-		var properties = { username="admin", password="admin" };
-		var loginuserresult = CUT.loginUser( session=session, properties=properties );
+		var loginuserresult = CUT.loginUser( session=session, properties={ username="admin", password="admin" } );
 		var result = loginuserresult.getIsSuccess();
 		assertTrue( result ); 
 	}
@@ -122,13 +120,11 @@ component extends="mxunit.framework.TestCase"{
 		CUT = new model.security.SecurityService();
 		var validatorconfig = { definitionPath="/model/", JSIncludes=false, resultPath="model.utility.ValidatorResult" };
 		Validator = new ValidateThis.ValidateThis( validatorconfig );
-		var SecurityGateway = new model.security.SecurityGateway();
+		CUT.setValidator( Validator );
 		var UserGateway = new model.user.UserGateway();
+		CUT.setUserGateway( UserGateway );
 		var $config = { security={ whitelist="^admin:security,^public:" } };
 		CUT.setConfig( $config );
-		CUT.setValidator( Validator );
-		CUT.setUserGateway( UserGateway );
-		CUT.setSecurityGateway( SecurityGateway );
 		
 		// reinitialise ORM for the application (create database table)
 		ORMReload();

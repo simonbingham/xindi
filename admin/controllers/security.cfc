@@ -34,12 +34,12 @@ component accessors="true"{
 	}
 
 	void function default( required struct rc ){
-		rc.loggedin = variables.SecurityService.hasCurrentUser( session=session );
+		rc.loggedin = variables.SecurityService.hasCurrentUser( session );
 		if( rc.loggedin ){
 			variables.fw.redirect( "main" );
 		}else{
 			rc.User = variables.UserService.newUser();
-			rc.Validator = variables.UserService.getValidator( User=rc.User );
+			rc.Validator = variables.UserService.getValidator( rc.User );
 			if( !StructKeyExists( rc, "result" ) ) rc.result = rc.Validator.newResult();
 		}
 	}
@@ -48,19 +48,19 @@ component accessors="true"{
 		param name="rc.username" default="";
 		param name="rc.password" default="";
 		var properties = { username=rc.username, password=rc.password };
-		rc.result = variables.SecurityService.loginUser( session=session, properties=properties );
+		rc.result = variables.SecurityService.loginUser( session, properties );
 		if( rc.result.getIsSuccess() ) variables.fw.redirect( "main", "result" );
 		else variables.fw.redirect( "security", "result" );
 	}
 
 	void function logout( required struct rc ){
-		rc.result = variables.SecurityService.deleteCurrentUser( session=session );
+		rc.result = variables.SecurityService.deleteCurrentUser( session );
 		variables.fw.redirect( "security", "result" );
 	}
 	
 	void function password( required struct rc ){
 		rc.User = variables.UserService.newUser();
-		rc.Validator = variables.UserService.getValidator( User=rc.User );
+		rc.Validator = variables.UserService.getValidator( rc.User );
 		if( !StructKeyExists( rc, "result" ) ) rc.result = rc.Validator.newResult();
 	}
 	
@@ -68,7 +68,7 @@ component accessors="true"{
 		param name="rc.username" default="";
 		var properties = { username=rc.username };
 		var emailtemplatepath = "../../admin/views/security/email.cfm";
-		rc.result = variables.SecurityService.resetPassword( properties=properties, name=rc.config.name, config=rc.config.security, emailtemplatepath=emailtemplatepath );
+		rc.result = variables.SecurityService.resetPassword( properties, rc.config.name, rc.config.security, emailtemplatepath );
 		if( rc.result.getIsSuccess() ) variables.fw.redirect( "security", "result" );
 		else variables.fw.redirect( "security.password", "result" );
 	}
