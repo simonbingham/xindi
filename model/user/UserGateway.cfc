@@ -18,9 +18,7 @@
 
 component accessors="true" extends="model.abstract.BaseGateway"{
 
-	/*
-	 * PUBLIC METHODS
-	 */
+	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	/**
      * I delete a user

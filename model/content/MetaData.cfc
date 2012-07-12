@@ -18,9 +18,7 @@
 
 component accessors="true"{
 	
-	/*
-	 * PROPERTIES
-	 */	
+	// ------------------------ PROPERTIES ------------------------ //
 	
 	property name="metatitle";
 	property name="metakeywords";

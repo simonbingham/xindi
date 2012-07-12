@@ -18,17 +18,13 @@
 
 component accessors="true"{
 
-	/*
-	 * DEPENDENCY INJECTION
-	 */	
+	// ------------------------ DEPENDENCY INJECTION ------------------------ //
 	
 	property name="EnquiryGateway" getter="false";
 	property name="NotificationService" getter="false";
 	property name="Validator" getter="false";
 
-	/*
-	 * PUBLIC METHODS
-	 */
+	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	/**
      * I delete an enquiry
@@ -76,7 +72,7 @@ component accessors="true"{
 	}	
 	
 	/**
-     * I mark an enquiry, or all enquiries, as read
+     * I mark an enquiry, or enquiries, as read
 	 */		
 	struct function markRead( enquiryid=0 ){
 		transaction{

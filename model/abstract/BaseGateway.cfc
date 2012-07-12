@@ -42,7 +42,7 @@ component{
 	}
 
 	/**
-     * I save an entity and return it
+     * I save an entity
 	 */
 	function save( required entity ){
 		EntitySave( arguments.entity );

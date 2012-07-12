@@ -18,9 +18,7 @@
 
 <cfcomponent accessors="true" output="false" extends="model.abstract.BaseGateway">
 	<cfscript>
-		/*
-		 * PUBLIC METHODS
-		 */			
+		// ------------------------ PUBLIC METHODS ------------------------ //		
 		
 		/**
 	     * I delete a page
@@ -49,7 +47,7 @@
 		}
 		
 		/**
-	     * I return the root page
+	     * I return the root page (i.e. home page)
 		 */			
 		Page function getRoot(){
 			return EntityLoad( "Page", { leftvalue=1 }, true );

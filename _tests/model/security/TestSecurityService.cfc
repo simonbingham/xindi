@@ -123,8 +123,12 @@ component extends="mxunit.framework.TestCase"{
 		CUT.setValidator( Validator );
 		var UserGateway = new model.user.UserGateway();
 		CUT.setUserGateway( UserGateway );
+		var UserService = new model.user.UserService();
+		CUT.setUserService( UserService );
 		var $config = { security={ whitelist="^admin:security,^public:" } };
 		CUT.setConfig( $config );
+		var NotificationService = new model.utility.NotificationService();
+		CUT.setNotificationService( NotificationService );		
 		
 		// reinitialise ORM for the application (create database table)
 		ORMReload();

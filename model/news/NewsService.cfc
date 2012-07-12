@@ -18,17 +18,13 @@
 
 component accessors="true"{
 
-	/*
-	 * DEPENDENCY INJECTION
-	 */	
+	// ------------------------ DEPENDENCY INJECTION ------------------------ //
 
 	property name="MetaData" getter="false";
 	property name="NewsGateway" getter="false";
 	property name="Validator" getter="false";	
 
-	/*
-	 * PUBLIC METHODS
-	 */
+	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	/**
      * I delete an article

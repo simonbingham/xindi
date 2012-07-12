@@ -18,9 +18,7 @@
 
 component accessors="true"{
 	
-	/*
-	 * DEPENDENCY INJECTION
-	 */	
+	// ------------------------ DEPENDENCY INJECTION ------------------------ //	
 	
 	property name="NotificationService" getter="false";
 	property name="UserGateway" getter="false";
@@ -30,9 +28,7 @@ component accessors="true"{
 	
 	variables.userkey = "userid";
 
-	/*
-	 * PUBLIC METHODS
-	 */
+	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	/**
      * I delete the current user from the session
@@ -56,7 +52,7 @@ component accessors="true"{
 	}
 	
 	/**
-     * I return true if the user is permitted access to an action
+     * I return true if the user is permitted access to a FW/1 action
 	 */		
 	boolean function isAllowed( required struct session, required string action, string whitelist ){
 		param name="arguments.whitelist" default=variables.config.security.whitelist; 

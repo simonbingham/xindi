@@ -18,9 +18,7 @@
 
 component accessors="true" extends="model.abstract.BaseGateway"{
 
-	/*
-	 * PUBLIC METHODS
-	 */
+	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	/**
      * I delete an enquiry
@@ -35,7 +33,7 @@ component accessors="true" extends="model.abstract.BaseGateway"{
 	array function getEnquiries( numeric maxresults=0 ){
 		var ormoptions = {};
 		if( arguments.maxresults ) ormoptions.maxresults = arguments.maxresults;	
-		return EntityLoad( "Enquiry", {}, "unread DESC, created DESC", ormoptions );
+		return EntityLoad( "Enquiry", {}, "read, created DESC", ormoptions );
 	}	
 
 	/**
@@ -49,18 +47,18 @@ component accessors="true" extends="model.abstract.BaseGateway"{
      * I return a count of unread enquiries
 	 */	
 	numeric function getUnreadCount(){
-		return ORMExecuteQuery( "select count( * ) from Enquiry where unread = true", true );
+		return ORMExecuteQuery( "select count( * ) from Enquiry where read = false", true );
 	}
 
 	/**
-     * I mark an enquiry, or all enquiries, as read
+     * I mark an enquiry, or enquiries, as read
 	 */		 	
 	void function markRead( theEnquiry="" ){
 		if( IsObject( arguments.theEnquiry ) ){
-			arguments.theEnquiry.setRead();
+			arguments.theEnquiry.setRead( true );
 			save( arguments.theEnquiry );
 		}else{
-			ORMExecuteQuery( "update Enquiry set unread=false" );		
+			ORMExecuteQuery( "update Enquiry set read=true" );		
 		}
 	}
 

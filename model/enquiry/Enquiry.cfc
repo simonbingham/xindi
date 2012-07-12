@@ -18,9 +18,7 @@
 
 component extends="model.abstract.BaseEntity" persistent="true" table="enquiries" cacheuse="transactional"{
 	
-	/*
-	 * PROPERTIES
-	 */	
+	// ------------------------ PROPERTIES ------------------------ //
 	
 	property name="enquiryid" column="enquiry_id" fieldtype="id" setter="false" generator="native";
 	
@@ -28,12 +26,10 @@ component extends="model.abstract.BaseEntity" persistent="true" table="enquiries
 	property name="lastname" column="enquiry_lastname" ormtype="string" length="50";
 	property name="email" column="enquiry_email" ormtype="string" length="150";
 	property name="message" column="enquiry_message" ormtype="text";
-	property name="unread" column="enquiry_unread" ormtype="boolean";
+	property name="read" column="enquiry_read" ormtype="boolean";
 	property name="created" column="enquiry_created" ormtype="timestamp";
 
-	/*
-	 * PUBLIC METHODS
-	 */
+	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	/**
      * I initialise this component
@@ -41,7 +37,7 @@ component extends="model.abstract.BaseEntity" persistent="true" table="enquiries
 	Enquiry function init(){
 		variables.firstname = "";
 		variables.lastname = "";
-		variables.unread = true;
+		variables.read = false;
 		return this;
 	}
 	
@@ -67,14 +63,10 @@ component extends="model.abstract.BaseEntity" persistent="true" table="enquiries
 	}
 	
 	/**
-     * I return true if the enquiry is unread
+     * I return true if the enquiry is read
 	 */		
-	boolean function isUnread(){
-		return getUnread();
-	}	
-	
-	string function setRead(){
-		setUnread( false );
+	boolean function isRead(){
+		return getRead();
 	}
-
+	
 }

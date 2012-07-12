@@ -18,9 +18,7 @@
 
 component extends="model.abstract.BaseEntity" persistent="true" table="pages" cacheuse="transactional"{
 
-	/*
-	 * PROPERTIES
-	 */
+	// ------------------------ PROPERTIES ------------------------ //
 
 	property name="pageid" column="page_id" fieldtype="id" setter="false" generator="native";
 	
@@ -36,9 +34,7 @@ component extends="model.abstract.BaseEntity" persistent="true" table="pages" ca
 	property name="created" column="page_created" ormtype="timestamp";
 	property name="updated" column="page_updated" ormtype="timestamp";
 
-	/*
-	 * PUBLIC METHODS
-	 */
+	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	/**
      * I initialise this component
@@ -149,7 +145,7 @@ component extends="model.abstract.BaseEntity" persistent="true" table="pages" ca
 	}
 
 	/**
-     * I return true if the page path contains an id
+     * I return true if the page id is found in a list of page ids
 	 */	
 	boolean function hasPageIDInPath( required string pageidlist ){
 		if( ListFind( arguments.pageidlist, getPageID() ) ) return true;
@@ -191,7 +187,7 @@ component extends="model.abstract.BaseEntity" persistent="true" table="pages" ca
 	}
 
 	/**
-     * I return true if a page is persisted
+     * I return true if the page is persisted
 	 */	
 	boolean function isPersisted(){
 		return !IsNull( variables.pageid );
@@ -211,9 +207,7 @@ component extends="model.abstract.BaseEntity" persistent="true" table="pages" ca
 		setUUID();
 	}
 
-	/*
-	 * PRIVATE METHODS
-	 */	
+	// ------------------------ PRIVATE METHODS ------------------------ //
 	
 	/**
      * I return the count of page descendents 

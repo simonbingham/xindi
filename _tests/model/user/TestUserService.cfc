@@ -105,6 +105,12 @@ component extends="mxunit.framework.TestCase"{
 		var result = IsObject( CUT.getValidator( User ) );
 		assertTrue( result );
 	}
+
+	function testNewPassword(){
+		var password = CUT.newPassword();
+		var result = Len( password );
+		assertEquals( 8, result );
+	}
 	
 	function testNewUser(){
 		var User = CUT.newUser();

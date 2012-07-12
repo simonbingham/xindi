@@ -18,9 +18,7 @@
 
 component extends="model.abstract.BaseEntity" persistent="true" table="users" cacheuse="transactional"{
 
-	/*
-	 * PROPERTIES
-	 */	
+	// ------------------------ PROPERTIES ------------------------ //	
 	
 	property name="userid" column="user_id" fieldtype="id" setter="false" generator="native";
 
@@ -32,14 +30,12 @@ component extends="model.abstract.BaseEntity" persistent="true" table="users" ca
 	property name="created" column="user_created" ormtype="timestamp";
 	property name="updated" column="user_updated" ormtype="timestamp";
 	
-	/*
-	 * PUBLIC METHODS
-	 */	
+	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	/**
      * I initialise this component
 	 */		
-	function init(){
+	User function init(){
 		return this;
 	}
 	

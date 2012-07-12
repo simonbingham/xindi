@@ -18,17 +18,13 @@
 
 component accessors="true"{
 
-	/*
-	 * DEPENDENCY INJECTION
-	 */	
+	// ------------------------ DEPENDENCY INJECTION ------------------------ //	
 
 	property name="ContentGateway" getter="false";
 	property name="MetaData" getter="false";
 	property name="Validator" getter="false";
 
-	/*
-	 * PUBLIC METHODS
-	 */
+	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	/**
      * I delete a page
@@ -70,7 +66,7 @@ component accessors="true"{
 	}
 
 	/**
-     * I return the root page
+     * I return the root page (i.e. home page)
 	 */	
 	Page function getRoot(){
 		return variables.ContentGateway.getRoot();

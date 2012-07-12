@@ -18,16 +18,12 @@
 
 component accessors="true"{
 
-	/*
-	 * DEPENDENCY INJECTION
-	 */	
+	// ------------------------ DEPENDENCY INJECTION ------------------------ //
 	
 	property name="UserGateway" getter="false";
 	property name="Validator" getter="false";
 
-	/*
-	 * PUBLIC METHODS
-	 */
+	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	/**
      * I delete a user

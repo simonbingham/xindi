@@ -18,9 +18,7 @@
 
 component extends="model.abstract.BaseEntity" persistent="true" table="articles" cacheuse="transactional"{
 
-	/*
-	 * PROPERTIES
-	 */
+	// ------------------------ PROPERTIES ------------------------ //
 
 	property name="articleid" column="article_id" fieldtype="id" setter="false" generator="native";
 	
@@ -35,9 +33,7 @@ component extends="model.abstract.BaseEntity" persistent="true" table="articles"
 	property name="created" column="article_created" ormtype="timestamp";
 	property name="updated" column="article_updated" ormtype="timestamp";
 
-	/*
-	 * PUBLIC METHODS
-	 */
+	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	/**
      * I initialise this component
@@ -128,9 +124,7 @@ component extends="model.abstract.BaseEntity" persistent="true" table="articles"
 		setUUID();
 	}
 
-	/*
-	 * PRIVATE METHODS
-	 */
+	// ------------------------ PRIVATE METHODS ------------------------ //
 
 	/**
      * I return true if the id of the article is unique

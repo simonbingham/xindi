@@ -18,15 +18,11 @@
 
 component accessors="true"{
 
-	/*
-	 * DEPENDENCY INJECTION
-	 */	
+	// ------------------------ DEPENDENCY INJECTION ------------------------ //
 	
 	property name="Validator" getter="false";
 
-	/*
-	 * PUBLIC METHODS
-	 */
+	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	/**
      * I create a directory
@@ -99,9 +95,7 @@ component accessors="true"{
 		return result;
 	}
 	
-	/*
-	 * PRIVATE METHODS
-	 */	
+	// ------------------------ PRIVATE METHODS ------------------------ //
 
 	/**
      * I return a file

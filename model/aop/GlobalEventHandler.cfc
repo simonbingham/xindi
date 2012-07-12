@@ -44,8 +44,7 @@ component implements="cfide.orm.IEventHandler"{
      * I am called before the entity is updated in the database
      */
 	void function preUpdate( any entity, struct oldData ){
-		var timestamp = now();
-		if( StructKeyExists( arguments.entity, "setUpdated" ) ) arguments.entity.setUpdated( timestamp );
+		if( StructKeyExists( arguments.entity, "setUpdated" ) ) arguments.entity.setUpdated( now() );
 	}    
 	
     /**

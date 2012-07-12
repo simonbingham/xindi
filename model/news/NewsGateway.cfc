@@ -18,9 +18,7 @@
 
 <cfcomponent accessors="true" output="false" extends="model.abstract.BaseGateway">
 	<cfscript>
-		/*
-		 * PUBLIC METHODS
-		 */	
+		// ------------------------ PUBLIC METHODS ------------------------ //	
 		
 		/**
 	     * I delete an article

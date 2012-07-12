@@ -98,6 +98,8 @@ component extends="mxunit.framework.TestCase"{
 		CUT.setValidator( Validator );
 		var EnquiryGateway = new model.enquiry.EnquiryGateway();
 		CUT.setEnquiryGateway( EnquiryGateway );
+		var NotificationService = new model.utility.NotificationService();
+		CUT.setNotificationService( NotificationService );
 		
 		// reinitialise ORM for the application (create database table)
 		ORMReload();
