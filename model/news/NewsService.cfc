@@ -30,7 +30,7 @@ component accessors="true"{
 	 * Public methods
 	 */
 	 	
-	function deleteArticle( required articleid ){
+	void function deleteArticle( required articleid ){
 		transaction{
 			var Article = variables.NewsGateway.getArticle( Val( arguments.articleid ) );
 			var result = variables.Validator.newResult();
