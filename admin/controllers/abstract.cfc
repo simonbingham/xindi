@@ -37,7 +37,7 @@ component accessors="true"{
 	}
 	
 	void function before( required struct rc ){
-		rc.isallowed = variables.SecurityService.isAllowed( session=session, action=variables.fw.getFullyQualifiedAction() );
+		rc.isallowed = variables.SecurityService.isAllowed( session, variables.fw.getFullyQualifiedAction() );
 		if( !rc.isallowed ){
 			variables.fw.redirect( "admin:security" );
 		}else{
@@ -45,7 +45,7 @@ component accessors="true"{
 			rc.unreadenquiries = variables.EnquiryService.getEnquiries( maxresults=10 );
 			rc.updatedpages = variables.ContentService.getPages( sortorder="updated desc", maxresults=10 );
 			rc.updatedarticles = variables.NewsService.getArticles( sortorder="updated desc", maxresults=10 );
-			rc.CurrentUser = variables.UserService.getUser( userid=session.userid );
+			rc.CurrentUser = variables.UserService.getUser( session.userid );
 		}
 	}
 

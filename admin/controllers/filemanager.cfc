@@ -38,7 +38,7 @@ component accessors="true" extends="abstract"{
 			rc.subdirectory = "";
 		}
 		rc.currentdirectory = rc.webrootdirectory & rc.clientfilesdirectory & rc.subdirectory;
-		if( !variables.FileManagerService.isDirectory( directory=rc.currentdirectory ) ) rc.message.error = "Sorry, the requested " & rc.subdirectory & " is not valid.";
+		if( !variables.FileManagerService.isDirectory( rc.currentdirectory ) ) rc.message.error = "Sorry, the requested " & rc.subdirectory & " is not valid.";
 	}
 
 	void function configure( required struct rc ){	
@@ -53,13 +53,13 @@ component accessors="true" extends="abstract"{
 	void function createdirectory( required struct rc ){
 		param name="rc.newdirectory" default="";
 		var newdirectory = ReReplaceNoCase( Trim( rc.newdirectory ), "[^a-z0-9_\-\.]", "", "all" );
-		rc.result = variables.FileManagerService.createDirectory( directory=rc.currentdirectory & "/" & newdirectory );
+		rc.result = variables.FileManagerService.createDirectory( rc.currentdirectory & "/" & newdirectory );
 		if( rc.result.theobject.mkdirs() && rc.result.getIsSuccess() ) variables.fw.redirect( action="filemanager.default", querystring="subdirectory=#urlSafePath( rc.subdirectory & "/" & newdirectory )#", preserve="result" );
 		else variables.fw.redirect( action="filemanager.default", querystring="subdirectory=#urlSafePath( rc.subdirectory )#", preserve="result" );
 	}
 
 	void function default( required struct rc ){
-		rc.listing = variables.FileManagerService.getDirectoryList( directory=rc.currentdirectory, allowedextensions=variables.config.filemanager.allowedextensions );
+		rc.listing = variables.FileManagerService.getDirectoryList( rc.currentdirectory, variables.config.filemanager.allowedextensions );
 	}
 
 	void function delete( required struct rc ){
@@ -70,7 +70,7 @@ component accessors="true" extends="abstract"{
 
 	void function upload( required struct rc ){
 		param name="rc.file" default="";
-		rc.result = variables.FileManagerService.uploadFile( file="file", destination=rc.currentdirectory, allowedextensions=variables.config.filemanager.allowedextensions );
+		rc.result = variables.FileManagerService.uploadFile( "file", rc.currentdirectory, variables.config.filemanager.allowedextensions );
 		variables.fw.redirect( action="filemanager.default", querystring="subdirectory=#urlSafePath( rc.subdirectory )#", preserve="result" );
 	}
 	

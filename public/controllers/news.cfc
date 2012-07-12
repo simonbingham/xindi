@@ -30,7 +30,7 @@ component accessors="true" extends="abstract"{
 
 	void function article( required struct rc ){
 		param name="rc.uuid" default="";
-		rc.Article = variables.NewsService.getArticleByUUID( uuid=rc.uuid );
+		rc.Article = variables.NewsService.getArticleByUUID( rc.uuid );
 		if( rc.Article.isPersisted() ){
 			rc.MetaData.setMetaTitle( rc.Article.getMetaTitle() ); 
 			rc.MetaData.setMetaDescription( rc.Article.getMetaDescription() );

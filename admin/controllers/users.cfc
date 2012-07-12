@@ -32,16 +32,16 @@ component accessors="true" extends="abstract"{
 
 	void function delete( required struct rc ){
 		param name="rc.userid" default="0";
-		rc.result = variables.UserService.deleteUser( userid=rc.userid );
+		rc.result = variables.UserService.deleteUser( rc.userid );
 		variables.fw.redirect( "users", "result" );
 	}	
 	
 	void function maintain( required struct rc ){
 		param name="rc.userid" default="0";
 		param name="rc.context" default="create";
-		if( !StructKeyExists( rc, "User" ) ) rc.User = variables.UserService.getUser( userid=rc.userid );
+		if( !StructKeyExists( rc, "User" ) ) rc.User = variables.UserService.getUser( rc.userid );
 		if( rc.User.isPersisted() ) rc.context = "update";
-		rc.Validator = variables.UserService.getValidator( User=rc.User );
+		rc.Validator = variables.UserService.getValidator( rc.User );
 		if( !StructKeyExists( rc, "result" ) ) rc.result = rc.Validator.newResult();
 	}	
 	
@@ -54,8 +54,7 @@ component accessors="true" extends="abstract"{
 		param name="rc.password" default="";
 		param name="rc.context" default="create";
 		param name="rc.submit" default="Save & exit";
-		var properties = { userid=rc.userid, firstname=rc.firstname, lastname=rc.lastname, email=rc.email, username=rc.username, password=rc.password };
-		rc.result = variables.UserService.saveUser( properties=properties, context=rc.context );
+		rc.result = variables.UserService.saveUser( rc, rc.context );
 		rc.User = rc.result.getTheObject();
 		if( rc.result.getIsSuccess() ){
 			if( rc.submit == "Save & Continue" )  variables.fw.redirect( "users.maintain", "result,User", "userid" );

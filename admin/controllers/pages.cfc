@@ -32,7 +32,7 @@ component accessors="true" extends="abstract"{
 
 	void function delete( required struct rc ){
 		param name="rc.pageid" default="0";
-		rc.result = variables.ContentService.deletePage( pageid=rc.pageid );
+		rc.result = variables.ContentService.deletePage( rc.pageid );
 		if( !rc.config.development && rc.result.getIsSuccess() ){
 			var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:navigation/xml", method="get" );
 			refreshsitemap.send();
@@ -43,16 +43,16 @@ component accessors="true" extends="abstract"{
 	void function maintain( required struct rc ){
 		param name="rc.pageid" default="0";
 		param name="rc.context" default="create";
-		if( !StructKeyExists( rc, "Page" ) ) rc.Page = variables.ContentService.getPage( pageid=rc.pageid );
+		if( !StructKeyExists( rc, "Page" ) ) rc.Page = variables.ContentService.getPage( rc.pageid );
 		if( rc.Page.isPersisted() && !rc.Page.hasRoute( variables.fw.getRoutes() ) ) rc.context = "update";
-		rc.Validator = variables.ContentService.getValidator( Page=rc.Page );
+		rc.Validator = variables.ContentService.getValidator( rc.Page );
 		if( !StructKeyExists( rc, "result" ) ) rc.result = rc.Validator.newResult();
 	}	
 	
 	void function move( required struct rc ){
 		param name="rc.pageid" default="0";
 		param name="rc.direction" default="";
-		rc.result = variables.ContentService.movePage( pageid=rc.pageid, direction=rc.direction );
+		rc.result = variables.ContentService.movePage( rc.pageid, rc.direction );
 		variables.fw.redirect( "pages", "result" );
 	}	
 	
@@ -67,8 +67,7 @@ component accessors="true" extends="abstract"{
 		param name="rc.metakeywords" default="";
 		param name="rc.context" default="create";
 		param name="rc.submit" default="Save & exit";
-		var properties = { pageid=rc.pageid, title=rc.title, content=rc.content, metagenerated=rc.metagenerated, metatitle=rc.metatitle, metadescription=rc.metadescription, metakeywords=rc.metakeywords };
-		rc.result = variables.ContentService.savePage( properties=properties, ancestorid=rc.ancestorid, context=rc.context );
+		rc.result = variables.ContentService.savePage( rc, rc.ancestorid, rc.context );
 		rc.Page = rc.result.getTheObject();
 		if( rc.result.getIsSuccess() ){
 			if( !rc.config.development ){

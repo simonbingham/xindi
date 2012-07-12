@@ -31,7 +31,7 @@ component accessors="true" extends="abstract"{
 	
 	void function default( required struct rc ){
 		if( !StructKeyExists( rc, "Enquiry" ) ) rc.Enquiry = variables.EnquiryService.newEnquiry();
-		rc.Validator = variables.EnquiryService.getValidator( Enquiry=rc.Enquiry );
+		rc.Validator = variables.EnquiryService.getValidator( rc.Enquiry );
 		if( !StructKeyExists( rc, "result" ) ) rc.result = rc.Validator.newResult();
 		rc.MetaData.setMetaTitle( "Contact Us" ); 
 		rc.MetaData.setMetaDescription( "" );
@@ -43,9 +43,7 @@ component accessors="true" extends="abstract"{
  		param name="rc.lastname" default="";
  		param name="rc.email" default="";
  		param name="rc.message" default="";
-		var properties = { firstname=rc.firstname, lastname=rc.lastname, email=rc.email, message=rc.message };
-		var emailtemplatepath = "../../public/views/enquiry/email.cfm";
-		rc.result = variables.EnquiryService.sendEnquiry( properties=properties, config=variables.config.enquiry, emailtemplatepath=emailtemplatepath );
+		rc.result = variables.EnquiryService.sendEnquiry( rc, variables.config.enquiry, "../../public/views/enquiry/email.cfm" );
 		if( rc.result.getIsSuccess() ){
 			variables.fw.redirect( "enquiry.thanks" );	
 		}else{

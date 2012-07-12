@@ -47,8 +47,7 @@ component accessors="true"{
 	void function login( required struct rc ){
 		param name="rc.username" default="";
 		param name="rc.password" default="";
-		var properties = { username=rc.username, password=rc.password };
-		rc.result = variables.SecurityService.loginUser( session, properties );
+		rc.result = variables.SecurityService.loginUser( session, rc );
 		if( rc.result.getIsSuccess() ) variables.fw.redirect( "main", "result" );
 		else variables.fw.redirect( "security", "result" );
 	}
@@ -66,9 +65,7 @@ component accessors="true"{
 	
 	void function resetpassword( required struct rc ){
 		param name="rc.username" default="";
-		var properties = { username=rc.username };
-		var emailtemplatepath = "../../admin/views/security/email.cfm";
-		rc.result = variables.SecurityService.resetPassword( properties, rc.config.name, rc.config.security, emailtemplatepath );
+		rc.result = variables.SecurityService.resetPassword( rc, rc.config.name, rc.config.security, "../../admin/views/security/email.cfm" );
 		if( rc.result.getIsSuccess() ) variables.fw.redirect( "security", "result" );
 		else variables.fw.redirect( "security.password", "result" );
 	}
