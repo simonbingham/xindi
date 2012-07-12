@@ -49,17 +49,11 @@ component extends="mxunit.framework.TestCase"{
 		assertFalse( result );
 	}
 	
-	function testIsUnread(){
-		var result = CUT.isUnread();
-		assertTrue( result );
-	}	
-
-	function testSetRead(){
-		CUT.setRead( true );
-		var result = CUT.isUnread();
+	function testIsRead(){
+		var result = CUT.isRead();
 		assertFalse( result );
 	}	
-	
+
 	// ------------------------ IMPLICIT ------------------------ //
 	
 	/**

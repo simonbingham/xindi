@@ -57,20 +57,19 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testMarkAllRead(){
-		var unreadenquiries = EntityLoad( "Enquiry", { unread=true } );
-		debug(unreadenquiries);
+		var unreadenquiries = EntityLoad( "Enquiry", { read=false } );
 		var result = ArrayLen( unreadenquiries );
 		assertEquals( 3, result );
 		transaction{
 			CUT.markRead();
 		}
-		unreadenquiries = EntityLoad( "Enquiry", { unread=true } );
+		unreadenquiries = EntityLoad( "Enquiry", { read=false } );
 		result = ArrayLen( unreadenquiries );
 		assertEquals( 0, result );
 	}
 	
 	function testMarkRead(){
-		var unreadenquiries = EntityLoad( "Enquiry", { unread=true } );
+		var unreadenquiries = EntityLoad( "Enquiry", { read=false } );
 		debug(unreadenquiries);
 		var result = ArrayLen( unreadenquiries );
 		assertEquals( 3, result );
@@ -78,7 +77,7 @@ component extends="mxunit.framework.TestCase"{
 		transaction{
 			CUT.markRead( Enquiry );
 		}
-		unreadenquiries = EntityLoad( "Enquiry", { unread=true } );
+		unreadenquiries = EntityLoad( "Enquiry", { read=false } );
 		result = ArrayLen( unreadenquiries );
 		assertEquals( 2, result );
 	}
@@ -119,11 +118,11 @@ component extends="mxunit.framework.TestCase"{
 		// insert test data into database
 		var q = new Query();
 		q.setSQL( "
-			INSERT INTO enquiries (enquiry_id, enquiry_firstname, enquiry_lastname, enquiry_email, enquiry_message, enquiry_unread, enquiry_created) 
+			INSERT INTO enquiries (enquiry_id, enquiry_firstname, enquiry_lastname, enquiry_email, enquiry_message, enquiry_read, enquiry_created) 
 			VALUES
-				(1, 'Simon', 'Bingham', 'example@example.com', 'Phasellus ut tortor in erat dignissim eleifend at nec leo! Praesent vel lectus et elit condimentum hendrerit vel sit amet magna. Nunc luctus bibendum mi sed posuere. Pellentesque facilisis ullamcorper ultrices. Nulla eu dolor ac nunc laoreet tincidunt. Nulla et laoreet eros. Proin id pellentesque justo? Maecenas quis risus augue. Nulla commodo laoreet est nec mattis. Phasellus id dolor quam, id mattis mauris.', true, '2012-06-08 13:46:47'),
-				(2, 'John', 'Whish', 'example@example.com', 'Phasellus ut tortor in erat dignissim eleifend at nec leo! Praesent vel lectus et elit condimentum hendrerit vel sit amet magna. Nunc luctus bibendum mi sed posuere. Pellentesque facilisis ullamcorper ultrices. Nulla eu dolor ac nunc laoreet tincidunt. Nulla et laoreet eros. Proin id pellentesque justo? Maecenas quis risus augue. Nulla commodo laoreet est nec mattis. Phasellus id dolor quam, id mattis mauris.', true, '2012-06-08 13:46:57'),
-				(3, 'Andy', 'Beer', 'example@example.com', 'Phasellus ut tortor in erat dignissim eleifend at nec leo! Praesent vel lectus et elit condimentum hendrerit vel sit amet magna. Nunc luctus bibendum mi sed posuere. Pellentesque facilisis ullamcorper ultrices. Nulla eu dolor ac nunc laoreet tincidunt. Nulla et laoreet eros. Proin id pellentesque justo? Maecenas quis risus augue. Nulla commodo laoreet est nec mattis. Phasellus id dolor quam, id mattis mauris.', true, '2012-06-08 13:47:04');
+				(1, 'Simon', 'Bingham', 'example@example.com', 'Phasellus ut tortor in erat dignissim eleifend at nec leo! Praesent vel lectus et elit condimentum hendrerit vel sit amet magna. Nunc luctus bibendum mi sed posuere. Pellentesque facilisis ullamcorper ultrices. Nulla eu dolor ac nunc laoreet tincidunt. Nulla et laoreet eros. Proin id pellentesque justo? Maecenas quis risus augue. Nulla commodo laoreet est nec mattis. Phasellus id dolor quam, id mattis mauris.', false, '2012-06-08 13:46:47'),
+				(2, 'John', 'Whish', 'example@example.com', 'Phasellus ut tortor in erat dignissim eleifend at nec leo! Praesent vel lectus et elit condimentum hendrerit vel sit amet magna. Nunc luctus bibendum mi sed posuere. Pellentesque facilisis ullamcorper ultrices. Nulla eu dolor ac nunc laoreet tincidunt. Nulla et laoreet eros. Proin id pellentesque justo? Maecenas quis risus augue. Nulla commodo laoreet est nec mattis. Phasellus id dolor quam, id mattis mauris.', false, '2012-06-08 13:46:57'),
+				(3, 'Andy', 'Beer', 'example@example.com', 'Phasellus ut tortor in erat dignissim eleifend at nec leo! Praesent vel lectus et elit condimentum hendrerit vel sit amet magna. Nunc luctus bibendum mi sed posuere. Pellentesque facilisis ullamcorper ultrices. Nulla eu dolor ac nunc laoreet tincidunt. Nulla et laoreet eros. Proin id pellentesque justo? Maecenas quis risus augue. Nulla commodo laoreet est nec mattis. Phasellus id dolor quam, id mattis mauris.', false, '2012-06-08 13:47:04');
 		" );
 		q.execute();		
 	}

@@ -99,7 +99,7 @@
 			<tbody>
 				<cfloop array="#rc.unreadenquiries#" index="local.Enquiry">
 					<tr>
-						<td class="center"><cfif local.Enquiry.isUnread()><span class="label label-info">new</span></cfif></td>
+						<td class="center"><cfif !local.Enquiry.isRead()><span class="label label-info">new</span></cfif></td>
 						<td>#local.Enquiry.getFullName()#</td>
 						<td>#DateFormat( local.Enquiry.getCreated(), "full" )# #TimeFormat( local.Enquiry.getCreated() )#</td>
 						<td class="center"><a href="#buildURL( action='enquiries.enquiry', querystring='enquiryid=#local.Enquiry.getEnquiryID()#' )#" title="View Enquiry"><i class="icon-eye-open"></i></a></td>
