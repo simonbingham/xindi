@@ -19,6 +19,12 @@
 component accessors="true"{
 
 	/*
+	 * Dependency injection
+	 */	
+	
+	property name="Validator" getter="false";
+
+	/*
 	 * Public methods
 	 */
 	 	
@@ -68,9 +74,9 @@ component accessors="true"{
 	struct function uploadFile( required string file, required string destination, required string allowedextensions ){
 		var result = variables.Validator.newResult();
 		try{
-			result = FileUpload( arguments.destination, arguments.file, "", "MakeUnique" );
-			result.setSuccessMessage( "The file &quot;" & result.serverfile & "&quot; has been uploaded." );
-			if( !ListFindNoCase( arguments.allowedextensions, result.serverfileext ) ) deleteFile( result.serverdirectory & "/" & result.serverfile );
+			var fileuploadresult = FileUpload( arguments.destination, arguments.file, "", "MakeUnique" );
+			result.setSuccessMessage( "The file &quot;" & fileuploadresult.serverfile & "&quot; has been uploaded." );
+			if( !ListFindNoCase( arguments.allowedextensions, fileuploadresult.serverfileext ) ) deleteFile( fileuploadresult.serverdirectory & "/" & fileuploadresult.serverfile );
 		}
 		catch( any e ){ 
 			result.setErrorMessage( "Sorry, you are not permitted to upload this type of file." );
