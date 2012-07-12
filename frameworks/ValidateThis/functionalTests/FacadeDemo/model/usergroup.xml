@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validateThis xsi:noNamespaceSchemaLocation="http://www.validatethis.org/validateThis.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<objectProperties>
+		<property name="UserGroupName">
+			<rule type="required" />
+			<rule type="inList" contexts="newValidations">
+				<param name="list" value="a,b,c" />
+			</rule>
+		</property>
+	</objectProperties>
+</validateThis>

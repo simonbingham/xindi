@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Created with Liquid XML Studio 6.1.18.0 - FREE Community Edition (http://www.liquid-technologies.com)-->
+<!--
+	// **************************************** LICENSE INFO **************************************** \\
+	
+	Copyright 2010, Bob Silverberg
+	
+	Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in 
+	compliance with the License.  You may obtain a copy of the License at 
+	
+		http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software distributed under the License is 
+	distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+	implied.  See the License for the specific language governing permissions and limitations under the 
+	License.
+	
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="validateThis">
+    <xs:annotation>
+      <xs:documentation>This is the root element of the file.  One of these files will be created for each Business Object for which validation rules are to be defined.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="conditions">
+          <xs:annotation>
+            <xs:documentation>Specify any named conditions that are used in rule elements.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="unbounded" name="condition">
+                <xs:annotation>
+                  <xs:documentation>One condition that can be used in rule elements througout the document.</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:attribute name="name" type="xs:string" use="required">
+                    <xs:annotation>
+                      <xs:documentation>A unique name for the condition.</xs:documentation>
+                    </xs:annotation>
+                  </xs:attribute>
+                  <xs:attribute name="serverTest" type="xs:string" use="required">
+                    <xs:annotation>
+                      <xs:documentation>A ColdFusion expression that will evaluate to either true or false in the context of a Business Object</xs:documentation>
+                    </xs:annotation>
+                  </xs:attribute>
+                  <xs:attribute name="clientTest" type="xs:string">
+                    <xs:annotation>
+                      <xs:documentation>A JavaScript expression that will evaluate to either true or false in the context of a form</xs:documentation>
+                    </xs:annotation>
+                  </xs:attribute>
+                  <xs:attribute name="desc" type="xs:string">
+                    <xs:annotation>
+                      <xs:documentation>A description of the condition, used to generate validation failure messages.</xs:documentation>
+                    </xs:annotation>
+                  </xs:attribute>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="contexts">
+          <xs:annotation>
+            <xs:documentation>Specify any contexts for which you wish to define formNames.  These are used to target a particular form when generating client-side validations.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="unbounded" name="context">
+                <xs:complexType>
+                  <xs:attribute name="name" type="xs:string" use="required">
+                    <xs:annotation>
+                      <xs:documentation>The unique name for the context.</xs:documentation>
+                    </xs:annotation>
+                  </xs:attribute>
+                  <xs:attribute name="formName" type="xs:string" use="required">
+                    <xs:annotation>
+                      <xs:documentation>The name of the form that corresponds to the context.  Used to support generating client-side validations for multiple forms on a single page.</xs:documentation>
+                    </xs:annotation>
+                  </xs:attribute>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="objectProperties">
+          <xs:annotation>
+            <xs:documentation>This is a container for all of the properties of the Business Object which need to be defined to the framework.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="property">
+                <xs:annotation>
+                  <xs:documentation>A property element must be included for any property that either:
+a. Has any rules defined for it
+b. Needs a description recorded for it.  E.g., if it relates to another property with a rule (e.g., via an equalTo rule type)</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element minOccurs="0" maxOccurs="unbounded" name="rule">
+                      <xs:annotation>
+                        <xs:documentation>A property may have any number of rules defined, including zero.  Note that defining multiple rules OF THE SAME TYPE for the same property may cause problems for certain client-side validation routines.</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element minOccurs="0" maxOccurs="unbounded" name="param">
+                            <xs:annotation>
+                              <xs:documentation>A rule may have any number of params defined, including zero.  Certain rule types require that certain params be defined.  E.g., the MaxLength rule type requires a MaxLength param.</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+		                        <xs:attribute name="name" type="xs:string" use="required">
+		                          <xs:annotation>
+		                            <xs:documentation>The name of the parameter (e.g., min, max, methodName, etc.).</xs:documentation>
+		                          </xs:annotation>
+		                        </xs:attribute>
+		                        <xs:attribute name="value" type="xs:string" use="required">
+		                          <xs:annotation>
+		                            <xs:documentation>The value of the parameter.</xs:documentation>
+		                          </xs:annotation>
+		                        </xs:attribute>
+		                        <xs:attribute name="type" type="xs:string" use="optional">
+		                          <xs:annotation>
+		                            <xs:documentation>The type of the parameter. Can be one of value, expression or property. Defaults to value if not specified.</xs:documentation>
+		                          </xs:annotation>
+		                        </xs:attribute>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="type" type="xs:string" use="required">
+                          <xs:annotation>
+                            <xs:documentation>The type of validation to perform (e.g., required, email, custom, etc.).</xs:documentation>
+                          </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="contexts" type="xs:string" use="optional">
+                          <xs:annotation>
+                            <xs:documentation>Contexts in which the validation should be performed. E.g. a User object might have a Register context, a PasswordChange context and an Update context.</xs:documentation>
+                          </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="failureMessage" type="xs:string" use="optional">
+                          <xs:annotation>
+                            <xs:documentation>A message to display to the user when a validation failure occrus.  If none is specified the framework will generate a failure message.</xs:documentation>
+                          </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="condition" type="xs:string">
+                          <xs:annotation>
+                            <xs:documentation>The unique name of a condition that has been defined in the conditions collection</xs:documentation>
+                          </xs:annotation>
+                        </xs:attribute>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="name" type="xs:string" use="required">
+                    <xs:annotation>
+                      <xs:documentation>The name of the property in your Business Object.</xs:documentation>
+                    </xs:annotation>
+                  </xs:attribute>
+                  <xs:attribute name="desc" type="xs:string" use="optional">
+                    <xs:annotation>
+                      <xs:documentation>A descriptive name for the property, used to generate validation failure messages.</xs:documentation>
+                    </xs:annotation>
+                  </xs:attribute>
+                  <xs:attribute name="clientfieldname" type="xs:string" use="optional">
+                    <xs:annotation>
+                      <xs:documentation>The fieldname on a form that corresponds to the property.  This should only be used if the name of your property differs from the form fieldname.  For example, a User Object has a UserGroup, and therefore has a UserGroup property, but because UserGroup contains an object, we need to tell the framework the form fieldname (probably UserGroupId) in order to allow client-side validations to be generated for the field.</xs:documentation>
+                    </xs:annotation>
+                  </xs:attribute>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

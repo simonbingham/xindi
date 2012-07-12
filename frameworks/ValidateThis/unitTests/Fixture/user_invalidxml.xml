@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validateThis xsi:noNamespaceSchemaLocation="http://www.validatethis.org/validateThis.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<objectProperties>
+		<property name="UserName" desc="Email Address" an_invalid_attribute="true">
+			<rule type="required" />
+		</property>
+	</objectProperties>
+</validateThis>

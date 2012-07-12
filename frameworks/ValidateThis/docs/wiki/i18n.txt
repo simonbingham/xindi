@@ -1,0 +1,64 @@
+== Internationalization with ValidateThis ==
+
+ValidateThis has been designed to be able to translate failure messages into multiple languages. By default this translation facility is turned off, but it can be enabled by specifying some additional keys in the ValidateThisConfig struct when creating the ValidateThis Facade Object.
+
+<br/>
+=== ValidateThisConfig Keys for Translations ===
+
+To enable automatic translations using resource bundles you use the following keys in your ValidateThisConfig struct when you create the ValidateThis Facade Object:
+
+==== translatorPath ====
+This points to the component that will act as the translator for failure messages. Specify a value of ''ValidateThis.core.RBTranslator'' to enable the translator that makes use of resource bundles. If you'd prefer to use a different scheme (e.g., database-driven translations) then you can create your own translator object and provide the path to it.
+
+==== localeLoaderPath ====
+This points to the component that will load all of the resource bundles into the framework cache when it is instantiated. Specify a value of ''ValidateThis.core.RBLocaleLoader'' to enable the translator that makes use of resource bundles. As above, this can be overridden if you have your own way of loading resource bundles.
+
+==== localeMap ====
+This is a structure that contains information about which locales the application is to support, and their corresponding resource bundle property files. See below for an example.
+
+==== defaultLocale ====
+This optional key specifies the default locale that will be used by the framework if none is passed to method calls. By default it has the value of ''en_US'', which is English.
+
+==== Example ====
+<source lang="coldfusion">
+<cfset localeMap = {en_US="/rbs/en_US.properties",fr_FR="/rbs/fr_FR.properties"} />
+<cfset validateThisConfig = {definitionPath="/i18nDemo/model/",jsRoot="/js/"} />
+<cfset validateThisConfig.translatorPath = "ValidateThis.core.RBTranslator" />
+<cfset validateThisConfig.localeLoaderPath = "ValidateThis.core.RBLocaleLoader" />
+<cfset validateThisConfig.localeMap = localeMap />
+<cfset application.ValidateThis = createObject("component","ValidateThis.ValidateThis").init(validateThisConfig) />
+</source>
+
+This would create an instance of the ValidateThis Facade Object in the application scope with support for English (en_US) and French (fr_FR).
+
+<br/>
+=== Performing Server-Side Validations ===
+You don't do anything differently when performing server-side validations for multiple languages; you simply call the ''validate()'' method as per usual. The difference comes when you work with the Result object. When you call methods on the Result object you pass in the ''locale'' argument to the method in order to get failure messages back in the locale of your choosing. For example:
+ 
+<source lang="coldfusion">
+<cfset result = application.ValidateThis.validate(myObject) />
+<cfset failures = result.getFailures(locale="fr_FR") />
+<cfhtmlhead text="#theScript#" />
+</source>
+
+This would return an array of all validation failures in which each failure's message was translated into French.
+
+<br/>
+=== Generating Client-Side Validations ===
+The only difference when generating client-side validations for a specific language is that you pass in a ''locale'' argument to the methods. For example:
+
+<source lang="coldfusion">
+<cfset initScript = application.ValidateThis.getInitializationScript(locale="fr_FR") />
+<cfset theScript = application.ValidateThis.getValidationScript(theObject=myObject,locale="fr_FR") />
+<cfhtmlhead text="#initScript#" />
+<cfhtmlhead text="#theScript#" />
+</source>
+
+This would generate (and output via the calls to cfhtmlhead) the Javascript necessary for client-side validations, with failure messages in French.
+
+<br/>
+=== Creating Custom Translators ===
+As mentioned above, the framework has been designed to allow you to override the Translator that is used to translate failure messages. The only Translator that is currently included in the framework is one that uses resource bundles. If you would like to use a different translation scheme (e.g., store translations in a database, use a webservice, etc.), you can create your own Translator.
+
+Take a look at the BaseTranslator, RBTranslator, BaseLocaleLoader and RBLocaleLoader for guidance on producing your own. If you require any assistance please feel free to [http://groups.google.ca/group/validatethis contact us] for support.  
+

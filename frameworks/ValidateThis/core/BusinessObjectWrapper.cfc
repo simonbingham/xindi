@@ -36,7 +36,8 @@
 		<cfargument name="missingMethodArguments" type="any" required="true" />
 		
 		<cfset var varName = ReplaceNoCase(arguments.missingMethodName,"get","") />
-
+		<cfset var returnValue = "">
+		
 		<cfif Left(arguments.missingMethodName,3) EQ "get" AND StructKeyExists(variables.instance.invalidVars,varName)>
 			<cfreturn variables.instance.invalidVars[varName] />
 		<cfelse>
