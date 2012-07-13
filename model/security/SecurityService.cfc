@@ -35,7 +35,7 @@ component accessors="true"{
 	 */	
 	struct function deleteCurrentUser(){
 		var result = variables.Validator.newResult();
-		if( hasCurrentUser( getCurrentStorage() ) ){
+		if( hasCurrentUser() ){
 			StructDelete( getCurrentStorage(), variables.userkey );
 			result.setSuccessMessage( "You have been logged out." );	
 		}else{
@@ -57,13 +57,13 @@ component accessors="true"{
 	boolean function isAllowed( required string action, string whitelist ){
 		param name="arguments.whitelist" default=variables.config.security.whitelist; 
 		// user is not logged in
-		if( !hasCurrentUser( getCurrentStorage() ) ){
+		if( !hasCurrentUser() ){
 			// if the requested action is in the whitelist allow access
 			for ( var unsecured in ListToArray( arguments.whitelist ) ){
 				if( ReFindNoCase( unsecured, arguments.action ) ) return true;
 			}
 		// user is logged in so allow access to requested action 
-		}else if( hasCurrentUser( getCurrentStorage() ) ){
+		}else if( hasCurrentUser() ){
 			return true;
 		}
 		// previous conditions not met so deny access to requested action
