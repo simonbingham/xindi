@@ -16,14 +16,4 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true" extends="abstract"{
-	
-	/*
-	 * Public methods
-	 */	
-
-	void function before( required struct rc ){
-		super.before( arguments.rc );
-	}
-
-}
+component accessors="true" extends="abstract"{}
