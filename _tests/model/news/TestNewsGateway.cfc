@@ -20,8 +20,6 @@ component extends="mxunit.framework.TestCase"{
 			
 	// ------------------------ UNIT TESTS ------------------------ //
 	
-	// public methods
-
 	function testDeleteArticle(){
 		var articles = EntityLoad( "Article" );
 		var articlecount = ArrayLen( articles );

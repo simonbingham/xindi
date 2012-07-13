@@ -70,9 +70,9 @@ component extends="mxunit.framework.TestCase"{
 
 	function testGetUserByCredentialsReturnsNullForInCorrectCredentials(){
 		var User = new model.user.User();
-		User.setUsername( "aliaspooryorik" );
+		User.setUsername( "foo" );
 		User.setEmail( "" );
-		User.setPassword( "1111111111111111111111111111111111111111111111111111111111111111" );		
+		User.setPassword( "bar" );		
 		var User = CUT.getUserByCredentials( User );
 		var result = User.isPersisted();
 		assertFalse( result );

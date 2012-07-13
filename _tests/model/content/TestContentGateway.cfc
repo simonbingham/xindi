@@ -20,8 +20,6 @@ component extends="mxunit.framework.TestCase"{
 			
 	// ------------------------ UNIT TESTS ------------------------ //
 	
-	// public methods
-	 
 	function testDeletePage(){
 		var pages = EntityLoad( "Page" );
 		var pagecount = ArrayLen( pages );
