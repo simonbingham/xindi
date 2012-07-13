@@ -18,41 +18,126 @@
 
 component accessors="true"{
 	
-	/*
-	 * Dependency injection
+	// ------------------------ DEPENDENCY INJECTION ------------------------ //	
+	
+	property name="NotificationService" getter="false";
+	property name="UserGateway" getter="false";
+	property name="UserService" getter="false";
+	property name="Validator" getter="false";
+	property name="config" getter="false";
+	
+	variables.userkey = "userid";
+
+	// ------------------------ PUBLIC METHODS ------------------------ //
+
+	/**
+	 * I delete the current user from the session
 	 */	
-	
-	property name="SecurityGateway" getter="false";
-
-	/*
-	 * Public methods
-	 */
-
-	function deleteCurrentUser( required struct session ){
-		return variables.SecurityGateway.deleteCurrentUser( session=arguments.session );
+	struct function deleteCurrentUser(){
+		var result = variables.Validator.newResult();
+		if( hasCurrentUser() ){
+			StructDelete( getCurrentStorage(), variables.userkey );
+			result.setSuccessMessage( "You have been logged out." );	
+		}else{
+			result.setErrorMessage( "You are not logged in." );
+		}
+		return result;
 	}
 
-	boolean function hasCurrentUser( required struct session ){
-		return variables.SecurityGateway.hasCurrentUser( session=arguments.session );
+	/**
+	 * I return true if the session has a user
+	 */	
+	boolean function hasCurrentUser(){
+		return StructKeyExists( getCurrentStorage(), variables.userkey );
 	}
 	
-	boolean function isAllowed( required struct session, required string action, string whitelist ){
-		return variables.SecurityGateway.isAllowed( argumentCollection=arguments );
+	/**
+	 * I return true if the user is permitted access to a FW/1 action
+	 */		
+	boolean function isAllowed( required string action, string whitelist ){
+		param name="arguments.whitelist" default=variables.config.security.whitelist; 
+		// user is not logged in
+		if( !hasCurrentUser() ){
+			// if the requested action is in the whitelist allow access
+			for ( var unsecured in ListToArray( arguments.whitelist ) ){
+				if( ReFindNoCase( unsecured, arguments.action ) ) return true;
+			}
+		// user is logged in so allow access to requested action 
+		}else if( hasCurrentUser() ){
+			return true;
+		}
+		// previous conditions not met so deny access to requested action
+		return false;
 	}	
 
-	function loginUser( required struct session, required struct properties ){
-		return variables.SecurityGateway.loginUser( argumentCollection=arguments );
-	}	
-	
-	function resetPassword( required struct properties, required string name, required struct config, required string emailtemplatepath ){
-		transaction{
-			var result = variables.SecurityGateway.resetPassword( argumentCollection=arguments );
+	/**
+	 * I verify and login a user
+	 */	
+	struct function loginUser( required struct properties ){
+		param name="arguments.properties.username" default="";
+		param name="arguments.properties.password" default="";
+		if( IsValid( "email", arguments.properties.username ) ){
+			arguments.properties.email = arguments.properties.username;
+			StructDelete( arguments.properties, "username" );
+		}
+		var User = variables.UserGateway.newUser();
+		User.populate( arguments.properties );
+		var result = variables.Validator.validate( theObject=User, context="login" );
+		User = variables.UserGateway.getUserByCredentials( User );
+		if( User.isPersisted() ){
+			setCurrentUser( User );
+			result.setSuccessMessage( "Welcome #User.getFirstName()#. You have been logged in." );
+		}else{
+			var message = "Sorry, your login details have not been recognised.";
+			result.setErrorMessage( message );
+			var failure = { propertyName="username", clientFieldname="username", message=message };
+			result.addFailure( failure );
 		}
 		return result;
 	}	
 	
-	void function setCurrentUser( required struct session, required any User ){
-		variables.SecurityGateway.setCurrentUser( argumentCollection=arguments );
+	/**
+	 * I reset the password of a user and send a notification email
+	 */		
+	struct function resetPassword( required struct properties, required string name, required struct config, required string emailtemplatepath ){
+		transaction{
+			param name="arguments.properties.username" default="";
+			if( IsValid( "email", arguments.properties.username ) ){
+				arguments.properties.email = arguments.properties.username;
+				StructDelete( arguments.properties, "username" );
+			}
+			var User = variables.UserGateway.newUser();
+			User.populate( arguments.properties );
+			var result = variables.Validator.validate( theObject=User, context="password" );
+			User = variables.UserGateway.getUserByEmailOrUsername( User );
+			if( User.isPersisted() ){
+				var password = variables.UserService.newPassword();
+				User.setPassword( password );
+				savecontent variable="emailtemplate"{ include arguments.emailtemplatepath; }
+				variables.NotificationService.send( arguments.config.resetpasswordemailsubject, User.getEmail(), arguments.config.resetpasswordemailfrom, emailtemplate );
+				result.setSuccessMessage( "A new password has been sent to #User.getEmail()#." );
+			}else{
+				var message = "Sorry, your username or email address has not been recognised.";
+				result.setErrorMessage( message );
+				var failure = { propertyName="username", clientFieldname="username", message=message };
+				result.addFailure( failure );
+			}
+		}
+		return result;
+	}	
+
+	/**
+	 * I add a user to the session
+	 */		
+	void function setCurrentUser( required any User ){
+		getCurrentStorage()[ variables.userkey ] = arguments.User.getUserID();
+	}
+	
+	/**
+	 * I return the current storage mechanism
+	 */		
+	private function getCurrentStorage(){ 
+		return session; 
 	}
 	
 }

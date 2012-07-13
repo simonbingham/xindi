@@ -20,7 +20,7 @@
 	</cffunction>
 	
 	<cffunction name="getVersion" returnType="any" access="public" output="false" hint="I return the current version of the framework">
-		<cfreturn "1.1" />
+		<cfreturn "1.2" />
 	</cffunction>
 
 </cfcomponent>

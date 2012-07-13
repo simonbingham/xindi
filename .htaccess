@@ -1,0 +1,21 @@
+# --------------------------------------------------------------------
+# enable URL rewriting for this directory and subfolders
+# --------------------------------------------------------------------
+# Note that you may need to edit the apache/conf/http.conf and enable
+# the rewrite_module by uncommenting the following line:
+#
+# LoadModule rewrite_module modules/mod_rewrite.so
+#
+# Also change "AllowOverride None" to "AllowOverride All" in the
+# <Directory "C:/mywebserver-root/htdocs">
+# section
+# --------------------------------------------------------------------
+
+RewriteEngine On
+
+
+# --------------------------------------------------------------------
+# trap invalid URLs and return 410 (G=Gone)
+# --------------------------------------------------------------------
+
+RewriteRule ^index\.cfm/(.)+\.(ico|css|js)$ - [L,G]

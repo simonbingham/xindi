@@ -67,7 +67,7 @@
 						<cfif !StructKeyExists( fields, validation.clientfieldname )>
 							<!--- create js reference --->
 							<cfoutput>#Trim(theScriptWriter.generateJSFieldRefence(validation.clientfieldname,arguments.formName))#</cfoutput>
-							<cfset fm[validation.clientfieldname]="">
+							<cfset fields[ validation.clientfieldname ] = "">
 						</cfif>
 						<cfoutput>#Trim(theScriptWriter.generateValidationScript(theVal,arguments.formName,arguments.locale))#</cfoutput>
 					</cfif>
@@ -99,6 +99,7 @@
 		<cfset var key = "" />
 		<cfset var clientFieldName = "" />
 		<cfset var field = "" />
+		<cfset var condition = "" />
 
 		<cfset theResult['messages'] = {}/>
 		<cfset theResult['rules'] = {}/>

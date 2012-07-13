@@ -16,49 +16,42 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 --->
 
-<cfcomponent accessors="true" output="false">
-	<!---
-		Dependency injection
-	--->	
-	
-	<cfproperty name="MetaData" getter="false">
-	<cfproperty name="Validator" getter="false">	
-		
+<cfcomponent accessors="true" output="false" extends="model.abstract.BaseGateway">
 	<cfscript>
-		/*
-		 * Public methods
-		 */	
+		// ------------------------ PUBLIC METHODS ------------------------ //	
 		
-		function deleteArticle( required articleid ){
-			var Article = getArticleByID( Val( arguments.articleid ) );
-			var result = variables.Validator.newResult();
-			if( Article.isPersisted() ){ 
-				EntityDelete( Article );
-				result.setSuccessMessage( "The article &quot;#Article.getTitle()#&quot; has been deleted." );
-			}else{
-				result.setErrorMessage( "The article could not be deleted." );
-			}
-			return result;
+		/**
+		 * I delete an article
+		 */				
+		void function deleteArticle( required Article theArticle ){
+			delete( arguments.theArticle );
+		}
+
+		/**
+		 * I return an article matching an id
+		 */				
+		Article function getArticle( required numeric articleid ){
+			return get( "Article", arguments.articleid );
 		}
 		
-		function getArticleByID( required articleid ){
-			var Article = EntityLoadByPK( "Article", Val( arguments.articleid ) );
-			if( IsNull( Article ) ) Article = newArticle();
+		/**
+		 * I return an article matching a unique id
+		 */				
+		Article function getArticleByLabel( required string label ){
+			var Article = ORMExecuteQuery( "from Article where label=:label and published<=:published", { label=arguments.label, published=Now() }, true );
+			if( IsNull( Article ) ) Article = new( "Article" );
 			return Article;
 		}
 		
-		function getArticleByUUID( required string uuid ){
-			var Article = ORMExecuteQuery( "from Article where uuid=:uuid and published<=:published", { uuid=arguments.uuid, published=Now() }, true );
-			if( IsNull( Article ) ) Article = newArticle();
-			return Article;
-		}
-		
+		/**
+		 * I return the count of articles
+		 */				
 		numeric function getArticleCount(){
-			return Val( ORMExecuteQuery( "select count( * ) from Article", true ) );
+			return ORMExecuteQuery( "select count( * ) from Article", true );
 		}
 	</cfscript>
 	
-	<cffunction name="getArticles" output="false" returntype="Array">
+	<cffunction name="getArticles" output="false" returntype="Array" hint="I return an array of articles">
 		<cfargument name="searchterm" type="string" required="false" default="">
 		<cfargument name="sortorder" type="string" required="false" default="published desc">
 		<cfargument name="published" type="boolean" required="false" default="false">
@@ -92,43 +85,11 @@
 	</cffunction> 
 	
 	<cfscript>
-		function getValidator( required any Article ){
-			return variables.Validator.getValidator( theObject=arguments.Article );
+		/**
+		 * I save an article
+		 */				
+		Article function saveArticle( required Article theArticle ){
+			return save( arguments.theArticle );
 		}
-		
-		function saveArticle( required struct properties ){
-			param name="arguments.properties.articleid" default="0";
-			var Article = ""; 
-			Article = getArticleByID( Val( arguments.properties.articleid ) );
-			try{
-				arguments.properties.published = CreateDate( ListGetAt( arguments.properties.published, 3, "/" ), ListGetAt( arguments.properties.published, 2, "/" ), ListGetAt( arguments.properties.published, 1, "/" ) );
-			}
-			catch(any e){
-				arguments.properties.published = "";
-			}
-			Article.populate( arguments.properties );
-			if( IsNull( Article.getContent() ) ) Article.setContent( "" );
-			if( Article.isMetaGenerated() ){
-				Article.setMetaTitle( Article.getTitle() );
-				Article.setMetaDescription( variables.MetaData.generateMetaDescription( Article.getContent() ) );
-				Article.setMetaKeywords( variables.MetaData.generateMetaKeywords( Article.getContent() ) );
-			}
-			var result = variables.Validator.validate( theObject=Article );
-			if( !result.hasErrors() ){
-				EntitySave( Article );
-				result.setSuccessMessage( "The article &quot;#Article.getTitle()#&quot; has been saved." );
-			}else{
-				result.setErrorMessage( "Your article could not be saved. Please amend the highlighted fields." );
-			}
-			return result;
-		}
-		
-		/*
-		 * Private methods
-		 */	
-		
-		private function newArticle(){
-			return EntityNew( "Article" );
-		}				
 	</cfscript>
 </cfcomponent>

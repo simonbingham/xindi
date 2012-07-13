@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validateThis xsi:noNamespaceSchemaLocation="http://www.validatethis.org/validateThis.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<conditions>
+		<condition name="MustLikeSomething" 
+			serverTest="getLikeCheese() EQ 0 AND getLikeChocolate() EQ 0"
+			clientTest="$(&quot;[name='LikeCheese']&quot;).getValue() == 0 &amp;&amp; $(&quot;[name='LikeChocolate']&quot;).getValue() == 0;" />
+	</conditions>
+	<contexts>
+		<context name="newValidations-client" formName="frm-Main2" />
+		<context name="newValidations-server" formName="frm-Main2" />
+	</contexts>
+	<objectProperties>
+		<property name="UserName" desc="Email Address">
+			<rule type="required" contexts="*" />
+			<rule type="daterange" contexts="*">
+				<param name="from" value="2010-01-01" />
+				<param name="until" value="2011-12-31" />
+			</rule>
+			<rule type="futureDate" contexts="*">
+				<param name="after" value="2010-12-31" />
+			</rule>
+			<rule type="pastDate" contexts="*">
+				<param name="before" value="2011-02-01" />
+			</rule>
+			<rule type="inList" contexts="*">
+				<param name="list" value="2011-01-30,2011-01-29" />
+			</rule>
+			<rule type="notInList" contexts="*">
+				<param name="list" value="2011-01-29,2011-01-28" />
+			</rule>
+		</property>
+		<property name="Nickname">
+			<rule type="noHTML" contexts="*" />
+			<rule type="doesnotcontainotherproperties" contexts="*">
+				<param name="propertyNames" value="UserName,UserPass" />
+			</rule>
+			<rule type="minPatternsMatch" contexts="*">
+				<param name="minMatches" value="3" />
+				<param name="pattern_lowerCaseLetter" value="[a-z]" />
+				<param name="pattern_upperCaseLetter" value="[A-Z]" />
+				<param name="pattern_digit" value="[\d]" />
+				<param name="pattern_punct" value="[\x21-\x2F\x3A-\x40\x5B-\x60\x7B-\x7E]" />
+			</rule>
+			<rule type="URL" contexts="*" />
+		</property>
+		<property name="UserPass" desc="Password">
+			<rule type="required" contexts="*" />
+			<rule type="boolean" />
+			<rule type="true" />
+			<rule type="false" />
+		</property>
+		<property name="VerifyPassword">
+			<rule type="collectionSize" contexts="newValidations-server">
+				<param name="min" value="3" />
+				<param name="max" value="10" />
+			</rule>
+		</property>
+		<property name="UserGroup" clientfieldname="UserGroupId">
+			<rule type="required" contexts="*" />
+			<rule type="isValidObject" contexts="newValidations-server">
+				<param name="objectType" value="UserGroup" />
+			</rule>
+		</property>
+		<property name="Salutation">
+			<!-- size validator has been temporarily removed 
+			<rule type="collectionSize" contexts="newValidations-client">
+				<param name="min" value="2" />
+				<param name="max" value="3" />
+			</rule>
+			 -->
+		</property>
+		<property name="FirstName">
+			<rule type="daterange" contexts="*">
+				<param name="from" value="2010-01-01" />
+				<param name="until" value="2011-12-31" />
+			</rule>
+		</property>
+		<property name="LastName">
+			<rule type="integer" contexts="*" />
+		</property>
+		<property name="LikeOther" desc="What do you like?">
+		</property>
+		<property name="HowMuch" desc="How much money would you like?">
+			<rule type="max" contexts="*">
+				<param name="max" value="1000" />
+			</rule>
+			<rule type="min" contexts="*">
+				<param name="min" value="5" />
+			</rule>
+			<rule type="maxLength" contexts="*">
+				<param name="maxLength" value="2" />
+			</rule>
+			<rule type="minLength" contexts="*">
+				<param name="minLength" value="1" />
+			</rule>
+		</property>
+		<property name="AllowCommunication" />
+		<property name="CommunicationMethod">
+		</property>
+	</objectProperties>
+</validateThis>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validateThis xsi:noNamespaceSchemaLocation="validateThis.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <contexts>
+        <context name="contactUsForm" formName="contactForm" />
+        <context name="backEnd" formName="backEnd" />
+    </contexts>
+    <objectProperties>
+        <property name="name" desc="Full Name">
+            <rule type="required" />
+            <rule type="maxlength">
+                <param name="maxlength" value="120" />
+            </rule>
+            <rule type="regex">
+                <param name="Regex" value="^[A-Za-z-' ]+$" />
+            </rule>
+        </property>
+        <property name="email" desc="Email Address">
+            <rule type="required" />
+            <rule type="email" />
+            <rule type="maxlength" failureMessage="Your email address cannot be more than 120 characters">
+                <param name="maxlength" value="120" />
+            </rule>
+        </property>
+        <property name="subcategoryTitle" desc="A category must be selected" >
+            <rule type="required" contexts="backEnd" />
+        </property>
+        <property name="diocese" desc="You have selected an invalid diocese, please indicate a valid diocese">
+            <rule type="required" />
+        </property>
+        <property name="comment">
+            <rule type="required" />
+            <rule type="regex">
+                <param name="Regex" value="^[^$;*\\\/]+$" />
+            </rule>
+            <rule type="maxlength" failureMessage="Your comment must be 2000 characters or less">
+                <param name="maxlength" value="2000" />
+            </rule>
+        </property>
+    </objectProperties>
+</validateThis>

@@ -18,50 +18,97 @@
 
 component accessors="true"{
 
-	/*
-	 * Dependency injection
-	 */	
-	
-	property name="NewsGateway" getter="false";
+	// ------------------------ DEPENDENCY INJECTION ------------------------ //
 
-	/*
-	 * Public methods
-	 */
-	 	
-	function deleteArticle( required articleid ){
+	property name="MetaData" getter="false";
+	property name="NewsGateway" getter="false";
+	property name="Validator" getter="false";	
+
+	// ------------------------ PUBLIC METHODS ------------------------ //
+
+	/**
+	 * I delete an article
+	 */				
+	struct function deleteArticle( required articleid ){
 		transaction{
-			var result = variables.NewsGateway.deleteArticle( articleid=Val( arguments.articleid ) );
+			var Article = variables.NewsGateway.getArticle( Val( arguments.articleid ) );
+			var result = variables.Validator.newResult();
+			if( Article.isPersisted() ){ 
+				variables.NewsGateway.deleteArticle( Article );
+				result.setSuccessMessage( "The article &quot;#Article.getTitle()#&quot; has been deleted." );
+			}else{
+				result.setErrorMessage( "The article could not be deleted." );
+			}
 		}
 		return result;
 	}
-	
-	function getArticleByID( required articleid ){
-		return variables.NewsGateway.getArticleByID( articleid=Val( arguments.articleid ) );
+
+	/**
+	 * I return an article matching an id
+	 */		
+	Article function getArticle( required articleid ){
+		return variables.NewsGateway.getArticle( Val( arguments.articleid ) );
 	}
 	
-	function getArticleByUUID( required string uuid ){
-		return variables.NewsGateway.getArticleByUUID( argumentCollection=arguments );
+	/**
+	 * I return an article matching a unique id
+	 */		
+	Article function getArticleByLabel( required string label ){
+		return variables.NewsGateway.getArticleByLabel( argumentCollection=arguments );
 	}
 	
+	/**
+	 * I return the count of articles
+	 */		
 	numeric function getArticleCount(){
 		return variables.NewsGateway.getArticleCount();
 	}
 
+	/**
+	 * I return an array of articles
+	 */	
 	array function getArticles( string searchterm="", string sortorder="published desc", boolean published=false, maxresults=0, offset=0 ){
 		arguments.maxresults = Val( arguments.maxresults );
 		arguments.offset = Val( arguments.offset );
 		return variables.NewsGateway.getArticles( argumentCollection=arguments );
 	}
 		
-	function getValidator( required any Article ){
-		return variables.NewsGateway.getValidator( argumentCollection=arguments );
+	/**
+	 * I return the article validator
+	 */			
+	function getValidator( required Article theArticle ){
+		return variables.Validator.getValidator( theObject=arguments.theArticle );
 	}
 	
-	function saveArticle( required struct properties ){
+	/**
+	 * I validate and save an article
+	 */		
+	struct function saveArticle( required struct properties ){
 		transaction{
-			var Article = variables.NewsGateway.saveArticle( argumentCollection=arguments );
+			param name="arguments.properties.articleid" default="0";
+			var Article = variables.NewsGateway.getArticle( Val( arguments.properties.articleid ) );
+			try{
+				arguments.properties.published = CreateDate( ListGetAt( arguments.properties.published, 3, "/" ), ListGetAt( arguments.properties.published, 2, "/" ), ListGetAt( arguments.properties.published, 1, "/" ) );
+			}
+			catch(any e){
+				arguments.properties.published = "";
+			}
+			Article.populate( arguments.properties );
+			if( IsNull( Article.getContent() ) ) Article.setContent( "" );
+			if( Article.isMetaGenerated() ){
+				Article.setMetaTitle( Article.getTitle() );
+				Article.setMetaDescription( variables.MetaData.generateMetaDescription( Article.getContent() ) );
+				Article.setMetaKeywords( variables.MetaData.generateMetaKeywords( Article.getContent() ) );
+			}
+			var result = variables.Validator.validate( theObject=Article );
+			if( !result.hasErrors() ){
+				variables.NewsGateway.saveArticle( Article );
+				result.setSuccessMessage( "The article &quot;#Article.getTitle()#&quot; has been saved." );
+			}else{
+				result.setErrorMessage( "Your article could not be saved. Please amend the highlighted fields." );
+			}
 		}
-		return Article;
+		return result;
 	}
 	
 }

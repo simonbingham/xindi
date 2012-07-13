@@ -26,6 +26,7 @@ component accessors="true"{
 	property name="EnquiryService" setter="true" getter="false";
 	property name="NewsService" setter="true" getter="false";
 	property name="SecurityService" setter="true" getter="false";
+	property name="UserService" setter="true" getter="false";
 
 	/*
 	 * Public methods
@@ -35,13 +36,17 @@ component accessors="true"{
 		variables.fw = arguments.fw;
 	}
 	
-	void function before( required rc ){
-		rc.isallowed = variables.SecurityService.isAllowed( session=session, action=variables.fw.getFullyQualifiedAction() );
-		if( !rc.isallowed )	variables.fw.redirect( "admin:security" );
-		rc.unreadenquirycount = variables.EnquiryService.getUnreadCount();
-		rc.unreadenquiries = variables.EnquiryService.getEnquiries( maxresults=10 );
-		rc.updatedpages = variables.ContentService.getPages( sortorder="updated desc", maxresults=10 );
-		rc.updatedarticles = variables.NewsService.getArticles( sortorder="updated desc", maxresults=10 );
+	void function before( required struct rc ){
+		rc.isallowed = variables.SecurityService.isAllowed( variables.fw.getFullyQualifiedAction() );
+		if( !rc.isallowed ){
+			variables.fw.redirect( "admin:security" );
+		}else{
+			rc.unreadenquirycount = variables.EnquiryService.getUnreadCount();
+			rc.unreadenquiries = variables.EnquiryService.getEnquiries( maxresults=10 );
+			rc.updatedpages = variables.ContentService.getPages( sortorder="updated desc", maxresults=10 );
+			rc.updatedarticles = variables.NewsService.getArticles( sortorder="updated desc", maxresults=10 );
+			rc.CurrentUser = variables.UserService.getUser( session.userid );
+		}
 	}
 
 }

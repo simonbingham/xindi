@@ -18,53 +18,105 @@
 
 component accessors="true"{
 
-	/*
-	 * Dependency injection
-	 */	
+	// ------------------------ DEPENDENCY INJECTION ------------------------ //
 	
 	property name="EnquiryGateway" getter="false";
+	property name="NotificationService" getter="false";
+	property name="Validator" getter="false";
 
-	/*
-	 * Public methods
-	 */
+	// ------------------------ PUBLIC METHODS ------------------------ //
 
-	function deleteEnquiry( required enquiryid ){
+	/**
+	 * I delete an enquiry
+	 */	
+	struct function deleteEnquiry( required enquiryid ){
 		transaction{
-			var result = variables.EnquiryGateway.deleteEnquiry( enquiryid=Val( arguments.enquiryid ) );
+			var Enquiry = variables.EnquiryGateway.getEnquiry( Val( arguments.enquiryid ) );
+			var result = variables.Validator.newResult();
+			if( Enquiry.isPersisted() ){ 
+				variables.EnquiryGateway.deleteEnquiry( Enquiry );
+				result.setSuccessMessage( "The enquiry from &quot;#Enquiry.getFullName()#&quot; has been deleted." );
+			}else{
+				result.setErrorMessage( "The enquiry could not be deleted." );
+			}
 		}
 		return result;
 	}
-	
+
+	/**
+	 * I return an array of enquiries
+	 */		
 	array function getEnquiries( maxresults=0 ){
 		return variables.EnquiryGateway.getEnquiries( maxresults=Val( arguments.maxresults ) );
 	}	
 
-	function getEnquiryByID( required enquiryid ){
-		return variables.EnquiryGateway.getEnquiryByID( enquiryid=Val( arguments.enquiryid ) );
+	/**
+	 * I return an enquiry matching an id
+	 */	
+	Enquiry function getEnquiry( required enquiryid ){
+		return variables.EnquiryGateway.getEnquiry( Val( arguments.enquiryid ) );
 	}
 
+	/**
+	 * I return a count of unread enquiries
+	 */	
 	numeric function getUnreadCount(){
 		return variables.EnquiryGateway.getUnreadCount();		
 	}	
 	 	
-	function getValidator( required any Enquiry ){
-		return variables.EnquiryGateway.getValidator( argumentCollection=arguments );		
+	/**
+	 * I return the enquiry validator
+	 */		 	
+	function getValidator( required Enquiry theEnquiry ){
+		return variables.Validator.getValidator( theObject=arguments.theEnquiry );
 	}	
 	
-	function markRead( numeric enquiryid=0 ){
+	/**
+	 * I mark an enquiry, or enquiries, as read
+	 */		
+	struct function markRead( enquiryid=0 ){
 		transaction{
-			var result = variables.EnquiryGateway.markRead( enquiryid=Val( arguments.enquiryid ) );
+			var result = variables.Validator.newResult();
+			if( Len( Trim( arguments.enquiryid ) ) ){
+				var Enquiry = variables.EnquiryGateway.getEnquiry( Val( arguments.enquiryid ) );
+				if( !IsNull( Enquiry ) ){
+					variables.EnquiryGateway.markRead( Enquiry );
+					result.setSuccessMessage( "The message has been marked as read." );
+				}else{
+					result.setErrorMessage( "The message could not be marked as read." );
+				}
+			}else{
+				variables.EnquiryGateway.markRead();
+				result.setSuccessMessage( "All messages have been marked as read." );
+			}
 		}
 		return result;
 	}	
 	
-	function newEnquiry(){
-		return variables.EnquiryGateway.newEnquiry();		
+	/**
+	 * I return a new enquiry
+	 */		
+	Enquiry function newEnquiry(){
+		return variables.EnquiryGateway.newEnquiry();
 	}
-	
-	function sendEnquiry( required struct properties, required struct config, required string emailtemplatepath ){
+
+	/**
+	 * I validate and send an enquiry
+	 */		
+	struct function sendEnquiry( required struct properties, required struct config, required string emailtemplatepath ){
 		transaction{
-			var result = variables.EnquiryGateway.sendEnquiry( argumentCollection=arguments );
+			var emailtemplate = "";
+			var Enquiry = variables.EnquiryGateway.newEnquiry(); 
+			Enquiry.populate( arguments.properties );
+			var result = variables.Validator.validate( theObject=Enquiry );
+			if( !result.hasErrors() ){
+				savecontent variable="emailtemplate"{ include arguments.emailtemplatepath; }
+		        variables.NotificationService.send( arguments.config.subject, arguments.config.emailto, Enquiry.getEmail(), emailtemplate );
+		        variables.EnquiryGateway.saveEnquiry( Enquiry );
+		        result.setSuccessMessage( "Your enquiry has been sent." );
+			}else{
+				result.setErrorMessage( "Your enquiry could not be sent. Please amend the highlighted fields." );
+			}
 		}
 		return result;
 	}

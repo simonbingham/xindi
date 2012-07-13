@@ -16,90 +16,64 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true"{
+component accessors="true" extends="model.abstract.BaseGateway"{
 
-	/*
-	 * Dependency injection
+	// ------------------------ PUBLIC METHODS ------------------------ //
+
+	/**
+	 * I delete an enquiry
 	 */	
-	
-	property name="Validator" getter="false";
-	
-	/*
-	 * Public methods
-	 */
-
-	function deleteEnquiry( required numeric enquiryid ){
-		var Enquiry = getEnquiryByID( arguments.enquiryid );
-		var result = variables.Validator.newResult();
-		if( !IsNull( Enquiry ) ){ 
-			EntityDelete( Enquiry );
-			result.setSuccessMessage( "The enquiry from &quot;#Enquiry.getFullName()#&quot; has been deleted." );
-		}else{
-			result.setErrorMessage( "The enquiry could not be deleted." );
-		}
-		return result;
+	void function deleteEnquiry( required Enquiry theEnquiry ){
+		delete( arguments.theEnquiry );
 	}
 	
+	/**
+	 * I return an array of enquiries
+	 */		
 	array function getEnquiries( numeric maxresults=0 ){
 		var ormoptions = {};
 		if( arguments.maxresults ) ormoptions.maxresults = arguments.maxresults;	
-		return EntityLoad( "Enquiry", {}, "unread DESC, created DESC", ormoptions );
+		return EntityLoad( "Enquiry", {}, "read, created DESC", ormoptions );
 	}	
 
-	function getEnquiryByID( required numeric enquiryid ){
-		return EntityLoadByPK( "Enquiry", arguments.enquiryid );
+	/**
+	 * I return an enquiry matching an id
+	 */	
+	Enquiry function getEnquiry( required numeric enquiryid ){
+		return get( "Enquiry", arguments.enquiryid );
 	}
 
+	/**
+	 * I return a count of unread enquiries
+	 */	
 	numeric function getUnreadCount(){
-		return ORMExecuteQuery( "select count( * ) from Enquiry where unread = true", true );
-	}	
-	 	
-	function getValidator( required any Enquiry ){
-		return variables.Validator.getValidator( theObject=arguments.Enquiry );
-	}	
-	
-	function markRead( numeric enquiryid=0 ){
-		var result = variables.Validator.newResult();
-		if( arguments.enquiryid ){
-			var Enquiry = getEnquiryByID( arguments.enquiryid );
-			if( !IsNull( Enquiry ) ){ 
-				Enquiry.setRead();
-				EntitySave( Enquiry );
-				result.setSuccessMessage( "The message has been marked as read." );
-			}else{
-				result.setErrorMessage( "The message could not be marked as read." );
-			}
+		return ORMExecuteQuery( "select count( * ) from Enquiry where read = false", true );
+	}
+
+	/**
+	 * I mark an enquiry, or enquiries, as read
+	 */		 	
+	void function markRead( theEnquiry="" ){
+		if( IsObject( arguments.theEnquiry ) ){
+			arguments.theEnquiry.setRead( true );
+			save( arguments.theEnquiry );
 		}else{
-			result.setSuccessMessage( "All messages have been marked as read." );
-			ORMExecuteQuery( "update Enquiry set unread=false" );		
+			ORMExecuteQuery( "update Enquiry set read=true" );		
 		}
-		return result;
-	}	
-	
-	function newEnquiry(){
-		return new model.enquiry.Enquiry();
+	}
+
+	/**
+	 * I return a new enquiry
+	 */		
+	Enquiry function newEnquiry(){
+		return new( "Enquiry" );
 	}
 	
-	function sendEnquiry( required struct properties, required struct config, required string emailtemplatepath ){
-		var emailtemplate = "";
-		var Enquiry = newEnquiry(); 
-		Enquiry.populate( arguments.properties );
-		var result = variables.Validator.validate( theObject=Enquiry );
-		if( !result.hasErrors() ){
-			savecontent variable="emailtemplate"{ include arguments.emailtemplatepath; }
-			var Email = new mail();
-		    Email.setSubject( arguments.config.subject );
-	    	Email.setTo( arguments.config.emailto );
-	    	Email.setFrom( Enquiry.getEmail() );
-	    	Email.setBody( emailtemplate );
-	    	Email.setType( "html" );
-	        Email.send();
-	        EntitySave( Enquiry );
-	        result.setSuccessMessage( "Your enquiry has been sent." );
-		}else{
-			result.setErrorMessage( "Your enquiry could not be sent. Please amend the highlighted fields." );
-		}
-		return result;
+	/**
+	 * I save an enquiry
+	 */		
+	Enquiry function saveEnquiry( required Enquiry theEnquiry ){
+        return save( arguments.theEnquiry );
 	}
 	
 }

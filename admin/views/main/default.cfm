@@ -72,7 +72,7 @@
 					<tr>
 						<td>#local.Article.getTitle()#</td>
 						<td>#DateFormat( local.Article.getUpdated(), "full" )# #TimeFormat( local.Article.getUpdated() )#</td>
-						<td class="center"><a href="#buildURL( action='public:news.article', querystring='uuid=#local.Article.getUUID()#' )#" title="View" target="_blank"><i class="icon-eye-open"></i></a></td>
+						<td class="center"><a href="#buildURL( action='public:news.article', querystring='label=#local.Article.getLabel()#' )#" title="View" target="_blank"><i class="icon-eye-open"></i></a></td>
 					</tr>
 				</cfloop>
 			</tbody>
@@ -99,7 +99,7 @@
 			<tbody>
 				<cfloop array="#rc.unreadenquiries#" index="local.Enquiry">
 					<tr>
-						<td class="center"><cfif local.Enquiry.isUnread()><span class="label label-info">new</span></cfif></td>
+						<td class="center"><cfif !local.Enquiry.isRead()><span class="label label-info">new</span></cfif></td>
 						<td>#local.Enquiry.getFullName()#</td>
 						<td>#DateFormat( local.Enquiry.getCreated(), "full" )# #TimeFormat( local.Enquiry.getCreated() )#</td>
 						<td class="center"><a href="#buildURL( action='enquiries.enquiry', querystring='enquiryid=#local.Enquiry.getEnquiryID()#' )#" title="View Enquiry"><i class="icon-eye-open"></i></a></td>

@@ -18,58 +18,117 @@
 
 component accessors="true"{
 
-	/*
-	 * Dependency injection
-	 */	
+	// ------------------------ DEPENDENCY INJECTION ------------------------ //	
 
 	property name="ContentGateway" getter="false";
+	property name="MetaData" getter="false";
+	property name="Validator" getter="false";
 
-	/*
-	 * Public methods
-	 */
-	 	
-	function deletePage( required pageid ){
+	// ------------------------ PUBLIC METHODS ------------------------ //
+
+	/**
+	 * I delete a page
+	 */		 	
+	struct function deletePage( required pageid ){
 		transaction{
-			var result = variables.ContentGateway.deletePage( pageid=Val( arguments.pageid ) );
+			var Page = variables.ContentGateway.getPage( Val( arguments.pageid ) );
+			var result = variables.Validator.newResult();
+			if( Page.isPersisted() ){
+				variables.ContentGateway.deletePage( Page );
+				result.setSuccessMessage( "The page &quot;#Page.getTitle()#&quot; has been deleted." );
+			}else{
+				result.setErrorMessage( "The page could not be deleted." );
+			}
 		}
 		return result;
 	}
 	
-	function getPageByID( required pageid ){
-		return variables.ContentGateway.getPageByID( pageid=Val( arguments.pageid ) );
+	/**
+	 * I return a page matching an id
+	 */		
+	Page function getPage( required pageid ){
+		return variables.ContentGateway.getPage( Val( arguments.pageid ) );
 	}
 	
-	function getPageBySlug( required string slug ){
+	/**
+	 * I return a page matching a slug
+	 */		
+	Page function getPageBySlug( required string slug ){
 		return variables.ContentGateway.getPageBySlug( argumentCollection=arguments );
 	}
 
+	/**
+	 * I return an array of pages
+	 */	
 	array function getPages( string searchterm="", sortorder="leftvalue", maxresults=0 ){
 		arguments.maxresults = Val( arguments.maxresults );
 		return variables.ContentGateway.getPages( argumentCollection=arguments );
 	}
 
-	function getRoot(){
+	/**
+	 * I return the root page (i.e. home page)
+	 */	
+	Page function getRoot(){
 		return variables.ContentGateway.getRoot();
 	}	
 	
-	function getValidator( required any Page ){
-		return variables.ContentGateway.getValidator( argumentCollection=arguments );
+	/**
+	 * I return a page validator
+	 */		
+	function getValidator( required Page ){
+		return variables.Validator.getValidator( theObject=arguments.Page );
 	}
 	
-	function movePage( required pageid, required string direction ){
+	/**
+	 * I move a page
+	 */		
+	struct function movePage( required pageid, required string direction ){
 		transaction{
-			arguments.pageid = Val( arguments.pageid );
-			var result = variables.ContentGateway.movePage( argumentCollection=arguments );
+			var result = variables.Validator.newResult();
+			var Page = variables.ContentGateway.getPage( Val( arguments.pageid ) );
+			result.setErrorMessage( "The page could not be moved." );
+			if( Page.isPersisted() && ListFindNoCase( "up,down", Trim( arguments.direction ) ) ){
+				if( arguments.direction eq "up" ){
+					if( Page.hasPreviousSibling() ){
+						variables.ContentGateway.movePage( Page, "up" );
+						result.setSuccessMessage( "The page &quot;#Page.getTitle()#&quot; has been moved." );
+					}
+				}else{
+					if( Page.hasNextSibling() ){
+						variables.ContentGateway.movePage( Page, "down" );
+						result.setSuccessMessage( "The page &quot;#Page.getTitle()#&quot; has been moved." );
+					}
+				}
+			}
+			result.setTheObject( Page );
 		}
 		return result;
 	}
 	
-	function savePage( required struct properties, required ancestorid, required string context ){
+	/**
+	 * I validate and save a page
+	 */		
+	struct function savePage( required struct properties, required ancestorid, required string context ){
 		transaction{
-			arguments.ancestorid = Val( arguments.ancestorid );
-			var Page = variables.ContentGateway.savePage( argumentCollection=arguments );
+			param name="arguments.properties.pageid" default="";
+			arguments.properties.pageid = Val( arguments.properties.pageid );
+			var Page = "";
+			Page = variables.ContentGateway.getPage( arguments.properties.pageid );
+			Page.populate( arguments.properties );
+			if( Page.isMetaGenerated() ){
+				Page.setMetaTitle( Page.getTitle() );
+				Page.setMetaDescription( variables.MetaData.generateMetaDescription( Page.getContent() ) );
+				Page.setMetaKeywords( variables.MetaData.generateMetaKeywords( Page.getContent() ) );
+			}
+			var result = variables.Validator.validate( theObject=Page, context=arguments.context );
+			if( !result.hasErrors() ){
+				variables.ContentGateway.savePage( Page, ancestorid );
+				result.setSuccessMessage( "The page &quot;#Page.getTitle()#&quot; has been saved." );
+			}else{
+				result.setErrorMessage( "Your page could not be saved. Please amend the highlighted fields." );
+			}
 		}
-		return Page;
+		return result;
 	}
 	
 }

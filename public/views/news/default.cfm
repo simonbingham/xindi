@@ -23,7 +23,7 @@
 		<cfloop array="#rc.articles#" index="local.Article">
 			<div class="well">
 				<h2>
-					<a href="#buildURL( action='news.article', querystring='uuid=#local.Article.getUUID()#' )#">#local.Article.getTitle()#</a>
+					<a href="#buildURL( action='news.article', querystring='label=#local.Article.getLabel()#' )#">#local.Article.getTitle()#</a>
 					
 					<small class="pull-right">#DateFormat( local.Article.getPublished(), "full" )#</small>
 				</h2>

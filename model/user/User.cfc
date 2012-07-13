@@ -18,9 +18,7 @@
 
 component extends="model.abstract.BaseEntity" persistent="true" table="users" cacheuse="transactional"{
 
-	/*
-	 * Properties
-	 */	
+	// ------------------------ PROPERTIES ------------------------ //	
 	
 	property name="userid" column="user_id" fieldtype="id" setter="false" generator="native";
 
@@ -32,18 +30,25 @@ component extends="model.abstract.BaseEntity" persistent="true" table="users" ca
 	property name="created" column="user_created" ormtype="timestamp";
 	property name="updated" column="user_updated" ormtype="timestamp";
 	
-	/*
-	 * Public methods
-	 */	
-	
-	function init(){
+	// ------------------------ PUBLIC METHODS ------------------------ //
+
+	/**
+	 * I initialise this component
+	 */		
+	User function init(){
 		return this;
 	}
 	
+	/**
+	 * I return the full name
+	 */		
 	string function getFullName(){
 		return getFirstName() & " " & getLastName();
 	}
-	
+
+	/**
+	 * I return true if the email address is unique
+	 */		
 	struct function isEmailUnique(){
 		var matches = []; 
 		var result = { issuccess=false, failuremessage="The email address '#getEmail()#' is registered to an existing account." };
@@ -53,6 +58,9 @@ component extends="model.abstract.BaseEntity" persistent="true" table="users" ca
 		return result;
 	}
 
+	/**
+	 * I return true if the username is unique
+	 */	
 	struct function isUsernameUnique(){
 		var matches = []; 
 		var result = { issuccess = false, failuremessage = "The username '#getUsername()#' is registered to an existing account." };
@@ -62,6 +70,9 @@ component extends="model.abstract.BaseEntity" persistent="true" table="users" ca
 		return result;
 	}	
 
+	/**
+	 * I return true if the user is persisted
+	 */	
 	boolean function isPersisted(){
 		return !IsNull( variables.userid );
 	}

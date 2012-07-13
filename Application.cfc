@@ -1,5 +1,5 @@
 /* 
-	Xindi - http://www.getxindi.com/ - Version 2012.7.9 
+	Xindi - http://www.getxindi.com/ - Version 2012.7.13
 	
 	Copyright (c) 2012, Simon Bingham
 	
@@ -115,8 +115,6 @@ component extends="frameworks.org.corfield.framework"{
 	*/		
 	void function setupView(){
 		rc.navigation = getBeanFactory().getBean( "ContentService" ).getPages();
-		
-		if( StructKeyExists( session, "userid" ) ) rc.CurrentUser = getBeanFactory().getBean( "UserService" ).getUserByID( session.userid );
 	}	
 	
 	/**
@@ -124,7 +122,6 @@ component extends="frameworks.org.corfield.framework"{
 	*/		
 	void function onError( Exception, event )
 	{	
-		var config = getConfig();	
 		if( StructKeyExists( application, "exceptiontracker" ) ) application.exceptiontracker.track( arguments.Exception );
 		super.onError( arguments.Exception, arguments.event );
 	}	

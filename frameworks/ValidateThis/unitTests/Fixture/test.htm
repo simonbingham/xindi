@@ -1,0 +1,278 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+
+	
+		<title>ValidateThis Demo Page</title>
+		<link href="index.cfm_files/demostyle.css" type="text/css" 
+rel="stylesheet">
+		<link href="index.cfm_files/uni-form-styles.css" type="text/css" 
+rel="stylesheet" media="all">
+	
+				<script src="index.cfm_files/jquery-1.js" type="text/javascript"></script>
+				<script src="index.cfm_files/jquery.js" type="text/javascript"></script>
+				<script src="index.cfm_files/jquery_002.js" type="text/javascript"></script>
+			
+				<script type="text/javascript">
+					jQuery(document).ready(function($) {
+						jQuery.validator.addMethod("regex", function(value, element, param) {
+							var re = param;
+							return this.optional(element) || re.test(value);
+						}, jQuery.format("The value entered does not match the specified pattern ({0})"));
+						jQuery.validator.addMethod("boolean", function(value, element) {
+							return this.optional(element) || isCFBoolean(value);
+						}, jQuery.format("The value entered must be a boolean"));
+					});
+					function isCFBoolean( value )
+					{
+						if ( value==null )
+						{
+							return false
+						}
+						else 
+						{
+							var tocheck = value.toString();
+							var pattern = /^((-){0,1}[0-9]{1,}(\.([0-9]{1,})){0,1}|true|false|yes|no)$/gi;
+							return tocheck.match( pattern ) == null ? false : true;
+						}
+					}
+				</script>
+			
+		<script type="text/javascript">
+		// to allow Selenium to detect errors
+		window.onerror=function(msg, url, linenumber){
+			$("#firstName").attr("test","error");
+		}
+		 	
+		jQuery(document).ready(function($) {
+			jQuery.validator.setDefaults({ 
+				errorClass: 'errorField', 
+				errorElement: 'p', 
+				errorPlacement: function(error, element) { 
+					error.prependTo( element.parents('div.ctrlHolder') ) 
+				}, 
+				highlight: function() {}
+			});
+		});
+		</script>
+	<script type="text/javascript">jQuery(document).ready(function($) {
+					$("#frmMain").validate();
+					if ($("#VerifyPassword").length) { 
+				$.validator.addMethod("VerifyPasswordequalTo", $.validator.methods.equalTo, "The Verify Password must be the same as the Password.");
+				$.validator.addClassRules("VerifyPasswordequalTo", {VerifyPasswordequalTo: '#UserPass'});
+				$("#VerifyPassword").addClass('VerifyPasswordequalTo');
+			}
+					
+					if ($("#firstName").length) {  
+				$.validator.addMethod("firstNameequalto", $.validator.methods.equalto, "The First Name must be the same as the Last Name.");
+				$.validator.addClassRules("firstNameequalto", {firstNameequalto: '#lastName'});
+				$("#firstName").addClass('firstNameequalto');
+			}
+			if ($("#lastName").length) { 
+				$.validator.addMethod("lastNameequalto", $.validator.methods.equalto, "The Last Name must be the same as the First Name.");
+				$.validator.addClassRules("lastNameequalto", {lastNameequalto: '#firstName'});
+				$("#lastName").addClass('lastNameequalto');
+			}
+			}
+			);</script></head><div firebugversion="1.5.4" style="display: 
+none;" id="_firebugConsole"></div><body>
+	<div id="container">
+		<div id="sidebar">
+			
+<p>Welcome to the <strong>ValidateThis</strong> End-to-End Test Fixture
+	</p><ul><strong>Demo Options:</strong>
+		
+			<li><a 
+href="http://validatethis/samples/validatethis/unitTests/Fixture/index.cfm?NoJS=true&amp;Context=Register">Turn
+ off JS Validations</a></li>
+		
+		<li><a href="http://validatethis/samples/validatethis/unitTests/Fixture/index.cfm?NoJS=false">Register
+ a New User</a></li>
+		<li><a 
+href="http://validatethis/samples/validatethis/unitTests/Fixture/index.cfm?Context=Profile&amp;NoJS=false">Edit
+ an Existing User</a></li>
+		<li><a href="http://validatethis/samples/index.cfm">Back to the Home Page</a></li>
+		
+	</ul>
+
+
+		</div>		
+		<div id="content">
+			
+<h1>ValidateThis End-to-End Test Fixture</h1>
+<h3>Registering a new User (JavaScript Validations are ON)</h3>
+
+<div class="formContainer">
+<form action="index.cfm?type=equalto_test" id="frmMain" method="post" 
+name="frmMain" class="uniForm">
+	<input name="Context" id="Context" value="Register" type="hidden">
+	<input name="NoJS" id="NoJS" value="false" type="hidden">
+	<input name="processing" id="processing" value="true" type="hidden">
+
+	<fieldset class="inlineLabels">
+		<legend>User Information</legend>
+		<div class="ctrlHolder">
+			
+			<label for="firstName">First Name</label>
+			<input test="error" name="firstName" id="firstName" value=" " 
+size="35" maxlength="50" class="textInput" type="text">
+		</div>
+		<div class="ctrlHolder">
+			
+			<label for="lastName">Last Name</label>
+			<input name="lastName" id="lastName" value=" " size="35" 
+maxlength="50" class="textInput" type="text">
+		</div>
+	</fieldset>
+
+	<div class="buttonHolder">
+		<button type="submit" class="submitButton"> Submit </button>
+	</div>
+</form> 
+
+</div>
+
+		</div>
+	</div>
+	
+<style type="text/css">
+.cfdebug
+{
+	color:black; 
+	background-color:white; 
+	font-family:"Times New Roman", Times, serif; 
+	font-size:small
+}
+
+.cfdebuglge
+{
+	color:black; 
+	background-color:white; 
+	font-family:"Times New Roman", Times, serif; 
+	font-size:medium;
+}
+
+a.cfdebuglink {color:blue; background-color:white }
+</style>
+<table class="cfdebug" bgcolor="white">
+<tbody><tr>
+	<td>
+
+		<p class="cfdebug"></p><hr>
+		<b class="cfdebuglge"><a name="cfdebug_top">Debugging Information</a></b>
+		<table class="cfdebug">
+		<tbody><tr>
+			<td class="cfdebug" nowrap="nowrap">ColdFusion Server Developer</td>
+			<td class="cfdebug">9,0,1,274537</td>
+		</tr>
+		<tr>
+			<td class="cfdebug" nowrap="nowrap"> Template </td>
+			<td class="cfdebug">/validatethis/unitTests/Fixture/index.cfm</td>
+		</tr>
+		<tr>
+			<td class="cfdebug" nowrap="nowrap"> Time Stamp </td>
+			<td class="cfdebug">07-Jun-10 04:15 PM</td>
+		</tr>
+		<tr>
+			<td class="cfdebug" nowrap="nowrap"> Locale </td>
+			<td class="cfdebug">English (US)</td>
+		</tr>
+		<tr>
+			<td class="cfdebug" nowrap="nowrap"> User Agent </td>
+			<td class="cfdebug">Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; 
+en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3</td>
+		</tr>
+		<tr>
+			<td class="cfdebug" nowrap="nowrap"> Remote IP </td>
+			<td class="cfdebug">127.0.0.1</td>
+		</tr>
+		<tr>
+			<td class="cfdebug" nowrap="nowrap"> Host Name </td>
+			<td class="cfdebug">127.0.0.1</td>
+		</tr>
+		</tbody></table>
+		
+		
+<p class="cfdebug"></p><hr><b class="cfdebuglge"><a 
+name="cfdebug_scopevars">Scope Variables</a></b>
+
+
+<pre><b>CGI Variables:</b>
+AUTH_PASSWORD=
+AUTH_TYPE=
+AUTH_USER=
+CERT_COOKIE=
+CERT_FLAGS=
+CERT_ISSUER=
+CERT_KEYSIZE=
+CERT_SECRETKEYSIZE=
+CERT_SERIALNUMBER=
+CERT_SERVER_ISSUER=
+CERT_SERVER_SUBJECT=
+CERT_SUBJECT=
+CF_TEMPLATE_PATH=/Users/robertsilverberg/Documents/gitRepos/ValidateThis/validatethis/samples/validatethis/unitTests/Fixture/index.cfm
+CONTENT_LENGTH=
+CONTENT_TYPE=
+CONTEXT_PATH=
+GATEWAY_INTERFACE=CGI/1.1
+HTTPS=
+HTTPS_KEYSIZE=
+HTTPS_SECRETKEYSIZE=
+HTTPS_SERVER_ISSUER=
+HTTPS_SERVER_SUBJECT=
+HTTP_ACCEPT=text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+HTTP_ACCEPT_ENCODING=gzip,deflate
+HTTP_ACCEPT_LANGUAGE=en-us,en;q=0.5
+HTTP_CONNECTION=keep-alive
+HTTP_COOKIE=CFID=12900; CFTOKEN=37324962
+HTTP_HOST=vtdemo
+HTTP_REFERER=
+HTTP_USER_AGENT=Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3
+PATH_INFO=
+PATH_TRANSLATED=/Users/robertsilverberg/Documents/gitRepos/ValidateThis/validatethis/samples/validatethis/unitTests/Fixture/index.cfm
+QUERY_STRING=init=true&amp;type=equalto_test
+REMOTE_ADDR=127.0.0.1
+REMOTE_HOST=127.0.0.1
+REMOTE_USER=
+REQUEST_METHOD=GET
+SCRIPT_NAME=/validatethis/unitTests/Fixture/index.cfm
+SERVER_NAME=vtdemo
+SERVER_PORT=80
+SERVER_PORT_SECURE=0
+SERVER_PROTOCOL=HTTP/1.1
+SERVER_SOFTWARE=Apache/2.2.14 (Unix) mod_ssl/2.2.14 OpenSSL/0.9.8l DAV/2 JRun/4.0
+WEB_SERVER_API=
+</pre>
+
+<pre><b>Cookie Variables:</b>
+CFID=12900
+CFTOKEN=37324962
+</pre>
+
+<pre><b>Form Fields:</b>
+CONTEXT=Register
+NOJS=false
+USERID=0
+init=true
+type=equalto_test
+</pre>
+
+<pre><b>Session Variables:</b>
+cfid=12900
+cftoken=37324962
+sessionid=VALIDATETHISTESTFIXTURE_12900_37324962
+urltoken=CFID=12900&amp;CFTOKEN=37324962
+</pre>
+
+<pre><b>URL Parameters:</b>
+init=true
+type=equalto_test
+</pre>
+
+<font class="cfdebug" size="-1"><i>Debug Rendering Time: 12 ms</i></font><br>
+
+	</td>
+</tr>
+</tbody></table>
+</body></html>

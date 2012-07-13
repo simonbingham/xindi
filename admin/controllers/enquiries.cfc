@@ -19,14 +19,12 @@
 component accessors="true" extends="abstract"{
 	
 	/*
-	 * Dependency injection
-	 */		
-
-	property name="EnquiryService" setter="true" getter="false";
-
-	/*
 	 * Public methods
 	 */	
+
+	void function before( required struct rc ){
+		super.before( arguments.rc );
+	}
 
 	void function default( required struct rc ){
 		rc.enquiries = variables.EnquiryService.getEnquiries();
@@ -35,14 +33,14 @@ component accessors="true" extends="abstract"{
 	
 	void function delete( required struct rc ){
 		param name="rc.enquiryid" default="0";
-		rc.result = variables.EnquiryService.deleteEnquiry( enquiryid=rc.enquiryid );
+		rc.result = variables.EnquiryService.deleteEnquiry( rc.enquiryid );
 		variables.fw.redirect( "enquiries", "result" );
 	}	
 	
 	void function enquiry( required struct rc ){
 		param name="rc.enquiryid" default="0";
-		rc.Enquiry = variables.EnquiryService.getEnquiryByID( enquiryid=rc.enquiryid );
-		if( !IsNull( rc.Enquiry ) ) variables.EnquiryService.markRead( enquiryid=rc.Enquiry.getEnquiryID() );
+		rc.Enquiry = variables.EnquiryService.getEnquiry( rc.enquiryid );
+		if( !IsNull( rc.Enquiry ) ) variables.EnquiryService.markRead( rc.Enquiry.getEnquiryID() );
 		else variables.fw.redirect( "main.notfound" );
 	}
 	

@@ -17,7 +17,10 @@
 */
 
 component{
-	
+
+	/**
+     * I populate an entity
+	 */	
 	void function populate( required struct memento, boolean trustedSetter=false, string include="", string exclude="" ){
 		var object = this;
 		var key = "";

@@ -7,5 +7,4 @@ Disallow: /public/controllers/
 Disallow: /public/layouts/
 Disallow: /public/views/
 Disallow: /remote/
-Disallow: /tests/
 Allow: /

@@ -1,0 +1,62 @@
+body {
+	background: #f7f0e3 url(../images/bg_bob2.jpg) repeat-x;
+	font: 80%/1.6em Verdana, Tahoma, Arial, Geneva, sans-serif;
+	text-align: left;
+	margin: 0 0 50px 0;
+}
+
+/*Layout*/
+
+#sidebar {
+  float: left;
+  width: 20%;
+  padding: 4px ;
+}
+
+#content {
+  margin-left:  22%;
+  padding: 4px ;
+  text-align: left;
+}
+
+/* links */
+a, a:visited {	
+	color: #5A93C9;
+	background: inherit;
+	text-decoration: none;	
+}
+a:hover {
+	color: #88ac0b;
+	background: inherit;
+	text-decoration: underline;	
+}
+
+/* headers */
+h1, h2, h3 {
+	font-family: 'Trebuchet MS', Tahoma, Sans-serif;
+	color: #444;
+	text-align: center;
+}
+h1 {
+	font-size: 230%;	
+	font-weight: normal;
+	letter-spacing: -1px;
+}
+h2 {
+	font-size: 180%;
+	color: #88ac0b;
+}
+h3 {
+	font-size: 150%;	
+	font-weight: normal;	
+}
+
+h1, h2, h3, p {
+	padding: 10px;		
+	margin: 0;
+}
+ul, ol {
+	margin: 5px 20px;
+	padding: 0 20px;
+}
+

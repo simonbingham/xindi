@@ -29,8 +29,8 @@ component accessors="true" extends="abstract"{
 	 */		
 
 	void function article( required struct rc ){
-		param name="rc.uuid" default="";
-		rc.Article = variables.NewsService.getArticleByUUID( uuid=rc.uuid );
+		param name="rc.label" default="";
+		rc.Article = variables.NewsService.getArticleByLabel( rc.label );
 		if( rc.Article.isPersisted() ){
 			rc.MetaData.setMetaTitle( rc.Article.getMetaTitle() ); 
 			rc.MetaData.setMetaDescription( rc.Article.getMetaDescription() );

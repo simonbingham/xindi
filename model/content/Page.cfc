@@ -18,13 +18,11 @@
 
 component extends="model.abstract.BaseEntity" persistent="true" table="pages" cacheuse="transactional"{
 
-	/*
-	 * Properties
-	 */
+	// ------------------------ PROPERTIES ------------------------ //
 
 	property name="pageid" column="page_id" fieldtype="id" setter="false" generator="native";
 	
-	property name="uuid" column="page_uuid" ormtype="string" length="150";
+	property name="label" column="page_label" ormtype="string" length="150";
 	property name="leftvalue" column="page_left" ormtype="int";
 	property name="rightvalue" column="page_right" ormtype="int";
 	property name="title" column="page_title" ormtype="string" length="150";
@@ -36,76 +34,119 @@ component extends="model.abstract.BaseEntity" persistent="true" table="pages" ca
 	property name="created" column="page_created" ormtype="timestamp";
 	property name="updated" column="page_updated" ormtype="timestamp";
 
-	/*
-	 * Public methods
-	 */
+	// ------------------------ PUBLIC METHODS ------------------------ //
 
+	/**
+	 * I initialise this component
+	 */	
 	Page function init(){
 		variables.metagenerated = true;
 		return this;
 	}
 	
+	/**
+	 * I return the page ancestor
+	 */		
 	any function getAncestor(){
 		return ORMExecuteQuery( "from Page where leftvalue < :leftvalue and rightvalue > :rightvalue order by leftvalue desc", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue }, true, { maxresults=1 } );
 	}
 	
+	/**
+	 * I return a list of descendent page ids
+	 */		
 	string function getDescendentPageIDList(){
 		var pageidlist = "";
 		for( var looppage in getDescendents() ) pageidlist = ListAppend( pageidlist, looppage.getPageID() );
 		return pageidlist; 
 	}
 
+	/**
+	 * I return the page level
+	 */	
 	function getLevel(){
 		return ORMExecuteQuery( "select Count( pageSubQuery ) from Page as pageSubQuery where pageSubQuery.leftvalue < :leftvalue and pageSubQuery.rightvalue > :rightvalue", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue } )[ 1 ];
 	}
 
+	/**
+	 * I return the next sibling of the page
+	 */	
 	function getNextSibling(){
 		return ORMExecuteQuery( "from Page where leftvalue = :leftvalue", { leftvalue=variables.rightvalue + 1 }, true );
 	}
 	
+	/**
+	 * I return the page path
+	 */		
 	array function getPath(){
 		return ORMExecuteQuery( "from Page where leftvalue < :leftvalue and rightvalue > :rightvalue", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue } );
 	}	
 
+	/**
+	 * I return the previous sibling of the page
+	 */	
 	function getPreviousSibling(){
 		return ORMExecuteQuery( "from Page where rightvalue = :rightvalue", { rightvalue=variables.leftvalue - 1 }, true );
 	}
 	
+	/**
+	 * I return the page slug
+	 */		
 	string function getSlug(){
 		var slug = "";
 		if( !isRoot() ){
 			for( var Page in getPath() ){
-				if( !Page.isRoot() ) slug &= Page.getUUID() & "/";
+				if( !Page.isRoot() ) slug &= Page.getLabel() & "/";
 			}
-			slug &= getUUID();
+			slug &= getLabel();
 		}
 		return slug;
 	}
 	
+	/**
+	 * I return the page summary
+	 */		
 	string function getSummary(){
 		return Trim( Left( REReplaceNoCase( Trim( getContent() ), "<[^>]{1,}>", " ", "all" ), 500 ) & "..." );
 	}
 	
+	/**
+	 * I return true if the page has a child
+	 */		
 	boolean function hasChild(){
 		return !IsNull( getFirstChild() );
 	}	
 	
+	/**
+	 * I return true if the page has a next sibling
+	 */		
 	boolean function hasNextSibling(){
 		return !IsNull( getNextSibling() );
 	}
 
+	/**
+	 * I return true if the page has a meta description
+	 */	
 	boolean function hasMetaDescription(){
 		return Len( Trim( getMetaDescription() ) );	
 	}
 	
+	/**
+	 * I return true if the page has meta keywords
+	 */		
 	boolean function hasMetaKeywords(){
 		return Len( Trim( getMetaKeywords() ) );
 	}
 
+	/**
+	 * I return true if the page has a meta title
+	 */	
 	boolean function hasMetaTitle(){
 		return Len( Trim( getMetaTitle() ) );		
 	}
 
+	/**
+	 * I return true if the page id is found in a list of page ids
+	 */	
 	boolean function hasPageIDInPath( required string pageidlist ){
 		if( ListFind( arguments.pageidlist, getPageID() ) ) return true;
 		for( var Page in getPath() ){
@@ -114,10 +155,16 @@ component extends="model.abstract.BaseEntity" persistent="true" table="pages" ca
 		return false;
 	}
 
+	/**
+	 * I return true if the page has a previous sibling
+	 */	
 	boolean function hasPreviousSibling(){
 		return !IsNull( getPreviousSibling() );
 	}
-			
+
+	/**
+	 * I return true if the page has a FW/1 route
+	 */				
 	boolean function hasRoute( array routes=[] ){
 		for( var route in arguments.routes ){
 			if( StructKeyExists( route, getSlug() ) ) return true;
@@ -125,68 +172,108 @@ component extends="model.abstract.BaseEntity" persistent="true" table="pages" ca
 		return false;
 	}
 	
+	/**
+	 * I return true if the page is a leaf (i.e. has no children)
+	 */		
 	boolean function isLeaf(){
 		return getDescendentCount() == 0;
 	}	
 
+	/**
+	 * I return true if the page meta tags are automatically generated
+	 */	
 	boolean function isMetaGenerated(){
 		return getMetaGenerated();
 	}
 
+	/**
+	 * I return true if the page is persisted
+	 */	
 	boolean function isPersisted(){
 		return !IsNull( variables.pageid );
 	}
 	
+	/**
+	 * I return true if the page is the root (i.e. home page)
+	 */		
 	boolean function isRoot(){
 		return getLevel() == 0;
 	}
 	
+	/**
+	 * I am called after the page is inserted into the database 
+	 */		
 	void function preInsert(){
-		setUUID();
+		setLabel();
 	}
 
-	/*
-	 * Private methods
-	 */	
+	// ------------------------ PRIVATE METHODS ------------------------ //
 	
+	/**
+	 * I return the count of page descendents 
+	 */	
 	private numeric function getDescendentCount(){
 		return ( variables.rightvalue - variables.leftvalue - 1 ) / 2;
 	}
 	
+	/**
+	 * I return the page descendents
+	 */	
 	private array function getDescendents(){
 		return ORMExecuteQuery( "from Page where leftvalue > :leftvalue and rightvalue < :rightvalue", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue } );
 	}
 
+	/**
+	 * I return the first child of the page
+	 */	
 	private function getFirstChild(){
 		return ORMExecuteQuery( "from Page where leftvalue = :leftvalue", { leftvalue=variables.leftvalue + 1 }, true );
 	}	
 
+	/**
+	 * I return the last child of the page
+	 */	
 	private function getLastChild(){
 		return ORMExecuteQuery( "from Page where rightvalue = :rightvalue", { rightvalue=variables.rightvalue - 1 }, true );
 	}		
 	
+	/**
+	 * I return true if the page has content
+	 */		
 	private boolean function hasContent(){
 		return Len( Trim( getContent() ) );
 	}
 
+	/**
+	 * I return true if the page has descendents
+	 */	
 	private boolean function hasDescendents(){
 		return ArrayLen( getDescendents() );
 	}	
 	
+	/**
+	 * I return true if the page has a parent
+	 */		
 	private boolean function isChild(){
 		return getLevel() != 0;
 	}	
-	
-	private boolean function isUUIDUnique(){
+
+	/**
+	 * I return true if the id of the page is unique
+	 */		
+	private boolean function isLabelUnique(){
 		var matches = []; 
-		if( isPersisted() ) matches = ORMExecuteQuery( "from Page where pageid <> :pageid and uuid = :uuid", { pageid=getPageID(), uuid=getUUID()});
-		else matches = ORMExecuteQuery( "from Page where uuid=:uuid", { uuid=getUUID() });
+		if( isPersisted() ) matches = ORMExecuteQuery( "from Page where pageid <> :pageid and label = :label", { pageid=getPageID(), label=getLabel()});
+		else matches = ORMExecuteQuery( "from Page where label=:label", { label=getLabel() });
 		return !ArrayLen( matches );
 	}
 	
-	private void function setUUID(){
-		variables.uuid = ReReplace( LCase( getTitle() ), "[^a-z0-9]{1,}", "-", "all" );
-		while ( !isUUIDUnique() ) variables.uuid &= "-"; 
+	/**
+	 * I generate a unique id for the page
+	 */		
+	private void function setLabel(){
+		variables.label = ReReplace( LCase( getTitle() ), "[^a-z0-9]{1,}", "-", "all" );
+		while ( !isLabelUnique() ) variables.label &= "-"; 
 	}
 		
 }

@@ -53,6 +53,7 @@
 
 		<cfset var args = [arguments.validation.getPropertyDesc()] />
 		<cfset var msgKey = "defaultMessage_FutureDate" />
+		<cfset var theDate = "" />
 
 		<cfif arguments.validation.hasParameter("after")>
 			<cfset theDate = arguments.validation.getParameterValue("after")/>
