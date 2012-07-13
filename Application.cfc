@@ -122,7 +122,6 @@ component extends="frameworks.org.corfield.framework"{
 	*/		
 	void function onError( Exception, event )
 	{	
-		var config = getConfig();	
 		if( StructKeyExists( application, "exceptiontracker" ) ) application.exceptiontracker.track( arguments.Exception );
 		super.onError( arguments.Exception, arguments.event );
 	}	
