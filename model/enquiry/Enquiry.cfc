@@ -32,7 +32,7 @@ component extends="model.abstract.BaseEntity" persistent="true" table="enquiries
 	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	/**
-     * I initialise this component
+	 * I initialise this component
 	 */	
 	Enquiry function init(){
 		variables.firstname = "";
@@ -42,28 +42,28 @@ component extends="model.abstract.BaseEntity" persistent="true" table="enquiries
 	}
 	
 	/**
-     * I return the message formatted for display
+	 * I return the message formatted for display
 	 */	
 	string function getDisplayMessage(){
 		return REReplace( HTMLEditFormat( variables.message ), "[\r\n]+", "<br /><br />", "ALL" );
 	}	
 
 	/**
-     * I return the full name
+	 * I return the full name
 	 */		
 	string function getFullName(){
 		return variables.firstname & " " & variables.lastname;
 	}
 
 	/**
-     * I return true if the enquiry is persisted
+	 * I return true if the enquiry is persisted
 	 */	
 	boolean function isPersisted(){
 		return !IsNull( variables.enquiryid );
 	}
 	
 	/**
-     * I return true if the enquiry is read
+	 * I return true if the enquiry is read
 	 */		
 	boolean function isRead(){
 		return getRead();

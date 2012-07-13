@@ -21,7 +21,7 @@
 		// ------------------------ PUBLIC METHODS ------------------------ //		
 		
 		/**
-	     * I delete a page
+		 * I delete a page
 		 */			
 		void function deletePage( required Page thePage ){
 			var startvalue = arguments.thePage.getLeftValue();
@@ -31,14 +31,14 @@
 		}
 		
 		/**
-	     * I return a page matching an id
+		 * I return a page matching an id
 		 */			
 		Page function getPage( required numeric pageid ){
 			return get( "Page", arguments.pageid );
 		}
 
 		/**
-	     * I return a page matching a slug
+		 * I return a page matching a slug
 		 */			
 		Page function getPageBySlug( required string slug ){
 			var Page = EntityLoad( "Page", { label=Trim( ListLast( arguments.slug, "/" ) ) }, TRUE );
@@ -47,7 +47,7 @@
 		}
 		
 		/**
-	     * I return the root page (i.e. home page)
+		 * I return the root page (i.e. home page)
 		 */			
 		Page function getRoot(){
 			return EntityLoad( "Page", { leftvalue=1 }, true );
@@ -81,7 +81,7 @@
 	
 	<cfscript>
 		/**
-	     * I move a page
+		 * I move a page
 		 */			
 		Page function movePage( required Page thePage, required string direction ){
 			var decreaseamount = "";
@@ -121,7 +121,7 @@
 		}
 		
 		/**
-	     * I save a page
+		 * I save a page
 		 */			
 		Page function savePage( required Page thePage, required numeric ancestorid ){
 			if( !arguments.thePage.isPersisted() && arguments.ancestorid ){

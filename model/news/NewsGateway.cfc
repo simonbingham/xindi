@@ -21,21 +21,21 @@
 		// ------------------------ PUBLIC METHODS ------------------------ //	
 		
 		/**
-	     * I delete an article
+		 * I delete an article
 		 */				
 		void function deleteArticle( required Article theArticle ){
 			delete( arguments.theArticle );
 		}
 
 		/**
-	     * I return an article matching an id
+		 * I return an article matching an id
 		 */				
 		Article function getArticle( required numeric articleid ){
 			return get( "Article", arguments.articleid );
 		}
 		
 		/**
-	     * I return an article matching a unique id
+		 * I return an article matching a unique id
 		 */				
 		Article function getArticleByLabel( required string label ){
 			var Article = ORMExecuteQuery( "from Article where label=:label and published<=:published", { label=arguments.label, published=Now() }, true );
@@ -44,7 +44,7 @@
 		}
 		
 		/**
-	     * I return the count of articles
+		 * I return the count of articles
 		 */				
 		numeric function getArticleCount(){
 			return ORMExecuteQuery( "select count( * ) from Article", true );
@@ -86,7 +86,7 @@
 	
 	<cfscript>
 		/**
-	     * I save an article
+		 * I save an article
 		 */				
 		Article function saveArticle( required Article theArticle ){
 			return save( arguments.theArticle );

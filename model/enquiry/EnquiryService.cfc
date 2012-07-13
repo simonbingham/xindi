@@ -27,7 +27,7 @@ component accessors="true"{
 	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	/**
-     * I delete an enquiry
+	 * I delete an enquiry
 	 */	
 	struct function deleteEnquiry( required enquiryid ){
 		transaction{
@@ -44,35 +44,35 @@ component accessors="true"{
 	}
 
 	/**
-     * I return an array of enquiries
+	 * I return an array of enquiries
 	 */		
 	array function getEnquiries( maxresults=0 ){
 		return variables.EnquiryGateway.getEnquiries( maxresults=Val( arguments.maxresults ) );
 	}	
 
 	/**
-     * I return an enquiry matching an id
+	 * I return an enquiry matching an id
 	 */	
 	Enquiry function getEnquiry( required enquiryid ){
 		return variables.EnquiryGateway.getEnquiry( Val( arguments.enquiryid ) );
 	}
 
 	/**
-     * I return a count of unread enquiries
+	 * I return a count of unread enquiries
 	 */	
 	numeric function getUnreadCount(){
 		return variables.EnquiryGateway.getUnreadCount();		
 	}	
 	 	
 	/**
-     * I return the enquiry validator
+	 * I return the enquiry validator
 	 */		 	
 	function getValidator( required Enquiry theEnquiry ){
 		return variables.Validator.getValidator( theObject=arguments.theEnquiry );
 	}	
 	
 	/**
-     * I mark an enquiry, or enquiries, as read
+	 * I mark an enquiry, or enquiries, as read
 	 */		
 	struct function markRead( enquiryid=0 ){
 		transaction{
@@ -94,14 +94,14 @@ component accessors="true"{
 	}	
 	
 	/**
-     * I return a new enquiry
+	 * I return a new enquiry
 	 */		
 	Enquiry function newEnquiry(){
 		return variables.EnquiryGateway.newEnquiry();
 	}
 
 	/**
-     * I validate and send an enquiry
+	 * I validate and send an enquiry
 	 */		
 	struct function sendEnquiry( required struct properties, required struct config, required string emailtemplatepath ){
 		transaction{

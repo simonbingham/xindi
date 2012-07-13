@@ -26,7 +26,7 @@ component accessors="true"{
 	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	/**
-     * I delete a user
+	 * I delete a user
 	 */		 	
 	struct function deleteUser( required userid ){
 		transaction{
@@ -43,56 +43,56 @@ component accessors="true"{
 	}
 	
 	/**
-     * I return a user matching an id
+	 * I return a user matching an id
 	 */		
 	User function getUser( required userid ){
 		return variables.UserGateway.getUser( Val( arguments.userid ) );
 	}
 
 	/**
-     * I return a user matching a username or email address and password
+	 * I return a user matching a username or email address and password
 	 */	
 	User function getUserByCredentials( required User theUser ){
 		return variables.UserGateway.getUserByCredentials( theUser );
 	}
 
 	/**
-     * I return a user matching a username or email address
+	 * I return a user matching a username or email address
 	 */	
 	User function getUserByEmailOrUsername( required User theUser ){
 		return variables.UserGateway.getUserByEmailOrUsername( theUser );
 	}
 
 	/**
-     * I return an array of users
+	 * I return an array of users
 	 */	
 	array function getUsers(){
 		return variables.UserGateway.getUsers();
 	}
 
 	/**
-     * I return a user validator
+	 * I return a user validator
 	 */			
 	function getValidator( required User theUser ){
 		return variables.Validator.getValidator( theObject=arguments.theUser );
 	}
 	
 	/**
-     * I return a new password
+	 * I return a new password
 	 */		
 	string function newPassword(){
 		return Left( CreateUUID(), 8 );
 	}
 	
 	/**
-     * I return a new user
+	 * I return a new user
 	 */		
 	User function newUser(){
 		return variables.UserGateway.newUser();
 	}
 	
 	/**
-     * I validate and save a user
+	 * I validate and save a user
 	 */		
 	struct function saveUser( required struct properties, required string context ){
 		transaction{

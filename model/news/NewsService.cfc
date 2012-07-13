@@ -27,7 +27,7 @@ component accessors="true"{
 	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	/**
-     * I delete an article
+	 * I delete an article
 	 */				
 	struct function deleteArticle( required articleid ){
 		transaction{
@@ -44,28 +44,28 @@ component accessors="true"{
 	}
 
 	/**
-     * I return an article matching an id
+	 * I return an article matching an id
 	 */		
 	Article function getArticle( required articleid ){
 		return variables.NewsGateway.getArticle( Val( arguments.articleid ) );
 	}
 	
 	/**
-     * I return an article matching a unique id
+	 * I return an article matching a unique id
 	 */		
 	Article function getArticleByLabel( required string label ){
 		return variables.NewsGateway.getArticleByLabel( argumentCollection=arguments );
 	}
 	
 	/**
-     * I return the count of articles
+	 * I return the count of articles
 	 */		
 	numeric function getArticleCount(){
 		return variables.NewsGateway.getArticleCount();
 	}
 
 	/**
-     * I return an array of articles
+	 * I return an array of articles
 	 */	
 	array function getArticles( string searchterm="", string sortorder="published desc", boolean published=false, maxresults=0, offset=0 ){
 		arguments.maxresults = Val( arguments.maxresults );
@@ -74,14 +74,14 @@ component accessors="true"{
 	}
 		
 	/**
-     * I return the article validator
+	 * I return the article validator
 	 */			
 	function getValidator( required Article theArticle ){
 		return variables.Validator.getValidator( theObject=arguments.theArticle );
 	}
 	
 	/**
-     * I validate and save an article
+	 * I validate and save an article
 	 */		
 	struct function saveArticle( required struct properties ){
 		transaction{

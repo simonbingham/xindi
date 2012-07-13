@@ -19,7 +19,7 @@
 component extends="ValidateThis.util.Result"{
 
 	/**
-     * I initialise this component
+	 * I initialise this component
 	 */				
 	function init( required any Translator, required struct ValidateThisConfig ){
 		variables.messagetype = "";
@@ -28,7 +28,7 @@ component extends="ValidateThis.util.Result"{
 	}
 
 	/**
-     * I return a message
+	 * I return a message
 	 */		
 	string function getMessage(){
 		if( Len( super.getSuccessMessage() ) != 0 ) return getSuccessMessage();
@@ -36,7 +36,7 @@ component extends="ValidateThis.util.Result"{
 	}
 
 	/**
-     * I return a message type
+	 * I return a message type
 	 */		
 	string function getMessageType(){
 		return variables.messagetype;
@@ -44,14 +44,14 @@ component extends="ValidateThis.util.Result"{
 	}
 
 	/**
-     * I return true if a message exists
+	 * I return true if a message exists
 	 */		
 	boolean function hasMessage(){
 		return Len( getMessage() ) != 0;
 	}
 
 	/**
-     * I set an error message
+	 * I set an error message
 	 */		
 	void function setErrorMessage( required string message ){
 		super.setIsSuccess( false );
@@ -60,7 +60,7 @@ component extends="ValidateThis.util.Result"{
 	}
 
 	/**
-     * I set an information message
+	 * I set an information message
 	 */		
 	void function setInfoMessage( required string message ){
 		variables.message = arguments.message;
@@ -68,7 +68,7 @@ component extends="ValidateThis.util.Result"{
 	}	
 
 	/**
-     * I set a success message
+	 * I set a success message
 	 */	
 	void function setSuccessMessage( required string message ){
 		super.setIsSuccess( true );
@@ -77,7 +77,7 @@ component extends="ValidateThis.util.Result"{
 	}
 
 	/**
-     * I set a warning message
+	 * I set a warning message
 	 */	
 	void function setWarningMessage( required string message ){
 		variables.message = arguments.message;

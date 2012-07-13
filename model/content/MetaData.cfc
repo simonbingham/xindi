@@ -29,7 +29,7 @@ component accessors="true"{
 	 */
 
 	/**
-     * I initialise this component
+	 * I initialise this component
 	 */	
 	MetaData function init(){
 		variables.metatitle = "";
@@ -39,28 +39,28 @@ component accessors="true"{
 	}
 
 	/**
-     * I generate a meta description
+	 * I generate a meta description
 	 */	
 	string function generateMetaDescription( string description="" ){
 		return Left( Trim( replaceMultipleSpacesWithSingleSpace( removeUnrequiredCharacters( stripHTML( arguments.description ) ) ) ), 169 );
 	}
 
 	/**
-     * I generate meta keywords
+	 * I generate meta keywords
 	 */	
 	string function generateMetaKeywords( string keywords="" ){
 		return Left( replaceMultipleSpacesWithSingleSpace( removeUnrequiredCharacters( listDeleteDuplicatesNoCase( ListChangeDelims( removeNonKeywords( stripHTML( arguments.keywords ) ), ",", " ." ) ) ) ), 169 );
 	}
 
 	/**
-     * I generate a page title
+	 * I generate a page title
 	 */	
 	string function generatePageTitle( required string websitetitle, required string pagetitle ){
 		return Left( stripHTML( arguments.pagetitle ) & " | " & stripHTML( arguments.websitetitle ), 69 );
 	}
 
 	/**
-     * I remove duplicates from a list
+	 * I remove duplicates from a list
 	 */	
 	string function listDeleteDuplicatesNoCase( required string thelist, string delimiter="," ){
 		var elements = ListToArray( arguments.thelist, arguments.delimiter );
@@ -74,7 +74,7 @@ component accessors="true"{
 	}
 
 	/**
-     * I remove non-keywords from a string
+	 * I remove non-keywords from a string
 	 */	
 	string function removeNonKeywords( required string thestring ){
 		var elements = ListToArray( arguments.thestring, " " );
@@ -88,21 +88,21 @@ component accessors="true"{
 	}
 	
 	/**
-     * I remove unrequired characters from a string
+	 * I remove unrequired characters from a string
 	 */		
 	string function removeUnrequiredCharacters( required string thestring ){
 		return replaceMultipleSpacesWithSingleSpace( REReplaceNoCase( arguments.thestring, "([#Chr(09)#-#Chr(30)#])", " ", "all" ) );
 	}	
 
 	/**
-     * I replace multiple spaces in a string with a single space 
+	 * I replace multiple spaces in a string with a single space 
 	 */	
 	string function replaceMultipleSpacesWithSingleSpace( required string thestring ){
 		return Trim( REReplaceNoCase( arguments.thestring, "\s{2,}", " ", "all" ) );
 	}
 	
 	/**
-     * I remove html from a string
+	 * I remove html from a string
 	 */		
 	string function stripHTML( required string thestring ){
 		return Trim( replaceMultipleSpacesWithSingleSpace( REReplaceNoCase( arguments.thestring, "<[^>]{1,}>", " ", "all" ) ) );

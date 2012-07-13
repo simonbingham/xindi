@@ -25,7 +25,7 @@ component accessors="true"{
 	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	/**
-     * I create a directory
+	 * I create a directory
 	 */		 	
 	struct function createDirectory( required string directory )
 	{
@@ -40,7 +40,7 @@ component accessors="true"{
 	}
 	
 	/**
-     * I delete a file
+	 * I delete a file
 	 */		
 	struct function deleteFile( required string file ){
 		var result = variables.Validator.newResult();
@@ -54,7 +54,7 @@ component accessors="true"{
 	}	
 	
 	/**
-     * I return a list of directories
+	 * I return a list of directories
 	 */		
 	query function getDirectoryList( required string directory, required string allowedextensions ){
 		var fileListing = DirectoryList( arguments.directory, false, "query", "*." & Replace( arguments.allowedextensions, ",", "|*.", "all" ) );
@@ -73,14 +73,14 @@ component accessors="true"{
 	}	
 	
 	/**
-     * I return true if a directory exists
+	 * I return true if a directory exists
 	 */		
 	boolean function isDirectory( required string directory ){
 		return getFile( arguments.directory ).isDirectory();
 	}
 	
 	/**
-     * I upload a file
+	 * I upload a file
 	 */		
 	struct function uploadFile( required string file, required string destination, required string allowedextensions ){
 		var result = variables.Validator.newResult();
@@ -98,14 +98,14 @@ component accessors="true"{
 	// ------------------------ PRIVATE METHODS ------------------------ //
 
 	/**
-     * I return a file
+	 * I return a file
 	 */	
 	private function getFile( required string file ){
 		return CreateObject( "java", "java.io.File" ).init( JavaCast( "String", arguments.file ) );
 	}	
 
 	/**
-     * I return true if a file exists
+	 * I return true if a file exists
 	 */		
 	private boolean function isFile( required string file ){
 		return getFile( arguments.file ).isFile();

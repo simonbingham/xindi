@@ -27,7 +27,7 @@ component accessors="true"{
 	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	/**
-     * I delete a page
+	 * I delete a page
 	 */		 	
 	struct function deletePage( required pageid ){
 		transaction{
@@ -44,21 +44,21 @@ component accessors="true"{
 	}
 	
 	/**
-     * I return a page matching an id
+	 * I return a page matching an id
 	 */		
 	Page function getPage( required pageid ){
 		return variables.ContentGateway.getPage( Val( arguments.pageid ) );
 	}
 	
 	/**
-     * I return a page matching a slug
+	 * I return a page matching a slug
 	 */		
 	Page function getPageBySlug( required string slug ){
 		return variables.ContentGateway.getPageBySlug( argumentCollection=arguments );
 	}
 
 	/**
-     * I return an array of pages
+	 * I return an array of pages
 	 */	
 	array function getPages( string searchterm="", sortorder="leftvalue", maxresults=0 ){
 		arguments.maxresults = Val( arguments.maxresults );
@@ -66,21 +66,21 @@ component accessors="true"{
 	}
 
 	/**
-     * I return the root page (i.e. home page)
+	 * I return the root page (i.e. home page)
 	 */	
 	Page function getRoot(){
 		return variables.ContentGateway.getRoot();
 	}	
 	
 	/**
-     * I return a page validator
+	 * I return a page validator
 	 */		
 	function getValidator( required Page ){
 		return variables.Validator.getValidator( theObject=arguments.Page );
 	}
 	
 	/**
-     * I move a page
+	 * I move a page
 	 */		
 	struct function movePage( required pageid, required string direction ){
 		transaction{
@@ -106,7 +106,7 @@ component accessors="true"{
 	}
 	
 	/**
-     * I validate and save a page
+	 * I validate and save a page
 	 */		
 	struct function savePage( required struct properties, required ancestorid, required string context ){
 		transaction{

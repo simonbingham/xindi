@@ -21,21 +21,21 @@ component accessors="true" extends="model.abstract.BaseGateway"{
 	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	/**
-     * I delete a user
+	 * I delete a user
 	 */		 	
 	void function deleteUser( required User theUser ){
 		delete( arguments.theUser );
 	}
 
 	/**
-     * I return a user matching an id
+	 * I return a user matching an id
 	 */		
 	User function getUser( required numeric userid ){
 		return get( "User", arguments.userid );
 	}
 
 	/**
-     * I return a user matching a username or email address and password
+	 * I return a user matching a username or email address and password
 	 */	
 	User function getUserByCredentials( required User theUser ){
 		var User = ORMExecuteQuery( "from User where ( username=:username or email=:email ) and password=:password", { username=arguments.theUser.getUsername(), email=arguments.theUser.getEmail(), password=arguments.theUser.getPassword() }, true );
@@ -44,7 +44,7 @@ component accessors="true" extends="model.abstract.BaseGateway"{
 	}
 
 	/**
-     * I return a user matching a username or email address
+	 * I return a user matching a username or email address
 	 */	
 	User function getUserByEmailOrUsername( required User theUser ){
 		var User = ORMExecuteQuery( "from User where username=:username or email=:email", { username=arguments.theUser.getUsername(), email=arguments.theUser.getEmail() }, true );
@@ -53,21 +53,21 @@ component accessors="true" extends="model.abstract.BaseGateway"{
 	}
 
 	/**
-     * I return an array of users
+	 * I return an array of users
 	 */	
 	array function getUsers(){
 		return EntityLoad( "User", {}, "firstname" );
 	}
 	
 	/**
-     * I return a new user
+	 * I return a new user
 	 */		
 	User function newUser(){
 		return new( "User" );
 	}
 	
 	/**
-     * I save a user
+	 * I save a user
 	 */	
 	User function saveUser( required User theUser ){
 		return save( arguments.theUser );

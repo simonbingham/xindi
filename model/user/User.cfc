@@ -33,21 +33,21 @@ component extends="model.abstract.BaseEntity" persistent="true" table="users" ca
 	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	/**
-     * I initialise this component
+	 * I initialise this component
 	 */		
 	User function init(){
 		return this;
 	}
 	
 	/**
-     * I return the full name
+	 * I return the full name
 	 */		
 	string function getFullName(){
 		return getFirstName() & " " & getLastName();
 	}
 
 	/**
-     * I return true if the email address is unique
+	 * I return true if the email address is unique
 	 */		
 	struct function isEmailUnique(){
 		var matches = []; 
@@ -59,7 +59,7 @@ component extends="model.abstract.BaseEntity" persistent="true" table="users" ca
 	}
 
 	/**
-     * I return true if the username is unique
+	 * I return true if the username is unique
 	 */	
 	struct function isUsernameUnique(){
 		var matches = []; 
@@ -71,7 +71,7 @@ component extends="model.abstract.BaseEntity" persistent="true" table="users" ca
 	}	
 
 	/**
-     * I return true if the user is persisted
+	 * I return true if the user is persisted
 	 */	
 	boolean function isPersisted(){
 		return !IsNull( variables.userid );
