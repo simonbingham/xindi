@@ -34,7 +34,7 @@ component accessors="true"{
 	}
 
 	void function default( required struct rc ){
-		rc.loggedin = variables.SecurityService.hasCurrentUser( session );
+		rc.loggedin = variables.SecurityService.hasCurrentUser();
 		if( rc.loggedin ){
 			variables.fw.redirect( "main" );
 		}else{
@@ -47,13 +47,13 @@ component accessors="true"{
 	void function login( required struct rc ){
 		param name="rc.username" default="";
 		param name="rc.password" default="";
-		rc.result = variables.SecurityService.loginUser( session, rc );
+		rc.result = variables.SecurityService.loginUser( rc );
 		if( rc.result.getIsSuccess() ) variables.fw.redirect( "main", "result" );
 		else variables.fw.redirect( "security", "result" );
 	}
 
 	void function logout( required struct rc ){
-		rc.result = variables.SecurityService.deleteCurrentUser( session );
+		rc.result = variables.SecurityService.deleteCurrentUser();
 		variables.fw.redirect( "security", "result" );
 	}
 	

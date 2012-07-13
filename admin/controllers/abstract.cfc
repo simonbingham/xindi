@@ -37,7 +37,7 @@ component accessors="true"{
 	}
 	
 	void function before( required struct rc ){
-		rc.isallowed = variables.SecurityService.isAllowed( session, variables.fw.getFullyQualifiedAction() );
+		rc.isallowed = variables.SecurityService.isAllowed( variables.fw.getFullyQualifiedAction() );
 		if( !rc.isallowed ){
 			variables.fw.redirect( "admin:security" );
 		}else{
