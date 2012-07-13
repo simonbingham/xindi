@@ -44,6 +44,14 @@ component accessors="true"{
 		return result;
 	}
 
+	function getCurrentUser(){
+		if( hasCurrentUser() ){
+			var map = getCurrentStorage();
+			var userkey = map[ variables.userkey ];
+			return variables.UserGateway.getUser( userkey );
+		}
+	}
+
 	/**
 	 * I return true if the session has a user
 	 */	
