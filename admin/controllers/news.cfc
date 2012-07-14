@@ -17,6 +17,12 @@
 */
 
 component accessors="true" extends="abstract"{
+
+	/*
+	 * Dependency injection
+	 */	
+
+	property name="NewsService" setter="true" getter="false";
 	
 	/*
 	 * Public methods

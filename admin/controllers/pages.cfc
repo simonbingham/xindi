@@ -19,6 +19,12 @@
 component accessors="true" extends="abstract"{
 	
 	/*
+	 * Dependency injection
+	 */	
+
+	property name="ContentService" setter="true" getter="false";
+	
+	/*
 	 * Public methods
 	 */	
 
