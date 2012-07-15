@@ -18,16 +18,12 @@
 
 component accessors="true"{
 
-	/*
-	 * Dependency injection
-	 */	
+	// ------------------------ DEPENDENCY INJECTION ------------------------ //
 
 	property name="EnquiryService" setter="true" getter="false";
 	property name="SecurityService" setter="true" getter="false";
 
-	/*
-	 * Public methods
-	 */	
+	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	void function init( required any fw ){
 		variables.fw = arguments.fw;

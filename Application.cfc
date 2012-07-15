@@ -18,9 +18,8 @@
 
 component extends="frameworks.org.corfield.framework"{
 			
-	/**
-	* application settings
-	*/
+	// ------------------------ APPLICATION SETTINGS ------------------------ //
+	
 	this.applicationroot = getDirectoryFromPath( getCurrentTemplatePath() );
 	this.name = ListLast( this.applicationroot, "\/" );
 	this.sessionmanagement = true;
@@ -48,9 +47,8 @@ component extends="frameworks.org.corfield.framework"{
 		this.ormsettings.sqlscript = "_install/setup.sql";
 	}
 
-	/**
-	* FW/1 framework settings (https://github.com/seancorfield/fw1)
-	*/
+	// ------------------------ FW/1 SETTINGS ------------------------ //
+	
 	variables.framework = {
 		cacheFileExists = !this.development
 		, defaultSubsystem = "public"
@@ -62,9 +60,8 @@ component extends="frameworks.org.corfield.framework"{
 		//, routes = [{ ""="", hint="" }]
 	};
 	
-	/**
-	* called when application starts
-	*/	
+	// ------------------------ CALLED WHEN APPLICATION STARTS ------------------------ //	
+	
 	void function setupApplication(){
 		// add exception tracker to application scope
 		var HothConfig = new hoth.config.HothConfig();
@@ -94,9 +91,8 @@ component extends="frameworks.org.corfield.framework"{
 		beanFactory.addBean( "config", getConfig() );
 	}
 	
-	/**
-	* called when page request starts
-	*/	
+	// ------------------------ CALLED WHEN PAGE REQUEST STARTS ------------------------ //	
+
 	void function setupRequest(){
 		// define base url
 		if( CGI.HTTPS eq "on" ) rc.basehref = "https://";
@@ -110,25 +106,22 @@ component extends="frameworks.org.corfield.framework"{
 		rc.config = getBeanFactory().getBean( "Config" );
 	}
 	
-	/**
-	* called when view rendering begins
-	*/		
+	// ------------------------ CALLED WHEN VIEW RENDERING STARTS ------------------------ //	
+	
 	void function setupView(){
 		rc.navigation = getBeanFactory().getBean( "ContentService" ).getPages();
 	}	
 	
-	/**
-	* called when exception occurs
-	*/		
+	// ------------------------ CALLED WHEN EXCEPTION OCCURS ------------------------ //	
+	
 	void function onError( Exception, event )
 	{	
 		if( StructKeyExists( application, "exceptiontracker" ) ) application.exceptiontracker.track( arguments.Exception );
 		super.onError( arguments.Exception, arguments.event );
 	}	
 	
-	/**
-	* called if view is missing - used for search engine friendly page requests
-	*/	
+	// ------------------------ CALLED WHEN VIEW IS MISSING ------------------------ //	
+
 	any function onMissingView( required rc ){
 		rc.Page = getBeanFactory().getBean( "ContentService" ).getPageBySlug( ListLast( CGI.PATH_INFO, "/" ) );
 		if( !rc.Page.isPersisted() ){
@@ -143,9 +136,8 @@ component extends="frameworks.org.corfield.framework"{
 		}
 	}
 	
-	/**
-	* configuration - refer to https://github.com/simonbingham/xindi/wiki/2.-Configuration for more information
-	*/		
+	// ------------------------ CONFIGURATION ------------------------ //	
+	
 	private struct function getConfig(){
 		var config = {
 			development = this.development

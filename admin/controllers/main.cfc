@@ -18,16 +18,12 @@
 
 component accessors="true" extends="abstract"{
 
-	/*
-	 * Dependency injection
-	 */	
+	// ------------------------ DEPENDENCY INJECTION ------------------------ //
 
 	property name="ContentService" setter="true" getter="false";
 	property name="NewsService" setter="true" getter="false";
 
-	/*
-	 * Public methods
-	 */	
+	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	void function default(){
 		rc.unreadenquiries = variables.EnquiryService.getEnquiries( maxresults=10 );

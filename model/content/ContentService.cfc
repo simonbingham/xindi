@@ -18,7 +18,7 @@
 
 component accessors="true"{
 
-	// ------------------------ DEPENDENCY INJECTION ------------------------ //	
+	// ------------------------ DEPENDENCY INJECTION ------------------------ //
 
 	property name="ContentGateway" getter="false";
 	property name="MetaData" getter="false";

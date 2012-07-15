@@ -106,7 +106,9 @@ component extends="model.abstract.BaseEntity" persistent="true" table="pages" ca
 	 * I return the page summary
 	 */		
 	string function getSummary(){
-		return Trim( Left( REReplaceNoCase( Trim( getContent() ), "<[^>]{1,}>", " ", "all" ), 500 ) & "..." );
+		var plaintext = Trim( ReReplace( REReplaceNoCase( Trim( getContent() ), "<[^>]{1,}>", " ", "all" ), " +", " ", "all" ) );
+		if( Len( plaintext ) > 500 ) return Left( plaintext, 500 ) & "...";
+		return plaintext;
 	}
 	
 	/**

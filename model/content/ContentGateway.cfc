@@ -45,13 +45,6 @@
 			if( IsNull( Page ) ) Page = new( "Page" );
 			return Page;
 		}
-		
-		/**
-		 * I return the root page (i.e. home page)
-		 */			
-		Page function getRoot(){
-			return EntityLoad( "Page", { leftvalue=1 }, true );
-		}
 	</cfscript>
 	
 	<cffunction name="getPages" output="false" returntype="Array" hint="I return an array of pages">
@@ -80,6 +73,13 @@
 	</cffunction>
 	
 	<cfscript>
+		/**
+		 * I return the root page (i.e. home page)
+		 */			
+		Page function getRoot(){
+			return EntityLoad( "Page", { leftvalue=1 }, true );
+		}
+
 		/**
 		 * I move a page
 		 */			

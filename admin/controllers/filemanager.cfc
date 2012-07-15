@@ -18,25 +18,18 @@
 
 component accessors="true" extends="abstract"{
 
-	/*
-	 * Dependency injection
-	 */		
+	// ------------------------ DEPENDENCY INJECTION ------------------------ //	
 
 	property name="FileManagerService" setter="true" getter="false";
 	property name="config" setter="true" getter="false";
 
-	/*
-	 * Public methods
-	 */	
+	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	void function before( required struct rc ){
 		rc.webrootdirectory = GetDirectoryFromPath( CGI.CF_TEMPLATE_PATH );
 		rc.clientfilesdirectory = "_clientfiles";
-		if( !IsNull( rc.subdirectory ) ){
-			rc.subdirectory = Replace( ReReplace( Replace( rc.subdirectory, "*", "", "all" ), "(\.){2,}", "", "all" ), ":", "/", "all" );
-		}else{
-			rc.subdirectory = "";
-		}
+		if( !IsNull( rc.subdirectory ) ) rc.subdirectory = Replace( ReReplace( Replace( rc.subdirectory, "*", "", "all" ), "(\.){2,}", "", "all" ), ":", "/", "all" );
+		else rc.subdirectory = "";
 		rc.currentdirectory = rc.webrootdirectory & rc.clientfilesdirectory & rc.subdirectory;
 		if( !variables.FileManagerService.isDirectory( rc.currentdirectory ) ) rc.message.error = "Sorry, the requested " & rc.subdirectory & " is not valid.";
 	}
@@ -74,9 +67,7 @@ component accessors="true" extends="abstract"{
 		variables.fw.redirect( action="filemanager.default", querystring="subdirectory=#urlSafePath( rc.subdirectory )#", preserve="result" );
 	}
 	
-	/*
-	 * Private methods
-	 */
+	// ------------------------ PRIVATE METHODS ------------------------ //
 	
 	private string function urlSafePath( required string path ){
 		var result = Replace( arguments.path, "/", ":", "all" );

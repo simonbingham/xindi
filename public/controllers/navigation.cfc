@@ -18,15 +18,11 @@
 
 component accessors="true" extends="abstract"{
 
-	/*
-	 * Dependency injection
-	 */	
+	// ------------------------ DEPENDENCY INJECTION ------------------------ //	
 
 	property name="ContentService" setter="true" getter="false";
 
-	/*
-	 * Public methods
-	 */		
+	// ------------------------ PUBLIC METHODS ------------------------ //	
 	
 	void function map( required struct rc ){
 		rc.MetaData.setMetaTitle( "Site Map" ); 
