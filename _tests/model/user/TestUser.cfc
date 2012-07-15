@@ -36,35 +36,35 @@ component extends="mxunit.framework.TestCase"{
 		assertEquals( "john whish", result );
 	}
 
-	function testIsNotUniqueEmail(){
+	function testIsEmailUniqueWhereEmailIsNotUnique(){
 		CUT.setEmail( "example@example.com" );
 		var isemailuniqueresult = CUT.IsEmailUnique();
 		var result = isemailuniqueresult.issuccess;
 		assertEquals( false, result );
 	}
 
-	function testIsNotUniqueUsername(){
+	function testIsUsernameUniqueWhereUsernameIsNotUnique(){
 		CUT.setUsername( "admin" );
 		var isusernameuniqueresult = CUT.isUsernameUnique();
 		var result = isusernameuniqueresult.issuccess;
 		assertEquals( false, result );
 	}
 	
-	function testIsUniqueEmail(){
+	function testIsUniqueEmailWhereEmailIsUnique(){
 		CUT.setEmail( "asdhakjsdas@badkjasld.com" );
 		var isemailuniqueresult = CUT.IsEmailUnique();
 		var result = isemailuniqueresult.issuccess;
 		assertEquals( true, result );
 	}
 
-	function testIsUniqueUsername(){
+	function testIsUniqueUsernameWhereUsernameIsUnique(){
 		CUT.setUsername( "sdjalkdjakdjasd" );
 		var isusernameuniqueresult = CUT.isUsernameUnique();
 		var result = isusernameuniqueresult.issuccess;
 		assertEquals( true, result );
 	}
 
-	function testPasswordHashing(){
+	function testSetPassword(){
 		CUT.setPassword( "admin" );
 		var result = CUT.getPassword();
 		assertEquals( "1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB", result );

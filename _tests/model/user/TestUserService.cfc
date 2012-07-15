@@ -68,7 +68,7 @@ component extends="mxunit.framework.TestCase"{
 		assertEquals( "example@example.com", result );
 	}
 
-	function testGetUserByCredentialsReturnsNullForInCorrectCredentials(){
+	function testGetUserByCredentialsReturnsNullForIncorrectCredentials(){
 		var User = new model.user.User();
 		User.setUsername( "foo" );
 		User.setEmail( "" );

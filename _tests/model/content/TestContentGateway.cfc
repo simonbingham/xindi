@@ -19,8 +19,12 @@
 component extends="mxunit.framework.TestCase"{
 			
 	// ------------------------ UNIT TESTS ------------------------ //
-	
-	function testDeletePage(){
+
+	function testDeletePageDoesNotExist(){
+		fail( "test not yet implemented" );
+	}
+
+	function testDeletePageWherePageExists(){
 		var pages = EntityLoad( "Page" );
 		var pagecount = ArrayLen( pages );
 		assertEquals( 13, pagecount );
@@ -56,7 +60,7 @@ component extends="mxunit.framework.TestCase"{
 		var result = Page.isPersisted();
 		assertTrue( result );
 	}
-
+	
 	function testGetPages(){
 		var pages = CUT.getPages();
 		var result = ArrayLen( pages );
@@ -81,7 +85,7 @@ component extends="mxunit.framework.TestCase"{
 		assertEquals( "title-----------", result );
 	}
 
-	function testGetPagesUsingMaxResults(){
+	function testGetPagesWithMaxResults(){
 		var pages = CUT.getPages( maxresults=5 );
 		var result = ArrayLen( pages );
 		assertEquals( 5, result );

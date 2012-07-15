@@ -33,6 +33,14 @@ component extends="mxunit.framework.TestCase"{
 		assertFalse( result );
 	}
 	
+	function testGetCurrentStorage(){
+		fail( "test not yet implemented" );
+	}	
+	
+	function testGetCurrentUser(){
+		fail( "test not yet implemented" );
+	}
+	
 	function testHasCurrentUser(){
 		StructClear( session );
 		var result = CUT.hasCurrentUser();
@@ -109,7 +117,7 @@ component extends="mxunit.framework.TestCase"{
 		var result = CUT.hasCurrentUser();
 		assertTrue( result );
 	}
-
+	
 	// ------------------------ IMPLICIT ------------------------ //
 	 
 	/**

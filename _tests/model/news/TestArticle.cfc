@@ -20,8 +20,6 @@ component extends="mxunit.framework.TestCase"{
 			
 	// ------------------------ UNIT TESTS ------------------------ //
 	
-	// public methods
-	
 	function testGetRSSSummary(){
 		CUT.setContent( "'Nullam ac mi nec enim vestibulum scelerisque sit amet at tellus. Phasellus eget quam neque; id luctus lorem. Sed sagittis.'" );
 		var result = CUT.getRSSSummary();
@@ -75,6 +73,14 @@ component extends="mxunit.framework.TestCase"{
 		assertFalse( result );
 	}
 	
+	function testIsLabelUnique(){
+		CUT.setTitle( "Sample Article A" );
+		makePublic( CUT, "setLabel" );
+		makePublic( CUT, "isLabelUnique" );
+		var result = CUT.isLabelUnique();
+		assertTrue( result );
+	}		
+	
 	function testIsMetaGenerated(){
 		var Article = EntityLoadByPK( "Article", 1 );
 		var result = Article.isMetaGenerated();
@@ -109,16 +115,6 @@ component extends="mxunit.framework.TestCase"{
 		assertFalse( result );
 	}
 	
-	// private methods	
-	
-	function testIsLabelUnique(){
-		CUT.setTitle( "Sample Article A" );
-		makePublic( CUT, "setLabel" );
-		makePublic( CUT, "isLabelUnique" );
-		var result = CUT.isLabelUnique();
-		assertTrue( result );
-	}	
-
 	function testSetLabelWhereRecordWithSameTitleDoesNotExist(){
 		CUT.setTitle( "Sample Article D" );
 		makePublic( CUT, "setLabel" );

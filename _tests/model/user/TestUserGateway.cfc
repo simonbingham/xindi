@@ -19,8 +19,12 @@
 component extends="mxunit.framework.TestCase"{
 
 	// ------------------------ UNIT TESTS ------------------------ //
+
+	function testDeleteUserWhereUserDoesNotExist(){
+		fail( "test not yet implemented" );
+	}
 	
-	function testDeleteUser(){
+	function testDeleteUserWhereUserExists(){
 		var users = EntityLoad( "User" );
 		var usercount = ArrayLen( users );
 		assertEquals( 1, usercount );
@@ -45,7 +49,7 @@ component extends="mxunit.framework.TestCase"{
 		assertTrue( result );
 	}	
 
-	function testGetUserByCredentialsReturnsNullForInCorrectCredentials(){
+	function testGetUserByCredentialsReturnsNewUserForIncorrectCredentials(){
 		var User = EntityNew( "User" );
 		User.setUsername( "foo" );
 		User.setEmail( "foo@bar.com" );

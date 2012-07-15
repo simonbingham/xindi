@@ -33,7 +33,7 @@ component extends="mxunit.framework.TestCase"{
 		assertTrue( result );
 	}
 
-	function testGetPageWherePageDoesNotExists(){
+	function testGetPageWherePageDoesNotExist(){
 		var Page = CUT.getPage( pageid=14 );
 		var result = Page.isPersisted();
 		assertFalse( result );
@@ -81,7 +81,7 @@ component extends="mxunit.framework.TestCase"{
 		assertEquals( "title-----------", result );
 	}
 
-	function testGetPagesUsingMaxResults(){
+	function testGetPagesWithMaxResults(){
 		var pages = CUT.getPages( maxresults=5 );
 		var result = ArrayLen( pages );
 		assertEquals( 5, result );

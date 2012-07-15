@@ -20,8 +20,6 @@ component extends="mxunit.framework.TestCase"{
 			
 	// ------------------------ UNIT TESTS ------------------------ //
 	
-	// public methods
-	 
 	function testGetAncestor(){
 		var Page = EntityLoadByPK( "Page", 1 );
 		var Ancestor = Page.getAncestor();
@@ -37,6 +35,21 @@ component extends="mxunit.framework.TestCase"{
 		assertEquals( 2, result );
 	}
 	
+	function testGetDescendentCount(){
+		var Page = EntityLoadByPK( "Page", 1 );
+		makePublic( Page, "getDescendentCount" );
+		var result = Page.getDescendentCount();
+		assertEquals( 12, result );
+		Page = EntityLoadByPK( "Page", 2 );
+		makePublic( Page, "getDescendentCount" );
+		result = Page.getDescendentCount();
+		assertEquals( 3, result );
+		Page = EntityLoadByPK( "Page", 5 );
+		makePublic( Page, "getDescendentCount" );
+		result = Page.getDescendentCount();
+		assertEquals( 0, result );
+	}	
+	
 	function testGetDescendentPageIDList(){
 		var Page = EntityLoadByPK( "Page", 1 );
 		var result = Page.getDescendentPageIDList();
@@ -48,6 +61,57 @@ component extends="mxunit.framework.TestCase"{
 		result = Page.getDescendentPageIDList();
 		assertEquals( "", result );		
 	}
+	
+	function testGetDescendents(){
+		var Page = EntityLoadByPK( "Page", 1 );
+		makePublic( Page, "getDescendents" );
+		var result = ArrayLen( Page.getDescendents() );
+		assertEquals( 12, result );
+		Page = EntityLoadByPK( "Page", 2 );
+		makePublic( Page, "getDescendents" );
+		result = ArrayLen( Page.getDescendents() );
+		assertEquals( 3, result );
+		Page = EntityLoadByPK( "Page", 5 );
+		makePublic( Page, "getDescendents" );
+		result = ArrayLen( Page.getDescendents() );
+		assertEquals( 0, result );
+	}	
+	
+	function testGetFirstChild(){
+		var Page = EntityLoadByPK( "Page", 1 );
+		makePublic( Page, "getFirstChild" );
+		var FirstChild = Page.getFirstChild();
+		var result = FirstChild.getPageID();
+		assertEquals( 2, result );
+		Page = EntityLoadByPK( "Page", 2 );
+		makePublic( Page, "getFirstChild" );
+		FirstChild = Page.getFirstChild();
+		result = FirstChild.getPageID();
+		assertEquals( 5, result );
+		Page = EntityLoadByPK( "Page", 5 );
+		makePublic( Page, "getFirstChild" );
+		FirstChild = Page.getFirstChild();
+		result = IsNull( FirstChild );
+		assertTrue( result );
+	}	
+	
+	function testGetLastChild(){
+		var Page = EntityLoadByPK( "Page", 1 );
+		makePublic( Page, "getLastChild" );
+		var LastChild = Page.getLastChild();
+		var result = LastChild.getPageID();
+		assertEquals( 4, result );
+		Page = EntityLoadByPK( "Page", 2 );
+		makePublic( Page, "getLastChild" );
+		LastChild = Page.getLastChild();
+		result = LastChild.getPageID();
+		assertEquals( 7, result );
+		Page = EntityLoadByPK( "Page", 5 );
+		makePublic( Page, "getLastChild" );
+		LastChild = Page.getLastChild();
+		result = IsNull( LastChild );
+		assertTrue( result );
+	}	
 	
 	function testGetLevel(){
 		var Page = EntityLoadByPK( "Page", 1 );
@@ -111,11 +175,25 @@ component extends="mxunit.framework.TestCase"{
 		assertEquals( "title/title---", result );	
 	}
 
-	function testGetSummary(){
-		var Page = EntityLoadByPK( "Page", 1 );
-		var result = Page.getSummary(); 
-		assertEquals( "integer tincidunt porta ipsum euismod ultricies. maecenas mattis vehicula iaculis. morbi eu risus erat. in nunc ligula, semper venenatis viverra non, viverra in nisl. vivamus at felis turpis. maecenas metus nisl, tincidunt vitae mattis dapibus, tempor eu libero. donec elementum leo vitae neque consectetur elementum. donec semper varius dui, quis ullamcorper enim mollis sed. maecenas ac quam sem. phasellus vitae ante ante. sed urna tellus, aliquet facilisis tempor et; mollis eu nisi. "" aliquam l...", result );
+	function testGetSummaryDoesNotAppendHellipIfShort(){
+		CUT.setContent( "<p>short page content</p>" );
+		var result = CUT.getSummary();
+		assertEquals( "short page content", result );
 	}
+
+	function testGetSummaryIsPlainText(){
+		CUT.setContent( "<p>some <strong class='foo'>page</strong> content</p>" );
+		var result = CUT.getSummary();
+		assertEquals( "some page content", result );
+	}
+	
+	function testGetSummaryTruncatesAndAppendsHellipIfLong(){
+		CUT.setContent( "<p>This is a long description which is over five-hundred characters in length - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices purus non velit adipiscing malesuada. Aliquam sed convallis neque. Praesent vulputate suscipit luctus. Integer nec neque non dolor eleifend commodo. Mauris consectetur, augue ut pretium lobortis, lectus dui mattis velit, quis venenatis arcu leo non ipsum. Quisque sit amet tortor nec orci lobortis aliquet eget ac erat. Cras rhoncus molestie tincidunt. Vestibulum feugiat aliquam sapien id pharetra. Sed viverra turpis a neque molestie sed venenatis turpis sollicitudin. Duis eu nisl in lacus luctus molestie ac nec turpis. Maecenas vel orci eget purus suscipit aliquam ut id enim. Maecenas euismod, arcu et vestibulum laoreet, sem nisl ultrices arcu, vitae elementum leo leo at tortor. Aliquam erat volutpat. Curabitur eu pellentesque lorem. Donec at nisl erat. Mauris ornare posuere dui a sollicitudin. Quisque quis diam ligula, sed feugiat mauris. In hac habitasse platea dictumst. In condimentum, urna id imperdiet lobortis, mauris justo bibendum ante, sed malesuada nulla elit ac quam. In pellentesque, orci et mattis cursus, urna urna tincidunt sapien, sollicitudin molestie libero mi ac eros. Curabitur elementum felis vel nisi fermentum vehicula. Suspendisse vitae suscipit neque. Sed est ipsum, tempor id sodales in, tempus eget dolor. Quisque nulla mi, posuere sit amet porttitor in, adipiscing quis elit. Morbi vitae lectus felis. Fusce bibendum, quam auctor pellentesque faucibus, quam diam bibendum risus, sit amet malesuada enim lectus in nisl. Aenean blandit molestie risus nec vulputate. Morbi nec sodales sapien. Donec varius porttitor leo, ac vehicula turpis ornare sit amet. In hac habitasse platea dictumst.</p>" );
+		var result = Len( CUT.getSummary() ) == 503;
+		assertTrue( result );
+		result = Right( CUT.getSummary(), 3 ) == "...";
+		assertTrue( result );
+	}	
 
 	function testHasChild(){
 		var Page = EntityLoadByPK( "Page", 1 );
@@ -128,6 +206,36 @@ component extends="mxunit.framework.TestCase"{
 		result = Page.hasChild();
 		assertFalse( result );
 	}
+
+	function testHasContent(){
+		var Page = EntityLoadByPK( "Page", 1 );
+		makePublic( Page, "hasContent" );
+		var result = Page.hasContent();
+		assertTrue( result );
+		Page = EntityLoadByPK( "Page", 2 );
+		makePublic( Page, "hasContent" );
+		result = Page.hasContent();
+		assertTrue( result );
+		Page = EntityLoadByPK( "Page", 5 );
+		makePublic( Page, "hasContent" );
+		result = Page.hasContent();
+		assertTrue( result );
+	}
+	
+	function testHasDescendents(){
+		var Page = EntityLoadByPK( "Page", 1 );
+		makePublic( Page, "hasDescendents" );
+		var result = Page.hasDescendents();
+		assertTrue( result );
+		Page = EntityLoadByPK( "Page", 2 );
+		makePublic( Page, "hasDescendents" );
+		result = Page.hasDescendents();
+		assertTrue( result );
+		Page = EntityLoadByPK( "Page", 5 );
+		makePublic( Page, "hasDescendents" );
+		result = Page.hasDescendents();
+		assertFalse( result );
+	}	
 
 	function testHasNextSibling(){
 		var Page = EntityLoadByPK( "Page", 1 );
@@ -205,6 +313,39 @@ component extends="mxunit.framework.TestCase"{
 		assertFalse( result );
 	}
 
+	function testIsChild(){
+		var Page = EntityLoadByPK( "Page", 1 );
+		makePublic( Page, "isChild" );
+		var result = Page.isChild();
+		assertFalse( result );
+		Page = EntityLoadByPK( "Page", 2 );
+		makePublic( Page, "isChild" );
+		result = Page.isChild();
+		assertTrue( result );
+		Page = EntityLoadByPK( "Page", 5 );
+		makePublic( Page, "isChild" );
+		result = Page.isChild();
+		assertTrue( result );
+	}
+
+	function testIsLabelUniqueWhereLabelDoesNotExist(){
+		CUT.setTitle( "foobar" );
+		makePublic( CUT, "setLabel" );
+		makePublic( CUT, "isLabelUnique" );
+		CUT.setLabel();
+		var result = CUT.isLabelUnique();
+		assertTrue( result );
+	}
+	
+	function testIsLabelUniqueWhereLabelExists(){
+		CUT.setTitle( "title" );
+		makePublic( CUT, "setLabel" );
+		makePublic( CUT, "isLabelUnique" );
+		CUT.setLabel();
+		var result = CUT.isLabelUnique();
+		assertTrue( result );
+	}	
+
 	function testIsLeaf(){
 		var Page = EntityLoadByPK( "Page", 5 );
 		var result = Page.isLeaf();
@@ -240,138 +381,7 @@ component extends="mxunit.framework.TestCase"{
 		result = Page.isRoot();
 		assertFalse( result );
 	}
-
-	// private methods
 	
-	function testGetDescendentCount(){
-		var Page = EntityLoadByPK( "Page", 1 );
-		makePublic( Page, "getDescendentCount" );
-		var result = Page.getDescendentCount();
-		assertEquals( 12, result );
-		Page = EntityLoadByPK( "Page", 2 );
-		makePublic( Page, "getDescendentCount" );
-		result = Page.getDescendentCount();
-		assertEquals( 3, result );
-		Page = EntityLoadByPK( "Page", 5 );
-		makePublic( Page, "getDescendentCount" );
-		result = Page.getDescendentCount();
-		assertEquals( 0, result );
-	}
-	
-	function testGetDescendents(){
-		var Page = EntityLoadByPK( "Page", 1 );
-		makePublic( Page, "getDescendents" );
-		var result = ArrayLen( Page.getDescendents() );
-		assertEquals( 12, result );
-		Page = EntityLoadByPK( "Page", 2 );
-		makePublic( Page, "getDescendents" );
-		result = ArrayLen( Page.getDescendents() );
-		assertEquals( 3, result );
-		Page = EntityLoadByPK( "Page", 5 );
-		makePublic( Page, "getDescendents" );
-		result = ArrayLen( Page.getDescendents() );
-		assertEquals( 0, result );
-	}
-
-	function testGetFirstChild(){
-		var Page = EntityLoadByPK( "Page", 1 );
-		makePublic( Page, "getFirstChild" );
-		var FirstChild = Page.getFirstChild();
-		var result = FirstChild.getPageID();
-		assertEquals( 2, result );
-		Page = EntityLoadByPK( "Page", 2 );
-		makePublic( Page, "getFirstChild" );
-		FirstChild = Page.getFirstChild();
-		result = FirstChild.getPageID();
-		assertEquals( 5, result );
-		Page = EntityLoadByPK( "Page", 5 );
-		makePublic( Page, "getFirstChild" );
-		FirstChild = Page.getFirstChild();
-		result = IsNull( FirstChild );
-		assertTrue( result );
-	}
-
-	function testGetLastChild(){
-		var Page = EntityLoadByPK( "Page", 1 );
-		makePublic( Page, "getLastChild" );
-		var LastChild = Page.getLastChild();
-		var result = LastChild.getPageID();
-		assertEquals( 4, result );
-		Page = EntityLoadByPK( "Page", 2 );
-		makePublic( Page, "getLastChild" );
-		LastChild = Page.getLastChild();
-		result = LastChild.getPageID();
-		assertEquals( 7, result );
-		Page = EntityLoadByPK( "Page", 5 );
-		makePublic( Page, "getLastChild" );
-		LastChild = Page.getLastChild();
-		result = IsNull( LastChild );
-		assertTrue( result );
-	}
-
-	function testHasContent(){
-		var Page = EntityLoadByPK( "Page", 1 );
-		makePublic( Page, "hasContent" );
-		var result = Page.hasContent();
-		assertTrue( result );
-		Page = EntityLoadByPK( "Page", 2 );
-		makePublic( Page, "hasContent" );
-		result = Page.hasContent();
-		assertTrue( result );
-		Page = EntityLoadByPK( "Page", 5 );
-		makePublic( Page, "hasContent" );
-		result = Page.hasContent();
-		assertTrue( result );
-	}
-
-	function testHasDescendents(){
-		var Page = EntityLoadByPK( "Page", 1 );
-		makePublic( Page, "hasDescendents" );
-		var result = Page.hasDescendents();
-		assertTrue( result );
-		Page = EntityLoadByPK( "Page", 2 );
-		makePublic( Page, "hasDescendents" );
-		result = Page.hasDescendents();
-		assertTrue( result );
-		Page = EntityLoadByPK( "Page", 5 );
-		makePublic( Page, "hasDescendents" );
-		result = Page.hasDescendents();
-		assertFalse( result );
-	}
-
-	function testIsChild(){
-		var Page = EntityLoadByPK( "Page", 1 );
-		makePublic( Page, "isChild" );
-		var result = Page.isChild();
-		assertFalse( result );
-		Page = EntityLoadByPK( "Page", 2 );
-		makePublic( Page, "isChild" );
-		result = Page.isChild();
-		assertTrue( result );
-		Page = EntityLoadByPK( "Page", 5 );
-		makePublic( Page, "isChild" );
-		result = Page.isChild();
-		assertTrue( result );
-	}
-
-	function testIsLabelUniqueWhereLabelDoesNotExist(){
-		CUT.setTitle( "foobar" );
-		makePublic( CUT, "setLabel" );
-		makePublic( CUT, "isLabelUnique" );
-		CUT.setLabel();
-		var result = CUT.isLabelUnique();
-		assertTrue( result );
-	}
-	
-	function testIsLabelUniqueWhereLabelExists(){
-		CUT.setTitle( "title" );
-		makePublic( CUT, "setLabel" );
-		makePublic( CUT, "isLabelUnique" );
-		CUT.setLabel();
-		var result = CUT.isLabelUnique();
-		assertTrue( result );
-	}
-
 	function testSetLabel(){
 		var Page = EntityNew( "Page" );
 		Page.setTitle( "this is a unique id" ); // setLabel uses value returned by getTitle
@@ -379,8 +389,8 @@ component extends="mxunit.framework.TestCase"{
 		Page.setLabel();
 		var result = Page.getLabel();
 		assertEquals( "this-is-a-unique-id", result );
-	}
-	 
+	}	
+
 	// ------------------------ IMPLICIT ------------------------ // 
 	
 	/**

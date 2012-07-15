@@ -55,9 +55,7 @@ component extends="model.abstract.BaseEntity" persistent="true" table="articles"
 	 */
 	string function getSummary(){
 		var plaintext = Trim( ReReplace( REReplaceNoCase( Trim( getContent() ), "<[^>]{1,}>", " ", "all" ), " +", " ", "all" ) );
-		if( Len( plaintext ) > 500 ){
-			return Left( plaintext, 500 ) & "...";
-		}
+		if( Len( plaintext ) > 500 ) return Left( plaintext, 500 ) & "...";
 		return plaintext;
 	}
 

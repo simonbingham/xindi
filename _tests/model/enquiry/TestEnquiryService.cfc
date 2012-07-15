@@ -55,13 +55,13 @@ component extends="mxunit.framework.TestCase"{
 		assertEquals( 3, result );
 	}
 	
-	function testMarkAllRead(){
+	function testMarkReadForAllEnquiries(){
 		var markallreadresult = CUT.markRead();
 		var result = markallreadresult.getIsSuccess();
 		assertTrue( result );
 	}
 	
-	function testMarkRead(){
+	function testMarkReadForSingleEnquiry(){
 		var markreadresult = CUT.markRead( enquiryid=3 );
 		var result = markreadresult.getIsSuccess();
 		assertTrue( result );

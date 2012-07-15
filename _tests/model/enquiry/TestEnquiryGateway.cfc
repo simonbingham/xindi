@@ -19,8 +19,12 @@
 component extends="mxunit.framework.TestCase"{
 			
 	// ------------------------ UNIT TESTS ------------------------ //
+
+	function testDeleteEnquiryDoesNotExists(){
+		fail( "test not yet implemented" );
+	}
 	
-	function testDeleteEnquiry(){
+	function testDeleteEnquiryWhereEnquiryExists(){
 		var enquiries = EntityLoad( "Enquiry" );
 		var enquirycount = ArrayLen( enquiries );
 		assertEquals( 3, enquirycount );
@@ -56,7 +60,7 @@ component extends="mxunit.framework.TestCase"{
 		assertEquals( 3, result );
 	}
 	
-	function testMarkAllRead(){
+	function testMarkReadForAllEnquiries(){
 		var unreadenquiries = EntityLoad( "Enquiry", { read=false } );
 		var result = ArrayLen( unreadenquiries );
 		assertEquals( 3, result );
@@ -68,7 +72,7 @@ component extends="mxunit.framework.TestCase"{
 		assertEquals( 0, result );
 	}
 	
-	function testMarkRead(){
+	function testMarkReadForSingleEnquiry(){
 		var unreadenquiries = EntityLoad( "Enquiry", { read=false } );
 		debug(unreadenquiries);
 		var result = ArrayLen( unreadenquiries );
