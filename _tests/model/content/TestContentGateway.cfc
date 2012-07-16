@@ -21,7 +21,16 @@ component extends="mxunit.framework.TestCase"{
 	// ------------------------ UNIT TESTS ------------------------ //
 
 	function testDeletePageDoesNotExist(){
-		fail( "test not yet implemented" );
+		var pages = EntityLoad( "Page" );
+		var pagecount = ArrayLen( pages );
+		assertEquals( 13, pagecount );
+		var Page = EntityNew( "Page" );
+		transaction{
+			CUT.deletePage( Page );
+		}
+		pages = EntityLoad( "Page" );
+		pagecount = ArrayLen( pages );
+		assertEquals( 13, pagecount );
 	}
 
 	function testDeletePageWherePageExists(){

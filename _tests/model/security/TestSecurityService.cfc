@@ -34,11 +34,15 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testGetCurrentStorage(){
-		fail( "test not yet implemented" );
+		makePublic( CUT, "getCurrentStorage" );
+		result = CUT.getCurrentStorage();
+		assertEquals( session, result );
 	}	
 	
 	function testGetCurrentUser(){
-		fail( "test not yet implemented" );
+		var loginuserresult = CUT.loginUser( properties={ username="admin", password="admin" } );
+		result = session.userid;
+		assertTrue( 1, result );
 	}
 	
 	function testHasCurrentUser(){

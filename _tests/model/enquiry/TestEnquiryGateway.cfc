@@ -21,7 +21,16 @@ component extends="mxunit.framework.TestCase"{
 	// ------------------------ UNIT TESTS ------------------------ //
 
 	function testDeleteEnquiryDoesNotExists(){
-		fail( "test not yet implemented" );
+		var enquiries = EntityLoad( "Enquiry" );
+		var enquirycount = ArrayLen( enquiries );
+		assertEquals( 3, enquirycount );
+		var Enquiry = EntityNew( "Enquiry" );
+		transaction{
+			CUT.deleteEnquiry( Enquiry );
+		}
+		enquiries = EntityLoad( "Enquiry" );
+		enquirycount = ArrayLen( enquiries );
+		assertEquals( 3, enquirycount );
 	}
 	
 	function testDeleteEnquiryWhereEnquiryExists(){

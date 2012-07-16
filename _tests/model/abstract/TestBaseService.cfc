@@ -20,33 +20,11 @@ component extends="mxunit.framework.TestCase"{
 			
 	// ------------------------ UNIT TESTS ------------------------ //
 	
-	function createDirectory(){
-		fail( "test not yet implemented" );
+	function getValidator(){
+		var Page = EntityNew( "Page" );
+		result = CUT.getValidator( Page );
+		assertTrue( IsObject( result ) );
 	}
-
-	function deleteFile(){
-		fail( "test not yet implemented" );
-	}
-	
-	function getDirectoryList(){
-		fail( "test not yet implemented" );
-	}
-
-	function getFile(){
-		fail( "test not yet implemented" );
-	}
-	
-	function isDirectory(){
-		fail( "test not yet implemented" );
-	}
-
-	function isFile(){
-		fail( "test not yet implemented" );
-	}
-	
-	function uploadFile(){
-		fail( "test not yet implemented" );
-	}	
 	
 	
 	// ------------------------ IMPLICIT ------------------------ // 
@@ -54,7 +32,13 @@ component extends="mxunit.framework.TestCase"{
 	/**
 	* this will run before every single test in this test case
 	*/
-	function setUp(){}
+	function setUp(){
+		// initialise component under test
+		CUT = new model.abstract.BaseService();
+		var validatorconfig = { definitionPath="/model/", JSIncludes=false, resultPath="model.utility.ValidatorResult" };
+		var Validator = new ValidateThis.ValidateThis( validatorconfig );
+		CUT.setValidator( Validator );
+	}
 	
 	/**
 	* this will run after every single test in this test case
