@@ -16,13 +16,13 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true"{
+component accessors="true" extends="model.abstract.BaseService"{
 
 	// ------------------------ DEPENDENCY INJECTION ------------------------ //
 
 	property name="MetaData" getter="false";
 	property name="NewsGateway" getter="false";
-	property name="Validator" getter="false";	
+	property name="Validator" getter="false";
 
 	// ------------------------ PUBLIC METHODS ------------------------ //
 
@@ -71,13 +71,6 @@ component accessors="true"{
 		arguments.maxresults = Val( arguments.maxresults );
 		arguments.offset = Val( arguments.offset );
 		return variables.NewsGateway.getArticles( argumentCollection=arguments );
-	}
-		
-	/**
-	 * I return the article validator
-	 */			
-	function getValidator( required Article theArticle ){
-		return variables.Validator.getValidator( theObject=arguments.theArticle );
 	}
 	
 	/**

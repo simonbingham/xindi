@@ -16,7 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true"{
+component accessors="true" extends="model.abstract.BaseService"{
 
 	// ------------------------ DEPENDENCY INJECTION ------------------------ //
 	
@@ -68,13 +68,6 @@ component accessors="true"{
 	 */	
 	array function getUsers(){
 		return variables.UserGateway.getUsers();
-	}
-
-	/**
-	 * I return a user validator
-	 */			
-	function getValidator( required User theUser ){
-		return variables.Validator.getValidator( theObject=arguments.theUser );
 	}
 	
 	/**

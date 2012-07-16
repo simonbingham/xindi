@@ -16,7 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true"{
+component accessors="true" extends="model.abstract.BaseService" {
 
 	// ------------------------ DEPENDENCY INJECTION ------------------------ //
 
@@ -71,13 +71,6 @@ component accessors="true"{
 	Page function getRoot(){
 		return variables.ContentGateway.getRoot();
 	}	
-	
-	/**
-	 * I return a page validator
-	 */		
-	function getValidator( required Page ){
-		return variables.Validator.getValidator( theObject=arguments.Page );
-	}
 	
 	/**
 	 * I move a page
