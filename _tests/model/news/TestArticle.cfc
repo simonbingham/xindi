@@ -75,7 +75,6 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testIsLabelUnique(){
 		CUT.setTitle( "Sample Article A" );
-		makePublic( CUT, "setLabel" );
 		makePublic( CUT, "isLabelUnique" );
 		var result = CUT.isLabelUnique();
 		assertTrue( result );

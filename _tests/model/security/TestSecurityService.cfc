@@ -25,7 +25,7 @@ component extends="mxunit.framework.TestCase"{
 		var User = CUT.hasCurrentUser();
 		assertFalse( User );
 		var User = EntityLoadByPK( "User", 1 );
-		CUT.setCurrentUser( User=User );
+		CUT.setCurrentUser( User );
 		var result = CUT.hasCurrentUser();
 		assertTrue( result );
 		CUT.deleteCurrentUser();
@@ -40,7 +40,7 @@ component extends="mxunit.framework.TestCase"{
 	}	
 	
 	function testGetCurrentUser(){
-		var loginuserresult = CUT.loginUser( properties={ username="admin", password="admin" } );
+		var loginuserresult = CUT.loginUser( { username="admin", password="admin" } );
 		result = session.userid;
 		assertTrue( 1, result );
 	}
@@ -50,7 +50,7 @@ component extends="mxunit.framework.TestCase"{
 		var result = CUT.hasCurrentUser();
 		assertFalse( result );
 		var User = EntityLoadByPK( "User", 1 );
-		CUT.setCurrentUser( User=User );
+		CUT.setCurrentUser( User );
 		result = CUT.hasCurrentUser();
 		assertTrue( result );
 	}
@@ -58,66 +58,66 @@ component extends="mxunit.framework.TestCase"{
 	function testIsAllowedForSecureActionWhereUserIsLoggedIn(){
 		StructClear( session );
 		var User = EntityLoadByPK( "User", 1 );
-		CUT.setCurrentUser( User=User );
-		var result = CUT.isAllowed( action="admin:pages", whitelist="^admin:security,^public:" );
+		CUT.setCurrentUser( User );
+		var result = CUT.isAllowed( "admin:pages", "^admin:security,^public:" );
 		assertTrue( result );
 	}	
 
 	function testIsAllowedForSecureActionWhereUserIsNotLoggedIn(){
 		StructClear( session );
-		var result = CUT.isAllowed( action="admin:pages", whitelist="^admin:security,^public:" );
+		var result = CUT.isAllowed( "admin:pages", "^admin:security,^public:" );
 		assertFalse( result );
 	}	
 
 	function testIsAllowedForUnsecureActionWhereUserIsLoggedIn(){
-		var result = CUT.isAllowed( action="admin:security", whitelist="^admin:security,^public:" );
+		var result = CUT.isAllowed( "admin:security", "^admin:security,^public:" );
 		assertTrue( result );
 	}	
 	
 	function testIsAllowedForUnsecureActionWhereUserIsNotLoggedIn(){
-		var result = CUT.isAllowed( action="admin:security", whitelist="^admin:security,^public:" );
+		var result = CUT.isAllowed( "admin:security", "^admin:security,^public:" );
 		assertTrue( result );
 	}		
 
 	function testLoginUserForInvalidUser(){
-		var loginuserresult = CUT.loginUser( properties={ username="", password="" } );
+		var loginuserresult = CUT.loginUser( { username="", password="" } );
 		var result = loginuserresult.getIsSuccess();
 		assertFalse( result );
 	}
 		
 	function testLoginUserForValidUser(){
-		var loginuserresult = CUT.loginUser( properties={ username="admin", password="admin" } );
+		var loginuserresult = CUT.loginUser( { username="admin", password="admin" } );
 		var result = loginuserresult.getIsSuccess();
 		assertTrue( result ); 
 	}
 
 	function testResetPasswordByEmailWhereUsernameIsInvalid(){
-		var resetpasswordresult = CUT.resetPassword( properties={ email="foo@bar.com" }, name="Default", config={ resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, emailtemplatepath="../../admin/views/security/email.cfm" );
+		var resetpasswordresult = CUT.resetPassword( { email="foo@bar.com" }, "Default", { resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, "../../admin/views/security/email.cfm" );
 		var result = resetpasswordresult.getIsSuccess();
 		assertFalse( result );
 	}
 	
 	function testResetPasswordByEmailWhereUsernameIsValid(){
-		var resetpasswordresult = CUT.resetPassword( properties={ email="example@example.com" }, name="Default", config={ resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, emailtemplatepath="../../admin/views/security/email.cfm" );
+		var resetpasswordresult = CUT.resetPassword( { email="example@example.com" }, "Default", { resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, "../../admin/views/security/email.cfm" );
 		var result = resetpasswordresult.getIsSuccess();
 		assertTrue( result );
 	}
 	
 	function testResetPasswordByUsernameWhereUsernameIsInvalid(){
-		var resetpasswordresult = CUT.resetPassword( properties={ username="foobar" }, name="Default", config={ resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, emailtemplatepath="../../admin/views/security/email.cfm" );
+		var resetpasswordresult = CUT.resetPassword( { username="foobar" }, "Default", { resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, "../../admin/views/security/email.cfm" );
 		var result = resetpasswordresult.getIsSuccess();
 		assertFalse( result );
 	}
 	
 	function testResetPasswordByUsernameWhereUsernameIsValid(){
-		var resetpasswordresult = CUT.resetPassword( properties={ username="admin" }, name="Default", config={ resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, emailtemplatepath="../../admin/views/security/email.cfm" );
+		var resetpasswordresult = CUT.resetPassword( { username="admin" }, "Default", { resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, "../../admin/views/security/email.cfm" );
 		var result = resetpasswordresult.getIsSuccess();
 		assertTrue( result );
 	}
 	
 	function testSetCurrentUser(){
 		var User = EntityLoadByPK( "User", 1 );
-		CUT.setCurrentUser( User=User );
+		CUT.setCurrentUser( User );
 		var result = CUT.hasCurrentUser();
 		assertTrue( result );
 	}

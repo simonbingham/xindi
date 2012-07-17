@@ -34,25 +34,25 @@ component extends="mxunit.framework.TestCase"{
 	}
 
 	function testGetArticleWhereArticleDoesNotExist(){
-		var Article = CUT.getArticle( articleid=100 );
+		var Article = CUT.getArticle( 100 );
 		var result = Article.isPersisted();
 		assertFalse( result );
 	}
 		
 	function testGetArticleWhereArticleExists(){
-		var Article = CUT.getArticle( articleid=1 );
+		var Article = CUT.getArticle( 1 );
 		var result = Article.isPersisted();
 		assertTrue( result );
 	}
 
 	function testGetArticleByLabelWhereArticleDoesNotExist(){
-		var Article = CUT.getArticleByLabel( label="foobar" );
+		var Article = CUT.getArticleByLabel( "foobar" );
 		var result = Article.isPersisted();
 		assertFalse( result );
 	}	
 	
 	function testGetArticleByLabelWhereArticleExists(){
-		var Article = CUT.getArticleByLabel( label="sample-article-a" );
+		var Article = CUT.getArticleByLabel( "sample-article-a" );
 		var result = Article.isPersisted();
 		assertTrue( result );
 	}
@@ -92,7 +92,7 @@ component extends="mxunit.framework.TestCase"{
 		assertEquals( 3, articlecount );
 		var Article = EntityNew( "Article" );
 		Article.setTitle( "foo" );
-		Article.setPublished( CreateDate( 2012, 6, 27 ) );
+		Article.setPublished( Now() );
 		Article.setContent( "bar" );
 		transaction{
 			CUT.saveArticle( Article );

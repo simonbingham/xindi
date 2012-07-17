@@ -21,38 +21,37 @@ component extends="mxunit.framework.TestCase"{
 	// ------------------------ INTEGRATION TESTS ------------------------ //
 	
 	function testDeletePageWherePageDoesNotExist(){
-		var deletepageresult = CUT.deletePage( pageid=100 );
+		var deletepageresult = CUT.deletePage( 100 );
 		var result = deletepageresult.getIsSuccess();
-		debug(result);
 		assertFalse( result );
 	}
 	
 	function testDeletePageWherePageExists(){
-		var deletepageresult = CUT.deletePage( pageid=13 );
+		var deletepageresult = CUT.deletePage( 13 );
 		var result = deletepageresult.getIsSuccess();
 		assertTrue( result );
 	}
 
 	function testGetPageWherePageDoesNotExist(){
-		var Page = CUT.getPage( pageid=14 );
+		var Page = CUT.getPage( 14 );
 		var result = Page.isPersisted();
 		assertFalse( result );
 	}
 	
 	function testGetPageWherePageExists(){
-		var Page = CUT.getPage( pageid=1 );
+		var Page = CUT.getPage( 1 );
 		var result = Page.isPersisted();
 		assertTrue( result );
 	}
 
 	function testGetPageSlugWherePageDoesNotExist(){
-		var Page = CUT.getPageBySlug( slug="foobar" );
+		var Page = CUT.getPageBySlug( "foobar" );
 		var result = Page.isPersisted();
 		assertFalse( result );	
 	}
 	
 	function testGetPageSlugWherePageExists(){
-		var Page = CUT.getPageBySlug( slug="home" );
+		var Page = CUT.getPageBySlug( "home" );
 		var result = Page.isPersisted();
 		assertTrue( result );
 	}
@@ -100,7 +99,7 @@ component extends="mxunit.framework.TestCase"{
 	}
 
 	function testMovePageWherePageCanBeMovedDown(){
-		var movepageresult = CUT.movePage( pageid=12, direction="down" );
+		var movepageresult = CUT.movePage( 12, "down" );
 		var result = movepageresult.getIsSuccess();
 		assertTrue( result );
 		result = movepageresult.getTheObject().getLeftValue();
@@ -110,7 +109,7 @@ component extends="mxunit.framework.TestCase"{
 	}
 
 	function testMovePageWherePageCanBeMovedUp(){
-		var movepageresult = CUT.movePage( pageid=7, direction="up" );
+		var movepageresult = CUT.movePage( 7, "up" );
 		var result = movepageresult.getIsSuccess();
 		assertTrue( result );
 		result = movepageresult.getTheObject().getLeftValue();
@@ -120,13 +119,13 @@ component extends="mxunit.framework.TestCase"{
 	}
 
 	function testMovePageWherePageCannotBeMovedDown(){
-		var movepageresult = CUT.movePage( pageid=13, direction="down" );
+		var movepageresult = CUT.movePage( 13, "down" );
 		var result = movepageresult.getIsSuccess();
 		assertFalse( result );
 	}
 
 	function testMovePageWherePageCannotBeMovedUp(){
-		var movepageresult = CUT.movePage( pageid=11, direction="up" );
+		var movepageresult = CUT.movePage( 11, "up" );
 		var result = movepageresult.getIsSuccess();
 		assertFalse( result );
 	}

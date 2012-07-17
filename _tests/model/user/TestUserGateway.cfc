@@ -63,7 +63,7 @@ component extends="mxunit.framework.TestCase"{
 		User.setUsername( "foo" );
 		User.setEmail( "foo@bar.com" );
 		User.setPassword( "bar" );
-		var getuserbycredentialsresult = CUT.getUserByCredentials( theUser=User );
+		var getuserbycredentialsresult = CUT.getUserByCredentials( User );
 		var result = getuserbycredentialsresult.isPersisted();
 		assertFalse( result );
 	}
@@ -72,10 +72,8 @@ component extends="mxunit.framework.TestCase"{
 		var User = EntityNew( "User" );
 		User.setEmail( "example@example.com" );
 		User.setPassword( "admin" );		
-		var getuserbycredentialsresult = CUT.getUserByCredentials( theUser=User );
-		debug(getuserbycredentialsresult);
+		var getuserbycredentialsresult = CUT.getUserByCredentials( User );
 		var result = getuserbycredentialsresult.isPersisted();
-		debug(result);
 		assertTrue( result );
 	}
 
@@ -83,7 +81,7 @@ component extends="mxunit.framework.TestCase"{
 		var User = EntityNew( "User" );
 		User.setUsername( "admin" );
 		User.setPassword( "admin" );		
-		var getuserbycredentialsresult = CUT.getUserByCredentials( theUser=User );
+		var getuserbycredentialsresult = CUT.getUserByCredentials( User );
 		var result = getuserbycredentialsresult.isPersisted();
 		assertTrue( result );
 	}
@@ -91,7 +89,7 @@ component extends="mxunit.framework.TestCase"{
 	function testGetUserByEmailOrUsernameWhereEmailIsSpecified(){
 		var User = CUT.newUser();
 		User.setEmail( "example@example.com" );
-		User = CUT.getUserByEmailOrUsername( theUser=User );
+		User = CUT.getUserByEmailOrUsername( User );
 		var result = User.isPersisted();
 		assertTrue( result );
 	}
@@ -99,7 +97,7 @@ component extends="mxunit.framework.TestCase"{
 	function testGetUserByEmailOrUsernameWhereUsernameIsSpecified(){
 		var User = CUT.newUser();
 		User.setUsername( "admin" );
-		User = CUT.getUserByEmailOrUsername( theUser=User );
+		User = CUT.getUserByEmailOrUsername( User );
 		var result = User.isPersisted();
 		assertTrue( result );
 	}

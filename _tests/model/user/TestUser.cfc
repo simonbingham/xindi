@@ -43,18 +43,18 @@ component extends="mxunit.framework.TestCase"{
 		assertEquals( false, result );
 	}
 
-	function testIsUsernameUniqueWhereUsernameIsNotUnique(){
-		CUT.setUsername( "admin" );
-		var isusernameuniqueresult = CUT.isUsernameUnique();
-		var result = isusernameuniqueresult.issuccess;
-		assertEquals( false, result );
-	}
-	
 	function testIsUniqueEmailWhereEmailIsUnique(){
 		CUT.setEmail( "asdhakjsdas@badkjasld.com" );
 		var isemailuniqueresult = CUT.IsEmailUnique();
 		var result = isemailuniqueresult.issuccess;
 		assertEquals( true, result );
+	}
+
+	function testIsUsernameUniqueWhereUsernameIsNotUnique(){
+		CUT.setUsername( "admin" );
+		var isusernameuniqueresult = CUT.isUsernameUnique();
+		var result = isusernameuniqueresult.issuccess;
+		assertEquals( false, result );
 	}
 
 	function testIsUniqueUsernameWhereUsernameIsUnique(){
