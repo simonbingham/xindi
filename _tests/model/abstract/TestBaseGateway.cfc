@@ -22,15 +22,15 @@ component extends="mxunit.framework.TestCase"{
 	
 	function delete(){
 		var pages = EntityLoad( "Page" );
-		var pagecount = ArrayLen( pages );
-		assertEquals( 13, pagecount );
+		var result = ArrayLen( pages );
+		assertEquals( 13, result );
 		var Page = EntityLoadByPK( "Page", 13 );
 		transaction{
 			CUT.delete( Page );
 		}
 		pages = EntityLoad( "Page" );
-		pagecount = ArrayLen( pages );
-		assertEquals( 12, pagecount );
+		result = ArrayLen( pages );
+		assertEquals( 12, result );
 	}
 
 	function get(){
@@ -41,20 +41,21 @@ component extends="mxunit.framework.TestCase"{
 	
 	function new(){
 		var Page = CUT.new( "Page" );
-		assertFalse( Page.isPersisted() );
+		var result = Page.isPersisted();
+		assertFalse( result );
 	}
 	
 	function save(){
 		var pages = EntityLoad( "Page" );
-		var pagecount = ArrayLen( pages );
-		assertEquals( 13, pagecount );		
+		var result = ArrayLen( pages );
+		assertEquals( 13, result );		
 		var Page = EntityNew( "Page" );
 		Page.setTitle( "foo" );
 		Page.setContent( "bar" );
 		CUT.save( Page );
 		pages = EntityLoad( "Page" );
-		pagecount = ArrayLen( pages );
-		assertEquals( 14, pagecount );
+		result = ArrayLen( pages );
+		assertEquals( 14, result );
 	}
 	
 	

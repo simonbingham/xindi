@@ -75,7 +75,6 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testIsLabelUnique(){
 		CUT.setTitle( "Sample Article A" );
-		makePublic( CUT, "setLabel" );
 		makePublic( CUT, "isLabelUnique" );
 		var result = CUT.isLabelUnique();
 		assertTrue( result );
@@ -100,9 +99,10 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testIsPersisted(){
-		assertFalse( CUT.isPersisted() );
+		var result = CUT.isPersisted();
+		assertFalse( result );
 		var Article = EntityLoadByPK( "Article", 1 );
-		var result = Article.isPersisted();
+		result = Article.isPersisted();
 		assertTrue( result );		
 	}
 	

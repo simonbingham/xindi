@@ -22,37 +22,37 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testDeleteArticle(){
 		var articles = EntityLoad( "Article" );
-		var articlecount = ArrayLen( articles );
-		assertEquals( 3, articlecount );
+		var result = ArrayLen( articles );
+		assertEquals( 3, result );
 		var Article = EntityLoadByPK( "Article", 1 );		
 		transaction{
 			CUT.deleteArticle( Article );
 		}
 		articles = EntityLoad( "Article" );
-		articlecount = ArrayLen( articles );
-		assertEquals( 2, articlecount );
+		result = ArrayLen( articles );
+		assertEquals( 2, result );
 	}
 
 	function testGetArticleWhereArticleDoesNotExist(){
-		var Article = CUT.getArticle( articleid=100 );
+		var Article = CUT.getArticle( 100 );
 		var result = Article.isPersisted();
 		assertFalse( result );
 	}
 		
 	function testGetArticleWhereArticleExists(){
-		var Article = CUT.getArticle( articleid=1 );
+		var Article = CUT.getArticle( 1 );
 		var result = Article.isPersisted();
 		assertTrue( result );
 	}
 
 	function testGetArticleByLabelWhereArticleDoesNotExist(){
-		var Article = CUT.getArticleByLabel( label="foobar" );
+		var Article = CUT.getArticleByLabel( "foobar" );
 		var result = Article.isPersisted();
 		assertFalse( result );
 	}	
 	
 	function testGetArticleByLabelWhereArticleExists(){
-		var Article = CUT.getArticleByLabel( label="sample-article-a" );
+		var Article = CUT.getArticleByLabel( "sample-article-a" );
 		var result = Article.isPersisted();
 		assertTrue( result );
 	}
@@ -88,18 +88,18 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testSaveArticle(){
 		var articles = EntityLoad( "Article" );
-		var articlecount = ArrayLen( articles );
-		assertEquals( 3, articlecount );
+		var result = ArrayLen( articles );
+		assertEquals( 3, result );
 		var Article = EntityNew( "Article" );
 		Article.setTitle( "foo" );
-		Article.setPublished( CreateDate( 2012, 6, 27 ) );
+		Article.setPublished( Now() );
 		Article.setContent( "bar" );
 		transaction{
 			CUT.saveArticle( Article );
 		}
 		articles = EntityLoad( "Article" );
-		articlecount = ArrayLen( articles );
-		assertEquals( 4, articlecount );
+		result = ArrayLen( articles );
+		assertEquals( 4, result );
 	}
 	
 	// ------------------------ IMPLICIT ------------------------ // 

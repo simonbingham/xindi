@@ -26,7 +26,7 @@ component extends="mxunit.framework.TestCase"{
 		assertEquals( "&lt;script&gt;alert('hack');&lt;/script&gt;", result );		
 	}	
 	 
-	function testGetDisplayMessageLineFeedsAndCarriageReturnsShouldBeReplace(){
+	function testGetDisplayMessageLineFeedsAndCarriageReturnsShouldBeReplaced(){
 		CUT.setMessage( "
 		This
 		

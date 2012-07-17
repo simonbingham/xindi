@@ -21,13 +21,13 @@ component extends="mxunit.framework.TestCase"{
 	// ------------------------ INTEGRATION TESTS ------------------------ //
 
 	function testDeleteEnquiryWhereEnquiryDoesNotExist(){
-		var deleteenquiryresult = CUT.deleteEnquiry( enquiryid=4 );
+		var deleteenquiryresult = CUT.deleteEnquiry( 4 );
 		var result = deleteenquiryresult.getIsSuccess();
 		assertFalse( result );
 	}
 		
 	function testDeleteEnquiryWhereEnquiryExists(){
-		var deleteenquiryresult = CUT.deleteEnquiry( enquiryid=1 );
+		var deleteenquiryresult = CUT.deleteEnquiry( 1 );
 		var result = deleteenquiryresult.getIsSuccess();
 		assertTrue( result );
 	}
@@ -45,7 +45,7 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testGetEnquiry(){
-		var Enquiry = CUT.getEnquiry( enquiryid=2 );
+		var Enquiry = CUT.getEnquiry( 2 );
 		var result = Enquiry.isPersisted();
 		assertTrue( result );
 	}
@@ -62,7 +62,7 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testMarkReadForSingleEnquiry(){
-		var markreadresult = CUT.markRead( enquiryid=3 );
+		var markreadresult = CUT.markRead( 3 );
 		var result = markreadresult.getIsSuccess();
 		assertTrue( result );
 	}
@@ -74,13 +74,13 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testSendEnquiryWhereEnquiryIsInvalid(){
-		var sendenquiryresult = CUT.sendEnquiry( properties={ firstname="", lastname="", email="", message="" }, config={ subject="Test", emailto="example@example.com" }, emailtemplatepath="../../public/views/enquiry/email.cfm" );
+		var sendenquiryresult = CUT.sendEnquiry( { firstname="", lastname="", email="", message="" }, { subject="Test", emailto="example@example.com" }, "../../public/views/enquiry/email.cfm" );
 		var result = sendenquiryresult.getIsSuccess();
 		assertFalse( result );
 	}
 
 	function testSendEnquiryWhereEnquiryIsValid(){
-		var sendenquiryresult = CUT.sendEnquiry( properties={ firstname="Test", lastname="User", email="example@example.com", message="This is a test message." }, config={ subject="Test", emailto="example@example.com" }, emailtemplatepath="../../public/views/enquiry/email.cfm" );
+		var sendenquiryresult = CUT.sendEnquiry( { firstname="Test", lastname="User", email="example@example.com", message="This is a test message." }, { subject="Test", emailto="example@example.com" }, "../../public/views/enquiry/email.cfm" );
 		var result = sendenquiryresult.getIsSuccess();
 		assertTrue( result );
 	}

@@ -20,20 +20,7 @@ component extends="mxunit.framework.TestCase"{
 			
 	// ------------------------ UNIT TESTS ------------------------ //
 
-	function testDeleteEnquiryDoesNotExists(){
-		var enquiries = EntityLoad( "Enquiry" );
-		var enquirycount = ArrayLen( enquiries );
-		assertEquals( 3, enquirycount );
-		var Enquiry = EntityNew( "Enquiry" );
-		transaction{
-			CUT.deleteEnquiry( Enquiry );
-		}
-		enquiries = EntityLoad( "Enquiry" );
-		enquirycount = ArrayLen( enquiries );
-		assertEquals( 3, enquirycount );
-	}
-	
-	function testDeleteEnquiryWhereEnquiryExists(){
+	function testDeleteEnquiry(){
 		var enquiries = EntityLoad( "Enquiry" );
 		var enquirycount = ArrayLen( enquiries );
 		assertEquals( 3, enquirycount );
@@ -83,7 +70,6 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testMarkReadForSingleEnquiry(){
 		var unreadenquiries = EntityLoad( "Enquiry", { read=false } );
-		debug(unreadenquiries);
 		var result = ArrayLen( unreadenquiries );
 		assertEquals( 3, result );
 		var Enquiry = EntityLoadByPK( "Enquiry", 1 );
@@ -103,8 +89,8 @@ component extends="mxunit.framework.TestCase"{
 
 	function testSaveEnquiry(){
 		var enquiries = EntityLoad( "Enquiry" );
-		var enquirycount = ArrayLen( enquiries );
-		assertEquals( 3, enquirycount );
+		var result = ArrayLen( enquiries );
+		assertEquals( 3, result );
 		var Enquiry = EntityNew( "Enquiry" );
 		Enquiry.setFirstName( "foo" );
 		Enquiry.setLastName( "bar" );
@@ -112,8 +98,8 @@ component extends="mxunit.framework.TestCase"{
 		Enquiry.setMessage( "foobar" );
 		CUT.saveEnquiry( Enquiry );
 		enquiries = EntityLoad( "Enquiry" );
-		enquirycount = ArrayLen( enquiries );
-		assertEquals( 4, enquirycount );
+		result = ArrayLen( enquiries );
+		assertEquals( 4, result );
 	}
  
 	// ------------------------ IMPLICIT ------------------------ // 

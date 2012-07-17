@@ -142,7 +142,7 @@ component extends="mxunit.framework.TestCase"{
 
 	function testGetPath(){
 		var Page = EntityLoadByPK( "Page", 5 );
-		result = ArrayLen( Page.getPath() );
+		var result = ArrayLen( Page.getPath() );
 		assertEquals( 2, result );
 		Page = EntityLoadByPK( "Page", 2 );
 		result = ArrayLen( Page.getPath() );
@@ -347,9 +347,9 @@ component extends="mxunit.framework.TestCase"{
 	}	
 
 	function testIsLeaf(){
-		var Page = EntityLoadByPK( "Page", 5 );
+		var Page = EntityLoadByPK( "Page", 1 );
 		var result = Page.isLeaf();
-		assertTrue( result );
+		assertFalse( result );
 		Page = EntityLoadByPK( "Page", 6 );
 		result = Page.isLeaf();
 		assertTrue( result );		
@@ -371,6 +371,9 @@ component extends="mxunit.framework.TestCase"{
 		var Page = EntityLoadByPK( "Page", 1 );
 		var result = Page.isPersisted();
 		assertTrue( result );
+		Page = EntityNew( "Page" );
+		result = Page.isPersisted();
+		assertFalse( result );
 	}
 
 	function testIsRoot(){
@@ -389,7 +392,7 @@ component extends="mxunit.framework.TestCase"{
 		Page.setLabel();
 		var result = Page.getLabel();
 		assertEquals( "this-is-a-unique-id", result );
-	}	
+	}
 
 	// ------------------------ IMPLICIT ------------------------ // 
 	

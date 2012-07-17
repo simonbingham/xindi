@@ -26,7 +26,6 @@ component extends="mxunit.framework.TestCase"{
 		assertTrue( IsObject( result ) );
 	}
 	
-	
 	// ------------------------ IMPLICIT ------------------------ // 
 	
 	/**

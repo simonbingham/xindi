@@ -22,28 +22,28 @@ component extends="mxunit.framework.TestCase"{
 
 	function testDeleteUserWhereUserDoesNotExist(){
 		var users = EntityLoad( "User" );
-		var usercount = ArrayLen( users );
-		assertEquals( 1, usercount );
+		var result = ArrayLen( users );
+		assertEquals( 1, result );
 		var User = EntityNew( "User" );
 		transaction{
 			CUT.deleteUser( User );
 		}
 		users = EntityLoad( "User" );
-		usercount = ArrayLen( users );
-		assertEquals( 1, usercount );
+		result = ArrayLen( users );
+		assertEquals( 1, result );
 	}
 	
 	function testDeleteUserWhereUserExists(){
 		var users = EntityLoad( "User" );
-		var usercount = ArrayLen( users );
-		assertEquals( 1, usercount );
+		var result = ArrayLen( users );
+		assertEquals( 1, result );
 		var User = EntityLoadByPK( "User", 1 );
 		transaction{
 			CUT.deleteUser( User );
 		}
 		users = EntityLoad( "User" );
-		usercount = ArrayLen( users );
-		assertEquals( 0, usercount );
+		result = ArrayLen( users );
+		assertEquals( 0, result );
 	}
 
 	function testGetUserWhereUserDoesNotExist(){
@@ -63,7 +63,7 @@ component extends="mxunit.framework.TestCase"{
 		User.setUsername( "foo" );
 		User.setEmail( "foo@bar.com" );
 		User.setPassword( "bar" );
-		var getuserbycredentialsresult = CUT.getUserByCredentials( theUser=User );
+		var getuserbycredentialsresult = CUT.getUserByCredentials( User );
 		var result = getuserbycredentialsresult.isPersisted();
 		assertFalse( result );
 	}
@@ -72,10 +72,8 @@ component extends="mxunit.framework.TestCase"{
 		var User = EntityNew( "User" );
 		User.setEmail( "example@example.com" );
 		User.setPassword( "admin" );		
-		var getuserbycredentialsresult = CUT.getUserByCredentials( theUser=User );
-		debug(getuserbycredentialsresult);
+		var getuserbycredentialsresult = CUT.getUserByCredentials( User );
 		var result = getuserbycredentialsresult.isPersisted();
-		debug(result);
 		assertTrue( result );
 	}
 
@@ -83,7 +81,7 @@ component extends="mxunit.framework.TestCase"{
 		var User = EntityNew( "User" );
 		User.setUsername( "admin" );
 		User.setPassword( "admin" );		
-		var getuserbycredentialsresult = CUT.getUserByCredentials( theUser=User );
+		var getuserbycredentialsresult = CUT.getUserByCredentials( User );
 		var result = getuserbycredentialsresult.isPersisted();
 		assertTrue( result );
 	}
@@ -91,7 +89,7 @@ component extends="mxunit.framework.TestCase"{
 	function testGetUserByEmailOrUsernameWhereEmailIsSpecified(){
 		var User = CUT.newUser();
 		User.setEmail( "example@example.com" );
-		User = CUT.getUserByEmailOrUsername( theUser=User );
+		User = CUT.getUserByEmailOrUsername( User );
 		var result = User.isPersisted();
 		assertTrue( result );
 	}
@@ -99,7 +97,7 @@ component extends="mxunit.framework.TestCase"{
 	function testGetUserByEmailOrUsernameWhereUsernameIsSpecified(){
 		var User = CUT.newUser();
 		User.setUsername( "admin" );
-		User = CUT.getUserByEmailOrUsername( theUser=User );
+		User = CUT.getUserByEmailOrUsername( User );
 		var result = User.isPersisted();
 		assertTrue( result );
 	}
@@ -118,8 +116,8 @@ component extends="mxunit.framework.TestCase"{
 
 	function testSaveUser(){
 		var users = EntityLoad( "User" );
-		var usercount = ArrayLen( users );
-		assertEquals( 1, usercount );
+		var result = ArrayLen( users );
+		assertEquals( 1, result );
 		var User = EntityNew( "User" );
 		User.setFirstName( "Simon" );
 		User.setLastName( "Bingham" );
@@ -128,8 +126,8 @@ component extends="mxunit.framework.TestCase"{
 		User.setPassword( "bar" );
 		CUT.saveUser( User );
 		users = EntityLoad( "User" );
-		usercount = ArrayLen( users );
-		assertEquals( 2, usercount );
+		result = ArrayLen( users );
+		assertEquals( 2, result );
 	}	
 
 	// ------------------------ IMPLICIT ------------------------ //

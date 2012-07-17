@@ -20,30 +20,17 @@ component extends="mxunit.framework.TestCase"{
 			
 	// ------------------------ UNIT TESTS ------------------------ //
 
-	function testDeletePageDoesNotExist(){
+	function testDeletePage(){
 		var pages = EntityLoad( "Page" );
-		var pagecount = ArrayLen( pages );
-		assertEquals( 13, pagecount );
-		var Page = EntityNew( "Page" );
-		transaction{
-			CUT.deletePage( Page );
-		}
-		pages = EntityLoad( "Page" );
-		pagecount = ArrayLen( pages );
-		assertEquals( 13, pagecount );
-	}
-
-	function testDeletePageWherePageExists(){
-		var pages = EntityLoad( "Page" );
-		var pagecount = ArrayLen( pages );
-		assertEquals( 13, pagecount );
+		var result = ArrayLen( pages );
+		assertEquals( 13, result );
 		var Page = EntityLoadByPK( "Page", 13 );
 		transaction{
 			CUT.deletePage( Page );
 		}
 		pages = EntityLoad( "Page" );
-		pagecount = ArrayLen( pages );
-		assertEquals( 12, pagecount );
+		result = ArrayLen( pages );
+		assertEquals( 12, result );
 	}
 
 	function testGetPageWherePageDoesNotExists(){
@@ -127,15 +114,15 @@ component extends="mxunit.framework.TestCase"{
 
 	function testSavePage(){
 		var pages = EntityLoad( "Page" );
-		var pagecount = ArrayLen( pages );
-		assertEquals( 13, pagecount );		
+		var result = ArrayLen( pages );
+		assertEquals( 13, result );		
 		var Page = EntityNew( "Page" );
 		Page.setTitle( "foo" );
 		Page.setContent( "bar" );
 		CUT.savePage( Page, 1 );
 		pages = EntityLoad( "Page" );
-		pagecount = ArrayLen( pages );
-		assertEquals( 14, pagecount );
+		result = ArrayLen( pages );
+		assertEquals( 14, result );
 	}
 
 	// ------------------------ IMPLICIT ------------------------ // 

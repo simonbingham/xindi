@@ -22,37 +22,37 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testGenerateMetaDescription()
 	{
-		var result = CUT.generateMetaDescription( description="Morbi at felis quis metus scelerisque venenatis. Curabitur ut tellus nec massa eleifend vestibulum! In non lectus sem; ut lacinia." );
+		var result = CUT.generateMetaDescription( "Morbi at felis quis metus scelerisque venenatis. Curabitur ut tellus nec massa eleifend vestibulum! In non lectus sem; ut lacinia." );
 		assertEquals( "Morbi at felis quis metus scelerisque venenatis. Curabitur ut tellus nec massa eleifend vestibulum! In non lectus sem; ut lacinia.", result );		
 	}
 
 	function testGenerateMetaKeywords()
 	{
-		var result = CUT.generateMetaKeywords( keywords="Morbi at felis quis metus scelerisque venenatis. Curabitur ut tellus nec massa eleifend vestibulum! In non lectus sem; ut lacinia." );
+		var result = CUT.generateMetaKeywords( "Morbi at felis quis metus scelerisque venenatis. Curabitur ut tellus nec massa eleifend vestibulum! In non lectus sem; ut lacinia." );
 		assertEquals( "morbi,at,felis,quis,metus,scelerisque,venenatis,curabitur,ut,tellus,nec,massa,eleifend,vestibulum!,non,lectus,sem;,lacinia", result );		
 	}
 
 	function testGeneratePageTitle()
 	{
-		var result = CUT.generatePageTitle( websitetitle="foo", pagetitle="bar" );
+		var result = CUT.generatePageTitle( "foo", "bar" );
 		assertEquals( "bar | foo", result );		
 	}
 	
 	function testListDeleteDuplicatesNoCase()
 	{
-		var result = CUT.listDeleteDuplicatesNoCase( thelist="Morbi,at,felis,quis,metus,scelerisque,venenatis,Morbi,at,felis,quis,metus,scelerisque,venenatis" );
+		var result = CUT.listDeleteDuplicatesNoCase( "Morbi,at,felis,quis,metus,scelerisque,venenatis,Morbi,at,felis,quis,metus,scelerisque,venenatis" );
 		assertEquals( "Morbi,at,felis,quis,metus,scelerisque,venenatis", result );
 	}	
 	
 	function testRemoveNonKeywords()
 	{
-		var result = CUT.removeNonKeywords( thestring="Morbi at felis quis metus scelerisque venenatis. Curabitur ut tellus nec massa eleifend vestibulum! In non lectus sem; ut lacinia." );
+		var result = CUT.removeNonKeywords( "Morbi at felis quis metus scelerisque venenatis. Curabitur ut tellus nec massa eleifend vestibulum! In non lectus sem; ut lacinia." );
 		assertEquals( "morbi at felis quis metus scelerisque venenatis curabitur ut tellus nec massa eleifend vestibulum! non lectus sem; ut lacinia", result  );
 	}
 	
 	function testRemoveUnrequiredCharacters()
 	{
-		var result = CUT.removeUnrequiredCharacters( thestring="
+		var result = CUT.removeUnrequiredCharacters( "
 		Morbi at felis quis 
 		
 		metus scelerisque venenatis. 
@@ -66,13 +66,13 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testReplaceMultipleSpacesWithSingleSpace()
 	{
-		var result = CUT.replaceMultipleSpacesWithSingleSpace( thestring="Morbi at felis quis metus   scelerisque venenatis. Curabitur ut tellus nec massa eleifend   vestibulum! In non lectus sem; ut lacinia." );
+		var result = CUT.replaceMultipleSpacesWithSingleSpace( "Morbi at felis quis metus   scelerisque venenatis. Curabitur ut tellus nec massa eleifend   vestibulum! In non lectus sem; ut lacinia." );
 		assertEquals( "Morbi at felis quis metus scelerisque venenatis. Curabitur ut tellus nec massa eleifend vestibulum! In non lectus sem; ut lacinia.", result );
 	}
 
 	function testStripHTML()
 	{
-		var result = CUT.stripHTML( thestring="<p>Morbi at felis quis metus scelerisque venenatis. Curabitur ut tellus nec massa eleifend vestibulum! In non lectus sem; ut lacinia.</p>" );
+		var result = CUT.stripHTML( "<p>Morbi at felis quis metus scelerisque venenatis. Curabitur ut tellus nec massa eleifend vestibulum! In non lectus sem; ut lacinia.</p>" );
 		assertEquals( "Morbi at felis quis metus scelerisque venenatis. Curabitur ut tellus nec massa eleifend vestibulum! In non lectus sem; ut lacinia.", result );
 	}
 	
