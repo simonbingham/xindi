@@ -11,11 +11,11 @@
 # section
 # --------------------------------------------------------------------
 
-RewriteEngine On
-
+# RewriteEngine On
 
 # --------------------------------------------------------------------
 # trap invalid URLs and return 410 (G=Gone)
 # --------------------------------------------------------------------
 
-RewriteRule ^index\.cfm/(.)+\.(ico|css|js)$ - [L,G]
+# RewriteRule ^index\.cfm/(.)+\.(ico|css|js)$ - [L,G]
+# RewriteRule ^.*favicon.ico$ - [L,G]
