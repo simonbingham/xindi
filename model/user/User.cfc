@@ -43,7 +43,7 @@ component extends="model.abstract.BaseEntity" persistent="true" table="users" ca
 	 * I return the full name
 	 */		
 	string function getFullName(){
-		return getFirstName() & " " & getLastName();
+		return variables.firstname & " " & variables.lastname;
 	}
 
 	/**
@@ -51,9 +51,9 @@ component extends="model.abstract.BaseEntity" persistent="true" table="users" ca
 	 */		
 	struct function isEmailUnique(){
 		var matches = []; 
-		var result = { issuccess=false, failuremessage="The email address '#getEmail()#' is registered to an existing account." };
-		if( isPersisted() ) matches = ORMExecuteQuery( "from User where userid <> :userid and email = :email", { userid=getUserID(), email=getEmail()});
-		else matches = ORMExecuteQuery( "from User where email=:email", { email=getEmail() });
+		var result = { issuccess=false, failuremessage="The email address '#variables.email#' is registered to an existing account." };
+		if( isPersisted() ) matches = ORMExecuteQuery( "from User where userid <> :userid and email = :email", { userid=variables.userid, email=variables.email } );
+		else matches = ORMExecuteQuery( "from User where email=:email", { email=variables.email } );
 		if( !ArrayLen( matches ) ) result.issuccess = true;
 		return result;
 	}
@@ -63,9 +63,9 @@ component extends="model.abstract.BaseEntity" persistent="true" table="users" ca
 	 */	
 	struct function isUsernameUnique(){
 		var matches = []; 
-		var result = { issuccess = false, failuremessage = "The username '#getUsername()#' is registered to an existing account." };
-		if( isPersisted() ) matches = ORMExecuteQuery( "from User where userid <> :userid and username = :username", { userid=getUserID(), username=getUsername()});
-		else matches = OrmExecuteQuery( "from User where username = :username", { username=getUsername() });
+		var result = { issuccess = false, failuremessage = "The username '#variables.username#' is registered to an existing account." };
+		if( isPersisted() ) matches = ORMExecuteQuery( "from User where userid <> :userid and username = :username", { userid=variables.userid, username=variables.username } );
+		else matches = OrmExecuteQuery( "from User where username = :username", { username=variables.username } );
 		if( !ArrayLen( matches ) ) result.issuccess = true;
 		return result;
 	}	

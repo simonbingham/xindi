@@ -66,7 +66,7 @@ component extends="model.abstract.BaseEntity" persistent="true" table="enquiries
 	 * I return true if the enquiry is read
 	 */		
 	boolean function isRead(){
-		return getRead();
+		return variables.read;
 	}
 	
 }

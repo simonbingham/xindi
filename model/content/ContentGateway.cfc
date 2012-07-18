@@ -26,8 +26,8 @@
 		void function deletePage( required Page thePage ){
 			var startvalue = arguments.thePage.getLeftValue();
 			if( !IsNull( startvalue ) ){
-				ORMExecuteQuery( "update Page set leftvalue = leftvalue - 2 where leftvalue > :startvalue", { startvalue=startvalue });
-				ORMExecuteQuery( "update Page set rightvalue = rightvalue - 2 where rightvalue > :startvalue", { startvalue=startvalue });
+				ORMExecuteQuery( "update Page set leftvalue = leftvalue - 2 where leftvalue > :startvalue", { startvalue=startvalue } );
+				ORMExecuteQuery( "update Page set rightvalue = rightvalue - 2 where rightvalue > :startvalue", { startvalue=startvalue } );
 			}
 			delete( arguments.thePage );
 		}
