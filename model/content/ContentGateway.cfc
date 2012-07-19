@@ -65,8 +65,8 @@
 			<cfif Len( thesearchterm )>
 				and 
 				(	
-				 	lower( title ) like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#thesearchterm#%"> 
-				 	or lower( content ) like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#thesearchterm#%">
+				 	title like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#thesearchterm#%"> 
+				 	or content like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#thesearchterm#%">
 				) 
 			</cfif>
 			order by #arguments.sortorder#
