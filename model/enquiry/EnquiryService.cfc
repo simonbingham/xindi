@@ -100,7 +100,7 @@ component accessors="true" extends="model.abstract.BaseService"{
 		transaction{
 			var emailtemplate = "";
 			var Enquiry = variables.EnquiryGateway.newEnquiry(); 
-			Enquiry.populate( arguments.properties );
+			populate( Enquiry, arguments.properties );
 			var result = variables.Validator.validate( theObject=Enquiry );
 			if( !result.hasErrors() ){
 				savecontent variable="emailtemplate"{ include arguments.emailtemplatepath; }

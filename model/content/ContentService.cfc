@@ -107,7 +107,7 @@ component accessors="true" extends="model.abstract.BaseService" {
 			arguments.properties.pageid = Val( arguments.properties.pageid );
 			var Page = "";
 			Page = variables.ContentGateway.getPage( arguments.properties.pageid );
-			Page.populate( arguments.properties );
+			populate( Page, arguments.properties );
 			if( Page.isMetaGenerated() ){
 				Page.setMetaTitle( Page.getTitle() );
 				Page.setMetaDescription( variables.MetaData.generateMetaDescription( Page.getContent() ) );

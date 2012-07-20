@@ -86,7 +86,7 @@ component accessors="true" extends="model.abstract.BaseService"{
 			catch(any e){
 				arguments.properties.published = "";
 			}
-			Article.populate( arguments.properties );
+			populate( Article, arguments.properties );
 			if( IsNull( Article.getContent() ) ) Article.setContent( "" );
 			if( Article.isMetaGenerated() ){
 				Article.setMetaTitle( Article.getTitle() );

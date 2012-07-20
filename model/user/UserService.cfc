@@ -91,7 +91,7 @@ component accessors="true" extends="model.abstract.BaseService"{
 		transaction{
 			param name="arguments.properties.userid" default="0";
 			var User = variables.UserGateway.getUser( Val( arguments.properties.userid ) );
-			User.populate( arguments.properties );
+			populate( User, arguments.properties );
 			var result = variables.Validator.validate( theObject=User, context=arguments.context );
 			if( !result.hasErrors() ){
 				result.setSuccessMessage( "The user &quot;#User.getFullName()#&quot; has been saved." );
