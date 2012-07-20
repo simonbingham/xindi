@@ -80,19 +80,14 @@ component accessors="true" extends="model.abstract.BaseService"{
 		transaction{
 			param name="arguments.properties.articleid" default="0";
 			var Article = variables.NewsGateway.getArticle( Val( arguments.properties.articleid ) );
+			// ensure data is in the correct format
 			try{
 				arguments.properties.published = CreateDate( ListGetAt( arguments.properties.published, 3, "/" ), ListGetAt( arguments.properties.published, 2, "/" ), ListGetAt( arguments.properties.published, 1, "/" ) );
 			}
-			catch(any e){
+			catch( any e ){
 				arguments.properties.published = "";
 			}
 			populate( Article, arguments.properties );
-			if( IsNull( Article.getContent() ) ) Article.setContent( "" );
-			if( Article.isMetaGenerated() ){
-				Article.setMetaTitle( Article.getTitle() );
-				Article.setMetaDescription( variables.MetaData.generateMetaDescription( Article.getContent() ) );
-				Article.setMetaKeywords( variables.MetaData.generateMetaKeywords( Article.getContent() ) );
-			}
 			var result = variables.Validator.validate( theObject=Article );
 			if( !result.hasErrors() ){
 				variables.NewsGateway.saveArticle( Article );

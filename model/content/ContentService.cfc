@@ -21,7 +21,7 @@ component accessors="true" extends="model.abstract.BaseService" {
 	// ------------------------ DEPENDENCY INJECTION ------------------------ //
 
 	property name="ContentGateway" getter="false";
-	property name="MetaData" getter="false";
+	property name="MetaDataService" getter="false";
 	property name="Validator" getter="false";
 
 	// ------------------------ PUBLIC METHODS ------------------------ //
@@ -108,11 +108,6 @@ component accessors="true" extends="model.abstract.BaseService" {
 			var Page = "";
 			Page = variables.ContentGateway.getPage( arguments.properties.pageid );
 			populate( Page, arguments.properties );
-			if( Page.isMetaGenerated() ){
-				Page.setMetaTitle( Page.getTitle() );
-				Page.setMetaDescription( variables.MetaData.generateMetaDescription( Page.getContent() ) );
-				Page.setMetaKeywords( variables.MetaData.generateMetaKeywords( Page.getContent() ) );
-			}
 			var result = variables.Validator.validate( theObject=Page, context=arguments.context );
 			if( !result.hasErrors() ){
 				variables.ContentGateway.savePage( Page, ancestorid );

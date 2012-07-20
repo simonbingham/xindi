@@ -40,6 +40,7 @@ component persistent="true" table="articles" cacheuse="transactional"{
 	 */
 	Article function init(){
 		variables.label = "";
+		variables.content = "";
 		variables.metagenerated = true;
 		return this;
 	}
