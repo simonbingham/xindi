@@ -16,12 +16,12 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true"{
+component accessors="true" extends="model.abstract.BaseService" {
 
-	// ------------------------ DEPENDENCY INJECTION ------------------------ //	
+	// ------------------------ DEPENDENCY INJECTION ------------------------ //
 
 	property name="ContentGateway" getter="false";
-	property name="MetaData" getter="false";
+	property name="MetaDataService" getter="false";
 	property name="Validator" getter="false";
 
 	// ------------------------ PUBLIC METHODS ------------------------ //
@@ -73,13 +73,6 @@ component accessors="true"{
 	}	
 	
 	/**
-	 * I return a page validator
-	 */		
-	function getValidator( required Page ){
-		return variables.Validator.getValidator( theObject=arguments.Page );
-	}
-	
-	/**
 	 * I move a page
 	 */		
 	struct function movePage( required pageid, required string direction ){
@@ -114,12 +107,7 @@ component accessors="true"{
 			arguments.properties.pageid = Val( arguments.properties.pageid );
 			var Page = "";
 			Page = variables.ContentGateway.getPage( arguments.properties.pageid );
-			Page.populate( arguments.properties );
-			if( Page.isMetaGenerated() ){
-				Page.setMetaTitle( Page.getTitle() );
-				Page.setMetaDescription( variables.MetaData.generateMetaDescription( Page.getContent() ) );
-				Page.setMetaKeywords( variables.MetaData.generateMetaKeywords( Page.getContent() ) );
-			}
+			populate( Page, arguments.properties );
 			var result = variables.Validator.validate( theObject=Page, context=arguments.context );
 			if( !result.hasErrors() ){
 				variables.ContentGateway.savePage( Page, ancestorid );

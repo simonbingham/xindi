@@ -25,8 +25,10 @@
 		 */			
 		void function deletePage( required Page thePage ){
 			var startvalue = arguments.thePage.getLeftValue();
-			ORMExecuteQuery( "update Page set leftvalue = leftvalue - 2 where leftvalue > :startvalue", { startvalue=startvalue });
-			ORMExecuteQuery( "update Page set rightvalue = rightvalue - 2 where rightvalue > :startvalue", { startvalue=startvalue });
+			if( !IsNull( startvalue ) ){
+				ORMExecuteQuery( "update Page set leftvalue = leftvalue - 2 where leftvalue > :startvalue", { startvalue=startvalue } );
+				ORMExecuteQuery( "update Page set rightvalue = rightvalue - 2 where rightvalue > :startvalue", { startvalue=startvalue } );
+			}
 			delete( arguments.thePage );
 		}
 		
@@ -44,13 +46,6 @@
 			var Page = EntityLoad( "Page", { label=Trim( ListLast( arguments.slug, "/" ) ) }, TRUE );
 			if( IsNull( Page ) ) Page = new( "Page" );
 			return Page;
-		}
-		
-		/**
-		 * I return the root page (i.e. home page)
-		 */			
-		Page function getRoot(){
-			return EntityLoad( "Page", { leftvalue=1 }, true );
 		}
 	</cfscript>
 	
@@ -70,8 +65,8 @@
 			<cfif Len( thesearchterm )>
 				and 
 				(	
-				 	lower( title ) like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#thesearchterm#%"> 
-				 	or lower( content ) like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#thesearchterm#%">
+				 	title like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#thesearchterm#%"> 
+				 	or content like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#thesearchterm#%">
 				) 
 			</cfif>
 			order by #arguments.sortorder#
@@ -80,6 +75,13 @@
 	</cffunction>
 	
 	<cfscript>
+		/**
+		 * I return the root page (i.e. home page)
+		 */			
+		Page function getRoot(){
+			return EntityLoad( "Page", { leftvalue=1 }, true );
+		}
+
 		/**
 		 * I move a page
 		 */			

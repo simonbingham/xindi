@@ -18,18 +18,12 @@
 
 component accessors="true"{
 
-	/*
-	 * Dependency injection
-	 */	
+	// ------------------------ DEPENDENCY INJECTION ------------------------ //
 
-	property name="ContentService" setter="true" getter="false";
 	property name="EnquiryService" setter="true" getter="false";
-	property name="NewsService" setter="true" getter="false";
 	property name="SecurityService" setter="true" getter="false";
 
-	/*
-	 * Public methods
-	 */	
+	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	void function init( required any fw ){
 		variables.fw = arguments.fw;
@@ -40,11 +34,8 @@ component accessors="true"{
 		if( !rc.isallowed ){
 			variables.fw.redirect( "admin:security" );
 		}else{
-			rc.unreadenquirycount = variables.EnquiryService.getUnreadCount();
-			rc.unreadenquiries = variables.EnquiryService.getEnquiries( maxresults=10 );
-			rc.updatedpages = variables.ContentService.getPages( sortorder="updated desc", maxresults=10 );
-			rc.updatedarticles = variables.NewsService.getArticles( sortorder="updated desc", maxresults=10 );
 			rc.CurrentUser = variables.SecurityService.getCurrentUser();
+			rc.unreadenquirycount = variables.EnquiryService.getUnreadCount();
 		}
 	}
 

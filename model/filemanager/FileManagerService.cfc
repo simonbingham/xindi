@@ -16,11 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true"{
-
-	// ------------------------ DEPENDENCY INJECTION ------------------------ //
-	
-	property name="Validator" getter="false";
+component accessors="true" extends="model.abstract.BaseService"{
 
 	// ------------------------ PUBLIC METHODS ------------------------ //
 

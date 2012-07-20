@@ -16,7 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component extends="model.abstract.BaseEntity" persistent="true" table="pages" cacheuse="transactional"{
+component persistent="true" table="pages" cacheuse="transactional"{
 
 	// ------------------------ PROPERTIES ------------------------ //
 
@@ -97,7 +97,7 @@ component extends="model.abstract.BaseEntity" persistent="true" table="pages" ca
 			for( var Page in getPath() ){
 				if( !Page.isRoot() ) slug &= Page.getLabel() & "/";
 			}
-			slug &= getLabel();
+			slug &= variables.label;
 		}
 		return slug;
 	}
@@ -106,7 +106,9 @@ component extends="model.abstract.BaseEntity" persistent="true" table="pages" ca
 	 * I return the page summary
 	 */		
 	string function getSummary(){
-		return Trim( Left( REReplaceNoCase( Trim( getContent() ), "<[^>]{1,}>", " ", "all" ), 500 ) & "..." );
+		var plaintext = Trim( ReReplace( REReplaceNoCase( Trim( variables.content ), "<[^>]{1,}>", " ", "all" ), " +", " ", "all" ) );
+		if( Len( plaintext ) > 500 ) return Left( plaintext, 500 ) & "...";
+		return plaintext;
 	}
 	
 	/**
@@ -127,28 +129,28 @@ component extends="model.abstract.BaseEntity" persistent="true" table="pages" ca
 	 * I return true if the page has a meta description
 	 */	
 	boolean function hasMetaDescription(){
-		return Len( Trim( getMetaDescription() ) );	
+		return Len( Trim( variables.metadescription ) );	
 	}
 	
 	/**
 	 * I return true if the page has meta keywords
 	 */		
 	boolean function hasMetaKeywords(){
-		return Len( Trim( getMetaKeywords() ) );
+		return Len( Trim( variables.metakeywords ) );
 	}
 
 	/**
 	 * I return true if the page has a meta title
 	 */	
 	boolean function hasMetaTitle(){
-		return Len( Trim( getMetaTitle() ) );		
+		return Len( Trim( variables.metatitle ) );		
 	}
 
 	/**
 	 * I return true if the page id is found in a list of page ids
 	 */	
 	boolean function hasPageIDInPath( required string pageidlist ){
-		if( ListFind( arguments.pageidlist, getPageID() ) ) return true;
+		if( ListFind( arguments.pageidlist, variables.pageid ) ) return true;
 		for( var Page in getPath() ){
 			if( ListFind( arguments.pageidlist, Page.getPageID() ) ) return true;
 		}
@@ -183,7 +185,7 @@ component extends="model.abstract.BaseEntity" persistent="true" table="pages" ca
 	 * I return true if the page meta tags are automatically generated
 	 */	
 	boolean function isMetaGenerated(){
-		return getMetaGenerated();
+		return variables.metagenerated;
 	}
 
 	/**
@@ -241,7 +243,7 @@ component extends="model.abstract.BaseEntity" persistent="true" table="pages" ca
 	 * I return true if the page has content
 	 */		
 	private boolean function hasContent(){
-		return Len( Trim( getContent() ) );
+		return Len( Trim( variables.content ) );
 	}
 
 	/**
@@ -263,8 +265,8 @@ component extends="model.abstract.BaseEntity" persistent="true" table="pages" ca
 	 */		
 	private boolean function isLabelUnique(){
 		var matches = []; 
-		if( isPersisted() ) matches = ORMExecuteQuery( "from Page where pageid <> :pageid and label = :label", { pageid=getPageID(), label=getLabel()});
-		else matches = ORMExecuteQuery( "from Page where label=:label", { label=getLabel() });
+		if( isPersisted() ) matches = ORMExecuteQuery( "from Page where pageid <> :pageid and label = :label", { pageid=variables.pageid, label=variables.label } );
+		else matches = ORMExecuteQuery( "from Page where label=:label", { label=variables.label });
 		return !ArrayLen( matches );
 	}
 	
@@ -272,7 +274,7 @@ component extends="model.abstract.BaseEntity" persistent="true" table="pages" ca
 	 * I generate a unique id for the page
 	 */		
 	private void function setLabel(){
-		variables.label = ReReplace( LCase( getTitle() ), "[^a-z0-9]{1,}", "-", "all" );
+		variables.label = ReReplace( LCase( variables.title ), "[^a-z0-9]{1,}", "-", "all" );
 		while ( !isLabelUnique() ) variables.label &= "-"; 
 	}
 		

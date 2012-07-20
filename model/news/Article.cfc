@@ -16,7 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component extends="model.abstract.BaseEntity" persistent="true" table="articles" cacheuse="transactional"{
+component persistent="true" table="articles" cacheuse="transactional"{
 
 	// ------------------------ PROPERTIES ------------------------ //
 
@@ -39,6 +39,8 @@ component extends="model.abstract.BaseEntity" persistent="true" table="articles"
      * I initialise this component
 	 */
 	Article function init(){
+		variables.label = "";
+		variables.content = "";
 		variables.metagenerated = true;
 		return this;
 	}
@@ -54,10 +56,8 @@ component extends="model.abstract.BaseEntity" persistent="true" table="articles"
      * I return the summary
 	 */
 	string function getSummary(){
-		var plaintext = Trim( ReReplace( REReplaceNoCase( Trim( getContent() ), "<[^>]{1,}>", " ", "all" ), " +", " ", "all" ) );
-		if( Len( plaintext ) > 500 ){
-			return Left( plaintext, 500 ) & "...";
-		}
+		var plaintext = Trim( ReReplace( REReplaceNoCase( Trim( variables.content ), "<[^>]{1,}>", " ", "all" ), " +", " ", "all" ) );
+		if( Len( plaintext ) > 500 ) return Left( plaintext, 500 ) & "...";
 		return plaintext;
 	}
 
@@ -65,35 +65,35 @@ component extends="model.abstract.BaseEntity" persistent="true" table="articles"
      * I return true if the article has a meta description
 	 */
 	boolean function hasMetaDescription(){
-		return Len( Trim( getMetaDescription() ) );	
+		return Len( Trim( variables.metadescription ) );	
 	}
 	
 	/**
      * I return true if the article has meta keywords
 	 */	
 	boolean function hasMetaKeywords(){
-		return Len( Trim( getMetaKeywords() ) );
+		return Len( Trim( variables.metakeywords ) );
 	}
 
 	/**
      * I return true if the article has a meta title
 	 */
 	boolean function hasMetaTitle(){
-		return Len( Trim( getMetaTitle() ) );		
+		return Len( Trim( variables.metatitle ) );		
 	}
 
 	/**
      * I return true if the article meta tags are generated automatically
 	 */
 	boolean function isMetaGenerated(){
-		return getMetaGenerated();
+		return variables.metagenerated;
 	}
 
 	/**
      * I return true if the article is new
 	 */
 	boolean function isNew(){
-		return DateDiff( "ww", getPublished(), Now() ) < 1;
+		return DateDiff( "ww", variables.published, Now() ) < 1;
 	}
 
 	/**
@@ -117,13 +117,6 @@ component extends="model.abstract.BaseEntity" persistent="true" table="articles"
 		setLabel();
 	}
 	
-	/**
-	 * I am called before the article is updated in the database
-	 */	
-	void function preUpdate(){
-		setLabel();
-	}
-
 	// ------------------------ PRIVATE METHODS ------------------------ //
 
 	/**
@@ -131,8 +124,8 @@ component extends="model.abstract.BaseEntity" persistent="true" table="articles"
 	 */	
 	private boolean function isLabelUnique(){
 		var matches = []; 
-		if( isPersisted() ) matches = ORMExecuteQuery( "from Article where articleid <> :articleid and label = :label", { articleid=getArticleID(), label=getLabel()});
-		else matches = ORMExecuteQuery( "from Article where label=:label", { label=getLabel() });
+		if( isPersisted() ) matches = ORMExecuteQuery( "from Article where articleid <> :articleid and label = :label", { articleid=variables.articleid, label=variables.label } );
+		else matches = ORMExecuteQuery( "from Article where label=:label", { label=variables.label } );
 		return !ArrayLen( matches );
 	}
 
@@ -140,7 +133,7 @@ component extends="model.abstract.BaseEntity" persistent="true" table="articles"
      * I generate a unique id for the article
 	 */		
 	private void function setLabel(){
-		variables.label = ReReplace( LCase( getTitle() ), "[^a-z0-9]{1,}", "-", "all" );
+		variables.label = ReReplace( LCase( variables.title ), "[^a-z0-9]{1,}", "-", "all" );
 		while ( !isLabelUnique() ) variables.label &= "-"; 
 	}
 		

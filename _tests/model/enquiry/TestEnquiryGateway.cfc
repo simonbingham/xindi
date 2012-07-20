@@ -19,7 +19,7 @@
 component extends="mxunit.framework.TestCase"{
 			
 	// ------------------------ UNIT TESTS ------------------------ //
-	
+
 	function testDeleteEnquiry(){
 		var enquiries = EntityLoad( "Enquiry" );
 		var enquirycount = ArrayLen( enquiries );
@@ -56,7 +56,7 @@ component extends="mxunit.framework.TestCase"{
 		assertEquals( 3, result );
 	}
 	
-	function testMarkAllRead(){
+	function testMarkReadForAllEnquiries(){
 		var unreadenquiries = EntityLoad( "Enquiry", { read=false } );
 		var result = ArrayLen( unreadenquiries );
 		assertEquals( 3, result );
@@ -68,9 +68,8 @@ component extends="mxunit.framework.TestCase"{
 		assertEquals( 0, result );
 	}
 	
-	function testMarkRead(){
+	function testMarkReadForSingleEnquiry(){
 		var unreadenquiries = EntityLoad( "Enquiry", { read=false } );
-		debug(unreadenquiries);
 		var result = ArrayLen( unreadenquiries );
 		assertEquals( 3, result );
 		var Enquiry = EntityLoadByPK( "Enquiry", 1 );
@@ -90,8 +89,8 @@ component extends="mxunit.framework.TestCase"{
 
 	function testSaveEnquiry(){
 		var enquiries = EntityLoad( "Enquiry" );
-		var enquirycount = ArrayLen( enquiries );
-		assertEquals( 3, enquirycount );
+		var result = ArrayLen( enquiries );
+		assertEquals( 3, result );
 		var Enquiry = EntityNew( "Enquiry" );
 		Enquiry.setFirstName( "foo" );
 		Enquiry.setLastName( "bar" );
@@ -99,8 +98,8 @@ component extends="mxunit.framework.TestCase"{
 		Enquiry.setMessage( "foobar" );
 		CUT.saveEnquiry( Enquiry );
 		enquiries = EntityLoad( "Enquiry" );
-		enquirycount = ArrayLen( enquiries );
-		assertEquals( 4, enquirycount );
+		result = ArrayLen( enquiries );
+		assertEquals( 4, result );
 	}
  
 	// ------------------------ IMPLICIT ------------------------ // 
@@ -118,11 +117,12 @@ component extends="mxunit.framework.TestCase"{
 		// insert test data into database
 		var q = new Query();
 		q.setSQL( "
-			INSERT INTO enquiries (enquiry_id, enquiry_firstname, enquiry_lastname, enquiry_email, enquiry_message, enquiry_read, enquiry_created) 
-			VALUES
-				(1, 'Simon', 'Bingham', 'example@example.com', 'Phasellus ut tortor in erat dignissim eleifend at nec leo! Praesent vel lectus et elit condimentum hendrerit vel sit amet magna. Nunc luctus bibendum mi sed posuere. Pellentesque facilisis ullamcorper ultrices. Nulla eu dolor ac nunc laoreet tincidunt. Nulla et laoreet eros. Proin id pellentesque justo? Maecenas quis risus augue. Nulla commodo laoreet est nec mattis. Phasellus id dolor quam, id mattis mauris.', false, '2012-06-08 13:46:47'),
-				(2, 'John', 'Whish', 'example@example.com', 'Phasellus ut tortor in erat dignissim eleifend at nec leo! Praesent vel lectus et elit condimentum hendrerit vel sit amet magna. Nunc luctus bibendum mi sed posuere. Pellentesque facilisis ullamcorper ultrices. Nulla eu dolor ac nunc laoreet tincidunt. Nulla et laoreet eros. Proin id pellentesque justo? Maecenas quis risus augue. Nulla commodo laoreet est nec mattis. Phasellus id dolor quam, id mattis mauris.', false, '2012-06-08 13:46:57'),
-				(3, 'Andy', 'Beer', 'example@example.com', 'Phasellus ut tortor in erat dignissim eleifend at nec leo! Praesent vel lectus et elit condimentum hendrerit vel sit amet magna. Nunc luctus bibendum mi sed posuere. Pellentesque facilisis ullamcorper ultrices. Nulla eu dolor ac nunc laoreet tincidunt. Nulla et laoreet eros. Proin id pellentesque justo? Maecenas quis risus augue. Nulla commodo laoreet est nec mattis. Phasellus id dolor quam, id mattis mauris.', false, '2012-06-08 13:47:04');
+			INSERT INTO enquiries ( enquiry_firstname, enquiry_lastname, enquiry_email, enquiry_message, enquiry_read, enquiry_created ) 
+			VALUES ( 'Simon', 'Bingham', 'example@example.com', 'Phasellus ut tortor in erat dignissim eleifend at nec leo! Praesent vel lectus et elit condimentum hendrerit vel sit amet magna. Nunc luctus bibendum mi sed posuere. Pellentesque facilisis ullamcorper ultrices. Nulla eu dolor ac nunc laoreet tincidunt. Nulla et laoreet eros. Proin id pellentesque justo? Maecenas quis risus augue. Nulla commodo laoreet est nec mattis. Phasellus id dolor quam, id mattis mauris.', 0, '20120608' );
+			INSERT INTO enquiries ( enquiry_firstname, enquiry_lastname, enquiry_email, enquiry_message, enquiry_read, enquiry_created)	
+			VALUES ( 'John', 'Whish', 'example@example.com', 'Phasellus ut tortor in erat dignissim eleifend at nec leo! Praesent vel lectus et elit condimentum hendrerit vel sit amet magna. Nunc luctus bibendum mi sed posuere. Pellentesque facilisis ullamcorper ultrices. Nulla eu dolor ac nunc laoreet tincidunt. Nulla et laoreet eros. Proin id pellentesque justo? Maecenas quis risus augue. Nulla commodo laoreet est nec mattis. Phasellus id dolor quam, id mattis mauris.', 0, '20120608' );
+			INSERT INTO enquiries ( enquiry_firstname, enquiry_lastname, enquiry_email, enquiry_message, enquiry_read, enquiry_created)
+			VALUES ( 'Andy', 'Beer', 'example@example.com', 'Phasellus ut tortor in erat dignissim eleifend at nec leo! Praesent vel lectus et elit condimentum hendrerit vel sit amet magna. Nunc luctus bibendum mi sed posuere. Pellentesque facilisis ullamcorper ultrices. Nulla eu dolor ac nunc laoreet tincidunt. Nulla et laoreet eros. Proin id pellentesque justo? Maecenas quis risus augue. Nulla commodo laoreet est nec mattis. Phasellus id dolor quam, id mattis mauris.', 0, '20120608' );
 		" );
 		q.execute();		
 	}

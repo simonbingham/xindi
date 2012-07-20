@@ -18,9 +18,11 @@
 
 component accessors="true" extends="abstract"{
 	
-	/*
-	 * Public methods
-	 */	
+	// ------------------------ DEPENDENCY INJECTION ------------------------ //
+
+	property name="ContentService" setter="true" getter="false";
+	
+	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	void function default( required struct rc ){
 		rc.pages = variables.ContentService.getPages();

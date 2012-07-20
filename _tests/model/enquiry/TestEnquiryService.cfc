@@ -21,13 +21,13 @@ component extends="mxunit.framework.TestCase"{
 	// ------------------------ INTEGRATION TESTS ------------------------ //
 
 	function testDeleteEnquiryWhereEnquiryDoesNotExist(){
-		var deleteenquiryresult = CUT.deleteEnquiry( enquiryid=4 );
+		var deleteenquiryresult = CUT.deleteEnquiry( 4 );
 		var result = deleteenquiryresult.getIsSuccess();
 		assertFalse( result );
 	}
 		
 	function testDeleteEnquiryWhereEnquiryExists(){
-		var deleteenquiryresult = CUT.deleteEnquiry( enquiryid=1 );
+		var deleteenquiryresult = CUT.deleteEnquiry( 1 );
 		var result = deleteenquiryresult.getIsSuccess();
 		assertTrue( result );
 	}
@@ -45,7 +45,7 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testGetEnquiry(){
-		var Enquiry = CUT.getEnquiry( enquiryid=2 );
+		var Enquiry = CUT.getEnquiry( 2 );
 		var result = Enquiry.isPersisted();
 		assertTrue( result );
 	}
@@ -55,14 +55,14 @@ component extends="mxunit.framework.TestCase"{
 		assertEquals( 3, result );
 	}
 	
-	function testMarkAllRead(){
+	function testMarkReadForAllEnquiries(){
 		var markallreadresult = CUT.markRead();
 		var result = markallreadresult.getIsSuccess();
 		assertTrue( result );
 	}
 	
-	function testMarkRead(){
-		var markreadresult = CUT.markRead( enquiryid=3 );
+	function testMarkReadForSingleEnquiry(){
+		var markreadresult = CUT.markRead( 3 );
 		var result = markreadresult.getIsSuccess();
 		assertTrue( result );
 	}
@@ -74,13 +74,13 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testSendEnquiryWhereEnquiryIsInvalid(){
-		var sendenquiryresult = CUT.sendEnquiry( properties={ firstname="", lastname="", email="", message="" }, config={ subject="Test", emailto="example@example.com" }, emailtemplatepath="../../public/views/enquiry/email.cfm" );
+		var sendenquiryresult = CUT.sendEnquiry( { firstname="", lastname="", email="", message="" }, { subject="Test", emailto="example@example.com" }, "../../public/views/enquiry/email.cfm" );
 		var result = sendenquiryresult.getIsSuccess();
 		assertFalse( result );
 	}
 
 	function testSendEnquiryWhereEnquiryIsValid(){
-		var sendenquiryresult = CUT.sendEnquiry( properties={ firstname="Test", lastname="User", email="example@example.com", message="This is a test message." }, config={ subject="Test", emailto="example@example.com" }, emailtemplatepath="../../public/views/enquiry/email.cfm" );
+		var sendenquiryresult = CUT.sendEnquiry( { firstname="Test", lastname="User", email="example@example.com", message="This is a test message." }, { subject="Test", emailto="example@example.com" }, "../../public/views/enquiry/email.cfm" );
 		var result = sendenquiryresult.getIsSuccess();
 		assertTrue( result );
 	}
@@ -107,11 +107,12 @@ component extends="mxunit.framework.TestCase"{
 		// insert test data into database
 		var q = new Query();
 		q.setSQL( "
-			INSERT INTO enquiries (enquiry_id, enquiry_firstname, enquiry_lastname, enquiry_email, enquiry_message, enquiry_read, enquiry_created) 
-			VALUES
-				(1, 'Simon', 'Bingham', 'example@example.com', 'Phasellus ut tortor in erat dignissim eleifend at nec leo! Praesent vel lectus et elit condimentum hendrerit vel sit amet magna. Nunc luctus bibendum mi sed posuere. Pellentesque facilisis ullamcorper ultrices. Nulla eu dolor ac nunc laoreet tincidunt. Nulla et laoreet eros. Proin id pellentesque justo? Maecenas quis risus augue. Nulla commodo laoreet est nec mattis. Phasellus id dolor quam, id mattis mauris.', false, '2012-06-08 13:46:47'),
-				(2, 'John', 'Whish', 'example@example.com', 'Phasellus ut tortor in erat dignissim eleifend at nec leo! Praesent vel lectus et elit condimentum hendrerit vel sit amet magna. Nunc luctus bibendum mi sed posuere. Pellentesque facilisis ullamcorper ultrices. Nulla eu dolor ac nunc laoreet tincidunt. Nulla et laoreet eros. Proin id pellentesque justo? Maecenas quis risus augue. Nulla commodo laoreet est nec mattis. Phasellus id dolor quam, id mattis mauris.', false, '2012-06-08 13:46:57'),
-				(3, 'Andy', 'Beer', 'example@example.com', 'Phasellus ut tortor in erat dignissim eleifend at nec leo! Praesent vel lectus et elit condimentum hendrerit vel sit amet magna. Nunc luctus bibendum mi sed posuere. Pellentesque facilisis ullamcorper ultrices. Nulla eu dolor ac nunc laoreet tincidunt. Nulla et laoreet eros. Proin id pellentesque justo? Maecenas quis risus augue. Nulla commodo laoreet est nec mattis. Phasellus id dolor quam, id mattis mauris.', false, '2012-06-08 13:47:04');
+			INSERT INTO enquiries ( enquiry_firstname, enquiry_lastname, enquiry_email, enquiry_message, enquiry_read, enquiry_created ) 
+			VALUES ( 'Simon', 'Bingham', 'example@example.com', 'Phasellus ut tortor in erat dignissim eleifend at nec leo! Praesent vel lectus et elit condimentum hendrerit vel sit amet magna. Nunc luctus bibendum mi sed posuere. Pellentesque facilisis ullamcorper ultrices. Nulla eu dolor ac nunc laoreet tincidunt. Nulla et laoreet eros. Proin id pellentesque justo? Maecenas quis risus augue. Nulla commodo laoreet est nec mattis. Phasellus id dolor quam, id mattis mauris.', 0, '20120608' );
+			INSERT INTO enquiries ( enquiry_firstname, enquiry_lastname, enquiry_email, enquiry_message, enquiry_read, enquiry_created)	
+			VALUES ( 'John', 'Whish', 'example@example.com', 'Phasellus ut tortor in erat dignissim eleifend at nec leo! Praesent vel lectus et elit condimentum hendrerit vel sit amet magna. Nunc luctus bibendum mi sed posuere. Pellentesque facilisis ullamcorper ultrices. Nulla eu dolor ac nunc laoreet tincidunt. Nulla et laoreet eros. Proin id pellentesque justo? Maecenas quis risus augue. Nulla commodo laoreet est nec mattis. Phasellus id dolor quam, id mattis mauris.', 0, '20120608' );
+			INSERT INTO enquiries ( enquiry_firstname, enquiry_lastname, enquiry_email, enquiry_message, enquiry_read, enquiry_created)
+			VALUES ( 'Andy', 'Beer', 'example@example.com', 'Phasellus ut tortor in erat dignissim eleifend at nec leo! Praesent vel lectus et elit condimentum hendrerit vel sit amet magna. Nunc luctus bibendum mi sed posuere. Pellentesque facilisis ullamcorper ultrices. Nulla eu dolor ac nunc laoreet tincidunt. Nulla et laoreet eros. Proin id pellentesque justo? Maecenas quis risus augue. Nulla commodo laoreet est nec mattis. Phasellus id dolor quam, id mattis mauris.', 0, '20120608' );
 		" );
 		q.execute();
 	}

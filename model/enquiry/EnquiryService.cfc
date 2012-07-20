@@ -16,7 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true"{
+component accessors="true" extends="model.abstract.BaseService"{
 
 	// ------------------------ DEPENDENCY INJECTION ------------------------ //
 	
@@ -63,13 +63,6 @@ component accessors="true"{
 	numeric function getUnreadCount(){
 		return variables.EnquiryGateway.getUnreadCount();		
 	}	
-	 	
-	/**
-	 * I return the enquiry validator
-	 */		 	
-	function getValidator( required Enquiry theEnquiry ){
-		return variables.Validator.getValidator( theObject=arguments.theEnquiry );
-	}	
 	
 	/**
 	 * I mark an enquiry, or enquiries, as read
@@ -107,7 +100,7 @@ component accessors="true"{
 		transaction{
 			var emailtemplate = "";
 			var Enquiry = variables.EnquiryGateway.newEnquiry(); 
-			Enquiry.populate( arguments.properties );
+			populate( Enquiry, arguments.properties );
 			var result = variables.Validator.validate( theObject=Enquiry );
 			if( !result.hasErrors() ){
 				savecontent variable="emailtemplate"{ include arguments.emailtemplatepath; }

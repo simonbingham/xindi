@@ -18,16 +18,12 @@
 
 component accessors="true" extends="abstract"{
 
-	/*
-	 * Dependency injection
-	 */	
+	// ------------------------ DEPENDENCY INJECTION ------------------------ //
 
 	property name="EnquiryService" setter="true" getter="false";
 	property name="config" setter="true" getter="false";
 	
-	/*
-	 * Public methods
-	 */		
+	// ------------------------ PUBLIC METHODS ------------------------ //	
 	
 	void function default( required struct rc ){
 		if( !StructKeyExists( rc, "Enquiry" ) ) rc.Enquiry = variables.EnquiryService.newEnquiry();

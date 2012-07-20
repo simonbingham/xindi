@@ -16,7 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true"{
+component accessors="true" extends="model.abstract.BaseService"{
 
 	// ------------------------ DEPENDENCY INJECTION ------------------------ //
 	
@@ -69,13 +69,6 @@ component accessors="true"{
 	array function getUsers(){
 		return variables.UserGateway.getUsers();
 	}
-
-	/**
-	 * I return a user validator
-	 */			
-	function getValidator( required User theUser ){
-		return variables.Validator.getValidator( theObject=arguments.theUser );
-	}
 	
 	/**
 	 * I return a new password
@@ -98,7 +91,7 @@ component accessors="true"{
 		transaction{
 			param name="arguments.properties.userid" default="0";
 			var User = variables.UserGateway.getUser( Val( arguments.properties.userid ) );
-			User.populate( arguments.properties );
+			populate( User, arguments.properties );
 			var result = variables.Validator.validate( theObject=User, context=arguments.context );
 			if( !result.hasErrors() ){
 				result.setSuccessMessage( "The user &quot;#User.getFullName()#&quot; has been saved." );

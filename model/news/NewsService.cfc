@@ -16,13 +16,13 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true"{
+component accessors="true" extends="model.abstract.BaseService"{
 
 	// ------------------------ DEPENDENCY INJECTION ------------------------ //
 
 	property name="MetaData" getter="false";
 	property name="NewsGateway" getter="false";
-	property name="Validator" getter="false";	
+	property name="Validator" getter="false";
 
 	// ------------------------ PUBLIC METHODS ------------------------ //
 
@@ -72,13 +72,6 @@ component accessors="true"{
 		arguments.offset = Val( arguments.offset );
 		return variables.NewsGateway.getArticles( argumentCollection=arguments );
 	}
-		
-	/**
-	 * I return the article validator
-	 */			
-	function getValidator( required Article theArticle ){
-		return variables.Validator.getValidator( theObject=arguments.theArticle );
-	}
 	
 	/**
 	 * I validate and save an article
@@ -87,19 +80,14 @@ component accessors="true"{
 		transaction{
 			param name="arguments.properties.articleid" default="0";
 			var Article = variables.NewsGateway.getArticle( Val( arguments.properties.articleid ) );
+			// ensure data is in the correct format
 			try{
 				arguments.properties.published = CreateDate( ListGetAt( arguments.properties.published, 3, "/" ), ListGetAt( arguments.properties.published, 2, "/" ), ListGetAt( arguments.properties.published, 1, "/" ) );
 			}
-			catch(any e){
+			catch( any e ){
 				arguments.properties.published = "";
 			}
-			Article.populate( arguments.properties );
-			if( IsNull( Article.getContent() ) ) Article.setContent( "" );
-			if( Article.isMetaGenerated() ){
-				Article.setMetaTitle( Article.getTitle() );
-				Article.setMetaDescription( variables.MetaData.generateMetaDescription( Article.getContent() ) );
-				Article.setMetaKeywords( variables.MetaData.generateMetaKeywords( Article.getContent() ) );
-			}
+			populate( Article, arguments.properties );
 			var result = variables.Validator.validate( theObject=Article );
 			if( !result.hasErrors() ){
 				variables.NewsGateway.saveArticle( Article );

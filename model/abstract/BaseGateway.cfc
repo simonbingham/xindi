@@ -18,6 +18,8 @@
 
 component{
 
+	// ------------------------ PUBLIC METHODS ------------------------ //
+
 	/**
      * I delete an entity
 	 */

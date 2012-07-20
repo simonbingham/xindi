@@ -16,4 +16,19 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true" extends="abstract"{}
+component accessors="true" extends="abstract"{
+
+	// ------------------------ DEPENDENCY INJECTION ------------------------ //
+
+	property name="ContentService" setter="true" getter="false";
+	property name="NewsService" setter="true" getter="false";
+
+	// ------------------------ PUBLIC METHODS ------------------------ //
+
+	void function default(){
+		rc.unreadenquiries = variables.EnquiryService.getEnquiries( maxresults=10 );
+		rc.updatedpages = variables.ContentService.getPages( sortorder="updated desc", maxresults=10 );
+		rc.updatedarticles = variables.NewsService.getArticles( sortorder="updated desc", maxresults=10 );
+	}
+	
+}

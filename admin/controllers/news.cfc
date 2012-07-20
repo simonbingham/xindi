@@ -17,10 +17,12 @@
 */
 
 component accessors="true" extends="abstract"{
+
+	// ------------------------ DEPENDENCY INJECTION ------------------------ //
+
+	property name="NewsService" setter="true" getter="false";
 	
-	/*
-	 * Public methods
-	 */	
+	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	void function default( required struct rc ){
 		rc.articles = variables.NewsService.getArticles();

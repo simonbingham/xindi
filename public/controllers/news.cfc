@@ -18,15 +18,11 @@
 
 component accessors="true" extends="abstract"{
 
-	/*
-	 * Dependency injection
-	 */	
+	// ------------------------ DEPENDENCY INJECTION ------------------------ //
 
 	property name="NewsService" setter="true" getter="false";
 	
-	/*
-	 * Public methods
-	 */		
+	// ------------------------ PUBLIC METHODS ------------------------ //		
 
 	void function article( required struct rc ){
 		param name="rc.label" default="";

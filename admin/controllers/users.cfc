@@ -18,15 +18,11 @@
 
 component accessors="true" extends="abstract"{
 
-	/*
-	 * Dependency injection
-	 */
+	// ------------------------ DEPENDENCY INJECTION ------------------------ //
 
 	property name="UserService" setter="true" getter="false";
 
-	/*
-	 * Public methods
-	 */	
+	// ------------------------ PUBLIC METHODS ------------------------ //
 	 
 	void function default( required struct rc ){
 		rc.users = variables.UserService.getUsers();

@@ -19,18 +19,31 @@
 component extends="mxunit.framework.TestCase"{
 
 	// ------------------------ UNIT TESTS ------------------------ //
-	
-	function testDeleteUser(){
+
+	function testDeleteUserWhereUserDoesNotExist(){
 		var users = EntityLoad( "User" );
-		var usercount = ArrayLen( users );
-		assertEquals( 1, usercount );
+		var result = ArrayLen( users );
+		assertEquals( 1, result );
+		var User = EntityNew( "User" );
+		transaction{
+			CUT.deleteUser( User );
+		}
+		users = EntityLoad( "User" );
+		result = ArrayLen( users );
+		assertEquals( 1, result );
+	}
+	
+	function testDeleteUserWhereUserExists(){
+		var users = EntityLoad( "User" );
+		var result = ArrayLen( users );
+		assertEquals( 1, result );
 		var User = EntityLoadByPK( "User", 1 );
 		transaction{
 			CUT.deleteUser( User );
 		}
 		users = EntityLoad( "User" );
-		usercount = ArrayLen( users );
-		assertEquals( 0, usercount );
+		result = ArrayLen( users );
+		assertEquals( 0, result );
 	}
 
 	function testGetUserWhereUserDoesNotExist(){
@@ -45,12 +58,12 @@ component extends="mxunit.framework.TestCase"{
 		assertTrue( result );
 	}	
 
-	function testGetUserByCredentialsReturnsNullForInCorrectCredentials(){
+	function testGetUserByCredentialsReturnsNewUserForIncorrectCredentials(){
 		var User = EntityNew( "User" );
 		User.setUsername( "foo" );
 		User.setEmail( "foo@bar.com" );
 		User.setPassword( "bar" );
-		var getuserbycredentialsresult = CUT.getUserByCredentials( theUser=User );
+		var getuserbycredentialsresult = CUT.getUserByCredentials( User );
 		var result = getuserbycredentialsresult.isPersisted();
 		assertFalse( result );
 	}
@@ -59,10 +72,8 @@ component extends="mxunit.framework.TestCase"{
 		var User = EntityNew( "User" );
 		User.setEmail( "example@example.com" );
 		User.setPassword( "admin" );		
-		var getuserbycredentialsresult = CUT.getUserByCredentials( theUser=User );
-		debug(getuserbycredentialsresult);
+		var getuserbycredentialsresult = CUT.getUserByCredentials( User );
 		var result = getuserbycredentialsresult.isPersisted();
-		debug(result);
 		assertTrue( result );
 	}
 
@@ -70,7 +81,7 @@ component extends="mxunit.framework.TestCase"{
 		var User = EntityNew( "User" );
 		User.setUsername( "admin" );
 		User.setPassword( "admin" );		
-		var getuserbycredentialsresult = CUT.getUserByCredentials( theUser=User );
+		var getuserbycredentialsresult = CUT.getUserByCredentials( User );
 		var result = getuserbycredentialsresult.isPersisted();
 		assertTrue( result );
 	}
@@ -78,7 +89,7 @@ component extends="mxunit.framework.TestCase"{
 	function testGetUserByEmailOrUsernameWhereEmailIsSpecified(){
 		var User = CUT.newUser();
 		User.setEmail( "example@example.com" );
-		User = CUT.getUserByEmailOrUsername( theUser=User );
+		User = CUT.getUserByEmailOrUsername( User );
 		var result = User.isPersisted();
 		assertTrue( result );
 	}
@@ -86,7 +97,7 @@ component extends="mxunit.framework.TestCase"{
 	function testGetUserByEmailOrUsernameWhereUsernameIsSpecified(){
 		var User = CUT.newUser();
 		User.setUsername( "admin" );
-		User = CUT.getUserByEmailOrUsername( theUser=User );
+		User = CUT.getUserByEmailOrUsername( User );
 		var result = User.isPersisted();
 		assertTrue( result );
 	}
@@ -105,8 +116,8 @@ component extends="mxunit.framework.TestCase"{
 
 	function testSaveUser(){
 		var users = EntityLoad( "User" );
-		var usercount = ArrayLen( users );
-		assertEquals( 1, usercount );
+		var result = ArrayLen( users );
+		assertEquals( 1, result );
 		var User = EntityNew( "User" );
 		User.setFirstName( "Simon" );
 		User.setLastName( "Bingham" );
@@ -115,8 +126,8 @@ component extends="mxunit.framework.TestCase"{
 		User.setPassword( "bar" );
 		CUT.saveUser( User );
 		users = EntityLoad( "User" );
-		usercount = ArrayLen( users );
-		assertEquals( 2, usercount );
+		result = ArrayLen( users );
+		assertEquals( 2, result );
 	}	
 
 	// ------------------------ IMPLICIT ------------------------ //
@@ -134,8 +145,8 @@ component extends="mxunit.framework.TestCase"{
 		// insert test data into database
 		var q = new Query();
 		q.setSQL( "
-			INSERT INTO Users ( user_id, user_firstname, user_lastname, user_email, user_username, user_password, user_created, user_updated ) 
-			VALUES ( 1, 'Default', 'User', 'example@example.com', 'admin', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB', '2012-04-22 08:39:07', '2012-04-22 08:39:09' );
+			INSERT INTO Users ( user_firstname, user_lastname, user_email, user_username, user_password, user_created, user_updated ) 
+			VALUES ( 'Default', 'User', 'example@example.com', 'admin', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB', '20120422', '20120422' );
 		" );
 		q.execute();
 	}

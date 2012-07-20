@@ -16,7 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-component accessors="true"{
+component accessors="true" extends="model.abstract.BaseService"{
 	
 	// ------------------------ DEPENDENCY INJECTION ------------------------ //	
 	
@@ -89,7 +89,7 @@ component accessors="true"{
 			StructDelete( arguments.properties, "username" );
 		}
 		var User = variables.UserGateway.newUser();
-		User.populate( arguments.properties );
+		populate( User, arguments.properties );
 		var result = variables.Validator.validate( theObject=User, context="login" );
 		User = variables.UserGateway.getUserByCredentials( User );
 		if( User.isPersisted() ){
@@ -115,7 +115,7 @@ component accessors="true"{
 				StructDelete( arguments.properties, "username" );
 			}
 			var User = variables.UserGateway.newUser();
-			User.populate( arguments.properties );
+			populate( User, arguments.properties );
 			var result = variables.Validator.validate( theObject=User, context="password" );
 			User = variables.UserGateway.getUserByEmailOrUsername( User );
 			if( User.isPersisted() ){

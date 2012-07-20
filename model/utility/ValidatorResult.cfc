@@ -47,7 +47,7 @@ component extends="ValidateThis.util.Result"{
 	 * I return true if a message exists
 	 */		
 	boolean function hasMessage(){
-		return Len( getMessage() ) != 0;
+		return Len( Trim( getMessage() ) ) != 0;
 	}
 
 	/**
