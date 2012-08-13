@@ -50,7 +50,7 @@
 								ancestor page link in the sub menu so the page remains accessible 
 							--->
 							<cfif rc.config.page.touchfriendlynavigation>
-								<cfset local.Ancestor = local.Page.getAncestor()[ 1 ] />
+								<cfset local.Ancestor = local.Page.getAncestor() />
 								<li <cfif local.Page.hasChild() and !local.Page.isRoot()>class="dropdown"</cfif>><a href="#buildURL( local.Ancestor.getSlug() )#">#local.Ancestor.getTitle()#</a></li> 
 							</cfif>
 						</cfif>
