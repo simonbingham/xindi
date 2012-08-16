@@ -59,3 +59,5 @@ If you experience any problems with Xindi please:
 ## Social Media
 
 You'll find us on [Twitter] (https://twitter.com/#!/getxindi), [Facebook] (http://www.facebook.com/getxindi) and [Google+] (https://plus.google.com/112798469896267857099).
+
+Finally, you can find a collection of [blog posts about Xindi on Simon Bingham's website] (http://www.simonbingham.me.uk/index.cfm/main/default/uuid/xindi-19).
