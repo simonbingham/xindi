@@ -23,10 +23,10 @@ component extends="mxunit.framework.TestCase"{
 	function beforeTests() {
 		browserURL = "http://localhost:8888/xindi";
 		browserCommand = "*firefox";
-       	selenium = createobject( "component", "CFSelenium.selenium" ).init();
-       	assertFalse( Len( selenium.getSessionId() ) );
-        selenium.start( browserUrl, browserCommand );
-        assertTrue( Len( selenium.getSessionId() ) );
+	   	selenium = createobject( "component", "CFSelenium.selenium" ).init();
+	   	assertFalse( Len( selenium.getSessionId() ) );
+		selenium.start( browserUrl, browserCommand );
+		assertTrue( Len( selenium.getSessionId() ) );
 		timeout = 60000;
 		// reset data in database
 		httpService = new http();
@@ -40,11 +40,11 @@ component extends="mxunit.framework.TestCase"{
 		assertFalse( Len( selenium.getSessionId() ) );
 	}	
 
-    function testStartAndStopBrowser() {
-    	// the asserts for this are in beforeTests and tearDown
+	function testStartAndStopBrowser() {
+		// the asserts for this are in beforeTests and tearDown
 	}
 
-    function testHomePageLoads() {
+	function testHomePageLoads() {
 		selenium.open( browserUrl );
 		selenium.waitForPageToLoad( timeout );
 		assertEquals( "Welcome to Xindi", selenium.getTitle() );
