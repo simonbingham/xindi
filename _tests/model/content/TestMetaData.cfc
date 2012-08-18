@@ -29,7 +29,7 @@ component extends="mxunit.framework.TestCase"{
 	function testGenerateMetaKeywords()
 	{
 		var result = CUT.generateMetaKeywords( "Morbi at felis quis metus scelerisque venenatis. Curabitur ut tellus nec massa eleifend vestibulum! In non lectus sem; ut lacinia." );
-		assertEquals( "morbi,at,felis,quis,metus,scelerisque,venenatis,curabitur,ut,tellus,nec,massa,eleifend,vestibulum!,non,lectus,sem;,lacinia", result );		
+		assertEquals( "metus,curabitur,sem;,venenatis,at,ut,quis,massa,non,scelerisque,felis,lacinia,tellus,lectus,morbi,eleifend,nec,vestibulum!", result );		
 	}
 
 	function testGeneratePageTitle()
@@ -40,8 +40,8 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testListDeleteDuplicatesNoCase()
 	{
-		var result = CUT.listDeleteDuplicatesNoCase( "Morbi,at,felis,quis,metus,scelerisque,venenatis,Morbi,at,felis,quis,metus,scelerisque,venenatis" );
-		assertEquals( "Morbi,at,felis,quis,metus,scelerisque,venenatis", result );
+		var result = CUT.listDeleteDuplicatesNoCase( "foo,bar,foo,bar" );
+		assertEquals( "foo,bar", result );
 	}	
 	
 	function testRemoveNonKeywords()

@@ -68,6 +68,12 @@ component extends="mxunit.framework.TestCase"{
 		assertEquals( 1, result );
 	}	
 
+	function testGetPagesBySearchTermExcludingPages(){
+		var pages = CUT.getPages( searchterm="ipsum", excludefromsearch="5,6" );
+		var result = ArrayLen( pages );
+		assertEquals( 11, result );
+	}
+
 	function testGetPagesBySortOrder(){
 		var pages = CUT.getPages( sortorder="pageid" );
 		var result = pages[ 1 ].getLabel();

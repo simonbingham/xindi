@@ -64,13 +64,8 @@ component accessors="true"{
 	 */	
 	string function listDeleteDuplicatesNoCase( required string thelist, string delimiter="," ){
 		var elements = ListToArray( arguments.thelist, arguments.delimiter );
-		var listnoduplicates = "";
-		for( element in elements ){
-			if( !ListFindNoCase( listnoduplicates, element, arguments.delimiter ) ){
-				listnoduplicates = ListAppend( listnoduplicates, element, arguments.delimiter );
-			}
-		}
-		return Trim( Replace( listnoduplicates, ".", "", "all" ) );
+		elements = CreateObject( "java", "java.util.HashSet" ).init( elements ).toArray();
+		return ArrayToList( elements );
 	}
 
 	/**

@@ -1,5 +1,5 @@
-/* 
-	Xindi - http://www.getxindi.com/ - Version 2012.7.20
+/*
+	Xindi - http://www.getxindi.com/ - Version TBC
 	
 	Copyright (c) 2012, Simon Bingham
 	
@@ -165,6 +165,7 @@ component extends="frameworks.org.corfield.framework"{
 			, page = { 
 				enableadddelete = true
 				, excludefromnavigation = "" // comma delimited list of page ids to exclude from navigation
+				, excludefromsearch = "" // comma delimited list of page ids to exclude from site search
 				, maxlevels = 2 // number of page tiers that can be added - Bootstrap dropdown supports a maximum of 2
 				, suppressaddpage = "" // comma delimited list of page ids for pages that cannot have child pages added
 				, suppressdeletepage = "1" // comma delimited list of page ids for pages that cannot be deleted

@@ -65,11 +65,17 @@
 			</div>			
 			
 			<div id="container" class="container">
-				#view( "navigation/menu" )#
+				<div class="row">
+					<div class="span12">#view( "navigation/menu" )#</div>
+				</div>
 				
-				<div id="content" class="row">#body#</div>
+				<div id="content" class="row">
+					<div class="span12">#body#</div>
+				</div>
 
-				<div id="footer" class="row"><a href="#buildURL( 'navigation/map' )#">Site Map</a></div>
+				<div id="footer" class="row">
+					<div class="span12"><a href="#buildURL( 'navigation/map' )#">Site Map</a></div>
+				</div>
 			</div>
 		</body>
 	</html>

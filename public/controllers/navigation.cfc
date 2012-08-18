@@ -33,6 +33,7 @@ component accessors="true" extends="abstract"{
 	void function xml( required struct rc ){
 		rc.sesomitindex = variables.fw.getConfig().sesomitindex;
 		rc.pages = variables.ContentService.getPages();
+		if( rc.config.news.enabled ) rc.articles = variables.NewsService.getArticles( published=true );
 	}		
 	
 }

@@ -25,7 +25,7 @@ component accessors="true" extends="abstract"{
 
 	// ------------------------ PUBLIC METHODS ------------------------ //
 
-	void function default(){
+	void function default( required struct rc ){
 		rc.unreadenquiries = variables.EnquiryService.getEnquiries( maxresults=10 );
 		rc.updatedpages = variables.ContentService.getPages( sortorder="updated desc", maxresults=10 );
 		rc.updatedarticles = variables.NewsService.getArticles( sortorder="updated desc", maxresults=10 );
