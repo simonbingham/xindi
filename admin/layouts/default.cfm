@@ -50,6 +50,10 @@
 		</head>
 		
 		<body>
+			<cfif rc.config.development>
+				<span class="dev-mode label label-warning"><abbr title="Development mode is enabled. In the production environment development mode should be disabled.">Development Mode</abbr></span>
+			</cfif>			
+			
 			<div class="navbar navbar-fixed-top">
 				<div class="navbar-inner">
 					<div class="container">
