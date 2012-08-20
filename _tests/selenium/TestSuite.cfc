@@ -32,12 +32,23 @@ component extends="mxunit.framework.TestCase"{
 		httpService = new http();
 		httpService.setUrl( browserURL & "/index.cfm?rebuild=true" );
 		httpService.send();
+		fileObj = FileOpen(ExpandPath(".") & "\log.txt","append");
+		FileWrite( fileObj, "beforeTests#Now()##Chr(13)##Chr(10)#" ); 
+	}
+	
+	function setUp() {
+		FileWrite( fileObj, "setUp-#Now()##Chr(13)##Chr(10)#" );
+	}
+
+	function tearDown() {
+		FileWrite( fileObj, "tearDown-#Now()##Chr(13)##Chr(10)#" );
 	}
 
 	function afterTests() {
 		selenium.stop();
 		selenium.stopServer();
 		assertFalse( Len( selenium.getSessionId() ) );
+		FileWrite( fileObj, "afterTests-#Now()##Chr(13)##Chr(10)#" );
 	}	
 
 	function testStartAndStopBrowser() {
@@ -57,7 +68,7 @@ component extends="mxunit.framework.TestCase"{
 		selenium.waitForPageToLoad( timeout );
 		assertTrue( selenium.isTextPresent( "Nullam egestas accumsan vestibulum!" ) );
 	}
-	
+
 	function testShowArticle() {
 		selenium.open( browserURL );
 		selenium.waitForPageToLoad( timeout );
@@ -66,8 +77,8 @@ component extends="mxunit.framework.TestCase"{
 		selenium.click( "link=exact:Why choose Xindi?" );
 		selenium.waitForPageToLoad( timeout );
 		assertTrue( selenium.isTextPresent( "Why choose Xindi?" ) );
-	}	
-
+	}
+		
 	function testContactForm() {
 		selenium.open( browserURL & "/index.cfm/enquiry" );
 		selenium.waitForPageToLoad( timeout );
