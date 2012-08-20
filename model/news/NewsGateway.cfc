@@ -47,7 +47,7 @@
 		 * I return the count of articles
 		 */				
 		numeric function getArticleCount(){
-			return ORMExecuteQuery( "select count( * ) from Article", true );
+			return ORMExecuteQuery( "select count( * ) from Article", [], true );
 		}
 	</cfscript>
 	
