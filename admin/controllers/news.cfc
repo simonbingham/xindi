@@ -51,7 +51,7 @@ component accessors="true" extends="abstract"{
 		param name="rc.metadescription" default="";
 		param name="rc.metakeywords" default="";
 		param name="rc.submit" default="Save & exit";
-		rc.result = variables.NewsService.saveArticle( rc );
+		rc.result = variables.NewsService.saveArticle( rc, rc.config.name );
 		rc.Article = rc.result.getTheObject();
 		if( rc.result.getIsSuccess() ){
 			if( rc.submit == "Save & Continue" ) variables.fw.redirect( "news.maintain", "Article,result", "articleid" );

@@ -21,7 +21,7 @@ component accessors="true" extends="model.abstract.BaseService" {
 	// ------------------------ DEPENDENCY INJECTION ------------------------ //
 
 	property name="ContentGateway" getter="false";
-	property name="MetaDataService" getter="false";
+	property name="MetaData" getter="false";
 	property name="Validator" getter="false";
 
 	// ------------------------ PUBLIC METHODS ------------------------ //
@@ -101,12 +101,17 @@ component accessors="true" extends="model.abstract.BaseService" {
 	/**
 	 * I validate and save a page
 	 */		
-	struct function savePage( required struct properties, required ancestorid, required string context ){
+	struct function savePage( required struct properties, required ancestorid, required string context, required string websitetitle ){
 		transaction{
 			param name="arguments.properties.pageid" default="";
+			param name="arguments.properties.metagenerated" default="false";
 			arguments.properties.pageid = Val( arguments.properties.pageid );
-			var Page = "";
-			Page = variables.ContentGateway.getPage( arguments.properties.pageid );
+			var Page = variables.ContentGateway.getPage( arguments.properties.pageid );
+			if( arguments.properties.metagenerated ){
+				arguments.properties.metatitle = variables.MetaData.generatePageTitle( arguments.websitetitle, arguments.properties.title );
+				arguments.properties.metadescription = variables.MetaData.generateMetaDescription( arguments.properties.content );
+				arguments.properties.metakeywords = variables.MetaData.generateMetaKeywords( arguments.properties.title );
+			}			
 			populate( Page, arguments.properties );
 			var result = variables.Validator.validate( theObject=Page, context=arguments.context );
 			if( !result.hasErrors() ){

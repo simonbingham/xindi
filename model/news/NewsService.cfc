@@ -76,9 +76,10 @@ component accessors="true" extends="model.abstract.BaseService"{
 	/**
 	 * I validate and save an article
 	 */		
-	struct function saveArticle( required struct properties ){
+	struct function saveArticle( required struct properties, required string websitetitle ){
 		transaction{
 			param name="arguments.properties.articleid" default="0";
+			param name="arguments.properties.metagenerated" default="false";
 			var Article = variables.NewsGateway.getArticle( Val( arguments.properties.articleid ) );
 			// ensure data is in the correct format
 			try{
@@ -86,6 +87,11 @@ component accessors="true" extends="model.abstract.BaseService"{
 			}
 			catch( any e ){
 				arguments.properties.published = "";
+			}
+			if( arguments.properties.metagenerated ){
+				arguments.properties.metatitle = variables.MetaData.generatePageTitle( arguments.websitetitle, arguments.properties.title );
+				arguments.properties.metadescription = variables.MetaData.generateMetaDescription( arguments.properties.content );
+				arguments.properties.metakeywords = variables.MetaData.generateMetaKeywords( arguments.properties.title );
 			}
 			populate( Article, arguments.properties );
 			var result = variables.Validator.validate( theObject=Article );

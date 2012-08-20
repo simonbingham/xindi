@@ -93,13 +93,13 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testSaveArticleWhereArticleIsInvalid(){
-		var savearticleresult = CUT.saveArticle( { title="", published="27/6/2012", content="bar" } );
+		var savearticleresult = CUT.saveArticle( { title="", published="27/6/2012", content="bar" }, "" );
 		var result = savearticleresult.getIsSuccess();
 		assertFalse( result );
 	}
 
 	function testSaveArticleWhereArticleIsValid(){
-		var savearticleresult = CUT.saveArticle( { title="foo", published="27/6/2012", content="bar" } );
+		var savearticleresult = CUT.saveArticle( { title="foo", published="27/6/2012", content="bar" }, "" );
 		var result = savearticleresult.getIsSuccess();
 		assertTrue( result );
 	}
