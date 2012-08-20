@@ -16,7 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-/* run these tests in your browser at http://localhost:8888/xindi/_tests/selenium/TestSuite.cfc?method=runTestRemote */
+/* run these tests in your browser at http://localhost/xindi/_tests/selenium/TestSuite.cfc?method=runTestRemote */
 
 component extends="mxunit.framework.TestCase"{
 
@@ -32,23 +32,12 @@ component extends="mxunit.framework.TestCase"{
 		httpService = new http();
 		httpService.setUrl( browserURL & "/index.cfm?rebuild=true" );
 		httpService.send();
-		fileObj = FileOpen(ExpandPath(".") & "\log.txt","append");
-		FileWrite( fileObj, "beforeTests#Now()##Chr(13)##Chr(10)#" ); 
 	}
 	
-	function setUp() {
-		FileWrite( fileObj, "setUp-#Now()##Chr(13)##Chr(10)#" );
-	}
-
-	function tearDown() {
-		FileWrite( fileObj, "tearDown-#Now()##Chr(13)##Chr(10)#" );
-	}
-
 	function afterTests() {
 		selenium.stop();
 		selenium.stopServer();
 		assertFalse( Len( selenium.getSessionId() ) );
-		FileWrite( fileObj, "afterTests-#Now()##Chr(13)##Chr(10)#" );
 	}	
 
 	function testStartAndStopBrowser() {
