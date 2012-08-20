@@ -74,8 +74,6 @@ component extends="frameworks.org.corfield.framework"{
 		HothConfig.setEmailExceptionsAsHTML( getConfig().exceptiontracker.emailexceptionsashtml );
 		application.exceptiontracker = new Hoth.HothTracker( HothConfig );
 	
-		ORMReload();
-
 		// setup bean factory
 		var beanfactory = new frameworks.org.corfield.ioc( "/model", { singletonPattern = "(Service|Gateway)$" } );
 		setBeanFactory( beanfactory );
@@ -94,6 +92,8 @@ component extends="frameworks.org.corfield.framework"{
 	// ------------------------ CALLED WHEN PAGE REQUEST STARTS ------------------------ //	
 
 	void function setupRequest(){
+		if( this.development && !isNull( url.rebuild ) ) ORMReload();
+
 		// define base url
 		if( CGI.HTTPS eq "on" ) rc.basehref = "https://";
 		else rc.basehref = "http://";
