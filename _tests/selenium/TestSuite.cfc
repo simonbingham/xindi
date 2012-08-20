@@ -55,7 +55,7 @@ component extends="mxunit.framework.TestCase"{
 		selenium.waitForPageToLoad( timeout );
 		selenium.click( "link=Design" );
 		selenium.waitForPageToLoad( timeout );
-		assertTrue( selenium.isTextPresent( "Nullam egestas accumsan vestibulum!" ) );
+		assertEquals( "Design", selenium.getTitle() );
 	}
 
 	function testShowArticle() {
