@@ -35,7 +35,7 @@
 			<link href="assets/css/smoothness/jquery-ui-1.8.19.custom.css" rel="stylesheet">
 			<link href="assets/css/core.css?r=#rc.config.revision#" rel="stylesheet">
 
-			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 			<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js" type="text/javascript"></script>
 			<script src="assets/js/jquery-ui-1.8.19.custom.min.js"></script>
 			<script src="assets/js/jquery.field.min.js"></script>

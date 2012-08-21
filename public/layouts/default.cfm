@@ -34,7 +34,7 @@
 
 			<link href="public/assets/css/core.css?r=#rc.config.revision#" rel="stylesheet">
 
-			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 			<script src="public/assets/bootstrap/js/bootstrap.min.js"></script>
 			<script src="public/assets/js/bootstrap-dropdown.js"></script>
 			<script src="public/assets/js/core.js?r=#rc.config.revision#"></script>
