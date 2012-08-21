@@ -16,7 +16,7 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-/* run these tests in your browser at http://localhost/xindi/_tests/selenium/TestSuite.cfc?method=runTestRemote */
+/* run these tests in your browser at http://localhost/xindi/_tests/selenium/Tests.cfc?method=runTestRemote */
 
 component extends="mxunit.framework.TestCase"{
 
