@@ -64,6 +64,19 @@ component accessors="true" extends="model.abstract.BaseService" {
 		arguments.maxresults = Val( arguments.maxresults );
 		return variables.ContentGateway.getPages( argumentCollection=arguments );
 	}
+	
+	/**
+	 * I return an array of structs conating page entities
+	 */	
+	array function getNestedSetPages(){
+		var key = "CONTENTSERVICE_GETNESTEDSETPAGES";
+		var result = CacheGet(key);
+		if (IsNull(result)){
+			result = variables.ContentGateway.getNestedSetPages();
+			CachePut(key, result, CreateTimeSpan(0,0,1,0));
+		}
+		return result;
+	}
 
 	/**
 	 * I return the root page (i.e. home page)

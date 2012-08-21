@@ -24,6 +24,10 @@ component accessors="true" extends="abstract"{
 
 	// ------------------------ PUBLIC METHODS ------------------------ //	
 	
+	void function breadcrumbs( required struct rc ){
+		abort;
+	}
+	
 	void function map( required struct rc ){
 		rc.MetaData.setMetaTitle( "Site Map" ); 
 		rc.MetaData.setMetaDescription( "" );
@@ -32,7 +36,6 @@ component accessors="true" extends="abstract"{
 	
 	void function xml( required struct rc ){
 		rc.sesomitindex = variables.fw.getConfig().sesomitindex;
-		rc.pages = variables.ContentService.getPages();
 		if( rc.config.news.enabled ) rc.articles = variables.NewsService.getArticles( published=true );
 	}		
 	

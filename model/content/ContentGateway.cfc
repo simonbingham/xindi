@@ -78,6 +78,29 @@
 		<cfreturn qPages>
 	</cffunction>
 	
+	<cffunction name="getNestedSetPages" output="false" returntype="array" hint="I return an array of structs containing pages ">
+		<cfargument name="leftvalue" required="false" default="1" hint="get pages create than this left position"> 
+		<cfset var qPages = "">
+		<cfset var ormoptions = {}>
+		<cfquery name="qPages" dbtype="hql" ormoptions="#ormoptions#">
+			select 
+				new map( 
+					page as page,
+					( 
+						select Count(pageSubQuery) 
+						from Page as pageSubQuery 
+						where pageSubQuery.leftvalue < page.leftvalue
+						and pageSubQuery.rightvalue > page.rightvalue
+					) as depth 
+					, ( ( page.rightvalue - page.leftvalue - 1) / 2 ) as descendants
+				)
+			from Page as page 
+			where leftvalue > <cfqueryparam value="#arguments.leftvalue#">
+			order by leftvalue
+		</cfquery>
+		<cfreturn qPages>
+	</cffunction>
+	
 	<cfscript>
 		/**
 		 * I return the root page (i.e. home page)

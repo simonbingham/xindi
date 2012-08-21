@@ -66,16 +66,51 @@
 			
 			<div id="container" class="container">
 				<div class="row">
-					<div class="span12">#view( "navigation/menu" )#</div>
+					<!--- primary navigation --->
+					<nav class="span12" id="primary-navigation">
+						
+						<cfset local.pageCount = ArrayLen( rc.navigation )>
+						
+						<cfoutput>
+						<ul class="nav nav-pills">
+						<cfloop from="1" to="#ArrayLen( rc.navigation )#" index="local.index">
+							<cfset local.item = rc.navigation[ local.index ]>
+							<cfset local.depth = local.item[ "depth" ]>
+							<cfset local.descendants = local.item[ "descendants" ]>
+							<cfset local.Page = local.item[ "page" ]>
+							
+							<cfif local.pageCount gt local.index>
+								<cfset local.nextdepth = rc.navigation[ local.index+1 ][ "depth" ]>
+							<cfelse>
+								<cfset local.nextdepth = 0>
+							</cfif>
+							<cfif local.descendants AND local.depth eq 1>
+							<li class="dropdown"><a href="#buildURL( local.Page.getSlug() )#" class="dropdown-toggle" data-toggle="dropdown">#local.Page.getTitle()# <b class="caret"></b></a>
+							<cfelse>
+							<li <cfif StructKeyExists( rc, 'Page' ) and rc.Page.getPageID() eq local.Page.getPageID()>class="active"</cfif>><a href="#buildURL( local.Page.getSlug() )#">#local.Page.getTitle()#</a>
+							</cfif>
+							<cfif local.descendants gt 0>
+							<ul <cfif local.depth gt 0> class="dropdown-menu"</cfif>>
+							<cfelse>
+							</li>
+							<cfif local.nextdepth lt local.depth></ul></li></cfif>
+							</cfif>
+						</cfloop>
+						<!---<cfloop from="1" to="#depth#" index="index">
+							</ul></li>
+						</cfloop>--->
+						</ul>
+						</cfoutput>
+					</nav>
 				</div>
 				
-				<div id="content" class="row">
+				<div id="content" class="row" role="main">
 					<div class="span12">#body#</div>
 				</div>
 
-				<div id="footer" class="row">
+				<footer id="footer" class="row">
 					<div class="span12"><a href="#buildURL( 'navigation/map' )#">Site Map</a></div>
-				</div>
+				</footer>
 			</div>
 		</body>
 	</html>

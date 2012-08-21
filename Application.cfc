@@ -30,6 +30,7 @@ component extends="frameworks.org.corfield.framework"{
 	this.mappings[ "/model" ] = this.applicationroot & "model/";
 	this.mappings[ "/ValidateThis" ] = this.applicationroot & "frameworks/ValidateThis/";
 	this.datasource = ListLast( this.applicationroot, "\/" );
+	this.datasource = "cmfundraising";
 	this.ormenabled = true;
 	this.ormsettings = {
 		flushatrequestend = false
@@ -109,13 +110,13 @@ component extends="frameworks.org.corfield.framework"{
 	// ------------------------ CALLED WHEN VIEW RENDERING STARTS ------------------------ //	
 	
 	void function setupView(){
-		rc.navigation = getBeanFactory().getBean( "ContentService" ).getPages();
-	}	
+		// get data need to build the navigation
+		rc.navigation = getBeanFactory().getBean( "ContentService" ).getNestedSetPages();
+	}
 	
 	// ------------------------ CALLED WHEN EXCEPTION OCCURS ------------------------ //	
 	
-	void function onError( Exception, event )
-	{	
+	void function onError( Exception, event ){	
 		if( StructKeyExists( application, "exceptiontracker" ) ) application.exceptiontracker.track( arguments.Exception );
 		super.onError( arguments.Exception, arguments.event );
 	}	
