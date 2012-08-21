@@ -30,7 +30,6 @@ component extends="frameworks.org.corfield.framework"{
 	this.mappings[ "/model" ] = this.applicationroot & "model/";
 	this.mappings[ "/ValidateThis" ] = this.applicationroot & "frameworks/ValidateThis/";
 	this.datasource = ListLast( this.applicationroot, "\/" );
-	this.datasource = "cmfundraising";
 	this.ormenabled = true;
 	this.ormsettings = {
 		flushatrequestend = false
