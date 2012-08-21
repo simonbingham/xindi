@@ -20,7 +20,7 @@ p, li{ line-height:1.6em; }
 .append-top{ margin-top:15px; }
 .dev-mode{ position:fixed; bottom:10px; right:10px; z-index:100; }
 .error{ color:#B94A48; }
-.navbar-inner{ background-color:#01324A; background-image:-moz-linear-gradient(center top , #01324a, #012638); }
+.navbar-inner{ background:#01324A; background-image:-moz-linear-gradient(center top , #01324a, #012638) !important; }
 .navbar-search .search-query:-moz-placeholder { color:#333; }
 .navbar-search .search-query { background-color:#f5f5f5; color:#000; }
 
