@@ -121,7 +121,7 @@
 					var PreviousSibling = thePage.getPreviousSibling();
 					var previoussiblingdescendentidlist = PreviousSibling.getDescendentPageIDList();
 					decreaseamount = PreviousSibling.getRightValue() - PreviousSibling.getLeftValue() + 1;
-					if( ListLen( thePage.getDescendentPageIDList() ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue - :decreaseamount, rightvalue = rightvalue - :decreaseamount where pageid in ( #Page.getDescendentPageIDList()# )", { decreaseamount=decreaseamount });
+					if( ListLen( thePage.getDescendentPageIDList() ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue - :decreaseamount, rightvalue = rightvalue - :decreaseamount where pageid in ( #thePage.getDescendentPageIDList()# )", { decreaseamount=decreaseamount });
 					if( ListLen( previoussiblingdescendentidlist ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue + :increaseamount, rightvalue = rightvalue + :increaseamount where pageid in ( #previoussiblingdescendentidlist# )", { increaseamount=increaseamount });
 					thePage.setLeftValue( thePage.getLeftValue() - decreaseamount );
 					thePage.setRightValue( thePage.getRightValue() - decreaseamount );
@@ -136,7 +136,7 @@
 					var NextSibling = thePage.getNextSibling();
 					var nextsiblingdescendentidlist = NextSibling.getDescendentPageIDList();
 					increaseamount = NextSibling.getRightValue() - NextSibling.getLeftValue() + 1;
-					if( ListLen( thePage.getDescendentPageIDList() ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue + :increaseamount, rightvalue = rightvalue + :increaseamount where pageid in ( #Page.getDescendentPageIDList()# )", { increaseamount=increaseamount });
+					if( ListLen( thePage.getDescendentPageIDList() ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue + :increaseamount, rightvalue = rightvalue + :increaseamount where pageid in ( #thePage.getDescendentPageIDList()# )", { increaseamount=increaseamount });
 					if( ListLen( nextsiblingdescendentidlist ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue - :decreaseamount, rightvalue = rightvalue - :decreaseamount where pageid in ( #nextsiblingdescendentidlist# )", { decreaseamount=decreaseamount });
 					thePage.setLeftValue( thePage.getLeftValue() + increaseamount );
 					thePage.setRightValue( thePage.getRightValue() + increaseamount );
