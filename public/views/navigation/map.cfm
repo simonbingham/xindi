@@ -32,6 +32,7 @@
 
 			<cfloop condition="local.tmp gt local.currLevel">
 				</li></ul>
+				
 				<cfset local.tmp -= 1>
 			</cfloop>
 
@@ -47,6 +48,7 @@
 
 	<cfloop condition="local.tmp gt 0">
 		</li></ul>
+		
 		<cfset local.tmp -= 1>
 	</cfloop>
 </cfoutput>

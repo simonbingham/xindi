@@ -18,5 +18,6 @@
 
 <cfoutput>
 	#rc.Article.getContent()#
-	<small class="pull-right">#DateFormat( rc.Article.getPublished(), "full" )#</small>
+	
+	<p>#DateFormat( rc.Article.getPublished(), "full" )#</p>
 </cfoutput>

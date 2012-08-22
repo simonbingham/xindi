@@ -24,10 +24,13 @@
 		
 		<cfloop query="rc.pages">
 			<cfset local.slug = rc.pages.slug>
+			
 			<cfif rc.pages.type eq 'article'><!--- TODO: this is a horrible hack! --->
 				<cfset local.slug = 'news/article/slug/' & local.slug>
 			</cfif>
+			
 			<h2><a href="#buildURL( local.slug )#">#rc.pages.title#</a></h2>
+			
 			<p>#snippet( rc.pages.content, 200 )#</p>
 		</cfloop>
 	<cfelseif StructKeyExists( rc, "pages" )>
