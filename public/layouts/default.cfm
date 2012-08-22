@@ -34,11 +34,7 @@
 
 			<link href="public/assets/css/core.css?r=#rc.config.revision#" rel="stylesheet">
 
-			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-			<script src="public/assets/bootstrap/js/bootstrap.min.js"></script>
-			<script src="public/assets/js/bootstrap-dropdown.js"></script>
-			<script src="public/assets/js/core.js?r=#rc.config.revision#"></script>
-			
+
 			<link rel="shortcut icon" href="favicon.ico">
 			<link rel="apple-touch-icon-precomposed" sizes="114x114" href="public/assets/ico/apple-touch-icon-114-precomposed.png">
 			<link rel="apple-touch-icon-precomposed" sizes="72x72" href="public/assets/ico/apple-touch-icon-72-precomposed.png">
@@ -69,10 +65,36 @@
 					<!--- primary navigation --->
 					<nav class="span12" id="primary-navigation">
 						
-						<cfset local.pageCount = ArrayLen( rc.navigation )>
+						<!---<cfset local.pageCount = ArrayLen( rc.navigation )>--->
 						
-						<cfoutput>
-						<ul class="nav nav-pills">
+						
+
+<cfset local.prevLevel = -1>
+<cfset local.currLevel = -1>
+<cfloop query="rc.navigation">
+	<cfset local.currLevel = rc.navigation.depth>
+	<cfif local.currLevel gt local.prevLevel>
+		<ul class="<cfif local.prevLevel eq -1>nav nav-pills<cfelse>dropdown-menu</cfif>"><li><a href="#buildURL( rc.navigation.slug )#">#rc.navigation.title#</a>
+	<cfelseif local.currLevel lt local.prevLevel>
+		<cfset local.tmp = local.prevLevel>
+		<cfloop condition="local.tmp gt local.currLevel">
+			</li></ul>
+			<cfset local.tmp -= 1>
+		</cfloop>
+		</li><li><a href="#buildURL( rc.navigation.slug )#">#rc.navigation.title#</a>
+	<cfelse>
+		</li><li><a href="#buildURL( rc.navigation.slug )#">#rc.navigation.title#</a>
+	</cfif>
+	<cfset local.prevLevel = rc.navigation.depth>
+</cfloop>
+<cfset local.tmp = local.currLevel>
+<cfloop condition="local.tmp gt 0">
+	</li></ul>
+	<cfset local.tmp -= 1>
+</cfloop>
+
+
+						<!---	
 						<cfloop from="1" to="#ArrayLen( rc.navigation )#" index="local.index">
 							<cfset local.item = rc.navigation[ local.index ]>
 							<cfset local.depth = local.item[ "depth" ]>
@@ -99,8 +121,7 @@
 						<!---<cfloop from="1" to="#depth#" index="index">
 							</ul></li>
 						</cfloop>--->
-						</ul>
-						</cfoutput>
+						</ul>--->
 					</nav>
 				</div>
 				
@@ -112,6 +133,16 @@
 					<div class="span12"><a href="#buildURL( 'navigation/map' )#">Site Map</a></div>
 				</footer>
 			</div>
+			
+			
+			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+			<!---<script src="public/assets/bootstrap/js/bootstrap.min.js"></script>--->
+			<!---<script src="public/assets/js/bootstrap-dropdown.js"></script>--->
+			<script src="public/assets/js/core.js?r=#rc.config.revision#"></script>
+			
 		</body>
+		
+		
+		
 	</html>
 </cfoutput>

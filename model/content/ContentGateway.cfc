@@ -78,10 +78,10 @@
 		<cfreturn qPages>
 	</cffunction>
 	
-	<cffunction name="getNestedSetPages" output="false" returntype="array" hint="I return an array of structs containing pages ">
-		<cfargument name="leftvalue" required="false" default="1" hint="get pages create than this left position"> 
+	<cffunction name="getNavigation" output="false" returntype="query" hint="I return the pages used to build the navigation">
+		<cfargument name="leftvalue" required="false"> 
 		<cfset var qPages = "">
-		<cfset var ormoptions = {}>
+		<!---
 		<cfquery name="qPages" dbtype="hql" ormoptions="#ormoptions#">
 			select 
 				new map( 
@@ -95,9 +95,30 @@
 					, ( ( page.rightvalue - page.leftvalue - 1) / 2 ) as descendants
 				)
 			from Page as page 
-			where leftvalue > <cfqueryparam value="#arguments.leftvalue#">
+			where 1 = 1
+			<cfif StructKeyExists( arguments, "leftvalue" )>
+				leftvalue > <cfqueryparam value="#arguments.leftvalue#">
+			</cfif>
 			order by leftvalue
 		</cfquery>
+		--->
+		
+		<!--- note: for navigation purposes, the home page is at the same level as the other top level pages --->
+		<cfquery name="qPages">
+			select 
+				page.page_id as pageid
+				, page_label as slug
+				, page_title as title
+				, case when page_left = 1 then 1 else (	select count(*)
+					from pages as pageSubQuery 
+					where pageSubQuery.page_left < page.page_left
+						and pageSubQuery.page_right > page.page_right ) end as depth 
+				, ( ( page.page_right - page.page_left - 1) / 2 ) as descendants
+			from pages as page
+			where page_left > 0
+			order by page_left
+		</cfquery>
+
 		<cfreturn qPages>
 	</cffunction>
 	

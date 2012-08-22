@@ -110,7 +110,7 @@ component extends="frameworks.org.corfield.framework"{
 	
 	void function setupView(){
 		// get data need to build the navigation
-		rc.navigation = getBeanFactory().getBean( "ContentService" ).getNestedSetPages();
+		rc.navigation = getBeanFactory().getBean( "ContentService" ).getNavigation();
 	}
 	
 	// ------------------------ CALLED WHEN EXCEPTION OCCURS ------------------------ //	

@@ -68,11 +68,11 @@ component accessors="true" extends="model.abstract.BaseService" {
 	/**
 	 * I return an array of structs conating page entities
 	 */	
-	array function getNestedSetPages(){
+	query function getNavigation(){
 		var key = "CONTENTSERVICE_GETNESTEDSETPAGES";
 		var result = CacheGet(key);
 		if (IsNull(result)){
-			result = variables.ContentGateway.getNestedSetPages();
+			result = variables.ContentGateway.getNavigation();
 			CachePut(key, result, CreateTimeSpan(0,0,1,0));
 		}
 		return result;
