@@ -127,7 +127,7 @@ component extends="frameworks.org.corfield.framework"{
 
 	any function onMissingView( required rc ){
 		var slug = LCase( ListLast( CGI.PATH_INFO, "/" ) );
-		if ( slug == "" ) slug = "home"; // set default
+		if ( slug == "" ) slug = rc.config.page.defaultslug; // set default
 		rc.Page = getBeanFactory().getBean( "ContentService" ).getPageBySlug( slug );
 		if( !rc.Page.isPersisted() ){
 			var pagecontext = getPageContext().getResponse();
@@ -179,6 +179,7 @@ component extends="frameworks.org.corfield.framework"{
 				, suppressdeletepage = "1" // comma delimited list of page ids for pages that cannot be deleted
 				, suppressmovepage = "" // comma delimited list of page ids for pages that cannot be moved
 				, touchfriendlynavigation = false // if true ancestor page links toggle dropdown - duplicated ancestor page links appear in sub menu
+				, defaultslug = "home" // default 'slug' to use to get homepage
 			}
 			, revision = Hash( Now() )
 			, security = {
@@ -196,6 +197,17 @@ component extends="frameworks.org.corfield.framework"{
 		return config;
 	}
 	
+	// ------------------------ FRAMEWORK HELPERS ------------------------ //
+	
+	/**
+	* I override the FW/1 buildURL method to clean up the homepage URLs *
+	**/
+	public string function buildURL( string action = '.', string path = variables.magicBaseURL, any queryString = '' ) {
+		var theurl = super.buildURL( arguments.action, arguments.path, arguments.queryString );
+		theurl = ReReplace( theurl, "index\.cfm/#getBeanFactory().getBean( "Config" ).page.defaultslug#$", "" );
+		return theurl;
+	}
+
 	// ------------------------ VIEW HELPERS ------------------------ //
 	
 	string function snippet( content, charactercount=100 ){

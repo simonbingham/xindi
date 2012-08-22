@@ -40,7 +40,7 @@
 		<cfset var qPages = "">
 		<cfset var keyword = "">
 		
-		<cfquery name="qPages" maxrows="#arguments.maxresults#">
+		<cfquery name="qPages" maxrows="#arguments.maxresults#" cachedwithin="#CreateTimeSpan(0,0,1,0)#">
 			select 
 				page_id as id
 				, page_title as title
@@ -106,7 +106,7 @@
 	<cffunction name="getNavigation" output="false" returntype="query" hint="I return the pages used to build the navigation">
 		<cfset var qPages = "">
 		
-		<cfquery name="qPages">
+		<cfquery name="qPages" cachedwithin="#CreateTimeSpan(0,0,1,0)#">
 			select 
 				page.page_id as pageid
 				, page.page_slug as slug
