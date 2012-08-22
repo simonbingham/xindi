@@ -112,13 +112,13 @@ component extends="frameworks.org.corfield.framework"{
 	// ------------------------ CALLED WHEN VIEW RENDERING STARTS ------------------------ //	
 	
 	void function setupView(){
-		rc.navigation = getBeanFactory().getBean( "ContentService" ).getPages();
-	}	
+		// get data need to build the navigation
+		rc.navigation = getBeanFactory().getBean( "ContentService" ).getNavigation();
+	}
 	
 	// ------------------------ CALLED WHEN EXCEPTION OCCURS ------------------------ //	
 	
-	void function onError( Exception, event )
-	{	
+	void function onError( Exception, event ){	
 		if( StructKeyExists( application, "exceptiontracker" ) ) application.exceptiontracker.track( arguments.Exception );
 		super.onError( arguments.Exception, arguments.event );
 	}	
@@ -126,16 +126,21 @@ component extends="frameworks.org.corfield.framework"{
 	// ------------------------ CALLED WHEN VIEW IS MISSING ------------------------ //	
 
 	any function onMissingView( required rc ){
-		rc.Page = getBeanFactory().getBean( "ContentService" ).getPageBySlug( ListLast( CGI.PATH_INFO, "/" ) );
+		var slug = LCase( ListLast( CGI.PATH_INFO, "/" ) );
+		if ( slug == "" ) slug = "home"; // set default
+		rc.Page = getBeanFactory().getBean( "ContentService" ).getPageBySlug( slug );
 		if( !rc.Page.isPersisted() ){
 			var pagecontext = getPageContext().getResponse();
 			pagecontext.getResponse().setStatus( 404 );
+			rc.MetaData.setMetaTitle( "Page Not Found" ); 
 			return view( "public:main/notfound" );
 		}else{
+			rc.breadcrumbs = getBeanFactory().getBean( "ContentService" ).getNavigationPath( rc.Page.getPageID() );
+			
 			rc.MetaData.setMetaTitle( rc.Page.getMetaTitle() ); 
 			rc.MetaData.setMetaDescription( rc.Page.getMetaDescription() );
 			rc.MetaData.setMetaKeywords( rc.Page.getMetaKeywords() );
-			return view( "public:main/default" );
+			return view( "public:main/missingview" );
 		}
 	}
 	
@@ -189,6 +194,20 @@ component extends="frameworks.org.corfield.framework"{
 			config.security.resetpasswordemailfrom = "";
 		} 
 		return config;
-	}	
+	}
+	
+	
+	// ------------------------ VIEW HELPERS ------------------------ //
+	
+	public string function snippet( content, charactercount=100 ){
+		var result = Trim( reReplace( arguments.content,"<[^>]{1,}>"," ","all" ) );
+		if ( Len( result ) > arguments.charactercount+10 ){
+			return Trim( Left( result, arguments.charactercount ) ) & "&hellip;";
+		}
+		else{
+			return result;
+		}
+	}
+	
 
 }
