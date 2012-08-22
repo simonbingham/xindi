@@ -101,7 +101,6 @@
 	</cffunction>
 	
 	<cffunction name="getNavigation" output="false" returntype="query" hint="I return the pages used to build the navigation">
-		<cfargument name="leftvalue" required="false"> 
 		<cfset var qPages = "">
 		
 		<!--- note: for navigation purposes, the home page is at the same level as the other top level pages --->

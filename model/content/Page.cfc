@@ -206,8 +206,16 @@ component persistent="true" table="pages" cacheuse="transactional"{
 	 * I am called after the page is inserted into the database 
 	 */		
 	void function preInsert(){
-		setLabel();
+		setSlug();
 	}
+	
+	/**
+	 * I generate a unique id for the page
+	 */
+	void function setSlug(){
+		variables.slug = ReReplace( LCase( variables.title ), "[^a-z0-9]{1,}", "-", "all" );
+		while ( !isSlugUnique() ) variables.slug &= "-"; 
+	}	
 
 	// ------------------------ PRIVATE METHODS ------------------------ //
 	
@@ -263,19 +271,11 @@ component persistent="true" table="pages" cacheuse="transactional"{
 	/**
 	 * I return true if the id of the page is unique
 	 */		
-	private boolean function isLabelUnique(){
+	private boolean function isSlugUnique(){
 		var matches = []; 
-		if( isPersisted() ) matches = ORMExecuteQuery( "from Page where pageid <> :pageid and label = :label", { pageid=variables.pageid, label=variables.label } );
-		else matches = ORMExecuteQuery( "from Page where label=:label", { label=variables.label });
+		if( isPersisted() ) matches = ORMExecuteQuery( "from Page where pageid <> :pageid and slug = :slug", { pageid=variables.pageid, slug=variables.slug } );
+		else matches = ORMExecuteQuery( "from Page where slug=:slug", { slug=variables.slug });
 		return !ArrayLen( matches );
 	}
 	
-	/**
-	 * I generate a unique id for the page
-	 */		
-	private void function setLabel(){
-		variables.label = ReReplace( LCase( variables.title ), "[^a-z0-9]{1,}", "-", "all" );
-		while ( !isLabelUnique() ) variables.label &= "-"; 
-	}
-		
 }
