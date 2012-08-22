@@ -18,23 +18,19 @@
 
 <cfset request.layout = false>
 
-<cfoutput>
-	<!DOCTYPE html>
-	
+<cfoutput><!DOCTYPE html>
 	<html lang="en">
 		<head>
 			<meta charset="utf-8">
 			<meta name="description" content="#rc.MetaData.getMetaDescription()#">
 			<meta name="keywords" content="#rc.MetaData.getMetaKeywords()#">
 			<meta name="viewport" content="width=device-width, initial-scale=1.0">
-			
 			<base href="#rc.basehref#">
-
 			<title>#rc.MetaData.getMetaTitle()#</title>
-
 			<link href="public/assets/css/core.css?r=#rc.config.revision#" rel="stylesheet">
-
-
+			<!--[if lt IE 9]>
+			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+			<![endif]-->
 			<link rel="shortcut icon" href="favicon.ico">
 			<link rel="apple-touch-icon-precomposed" sizes="114x114" href="public/assets/ico/apple-touch-icon-114-precomposed.png">
 			<link rel="apple-touch-icon-precomposed" sizes="72x72" href="public/assets/ico/apple-touch-icon-72-precomposed.png">
@@ -93,35 +89,6 @@
 	<cfset local.tmp -= 1>
 </cfloop>
 
-
-						<!---	
-						<cfloop from="1" to="#ArrayLen( rc.navigation )#" index="local.index">
-							<cfset local.item = rc.navigation[ local.index ]>
-							<cfset local.depth = local.item[ "depth" ]>
-							<cfset local.descendants = local.item[ "descendants" ]>
-							<cfset local.Page = local.item[ "page" ]>
-							
-							<cfif local.pageCount gt local.index>
-								<cfset local.nextdepth = rc.navigation[ local.index+1 ][ "depth" ]>
-							<cfelse>
-								<cfset local.nextdepth = 0>
-							</cfif>
-							<cfif local.descendants AND local.depth eq 1>
-							<li class="dropdown"><a href="#buildURL( local.Page.getSlug() )#" class="dropdown-toggle" data-toggle="dropdown">#local.Page.getTitle()# <b class="caret"></b></a>
-							<cfelse>
-							<li <cfif StructKeyExists( rc, 'Page' ) and rc.Page.getPageID() eq local.Page.getPageID()>class="active"</cfif>><a href="#buildURL( local.Page.getSlug() )#">#local.Page.getTitle()#</a>
-							</cfif>
-							<cfif local.descendants gt 0>
-							<ul <cfif local.depth gt 0> class="dropdown-menu"</cfif>>
-							<cfelse>
-							</li>
-							<cfif local.nextdepth lt local.depth></ul></li></cfif>
-							</cfif>
-						</cfloop>
-						<!---<cfloop from="1" to="#depth#" index="index">
-							</ul></li>
-						</cfloop>--->
-						</ul>--->
 					</nav>
 				</div>
 				
@@ -136,8 +103,6 @@
 			
 			
 			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-			<!---<script src="public/assets/bootstrap/js/bootstrap.min.js"></script>--->
-			<!---<script src="public/assets/js/bootstrap-dropdown.js"></script>--->
 			<script src="public/assets/js/core.js?r=#rc.config.revision#"></script>
 			
 		</body>

@@ -58,22 +58,36 @@ component accessors="true" extends="model.abstract.BaseService" {
 	}
 
 	/**
-	 * I return an array of pages
+	 * I return a query of pages and articles that match the search term
 	 */	
-	array function getPages( string searchterm="", sortorder="leftvalue", maxresults=0, excludefromsearch="" ){
+	query function findContentBySearchTerm( string searchterm="", maxresults=50 ){
 		arguments.maxresults = Val( arguments.maxresults );
-		return variables.ContentGateway.getPages( argumentCollection=arguments );
+		return variables.ContentGateway.findContentBySearchTerm( argumentCollection=arguments );
 	}
 	
 	/**
-	 * I return an array of structs conating page entities
+	 * I return a query of pages making up the site hierarchy
 	 */	
 	query function getNavigation(){
 		var key = "CONTENTSERVICE_GETNESTEDSETPAGES";
-		var result = CacheGet(key);
-		if (IsNull(result)){
+		var result = CacheGet( key );
+		if ( IsNull( result ) ){
 			result = variables.ContentGateway.getNavigation();
-			CachePut(key, result, CreateTimeSpan(0,0,1,0));
+			CachePut( key, result, CreateTimeSpan( 0,0,1,0 ) );
+		}
+		return result;
+	}
+	
+	/**
+	 * I return a query of pages for page's hierarchy
+	 */	
+	query function getNavigationPath( required pageid ){
+		arguments.pageid = Val( arguments.pageid );
+		var key = "CONTENTSERVICE_GETNAVIGATIONPATH_" & arguments.pageid;
+		var result = CacheGet( key );
+		if ( IsNull( result ) ){
+			result = variables.ContentGateway.getNavigationPath( arguments.pageid );
+			CachePut( key, result, CreateTimeSpan( 0,0,1,0 ) );
 		}
 		return result;
 	}
