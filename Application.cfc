@@ -57,7 +57,10 @@ component extends="frameworks.org.corfield.framework"{
 		, password = ""
 		, reloadApplicationOnEveryRequest = this.development
 		, usingSubsystems = true
-		//, routes = [{ ""="", hint="" }]
+		, routes = [
+			{ "news"="news", hint="Redirect to news feature" }
+			, { "enquiry"="enquiry", hint="Redirect to enquiry feature" }
+		]
 	};
 	
 	// ------------------------ CALLED WHEN APPLICATION STARTS ------------------------ //	
