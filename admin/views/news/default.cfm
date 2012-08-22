@@ -41,7 +41,7 @@
 						<td><a href="#buildURL( action='news.maintain', querystring='articleid/#local.Article.getArticleID()#' )#" title="Edit #local.Article.getTitle()#">#local.Article.getTitle()#</a></td>
 						<td>#DateFormat( local.Article.getPublished(), "full" )#</td>
 						<td>#DateFormat( local.Article.getUpdated(), "full" )# #TimeFormat( local.Article.getUpdated() )#</td>
-						<td class="center"><cfif local.Article.isPublished()><a href="#buildURL( action='public:news.article', querystring='label=#local.Article.getLabel()#' )#" title="Preview Page" target="_blank"><i class="icon-eye-open"></i></a></cfif></td>
+						<td class="center"><cfif local.Article.isPublished()><a href="#buildURL( action='public:news.article', querystring='slug=#local.Article.getSlug()#' )#" title="Preview Page" target="_blank"><i class="icon-eye-open"></i></a></cfif></td>
 						<td class="center"><a href="#buildURL( 'news.delete' )#/articleid/#local.Article.getArticleID()#" title="Delete"><i class="icon-remove"></i></a></td>
 					</tr>
 				</cfloop>

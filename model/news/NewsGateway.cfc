@@ -37,8 +37,8 @@
 		/**
 		 * I return an article matching a unique id
 		 */				
-		Article function getArticleByLabel( required string label ){
-			var Article = ORMExecuteQuery( "from Article where label=:label and published<=:published", { label=arguments.label, published=Now() }, true );
+		Article function getArticleBySlug( required string slug ){
+			var Article = ORMExecuteQuery( "from Article where slug=:slug and published<=:published", { slug=arguments.slug, published=Now() }, true );
 			if( IsNull( Article ) ) Article = new( "Article" );
 			return Article;
 		}

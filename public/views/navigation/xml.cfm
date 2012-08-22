@@ -35,9 +35,9 @@
 			<cfif rc.config.news.enabled> 
 				<cfloop array="#rc.articles#" index="local.Article">
 					<cfif( rc.sesomitindex )>
-						<url><loc>#rc.basehref#news/article/label/#local.Article.getLabel()#</loc></url>
+						<url><loc>#rc.basehref#news/article/slug/#local.Article.getSlug()#</loc></url>
 					<cfelse>
-						<url><loc>#rc.basehref#index.cfm/news/article/label/#local.Article.getLabel()#</loc></url>
+						<url><loc>#rc.basehref#index.cfm/news/article/slug/#local.Article.getSlug()#</loc></url>
 					</cfif>
 				</cfloop>
 			</cfif>

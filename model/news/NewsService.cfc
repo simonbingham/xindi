@@ -53,8 +53,8 @@ component accessors="true" extends="model.abstract.BaseService"{
 	/**
 	 * I return an article matching a unique id
 	 */		
-	Article function getArticleByLabel( required string label ){
-		return variables.NewsGateway.getArticleByLabel( argumentCollection=arguments );
+	Article function getArticleBySlug( required string slug ){
+		return variables.NewsGateway.getArticleBySlug( argumentCollection=arguments );
 	}
 	
 	/**
