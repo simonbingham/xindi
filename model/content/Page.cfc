@@ -22,7 +22,7 @@ component persistent="true" table="pages" cacheuse="transactional"{
 
 	property name="pageid" column="page_id" fieldtype="id" setter="false" generator="native";
 	
-	property name="label" column="page_label" ormtype="string" length="150";
+	property name="slug" column="page_slug" ormtype="string" length="150";
 	property name="leftvalue" column="page_left" ormtype="int";
 	property name="rightvalue" column="page_right" ormtype="int";
 	property name="title" column="page_title" ormtype="string" length="150";
@@ -40,6 +40,8 @@ component persistent="true" table="pages" cacheuse="transactional"{
 	 * I initialise this component
 	 */	
 	Page function init(){
+		variables.leftvalue = "";
+		variables.rightvalue = "";
 		variables.metagenerated = true;
 		return this;
 	}
@@ -95,9 +97,9 @@ component persistent="true" table="pages" cacheuse="transactional"{
 		var slug = "";
 		if( !isRoot() ){
 			for( var Page in getPath() ){
-				if( !Page.isRoot() ) slug &= Page.getLabel() & "/";
+				if( !Page.isRoot() ) slug &= Page.getSlug() & "/";
 			}
-			slug &= variables.label;
+			slug &= variables.slug;
 		}
 		return slug;
 	}
@@ -206,8 +208,16 @@ component persistent="true" table="pages" cacheuse="transactional"{
 	 * I am called after the page is inserted into the database 
 	 */		
 	void function preInsert(){
-		setLabel();
+		setSlug();
 	}
+	
+	/**
+	 * I generate a unique id for the page
+	 */
+	void function setSlug(){
+		variables.slug = ReReplace( LCase( variables.title ), "[^a-z0-9]{1,}", "-", "all" );
+		while ( !isSlugUnique() ) variables.slug &= "-"; 
+	}	
 
 	// ------------------------ PRIVATE METHODS ------------------------ //
 	
@@ -263,19 +273,11 @@ component persistent="true" table="pages" cacheuse="transactional"{
 	/**
 	 * I return true if the id of the page is unique
 	 */		
-	private boolean function isLabelUnique(){
+	private boolean function isSlugUnique(){
 		var matches = []; 
-		if( isPersisted() ) matches = ORMExecuteQuery( "from Page where pageid <> :pageid and label = :label", { pageid=variables.pageid, label=variables.label } );
-		else matches = ORMExecuteQuery( "from Page where label=:label", { label=variables.label });
+		if( isPersisted() ) matches = ORMExecuteQuery( "from Page where pageid <> :pageid and slug = :slug", { pageid=variables.pageid, slug=variables.slug } );
+		else matches = ORMExecuteQuery( "from Page where slug=:slug", { slug=variables.slug });
 		return !ArrayLen( matches );
 	}
 	
-	/**
-	 * I generate a unique id for the page
-	 */		
-	private void function setLabel(){
-		variables.label = ReReplace( LCase( variables.title ), "[^a-z0-9]{1,}", "-", "all" );
-		while ( !isLabelUnique() ) variables.label &= "-"; 
-	}
-		
 }

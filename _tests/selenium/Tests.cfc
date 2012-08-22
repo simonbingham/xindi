@@ -65,7 +65,7 @@ component extends="mxunit.framework.TestCase"{
 		selenium.waitForPageToLoad( timeout );
 		selenium.click( "link=exact:Why choose Xindi?" );
 		selenium.waitForPageToLoad( timeout );
-		assertTrue( selenium.isTextPresent( "Why choose Xindi?" ) );
+		assertEquals( "Why choose Xindi?", selenium.getTitle() );
 	}
 		
 	function testContactForm() {
@@ -87,7 +87,7 @@ component extends="mxunit.framework.TestCase"{
 		selenium.type( "id=searchterm", "welcome" );
 		selenium.submit( "id=search" );
 		selenium.waitForPageToLoad( timeout );
-		assertTrue( selenium.isTextPresent( "Home" ) );
+		assertEquals( "Search Results", selenium.getTitle() );
 	}
 	
 	function testSitemap() {
@@ -95,7 +95,7 @@ component extends="mxunit.framework.TestCase"{
 		selenium.waitForPageToLoad( timeout );
 		selenium.click( "link=Site Map" );
 		selenium.waitForPageToLoad( timeout );
-		assertTrue( selenium.isTextPresent( "Site Map" ) );
+		assertTrue( "Site Map", selenium.getTitle() );
 	}
 	
 	function testInvalidLogin() {

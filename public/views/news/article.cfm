@@ -19,7 +19,7 @@
 <!--- specify canonical url for page (http://support.google.com/webmasters/bin/answer.py?hl=en&answer=139394) --->
 <cfsavecontent variable="local.canonicalurl">
 	<cfoutput>
-		<link rel="canonical" href="#buildURL( action='news.article', querystring='label=#rc.Article.getLabel()#' )#">
+		<link rel="canonical" href="#buildURL( action='news.article', querystring='slug=#rc.Article.getSlug()#' )#">
 	</cfoutput>
 </cfsavecontent>
 

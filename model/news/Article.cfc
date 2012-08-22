@@ -22,7 +22,7 @@ component persistent="true" table="articles" cacheuse="transactional"{
 
 	property name="articleid" column="article_id" fieldtype="id" setter="false" generator="native";
 	
-	property name="label" column="article_label" ormtype="string" length="150";
+	property name="slug" column="article_slug" ormtype="string" length="150";
 	property name="title" column="article_title" ormtype="string" length="150";
 	property name="content" column="article_content" ormtype="text";
 	property name="metagenerated" column="article_metagenerated" ormtype="boolean";
@@ -39,7 +39,7 @@ component persistent="true" table="articles" cacheuse="transactional"{
      * I initialise this component
 	 */
 	Article function init(){
-		variables.label = "";
+		variables.slug = "";
 		variables.content = "";
 		variables.metagenerated = true;
 		return this;
@@ -114,7 +114,16 @@ component persistent="true" table="articles" cacheuse="transactional"{
 	* I am called before inserting the article into the database
 	*/
 	void function preInsert(){
-		setLabel();
+		setSlug();
+	}
+
+
+	/**
+     * I generate a unique id for the article
+	 */		
+	void function setSlug( string slug ){
+		variables.slug = ReReplace( LCase( variables.title ), "[^a-z0-9]{1,}", "-", "all" );
+		while ( !isSlugUnique() ) variables.slug &= "-"; 
 	}
 	
 	// ------------------------ PRIVATE METHODS ------------------------ //
@@ -122,19 +131,11 @@ component persistent="true" table="articles" cacheuse="transactional"{
 	/**
      * I return true if the id of the article is unique
 	 */	
-	private boolean function isLabelUnique(){
+	private boolean function isSlugUnique(){
 		var matches = []; 
-		if( isPersisted() ) matches = ORMExecuteQuery( "from Article where articleid <> :articleid and label = :label", { articleid=variables.articleid, label=variables.label } );
-		else matches = ORMExecuteQuery( "from Article where label=:label", { label=variables.label } );
+		if( isPersisted() ) matches = ORMExecuteQuery( "from Article where articleid <> :articleid and slug = :slug", { articleid=variables.articleid, slug=variables.slug } );
+		else matches = ORMExecuteQuery( "from Article where slug=:slug", { slug=variables.slug } );
 		return !ArrayLen( matches );
-	}
-
-	/**
-     * I generate a unique id for the article
-	 */		
-	private void function setLabel(){
-		variables.label = ReReplace( LCase( variables.title ), "[^a-z0-9]{1,}", "-", "all" );
-		while ( !isLabelUnique() ) variables.label &= "-"; 
 	}
 		
 }
