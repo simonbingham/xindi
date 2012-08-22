@@ -40,8 +40,6 @@ component persistent="true" table="pages" cacheuse="transactional"{
 	 * I initialise this component
 	 */	
 	Page function init(){
-		variables.leftvalue = "";
-		variables.rightvalue = "";
 		variables.metagenerated = true;
 		return this;
 	}

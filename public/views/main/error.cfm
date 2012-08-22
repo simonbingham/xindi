@@ -17,7 +17,7 @@
 --->
 
 <cfoutput>
-	<div class="page-header"><h1>Oops!</h1></div>
+	<h1>Oops!</h1>
 
 	<cfif !rc.config.exceptiontracker.emailnewexceptions>
 		<p>An error has occurred.</p>

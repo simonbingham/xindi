@@ -49,6 +49,100 @@
 		}
 	</cfscript>
 	
+	<cffunction name="findContentBySearchTerm" output="false" returntype="query" hint="I return a query of pages and articles that match the search term">
+		<cfargument name="searchterm" type="string" required="true">
+		<cfargument name="maxresults" type="numeric" required="true" default="50">
+		<cfset var qPages = "">
+		<cfset var keyword = "">
+		
+		<cfquery name="qPages" maxrows="#arguments.maxresults#">
+			select 
+				page_id as id
+				, page_title as title
+				, page_slug as slug 
+				, page_updated as published 
+				, page_content as content
+				, locate('#arguments.searchterm#', page_content) - ( locate('#arguments.searchterm#', page_title) * 100 ) as weighting 
+				, 'page' as type
+			from pages
+			where 1 = 1
+			<cfloop list="#arguments.searchterm#" index="keyword" delimiters=" ">
+				and 
+				(	
+				 	page_title like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#keyword#%"> 
+				 	or page_content like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#keyword#%">
+				)
+			</cfloop>
+			
+			UNION 
+			
+			select	 
+				article_id as id
+				, article_title as title
+				, article_slug as slug 
+				, article_published as published 
+				, article_content as content 
+				, locate('#arguments.searchterm#', article_content) - ( locate('#arguments.searchterm#', article_title) * 100 ) as weighting
+				, 'article' as type
+			from articles
+			where 1=1
+			<cfloop list="#arguments.searchterm#" index="keyword" delimiters=" ">
+				and 
+				(	
+				 	article_title like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#keyword#%"> 
+				 	or article_content like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#keyword#%">
+				)
+			</cfloop>
+			
+			order by weighting
+			
+		</cfquery>
+		<cfreturn qPages>
+	</cffunction>
+	
+	<cffunction name="getNavigation" output="false" returntype="query" hint="I return the pages used to build the navigation">
+		<cfset var qPages = "">
+		
+		<!--- note: for navigation purposes, the home page is at the same level as the other top level pages --->
+		<cfquery name="qPages">
+			select 
+				page.page_id as pageid
+				, page.page_slug as slug
+				, page.page_title as title
+				, page.page_updated as updated
+				, case when page.page_left = 1 then 1 else (
+					select count(*)
+					from pages as pageSubQuery 
+					where pageSubQuery.page_left < page.page_left
+						and pageSubQuery.page_right > page.page_right 
+					) end as depth 
+				, ( ( page.page_right - page.page_left - 1) / 2 ) as descendants
+			from pages as page
+			where page_left > 0
+			order by page_left
+		</cfquery>
+
+		<cfreturn qPages>
+	</cffunction>
+	
+	<cffunction name="getNavigationPath" output="false" returntype="query" hint="returns the pages forming the path to the website root">
+		<cfargument name="pageid" required="true" hint="the page id for the end of the trail">
+		<cfset var qPages = "">
+		<cfquery name="qPages">
+			select
+				ancestor.page_id as pageid
+				, ancestor.page_title as title
+				, ancestor.page_slug as slug
+			from pages as child,
+				pages as ancestor 
+			where child.page_left >= ancestor.page_left and child.page_left <= ancestor.page_right 
+				and child.page_id = <cfqueryparam value="#arguments.pageid#" cfsqltype="cf_sql_integer">
+				and ancestor.page_id <> <cfqueryparam value="#arguments.pageid#" cfsqltype="cf_sql_integer"><!--- exclude passed page --->
+			order by ancestor.page_left
+		</cfquery>
+		<cfreturn qPages>
+	</cffunction>
+	
 	<cffunction name="getPages" output="false" returntype="Array" hint="I return an array of pages">
 		<cfargument name="searchterm" type="string" required="false" default="">
 		<cfargument name="sortorder" type="string" required="false" default="leftvalue">
@@ -77,6 +171,7 @@
 		</cfquery>
 		<cfreturn qPages>
 	</cffunction>
+	
 	
 	<cfscript>
 		/**
