@@ -15,13 +15,14 @@
 	LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 --->
+
 <cfoutput>
-<ul class="breadcrumb">
-	<cfloop query="rc.breadcrumbs">
-	<li><a href="#buildURL( rc.breadcrumbs.slug )#">#rc.breadcrumbs.title#</a> <span class="divider">/</span></li>
-	</cfloop>
-	<li class="active">#rc.Page.getTitle()#</li>
-</ul>
-	
-#rc.Page.getContent()#
+	<cfif !rc.Page.isRoot()>
+		<ul class="breadcrumb">
+			<cfloop query="rc.breadcrumbs"><li><a href="#buildURL( rc.breadcrumbs.slug )#">#rc.breadcrumbs.title#</a> <span class="divider">/</span></li></cfloop>
+			<li class="active">#rc.Page.getTitle()#</li>
+		</ul>
+	</cfif>
+		
+	#rc.Page.getContent()#
 </cfoutput>
