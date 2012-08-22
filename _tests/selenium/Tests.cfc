@@ -21,7 +21,7 @@
 component extends="mxunit.framework.TestCase"{
 
 	function beforeTests() {
-		browserURL = "http://localhost:8888/xindi";
+		browserURL = "http://localhost/xindi";
 		browserCommand = "*firefox";
 	   	selenium = createobject( "component", "CFSelenium.selenium" ).init();
 	   	assertFalse( Len( selenium.getSessionId() ) );
