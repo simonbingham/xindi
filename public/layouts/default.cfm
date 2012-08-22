@@ -25,13 +25,19 @@
 			<meta name="description" content="#rc.MetaData.getMetaDescription()#">
 			<meta name="keywords" content="#rc.MetaData.getMetaKeywords()#">
 			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 			<base href="#rc.basehref#">
+
 			<title>#rc.MetaData.getMetaTitle()#</title>
+
 			<link href="public/assets/css/core.css?r=#rc.config.revision#" rel="stylesheet">
+
 			<!--[if lt IE 9]>
-			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+				<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 			<![endif]-->
+
 			<link rel="shortcut icon" href="favicon.ico">
+
 			<link rel="apple-touch-icon-precomposed" sizes="114x114" href="public/assets/ico/apple-touch-icon-114-precomposed.png">
 			<link rel="apple-touch-icon-precomposed" sizes="72x72" href="public/assets/ico/apple-touch-icon-72-precomposed.png">
 			<link rel="apple-touch-icon-precomposed" href="public/assets/ico/apple-touch-icon-57-precomposed.png">
@@ -58,37 +64,38 @@
 			
 			<div id="container" class="container">
 				<div class="row">
-					<!--- primary navigation --->
 					<nav class="span12" id="primary-navigation">
-						
-						<!---<cfset local.pageCount = ArrayLen( rc.navigation )>--->
-						
-						
+						<cfset local.prevLevel = -1>
+						<cfset local.currLevel = -1>
 
-<cfset local.prevLevel = -1>
-<cfset local.currLevel = -1>
-<cfloop query="rc.navigation">
-	<cfset local.currLevel = rc.navigation.depth>
-	<cfif local.currLevel gt local.prevLevel>
-		<ul class="<cfif local.prevLevel eq -1>nav nav-pills<cfelse>dropdown-menu</cfif>"><li><a href="#buildURL( rc.navigation.slug )#">#rc.navigation.title#</a>
-	<cfelseif local.currLevel lt local.prevLevel>
-		<cfset local.tmp = local.prevLevel>
-		<cfloop condition="local.tmp gt local.currLevel">
-			</li></ul>
-			<cfset local.tmp -= 1>
-		</cfloop>
-		</li><li><a href="#buildURL( rc.navigation.slug )#">#rc.navigation.title#</a>
-	<cfelse>
-		</li><li><a href="#buildURL( rc.navigation.slug )#">#rc.navigation.title#</a>
-	</cfif>
-	<cfset local.prevLevel = rc.navigation.depth>
-</cfloop>
-<cfset local.tmp = local.currLevel>
-<cfloop condition="local.tmp gt 0">
-	</li></ul>
-	<cfset local.tmp -= 1>
-</cfloop>
+						<cfloop query="rc.navigation">
+							<cfset local.currLevel = rc.navigation.depth>
 
+							<cfif local.currLevel gt local.prevLevel>
+								<ul class="<cfif local.prevLevel eq -1>nav nav-pills<cfelse>dropdown-menu</cfif>"><li><a href="#buildURL( rc.navigation.slug )#">#rc.navigation.title#</a>
+							<cfelseif local.currLevel lt local.prevLevel>
+								<cfset local.tmp = local.prevLevel>
+
+								<cfloop condition="local.tmp gt local.currLevel">
+									</li></ul>
+									
+									<cfset local.tmp -= 1>
+								</cfloop>
+								</li><li><a href="#buildURL( rc.navigation.slug )#">#rc.navigation.title#</a>
+							<cfelse>
+								</li><li><a href="#buildURL( rc.navigation.slug )#">#rc.navigation.title#</a>
+							</cfif>
+
+							<cfset local.prevLevel = rc.navigation.depth>
+						</cfloop>
+
+						<cfset local.tmp = local.currLevel>
+
+						<cfloop condition="local.tmp gt 0">
+							</li></ul>
+
+							<cfset local.tmp -= 1>
+						</cfloop>
 					</nav>
 				</div>
 				
@@ -101,13 +108,8 @@
 				</footer>
 			</div>
 			
-			
 			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 			<script src="public/assets/js/core.js?r=#rc.config.revision#"></script>
-			
 		</body>
-		
-		
-		
 	</html>
 </cfoutput>
