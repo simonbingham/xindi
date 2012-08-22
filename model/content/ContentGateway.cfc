@@ -110,6 +110,7 @@
 				page.page_id as pageid
 				, page.page_slug as slug
 				, page.page_title as title
+				, page.page_updated as updated
 				, case when page.page_left = 1 then 1 else (
 					select count(*)
 					from pages as pageSubQuery 
@@ -139,6 +140,35 @@
 				and child.page_id = <cfqueryparam value="#arguments.pageid#" cfsqltype="cf_sql_integer">
 				and ancestor.page_id <> <cfqueryparam value="#arguments.pageid#" cfsqltype="cf_sql_integer"><!--- exclude passed page --->
 			order by ancestor.page_left
+		</cfquery>
+		<cfreturn qPages>
+	</cffunction>
+	
+	<cffunction name="getPages" output="false" returntype="Array" hint="I return an array of pages">
+		<cfargument name="searchterm" type="string" required="false" default="">
+		<cfargument name="sortorder" type="string" required="false" default="leftvalue">
+		<cfargument name="maxresults" type="numeric" required="false" default="0">
+		<cfargument name="excludefromsearch" type="string" required="false" default="">
+		<cfset var qPages = "">
+		<cfset var thesearchterm = Trim( arguments.searchterm )>
+		<cfset var ormoptions = {}>
+		<cfif arguments.maxresults>
+			<cfset ormoptions.maxresults = arguments.maxresults>
+		</cfif>
+		<cfquery name="qPages" dbtype="hql" ormoptions="#ormoptions#">
+			from Page
+			where 1=1
+			<cfif Len( thesearchterm )>
+				and 
+				(	
+				 	title like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#thesearchterm#%"> 
+				 	or content like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#thesearchterm#%">
+				) 
+			</cfif>
+			<cfif ListLen( Trim( arguments.excludefromsearch ) )>
+				and pageid not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.excludefromsearch#" list="true">)
+			</cfif>
+			order by #arguments.sortorder#
 		</cfquery>
 		<cfreturn qPages>
 	</cffunction>

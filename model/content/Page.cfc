@@ -95,9 +95,9 @@ component persistent="true" table="pages" cacheuse="transactional"{
 		var slug = "";
 		if( !isRoot() ){
 			for( var Page in getPath() ){
-				if( !Page.isRoot() ) slug &= Page.getLabel() & "/";
+				if( !Page.isRoot() ) slug &= Page.getSlug() & "/";
 			}
-			slug &= variables.label;
+			slug &= variables.slug;
 		}
 		return slug;
 	}

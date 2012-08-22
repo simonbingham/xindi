@@ -56,6 +56,14 @@ component accessors="true" extends="model.abstract.BaseService" {
 	Page function getPageBySlug( required string slug ){
 		return variables.ContentGateway.getPageBySlug( argumentCollection=arguments );
 	}
+	
+	/**
+	 * I return an array of pages
+	 */	
+	array function getPages( string searchterm="", sortorder="leftvalue", maxresults=0, excludefromsearch="" ){
+		arguments.maxresults = Val( arguments.maxresults );
+		return variables.ContentGateway.getPages( argumentCollection=arguments );
+	}
 
 	/**
 	 * I return a query of pages and articles that match the search term
