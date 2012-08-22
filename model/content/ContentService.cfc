@@ -42,6 +42,14 @@ component accessors="true" extends="model.abstract.BaseService" {
 		}
 		return result;
 	}
+
+	/**
+	 * I return a query of pages and articles that match the search term
+	 */	
+	query function findContentBySearchTerm( string searchterm="", maxresults=50 ){
+		arguments.maxresults = Val( arguments.maxresults );
+		return variables.ContentGateway.findContentBySearchTerm( argumentCollection=arguments );
+	}
 	
 	/**
 	 * I return a page matching an id
@@ -65,14 +73,6 @@ component accessors="true" extends="model.abstract.BaseService" {
 		return variables.ContentGateway.getPages( argumentCollection=arguments );
 	}
 
-	/**
-	 * I return a query of pages and articles that match the search term
-	 */	
-	query function findContentBySearchTerm( string searchterm="", maxresults=50 ){
-		arguments.maxresults = Val( arguments.maxresults );
-		return variables.ContentGateway.findContentBySearchTerm( argumentCollection=arguments );
-	}
-	
 	/**
 	 * I return a query of pages making up the site hierarchy
 	 */	

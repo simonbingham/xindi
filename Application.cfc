@@ -178,7 +178,7 @@ component extends="frameworks.org.corfield.framework"{
 				, suppressaddpage = "" // comma delimited list of page ids for pages that cannot have child pages added
 				, suppressdeletepage = "1" // comma delimited list of page ids for pages that cannot be deleted
 				, suppressmovepage = "" // comma delimited list of page ids for pages that cannot be moved
-				, touchfriendlynavigation = true // if true ancestor page links toggle dropdown - duplicated ancestor page links appear in sub menu
+				, touchfriendlynavigation = false // if true ancestor page links toggle dropdown - duplicated ancestor page links appear in sub menu
 			}
 			, revision = Hash( Now() )
 			, security = {
@@ -196,10 +196,9 @@ component extends="frameworks.org.corfield.framework"{
 		return config;
 	}
 	
-	
 	// ------------------------ VIEW HELPERS ------------------------ //
 	
-	public string function snippet( content, charactercount=100 ){
+	string function snippet( content, charactercount=100 ){
 		var result = Trim( reReplace( arguments.content,"<[^>]{1,}>"," ","all" ) );
 		if ( Len( result ) > arguments.charactercount+10 ){
 			return Trim( Left( result, arguments.charactercount ) ) & "&hellip;";
@@ -208,6 +207,5 @@ component extends="frameworks.org.corfield.framework"{
 			return result;
 		}
 	}
-	
 
 }

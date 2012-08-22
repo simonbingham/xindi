@@ -31,27 +31,12 @@
 			}
 			delete( arguments.thePage );
 		}
-		
-		/**
-		 * I return a page matching an id
-		 */			
-		Page function getPage( required numeric pageid ){
-			return get( "Page", arguments.pageid );
-		}
-
-		/**
-		 * I return a page matching a slug
-		 */			
-		Page function getPageBySlug( required string slug ){
-			var Page = EntityLoad( "Page", { slug=Trim( ListLast( arguments.slug, "/" ) ) }, TRUE );
-			if( IsNull( Page ) ) Page = new( "Page" );
-			return Page;
-		}
 	</cfscript>
 	
 	<cffunction name="findContentBySearchTerm" output="false" returntype="query" hint="I return a query of pages and articles that match the search term">
 		<cfargument name="searchterm" type="string" required="true">
 		<cfargument name="maxresults" type="numeric" required="true" default="50">
+		
 		<cfset var qPages = "">
 		<cfset var keyword = "">
 		
@@ -74,7 +59,7 @@
 				)
 			</cfloop>
 			
-			UNION 
+			union 
 			
 			select	 
 				article_id as id
@@ -100,10 +85,27 @@
 		<cfreturn qPages>
 	</cffunction>
 	
+	<cfscript>	
+		/**
+		 * I return a page matching an id
+		 */			
+		Page function getPage( required numeric pageid ){
+			return get( "Page", arguments.pageid );
+		}
+
+		/**
+		 * I return a page matching a slug
+		 */			
+		Page function getPageBySlug( required string slug ){
+			var Page = EntityLoad( "Page", { slug=Trim( ListLast( arguments.slug, "/" ) ) }, TRUE );
+			if( IsNull( Page ) ) Page = new( "Page" );
+			return Page;
+		}
+	</cfscript>
+	
 	<cffunction name="getNavigation" output="false" returntype="query" hint="I return the pages used to build the navigation">
 		<cfset var qPages = "">
 		
-		<!--- note: for navigation purposes, the home page is at the same level as the other top level pages --->
 		<cfquery name="qPages">
 			select 
 				page.page_id as pageid
