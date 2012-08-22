@@ -20,14 +20,6 @@
 
 <cfsetting enablecfoutputonly="true">
 
-<cfscript>
-	string function urlSafePath( required string path ){
-		var result = Replace( arguments.path, "/", ":", "all" );
-		if( !Len( Trim( result ) ) ) result = "*";
-		return result;
-	}
-</cfscript>	
-
 <cfoutput>
 	<!DOCTYPE html>
 	
