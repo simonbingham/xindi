@@ -33,20 +33,25 @@
 		}
 	</cfscript>
 	
-	<!--- TODO: https://github.com/simonbingham/xindi/issues/96 --->
 	<cffunction name="findContentBySearchTerm" output="false" returntype="query" hint="I return a query of pages and articles that match the search term">
 		<cfargument name="searchterm" type="string" required="true">
-		<cfargument name="maxresults" type="numeric" required="true" default="50">
+		<cfargument name="datasource" type="string" required="true">
+		<cfargument name="maxresults" type="numeric" required="false" default="50">
 		<cfset var qPages = "">
 		<cfset var keyword = "">
+		<cfset var dbinfo = "">
+		<!--- detect datasource type --->
+		<cfdbinfo type="version" datasource="#arguments.datasource#" name="dbinfo">
+		<cfset var datasourcetype = dbinfo.DATABASE_PRODUCTNAME>
+		<!--- extract pages and articles that match search term - includes conditional statements based upon datasource type --->
 		<cfquery name="qPages" maxrows="#arguments.maxresults#">
 			select 
 				page_id as id
 				, page_title as title
 				, page_slug as slug 
 				, page_updated as published 
-				, convert( varchar( 8000 ), page_content ) as content
-				<!---, locate('#arguments.searchterm#', page_content) - (locate('#arguments.searchterm#', page_title) * 100 ) as weighting---> 
+				, <cfif datasourcetype eq "MySQL">page_content<cfelse>convert( varchar( 8000 ), page_content )</cfif> as content
+				<cfif datasourcetype eq "MySQL">, locate('#arguments.searchterm#', page_content) - (locate('#arguments.searchterm#', page_title) * 100 ) as weighting</cfif> 
 				, 'page' as type
 			from pages
 			where 1 = 1
@@ -54,19 +59,17 @@
 				and 
 				(	
 				 	page_title like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#keyword#%"> 
-				 	or cast(page_content as varchar(8000)) like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#keyword#%">
+				 	or page_content like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#keyword#%">
 				)
 			</cfloop>
-			
 			union 
-			
 			select	 
 				article_id as id
 				, article_title as title
 				, article_slug as slug 
 				, article_published as published 
-				, convert( varchar( 8000 ), article_content ) as content
-				<!---, locate('#arguments.searchterm#', article_content) - (locate('#arguments.searchterm#', article_title) * 100 ) as weighting--->
+				, <cfif datasourcetype eq "MySQL">article_content<cfelse>convert( varchar( 8000 ), article_content )</cfif> as content 
+				<cfif datasourcetype eq "MySQL">, locate('#arguments.searchterm#', article_content) - (locate('#arguments.searchterm#', article_title) * 100 ) as weighting</cfif>
 				, 'article' as type
 			from articles
 			where 1=1
@@ -77,7 +80,7 @@
 				 	or article_content like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#keyword#%">
 				)
 			</cfloop>
-			<!---order by weighting--->
+			<cfif datasourcetype eq "MySQL">order by weighting</cfif>
 		</cfquery>
 		<cfreturn qPages>
 	</cffunction>

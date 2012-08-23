@@ -47,7 +47,7 @@ component accessors="true" extends="model.abstract.BaseService" {
 	/**
 	 * I return a query of pages and articles that match the search term
 	 */	
-	query function findContentBySearchTerm( string searchterm="", maxresults=50 ){
+	query function findContentBySearchTerm( string searchterm="", datasource=datasource, maxresults=50 ){
 		arguments.maxresults = Val( arguments.maxresults );
 		return variables.ContentGateway.findContentBySearchTerm( argumentCollection=arguments );
 	}
