@@ -25,6 +25,7 @@ component accessors="true" extends="abstract"{
 	// ------------------------ PUBLIC METHODS ------------------------ //	
 	
 	void function map( required struct rc ){
+		rc.Page = variables.ContentService.getRoot(); // required for breadcrumb trail
 		rc.MetaData.setMetaTitle( "Site Map" ); 
 		rc.MetaData.setMetaDescription( "" );
 		rc.MetaData.setMetaKeywords( "" );		

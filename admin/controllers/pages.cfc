@@ -21,7 +21,6 @@ component accessors="true" extends="abstract"{
 	// ------------------------ DEPENDENCY INJECTION ------------------------ //
 
 	property name="ContentService" setter="true" getter="false";
-	property name="UserService" setter="true" getter="false";
 	
 	// ------------------------ PUBLIC METHODS ------------------------ //
 
@@ -66,8 +65,6 @@ component accessors="true" extends="abstract"{
 		param name="rc.metakeywords" default="";
 		param name="rc.context" default="create";
 		param name="rc.submit" default="Save & exit";
-		var User = variables.UserService.getUser( session.userid );
-		rc.updatedby = User.getFullName();
 		rc.result = variables.ContentService.savePage( rc, rc.ancestorid, rc.context, rc.config.name );
 		rc.Page = rc.result.getTheObject();
 		if( rc.result.getIsSuccess() ){

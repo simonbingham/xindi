@@ -22,6 +22,7 @@ component accessors="true" extends="model.abstract.BaseService" {
 
 	property name="ContentGateway" getter="false";
 	property name="MetaData" getter="false";
+	property name="SecurityService" getter="false";
 	property name="Validator" getter="false";
 
 	// ------------------------ PUBLIC METHODS ------------------------ //
@@ -134,7 +135,9 @@ component accessors="true" extends="model.abstract.BaseService" {
 				arguments.properties.metatitle = variables.MetaData.generatePageTitle( arguments.websitetitle, arguments.properties.title );
 				arguments.properties.metadescription = variables.MetaData.generateMetaDescription( arguments.properties.content );
 				arguments.properties.metakeywords = variables.MetaData.generateMetaKeywords( arguments.properties.title );
-			}			
+			}
+			var User = variables.SecurityService.getCurrentUser();
+			if( !IsNull( User ) ) arguments.properties.updatedby = User.getFullName();
 			populate( Page, arguments.properties );
 			var result = variables.Validator.validate( theObject=Page, context=arguments.context );
 			if( !result.hasErrors() ){

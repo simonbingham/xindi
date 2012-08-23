@@ -157,6 +157,8 @@ component extends="mxunit.framework.TestCase"{
 		CUT.setValidator( Validator );
 		var MetaData = new model.content.MetaData();
 		CUT.setMetaData( MetaData );
+		var SecurityService = new model.security.SecurityService();
+		CUT.setSecurityService( SecurityService ); 		
 		
 		// reinitialise ORM for the application (create database table)
 		ORMReload();
