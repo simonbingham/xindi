@@ -32,6 +32,7 @@ component persistent="true" table="articles" cacheuse="transactional"{
 	property name="published" column="article_published" ormtype="timestamp";
 	property name="created" column="article_created" ormtype="timestamp";
 	property name="updated" column="article_updated" ormtype="timestamp";
+	property name="updatedby" column="article_updatedby" ormtype="string" length="150";
 
 	// ------------------------ PUBLIC METHODS ------------------------ //
 

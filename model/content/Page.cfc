@@ -33,6 +33,7 @@ component persistent="true" table="pages" cacheuse="transactional"{
 	property name="metakeywords" column="page_metakeywords" ormtype="string" length="169";
 	property name="created" column="page_created" ormtype="timestamp";
 	property name="updated" column="page_updated" ormtype="timestamp";
+	property name="updatedby" column="page_updatedby" ormtype="string" length="150";
 
 	// ------------------------ PUBLIC METHODS ------------------------ //
 

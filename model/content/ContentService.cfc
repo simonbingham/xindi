@@ -77,13 +77,7 @@ component accessors="true" extends="model.abstract.BaseService" {
 	 * I return a query of pages making up the site hierarchy
 	 */	
 	query function getNavigation(){
-		var key = "CONTENTSERVICE_GETNESTEDSETPAGES";
-		var result = CacheGet( key );
-		if ( IsNull( result ) ){
-			result = variables.ContentGateway.getNavigation();
-			CachePut( key, result, CreateTimeSpan( 0,0,1,0 ) );
-		}
-		return result;
+		return variables.ContentGateway.getNavigation();
 	}
 	
 	/**
@@ -91,13 +85,7 @@ component accessors="true" extends="model.abstract.BaseService" {
 	 */	
 	query function getNavigationPath( required pageid ){
 		arguments.pageid = Val( arguments.pageid );
-		var key = "CONTENTSERVICE_GETNAVIGATIONPATH_" & arguments.pageid;
-		var result = CacheGet( key );
-		if ( IsNull( result ) ){
-			result = variables.ContentGateway.getNavigationPath( arguments.pageid );
-			CachePut( key, result, CreateTimeSpan( 0,0,1,0 ) );
-		}
-		return result;
+		return variables.ContentGateway.getNavigationPath( arguments.pageid );
 	}
 
 	/**
