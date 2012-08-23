@@ -153,10 +153,10 @@ component extends="mxunit.framework.TestCase"{
 		selenium.waitForPageToLoad( timeout );
 		assertTrue( selenium.isTextPresent( "regexp:(The page "".*"" has been saved.)" ) );
 		// move page
-		selenium.click( "//div[@id='content']/table/tbody/tr[7]/td[5]/a/i" );
+		selenium.click( "//div[@id='content']/table/tbody/tr[10]/td[5]/a/i" );
 		selenium.waitForPageToLoad( timeout );
 		assertTrue( selenium.isTextPresent( "The page ""test edit"" has been moved." ) );
-		selenium.click( "//div[@id='content']/table/tbody/tr[6]/td[6]/a/i" );
+		selenium.click( "//div[@id='content']/table/tbody/tr[9]/td[6]/a/i" );
 		selenium.waitForPageToLoad( timeout );
 		assertTrue( selenium.isTextPresent( "regexp:(The page "".*"" has been moved.)" ) );
 		// delete page
