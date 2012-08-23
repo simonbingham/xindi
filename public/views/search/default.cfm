@@ -17,6 +17,11 @@
 --->
 
 <cfoutput>
+	<ul class="breadcrumb">
+		<li><a href="#rc.basehref#">Home</a> <span class="divider">/</span></li>
+		<li class="active">Search Results</li>
+	</ul>	
+	
 	<h1>Search Results</h1>
 	
 	<cfif StructKeyExists( rc, "pages" ) and rc.pages.recordcount>
