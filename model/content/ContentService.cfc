@@ -68,7 +68,7 @@ component accessors="true" extends="model.abstract.BaseService" {
 	/**
 	 * I return an array of pages
 	 */	
-	array function getPages( string searchterm="", sortorder="leftvalue", maxresults=0, excludefromsearch="" ){
+	array function getPages( string searchterm="", sortorder="leftvalue", maxresults=0 ){
 		arguments.maxresults = Val( arguments.maxresults );
 		return variables.ContentGateway.getPages( argumentCollection=arguments );
 	}
