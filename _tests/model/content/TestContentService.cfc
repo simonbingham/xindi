@@ -200,7 +200,12 @@ component extends="mxunit.framework.TestCase"{
 	function tearDown(){
 		// destroy test data
 		var q = new Query();
-		q.setSQL( "DROP TABLE Pages;");
+		q.setSQL( "
+			DROP TABLE Articles;
+			DROP TABLE Enquiries;
+			DROP TABLE Pages;
+			DROP TABLE Users;
+		");
 		q.execute();
 		
 		// clear first level cache and remove any unsaved objects
