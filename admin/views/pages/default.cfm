@@ -57,5 +57,7 @@
 		</tbody>
 	</table>
 	
-	<cfif ArrayLen( local.routes )><p class="faded">* You cannot edit or delete this page because it redirects to another website feature.</p></cfif>
+	<cfif ArrayLen( local.routes )><p>* You cannot edit or delete this page because it redirects to another website feature.</p></cfif>
+	
+	<p><span class="label label-info">Heads up!</span> Please allow a minute for the navigation to update when adding and removing pages. We've cached it to make it super fast!</p>
 </cfoutput>
