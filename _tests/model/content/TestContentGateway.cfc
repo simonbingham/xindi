@@ -53,7 +53,7 @@ component extends="mxunit.framework.TestCase"{
 		assertEquals( 13, result.recordcount );
 	}
 	
-	function testgetNavigationPath(){
+	function testGetNavigationPath(){
 		var result = CUT.getNavigationPath(5);
 		assertEquals( 2, result.recordcount );
 		assertEquals( 1, result.pageid[1] );
