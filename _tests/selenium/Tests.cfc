@@ -24,7 +24,7 @@ component extends="mxunit.framework.TestCase"{
 	// run once before all tests
 	function beforeTests() {
 		// set url of Xindi installation
-		browserURL = "http://localhost:8888/xindi";
+		browserURL = "http://localhost/xindi";
 		// set browser to be used for testing
 		browserCommand = "*firefox";
 		// create a new instance of CFSelenium
@@ -101,7 +101,6 @@ component extends="mxunit.framework.TestCase"{
 	function testSearchFeature() {
 		selenium.open( browserURL );
 		selenium.waitForPageToLoad( timeout );
-		selenium.type( "id=searchterm", "welcome" );
 		selenium.submit( "id=search" );
 		selenium.waitForPageToLoad( timeout );
 		assertEquals( "Search Results", selenium.getTitle() );
@@ -163,7 +162,7 @@ component extends="mxunit.framework.TestCase"{
 		selenium.click( "//div[@id='content']/table/tbody/tr[7]/td[7]/a/i" );
 		selenium.waitForPageToLoad( timeout );
 		// when we delete a record a confirmation dialog appears
-		// the getConfirmation method forces the Ok button to be clicked in the dialog
+		// calling the getConfirmation method forces the Ok button to be clicked in the dialog
 		selenium.getConfirmation();
 		assertTrue( selenium.isTextPresent( "regexp:(The page "".*"" has been deleted.)" ) );
 		doLogout();
@@ -178,7 +177,7 @@ component extends="mxunit.framework.TestCase"{
 		selenium.waitForPageToLoad( timeout );
 		selenium.type( "id=title", "test" );		
 		selenium.type( "id=published", "01/07/2012" );	
-		// use JavaScript to enter content into CKEditor	
+		// use JavaScript to enter content into CKEditor
 		selenium.runScript( "CKEDITOR.instances['article-content'].setData('<p>test</p>');" );
 		selenium.runScript( "document.getElementById('article-form').onsubmit=function(){CKEDITOR.instances[ 'article-content' ].updateElement();};" );
 		selenium.click( "id=submit" );
