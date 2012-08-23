@@ -21,7 +21,6 @@ component accessors="true" extends="abstract"{
 	// ------------------------ DEPENDENCY INJECTION ------------------------ //
 
 	property name="NewsService" setter="true" getter="false";
-	property name="UserService" setter="true" getter="false";
 	
 	// ------------------------ PUBLIC METHODS ------------------------ //
 
@@ -52,8 +51,6 @@ component accessors="true" extends="abstract"{
 		param name="rc.metadescription" default="";
 		param name="rc.metakeywords" default="";
 		param name="rc.submit" default="Save & exit";
-		var User = variables.UserService.getUser( session.userid );
-		rc.updatedby = User.getFullName();		
 		rc.result = variables.NewsService.saveArticle( rc, rc.config.name );
 		rc.Article = rc.result.getTheObject();
 		if( rc.result.getIsSuccess() ){

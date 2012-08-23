@@ -44,6 +44,13 @@ component accessors="true" extends="model.abstract.BaseService"{
 		return result;
 	}
 
+	/**
+	 * I return the current storage mechanism
+	 */		
+	function getCurrentStorage(){ 
+		return session;
+	}
+
 	function getCurrentUser(){
 		if( hasCurrentUser() ){
 			var map = getCurrentStorage();
@@ -139,13 +146,6 @@ component accessors="true" extends="model.abstract.BaseService"{
 	 */		
 	void function setCurrentUser( required any User ){
 		getCurrentStorage()[ variables.userkey ] = arguments.User.getUserID();
-	}
-	
-	/**
-	 * I return the current storage mechanism
-	 */		
-	private function getCurrentStorage(){ 
-		return session; 
 	}
 	
 }

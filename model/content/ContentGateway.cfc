@@ -40,7 +40,7 @@
 		<cfset var qPages = "">
 		<cfset var keyword = "">
 		
-		<cfquery name="qPages" maxrows="#arguments.maxresults#" cachedwithin="#CreateTimeSpan(0,0,1,0)#">
+		<cfquery name="qPages" maxrows="#arguments.maxresults#">
 			select 
 				page_id as id
 				, page_title as title
