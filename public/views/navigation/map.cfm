@@ -17,6 +17,11 @@
 --->
 
 <cfoutput>
+	<ul class="breadcrumb">
+		<li><a href="#rc.basehref#">Home</a> <span class="divider">/</span></li>
+		<li class="active">Site Map</li>
+	</ul>
+	
 	<h1>Site Map</h1>
 	
 	<cfset local.prevLevel = -1>
