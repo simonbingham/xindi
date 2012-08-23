@@ -35,13 +35,13 @@
 	
 	<cffunction name="findContentBySearchTerm" output="false" returntype="query" hint="I return a query of pages and articles that match the search term">
 		<cfargument name="searchterm" type="string" required="true">
-		<cfargument name="datasource" type="string" required="true">
+		<cfargument name="thedatasource" type="string" required="true">
 		<cfargument name="maxresults" type="numeric" required="false" default="50">
 		<cfset var qPages = "">
 		<cfset var keyword = "">
 		<cfset var dbinfo = "">
 		<!--- detect datasource type --->
-		<cfdbinfo type="version" datasource="#arguments.datasource#" name="dbinfo">
+		<cfdbinfo type="version" datasource="#arguments.thedatasource#" name="dbinfo">
 		<cfset var datasourcetype = dbinfo.DATABASE_PRODUCTNAME>
 		<!--- extract pages and articles that match search term - includes conditional statements based upon datasource type --->
 		<cfquery name="qPages" maxrows="#arguments.maxresults#">
@@ -105,7 +105,6 @@
 	
 	<cffunction name="getNavigation" output="false" returntype="query" hint="I return the pages used to build the navigation">
 		<cfset var qPages = "">
-		
 		<cfquery name="qPages" cachedwithin="#CreateTimeSpan(0,0,1,0)#">
 			select 
 				page.page_id as pageid
@@ -123,7 +122,6 @@
 			where page_left > 0
 			order by page_left
 		</cfquery>
-
 		<cfreturn qPages>
 	</cffunction>
 	
