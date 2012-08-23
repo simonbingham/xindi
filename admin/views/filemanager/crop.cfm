@@ -1,4 +1,6 @@
 <cfoutput>
+	<h1>Edit Image</h1>
+	
 	<!--- big image offer so offer to resize --->
 	<cfset local.thumbnail.width = 110>
 	<cfset local.small.width = 320>
@@ -39,7 +41,7 @@
 <script>
 jQuery(function($){
 	$("#cancel").click(function(){
-		document.location.href = <cfoutput>"#buildURL( 'home?subdirectory=#urlSafePath( rc.subdirectory )#' )#"</cfoutput>;
+		document.location.href = <cfoutput>"#buildURL( 'filemanager?subdirectory=#urlSafePath( rc.subdirectory )#' )#"</cfoutput>;
 	});
 	
 	$("form").keypress(function (e) {
