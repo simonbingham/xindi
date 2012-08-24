@@ -25,6 +25,7 @@ component accessors="true" extends="abstract"{
 	// ------------------------ PUBLIC METHODS ------------------------ //	
 	
 	void function map( required struct rc ){
+		rc.Page = variables.ContentService.getRoot(); // required for breadcrumb trail
 		rc.MetaData.setMetaTitle( "Site Map" ); 
 		rc.MetaData.setMetaDescription( "" );
 		rc.MetaData.setMetaKeywords( "" );		
@@ -32,7 +33,7 @@ component accessors="true" extends="abstract"{
 	
 	void function xml( required struct rc ){
 		rc.sesomitindex = variables.fw.getConfig().sesomitindex;
-		rc.pages = variables.ContentService.getPages();
+		if( rc.config.news.enabled ) rc.articles = variables.NewsService.getArticles( published=true );
 	}		
 	
 }

@@ -16,17 +16,13 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 --->
 
-<!--- specify canonical url for page (http://support.google.com/webmasters/bin/answer.py?hl=en&answer=139394) --->
-<cfsavecontent variable="local.canonicalurl">
-	<cfoutput>
-		<link rel="canonical" href="#buildURL( rc.Page.getSlug() )#">
-	</cfoutput>
-</cfsavecontent>
-
-<cfhtmlhead text="#local.canonicalurl#">
-
 <cfoutput>
-	#view( "navigation/breadcrumbs", { Page=rc.Page })#
-	
+	<cfif !rc.Page.isRoot()>
+		<ul class="breadcrumb">
+			<cfloop query="rc.breadcrumbs"><li><a href="#buildURL( rc.breadcrumbs.slug )#">#rc.breadcrumbs.title#</a> <span class="divider">/</span></li></cfloop>
+			<li class="active">#rc.Page.getTitle()#</li>
+		</ul>
+	</cfif>
+		
 	#rc.Page.getContent()#
 </cfoutput>

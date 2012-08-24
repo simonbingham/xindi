@@ -16,23 +16,8 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 --->
 
-<!--- specify canonical url for page (http://support.google.com/webmasters/bin/answer.py?hl=en&answer=139394) --->
-<cfsavecontent variable="local.canonicalurl">
-	<cfoutput>
-		<link rel="canonical" href="#buildURL( action='news.article', querystring='label=#rc.Article.getLabel()#' )#">
-	</cfoutput>
-</cfsavecontent>
-
-<cfhtmlhead text="#local.canonicalurl#">
-
 <cfoutput>
-	<div class="page-header">
-		<h1>
-			#rc.Article.getTitle()#
-			
-			<small class="pull-right">#DateFormat( rc.Article.getPublished(), "full" )#</small>
-		</h1>
-	</div>
-	
 	#rc.Article.getContent()#
+	
+	<p>#DateFormat( rc.Article.getPublished(), "full" )#</p>
 </cfoutput>

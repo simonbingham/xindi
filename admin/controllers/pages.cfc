@@ -65,7 +65,7 @@ component accessors="true" extends="abstract"{
 		param name="rc.metakeywords" default="";
 		param name="rc.context" default="create";
 		param name="rc.submit" default="Save & exit";
-		rc.result = variables.ContentService.savePage( rc, rc.ancestorid, rc.context );
+		rc.result = variables.ContentService.savePage( rc, rc.ancestorid, rc.context, rc.config.name );
 		rc.Page = rc.result.getTheObject();
 		if( rc.result.getIsSuccess() ){
 			if( !rc.config.development ){

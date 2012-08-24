@@ -21,7 +21,8 @@ component accessors="true" extends="model.abstract.BaseService" {
 	// ------------------------ DEPENDENCY INJECTION ------------------------ //
 
 	property name="ContentGateway" getter="false";
-	property name="MetaDataService" getter="false";
+	property name="MetaData" getter="false";
+	property name="SecurityService" getter="false";
 	property name="Validator" getter="false";
 
 	// ------------------------ PUBLIC METHODS ------------------------ //
@@ -42,6 +43,14 @@ component accessors="true" extends="model.abstract.BaseService" {
 		}
 		return result;
 	}
+
+	/**
+	 * I return a query of pages and articles that match the search term
+	 */	
+/*	query function findContentBySearchTerm( string searchterm="", thedatasource=thedatasource, maxresults=50 ){
+		arguments.maxresults = Val( arguments.maxresults );
+		return variables.ContentGateway.findContentBySearchTerm( argumentCollection=arguments );
+	}*/
 	
 	/**
 	 * I return a page matching an id
@@ -56,13 +65,28 @@ component accessors="true" extends="model.abstract.BaseService" {
 	Page function getPageBySlug( required string slug ){
 		return variables.ContentGateway.getPageBySlug( argumentCollection=arguments );
 	}
-
+	
 	/**
 	 * I return an array of pages
 	 */	
 	array function getPages( string searchterm="", sortorder="leftvalue", maxresults=0 ){
 		arguments.maxresults = Val( arguments.maxresults );
 		return variables.ContentGateway.getPages( argumentCollection=arguments );
+	}
+
+	/**
+	 * I return a query of pages making up the site hierarchy
+	 */	
+	query function getNavigation(){
+		return variables.ContentGateway.getNavigation();
+	}
+	
+	/**
+	 * I return a query of pages for page's hierarchy
+	 */	
+	query function getNavigationPath( required pageid ){
+		arguments.pageid = Val( arguments.pageid );
+		return variables.ContentGateway.getNavigationPath( arguments.pageid );
 	}
 
 	/**
@@ -101,12 +125,19 @@ component accessors="true" extends="model.abstract.BaseService" {
 	/**
 	 * I validate and save a page
 	 */		
-	struct function savePage( required struct properties, required ancestorid, required string context ){
+	struct function savePage( required struct properties, required ancestorid, required string context, required string websitetitle ){
 		transaction{
 			param name="arguments.properties.pageid" default="";
+			param name="arguments.properties.metagenerated" default="false";
 			arguments.properties.pageid = Val( arguments.properties.pageid );
-			var Page = "";
-			Page = variables.ContentGateway.getPage( arguments.properties.pageid );
+			var Page = variables.ContentGateway.getPage( arguments.properties.pageid );
+			if( arguments.properties.metagenerated ){
+				arguments.properties.metatitle = variables.MetaData.generatePageTitle( arguments.websitetitle, arguments.properties.title );
+				arguments.properties.metadescription = variables.MetaData.generateMetaDescription( arguments.properties.content );
+				arguments.properties.metakeywords = variables.MetaData.generateMetaKeywords( arguments.properties.title );
+			}
+			var User = variables.SecurityService.getCurrentUser();
+			if( !IsNull( User ) ) arguments.properties.updatedby = User.getFullName();
 			populate( Page, arguments.properties );
 			var result = variables.Validator.validate( theObject=Page, context=arguments.context );
 			if( !result.hasErrors() ){

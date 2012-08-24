@@ -16,52 +16,44 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 --->
 
-<cfset local.previouslevel = -1>
-
 <cfoutput>
-	<cfprocessingdirective suppresswhitespace="true">	
-		<div class="page-header"><h1>Site Map</h1></div>
+	<ul class="breadcrumb">
+		<li><a href="#rc.basehref#">#rc.Page.getTitle()#</a> <span class="divider">/</span></li>
+		<li class="active">Site Map</li>
+	</ul>
 	
-		<!--- check pages exist --->
-		<cfif ArrayLen( rc.navigation )>
-			<!--- loop through pages --->
-			<cfloop array="#rc.navigation#" index="local.Page">
-				<!--- create page link --->
-				<cfsavecontent variable="local.link">
-					<!--- build url --->
-					<a href="#buildURL( local.Page.getSlug() )#">#local.Page.getTitle()#</a>
-				</cfsavecontent>		
-				
-				<!--- if the current page level is greater than the previous page level initiate a new tier in the menu --->
-				<cfif local.Page.getLevel() gt local.previouslevel>
-					<cfif local.Page.getLevel() neq 1><ul></cfif>
-					<li>#local.link#
-					<cfif local.Page.isRoot()></li></cfif>
-				<!--- if the current page level is less than the previous page level we need to go up a tier in the menu --->
-				<cfelseif local.Page.getLevel() lt local.previouslevel>
-					<cfset local.temporary = local.previouslevel>
-					<!--- keep going up a tier whilst the previous page level is greater than the current page level --->				
-					<cfloop condition="local.temporary gt local.Page.getLevel()">
-		 				</li></ul>
-						<cfset local.temporary = local.temporary - 1>
-					</cfloop>
-					</li><li>#local.link#
-				<!--- if the current page level is the same as the previous page level just display a link --->
-				<cfelse>
-					</li><li>#local.link#
-				</cfif>
-				<cfset local.previouslevel = local.Page.getLevel()>
-			</cfloop>
+	<h1>Site Map</h1>
 	
-			<!--- finally we need to ensure our nested menu is closed correctly --->
-			<!--- keep going up a tier whilst the previous page level is greater than or equal to zero --->
-			<cfset local.temporary = local.Page.getLevel()>
-			<cfloop condition="local.temporary ge 1">
+	<cfset local.prevLevel = -1>
+	<cfset local.currLevel = -1>
+	
+	<cfloop query="rc.navigation">
+		<cfset local.currLevel = rc.navigation.depth>
+
+		<cfif local.currLevel gt local.prevLevel>
+			<ul class="depth-#rc.navigation.depth#"><li><a href="#buildURL( rc.navigation.slug )#">#rc.navigation.title#</a>
+		<cfelseif local.currLevel lt local.prevLevel>
+			<cfset local.tmp = local.prevLevel>
+
+			<cfloop condition="local.tmp gt local.currLevel">
 				</li></ul>
-				<cfset local.temporary = local.temporary - 1>
+				
+				<cfset local.tmp -= 1>
 			</cfloop>
-			
-			<cfif ArrayLen( rc.navigation ) eq 1></ul></cfif>
+
+			</li><li><a href="#buildURL( rc.navigation.slug )#">#rc.navigation.title#</a>
+		<cfelse>
+			</li><li><a href="#buildURL( rc.navigation.slug )#">#rc.navigation.title#</a>
 		</cfif>
-	</cfprocessingdirective>
+
+		<cfset local.prevLevel = rc.navigation.depth>
+	</cfloop>
+
+	<cfset local.tmp = local.currLevel>
+
+	<cfloop condition="local.tmp gt 0">
+		</li></ul>
+		
+		<cfset local.tmp -= 1>
+	</cfloop>
 </cfoutput>

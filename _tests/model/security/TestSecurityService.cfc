@@ -160,7 +160,12 @@ component extends="mxunit.framework.TestCase"{
 	function tearDown(){
 		// destroy test data
 		var q = new Query();
-		q.setSQL( "DROP TABLE Users;");
+		q.setSQL( "
+			DROP TABLE Articles;
+			DROP TABLE Enquiries;
+			DROP TABLE Pages;
+			DROP TABLE Users;
+		");
 		q.execute();
 		
 		// reset session

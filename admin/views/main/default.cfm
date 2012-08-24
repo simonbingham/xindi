@@ -21,70 +21,14 @@
 
 	#view( "helpers/messages" )#
 
-	<h2>Recent Activity</h2>
-	
-	<cfif ArrayLen( rc.updatedpages )>
-		<hr />
-		
-		<p class="pull-right"><a href="#buildURL( 'pages' )#" class="btn btn-primary">Manage pages <i class="icon-chevron-right icon-white"></i></a></p>
-		
-		<h3>Pages</h3>
-		
-		<table class="table table-striped table-bordered table-condensed">
-			<thead>
-				<tr>
-					<th>Title</th>
-					<th style="width:25%;">Last Updated</th>
-					<th style="width:25%;" class="center">View</th>
-				</tr>
-			</thead>
-			
-			<tbody>
-				<cfloop array="#rc.updatedpages#" index="local.Page">
-					<tr>
-						<td>#local.Page.getTitle()#</td>
-						<td>#DateFormat( local.Page.getUpdated(), "full" )# #TimeFormat( local.Page.getUpdated() )#</td>
-						<td class="center"><a href="#buildURL( action="public:" & local.Page.getSlug() )#" title="View" target="_blank"><i class="icon-eye-open"></i></a></td>
-					</tr>
-				</cfloop>
-			</tbody>
-		</table>
-	</cfif>	
+	<p>Please use the options above to maintain your site.</p>
 
-	<cfif rc.config.news.enabled and ArrayLen( rc.updatedarticles )>
-		<hr />
-		
-		<p class="pull-right"><a href="#buildURL( 'news' )#" class="btn btn-primary">Manage news <i class="icon-chevron-right icon-white"></i></a></p>
-		
-		<h3>News</h3>
-		
-		<table class="table table-striped table-bordered table-condensed">
-			<thead>
-				<tr>
-					<th>Title</th>
-					<th style="width:25%;">Last Updated</th>
-					<th style="width:25%;" class="center">View</th>
-				</tr>
-			</thead>
-			
-			<tbody>
-				<cfloop array="#rc.updatedarticles#" index="local.Article">
-					<tr>
-						<td>#local.Article.getTitle()#</td>
-						<td>#DateFormat( local.Article.getUpdated(), "full" )# #TimeFormat( local.Article.getUpdated() )#</td>
-						<td class="center"><a href="#buildURL( action='public:news.article', querystring='label=#local.Article.getLabel()#' )#" title="View" target="_blank"><i class="icon-eye-open"></i></a></td>
-					</tr>
-				</cfloop>
-			</tbody>
-		</table>
-	</cfif>	
-	
-	<cfif ArrayLen( rc.unreadenquiries )>
+	<cfif ArrayLen( rc.recentenquiries )>
 		<hr />
 		
 		<p class="pull-right"><a href="#buildURL( 'enquiries' )#" class="btn btn-primary">View enquiries <i class="icon-chevron-right icon-white"></i></a></p>
 		
-		<h3>Enquiries</h3>
+		<h2>Enquiries</h2>
 		
 		<table class="table table-striped table-bordered table-condensed">
 			<thead>
@@ -97,7 +41,7 @@
 			</thead>
 			
 			<tbody>
-				<cfloop array="#rc.unreadenquiries#" index="local.Enquiry">
+				<cfloop array="#rc.recentenquiries#" index="local.Enquiry">
 					<tr>
 						<td class="center"><cfif !local.Enquiry.isRead()><span class="label label-info">new</span></cfif></td>
 						<td>#local.Enquiry.getFullName()#</td>

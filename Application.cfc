@@ -1,5 +1,5 @@
 /*
-	Xindi - http://www.getxindi.com/ - Version 2012.8.13
+	Xindi - http://www.getxindi.com/ - Version 2012.08.24
 	
 	Copyright (c) 2012, Simon Bingham
 	
@@ -57,7 +57,10 @@ component extends="frameworks.org.corfield.framework"{
 		, password = ""
 		, reloadApplicationOnEveryRequest = this.development
 		, usingSubsystems = true
-		//, routes = [{ ""="", hint="" }]
+		, routes = [
+			{ "news"="news", hint="Redirect to news feature" }
+			, { "enquiry"="enquiry", hint="Redirect to enquiry feature" }
+		]
 	};
 	
 	// ------------------------ CALLED WHEN APPLICATION STARTS ------------------------ //	
@@ -74,8 +77,6 @@ component extends="frameworks.org.corfield.framework"{
 		HothConfig.setEmailExceptionsAsHTML( getConfig().exceptiontracker.emailexceptionsashtml );
 		application.exceptiontracker = new Hoth.HothTracker( HothConfig );
 	
-		ORMReload();
-
 		// setup bean factory
 		var beanfactory = new frameworks.org.corfield.ioc( "/model", { singletonPattern = "(Service|Gateway)$" } );
 		setBeanFactory( beanfactory );
@@ -94,6 +95,8 @@ component extends="frameworks.org.corfield.framework"{
 	// ------------------------ CALLED WHEN PAGE REQUEST STARTS ------------------------ //	
 
 	void function setupRequest(){
+		if( this.development && !isNull( url.rebuild ) ) ORMReload();
+
 		// define base url
 		if( CGI.HTTPS eq "on" ) rc.basehref = "https://";
 		else rc.basehref = "http://";
@@ -109,13 +112,13 @@ component extends="frameworks.org.corfield.framework"{
 	// ------------------------ CALLED WHEN VIEW RENDERING STARTS ------------------------ //	
 	
 	void function setupView(){
-		rc.navigation = getBeanFactory().getBean( "ContentService" ).getPages();
-	}	
+		// get data need to build the navigation
+		rc.navigation = getBeanFactory().getBean( "ContentService" ).getNavigation();
+	}
 	
 	// ------------------------ CALLED WHEN EXCEPTION OCCURS ------------------------ //	
 	
-	void function onError( Exception, event )
-	{	
+	void function onError( Exception, event ){	
 		if( StructKeyExists( application, "exceptiontracker" ) ) application.exceptiontracker.track( arguments.Exception );
 		super.onError( arguments.Exception, arguments.event );
 	}	
@@ -123,16 +126,21 @@ component extends="frameworks.org.corfield.framework"{
 	// ------------------------ CALLED WHEN VIEW IS MISSING ------------------------ //	
 
 	any function onMissingView( required rc ){
-		rc.Page = getBeanFactory().getBean( "ContentService" ).getPageBySlug( ListLast( CGI.PATH_INFO, "/" ) );
+		var slug = LCase( ListLast( CGI.PATH_INFO, "/" ) );
+		if ( slug == "" ) slug = rc.config.page.defaultslug; // set default
+		rc.Page = getBeanFactory().getBean( "ContentService" ).getPageBySlug( slug );
 		if( !rc.Page.isPersisted() ){
 			var pagecontext = getPageContext().getResponse();
 			pagecontext.getResponse().setStatus( 404 );
+			rc.MetaData.setMetaTitle( "Page Not Found" ); 
 			return view( "public:main/notfound" );
 		}else{
+			rc.breadcrumbs = getBeanFactory().getBean( "ContentService" ).getNavigationPath( rc.Page.getPageID() );
+			
 			rc.MetaData.setMetaTitle( rc.Page.getMetaTitle() ); 
 			rc.MetaData.setMetaDescription( rc.Page.getMetaDescription() );
 			rc.MetaData.setMetaKeywords( rc.Page.getMetaKeywords() );
-			return view( "public:main/default" );
+			return view( "public:main/missingview" );
 		}
 	}
 	
@@ -141,6 +149,7 @@ component extends="frameworks.org.corfield.framework"{
 	private struct function getConfig(){
 		var config = {
 			development = this.development
+			, datasource = this.datasource
 			, enquiry = {
 				enabled = true
 				, subject = "Enquiry"
@@ -164,12 +173,11 @@ component extends="frameworks.org.corfield.framework"{
 			}
 			, page = { 
 				enableadddelete = true
-				, excludefromnavigation = "" // comma delimited list of page ids to exclude from navigation
 				, maxlevels = 2 // number of page tiers that can be added - Bootstrap dropdown supports a maximum of 2
 				, suppressaddpage = "" // comma delimited list of page ids for pages that cannot have child pages added
 				, suppressdeletepage = "1" // comma delimited list of page ids for pages that cannot be deleted
 				, suppressmovepage = "" // comma delimited list of page ids for pages that cannot be moved
-				, touchfriendlynavigation = true // if true ancestor page links toggle dropdown - duplicated ancestor page links appear in sub menu
+				, defaultslug = "home" // default 'slug' to use to get homepage
 			}
 			, revision = Hash( Now() )
 			, security = {
@@ -185,6 +193,29 @@ component extends="frameworks.org.corfield.framework"{
 			config.security.resetpasswordemailfrom = "";
 		} 
 		return config;
-	}	
+	}
+	
+	// ------------------------ FRAMEWORK HELPERS ------------------------ //
+	
+	/**
+	* I override the FW/1 buildURL method to clean up the homepage URLs *
+	**/
+	public string function buildURL( string action = '.', string path = variables.magicBaseURL, any queryString = '' ) {
+		var theurl = super.buildURL( arguments.action, arguments.path, arguments.queryString );
+		theurl = ReReplace( theurl, "index\.cfm/#getBeanFactory().getBean( "Config" ).page.defaultslug#$", "" );
+		return theurl;
+	}
+
+	// ------------------------ VIEW HELPERS ------------------------ //
+	
+	string function snippet( content, charactercount=100 ){
+		var result = Trim( reReplace( arguments.content,"<[^>]{1,}>"," ","all" ) );
+		if ( Len( result ) > arguments.charactercount+10 ){
+			return Trim( Left( result, arguments.charactercount ) ) & "&hellip;";
+		}
+		else{
+			return result;
+		}
+	}
 
 }

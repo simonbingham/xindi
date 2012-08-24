@@ -15,13 +15,14 @@ td.chevron-right{ background:url("../img/ico-chevron-right.gif") no-repeat; }
 .append-bottom{ margin-bottom:30px; }
 .center{ text-align:center !important; }
 .clear{ clear:both; }
+.dev-mode{ position:fixed; bottom:10px; right:10px; z-index:100; }
 .error{ color:#B94A48; }
 .faded{ color:#888; font-style:italic; }
 .hide{ display:none; }
 .inline{ margin:0; }
 .inline li{ display:inline-block; margin-right:10px; }
-.navbar-inner{ background-color: #01324A; background-image: -moz-linear-gradient(center top , #01324a, #012638); }
-.navbar .nav > li > a { color:#fff; }
+.navbar-inner{ background:#01324A; background-image: -moz-linear-gradient(center top , #01324a, #012638); }
+.navbar .nav > li > a, .navbar .nav > li > a:hover, .navbar .nav > li > a:visited { color:#fff; }
 
 @media ( max-width:979px ) {
 	#container{ padding-top:0; }

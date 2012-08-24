@@ -31,7 +31,61 @@
 			}
 			delete( arguments.thePage );
 		}
-		
+	</cfscript>
+	
+	<cffunction name="findContentBySearchTerm" output="false" returntype="query" hint="I return a query of pages and articles that match the search term">
+		<cfargument name="searchterm" type="string" required="true">
+		<cfargument name="thedatasource" type="string" required="true">
+		<cfargument name="maxresults" type="numeric" required="false" default="50">
+		<cfset var qPages = "">
+		<cfset var keyword = "">
+		<cfset var dbinfo = "">
+		<!--- detect datasource type --->
+		<cfdbinfo type="version" datasource="#arguments.thedatasource#" name="dbinfo">
+		<cfset var datasourcetype = dbinfo.DATABASE_PRODUCTNAME>
+		<!--- extract pages and articles that match search term - includes conditional statements based upon datasource type --->
+		<cfquery name="qPages" maxrows="#arguments.maxresults#">
+			select 
+				page_id as id
+				, page_title as title
+				, page_slug as slug 
+				, page_updated as published 
+				, <cfif datasourcetype eq "MySQL">page_content<cfelse>convert( varchar( 8000 ), page_content )</cfif> as content
+				<cfif datasourcetype eq "MySQL">, locate('#arguments.searchterm#', page_content) - (locate('#arguments.searchterm#', page_title) * 100 ) as weighting</cfif> 
+				, 'page' as type
+			from pages
+			where 1 = 1
+			<cfloop list="#arguments.searchterm#" index="keyword" delimiters=" ">
+				and 
+				(	
+				 	page_title like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#keyword#%"> 
+				 	or page_content like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#keyword#%">
+				)
+			</cfloop>
+			union 
+			select	 
+				article_id as id
+				, article_title as title
+				, article_slug as slug 
+				, article_published as published 
+				, <cfif datasourcetype eq "MySQL">article_content<cfelse>convert( varchar( 8000 ), article_content )</cfif> as content 
+				<cfif datasourcetype eq "MySQL">, locate('#arguments.searchterm#', article_content) - (locate('#arguments.searchterm#', article_title) * 100 ) as weighting</cfif>
+				, 'article' as type
+			from articles
+			where 1=1
+			<cfloop list="#arguments.searchterm#" index="keyword" delimiters=" ">
+				and 
+				(	
+				 	article_title like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#keyword#%"> 
+				 	or article_content like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#keyword#%">
+				)
+			</cfloop>
+			<cfif datasourcetype eq "MySQL">order by weighting</cfif>
+		</cfquery>
+		<cfreturn qPages>
+	</cffunction>
+	
+	<cfscript>	
 		/**
 		 * I return a page matching an id
 		 */			
@@ -43,11 +97,51 @@
 		 * I return a page matching a slug
 		 */			
 		Page function getPageBySlug( required string slug ){
-			var Page = EntityLoad( "Page", { label=Trim( ListLast( arguments.slug, "/" ) ) }, TRUE );
+			var Page = EntityLoad( "Page", { slug=Trim( ListLast( arguments.slug, "/" ) ) }, TRUE );
 			if( IsNull( Page ) ) Page = new( "Page" );
 			return Page;
 		}
 	</cfscript>
+	
+	<cffunction name="getNavigation" output="false" returntype="query" hint="I return the pages used to build the navigation">
+		<cfset var qPages = "">
+		<cfquery name="qPages" cachedwithin="#CreateTimeSpan(0,0,1,0)#">
+			select 
+				page.page_id as pageid
+				, page.page_slug as slug
+				, page.page_title as title
+				, page.page_updated as updated
+				, case when page.page_left = 1 then 1 else (
+					select count(*)
+					from pages as pageSubQuery 
+					where pageSubQuery.page_left < page.page_left
+						and pageSubQuery.page_right > page.page_right 
+					) end as depth 
+				, ( ( page.page_right - page.page_left - 1) / 2 ) as descendants
+			from pages as page
+			where page_left > 0
+			order by page_left
+		</cfquery>
+		<cfreturn qPages>
+	</cffunction>
+	
+	<cffunction name="getNavigationPath" output="false" returntype="query" hint="returns the pages forming the path to the website root">
+		<cfargument name="pageid" required="true" hint="the page id for the end of the trail">
+		<cfset var qPages = "">
+		<cfquery name="qPages">
+			select
+				ancestor.page_id as pageid
+				, ancestor.page_title as title
+				, ancestor.page_slug as slug
+			from pages as child,
+				pages as ancestor 
+			where child.page_left >= ancestor.page_left and child.page_left <= ancestor.page_right 
+				and child.page_id = <cfqueryparam value="#arguments.pageid#" cfsqltype="cf_sql_integer">
+				and ancestor.page_id <> <cfqueryparam value="#arguments.pageid#" cfsqltype="cf_sql_integer"><!--- exclude passed page --->
+			order by ancestor.page_left
+		</cfquery>
+		<cfreturn qPages>
+	</cffunction>
 	
 	<cffunction name="getPages" output="false" returntype="Array" hint="I return an array of pages">
 		<cfargument name="searchterm" type="string" required="false" default="">
@@ -74,6 +168,7 @@
 		<cfreturn qPages>
 	</cffunction>
 	
+	
 	<cfscript>
 		/**
 		 * I return the root page (i.e. home page)
@@ -94,7 +189,7 @@
 					var PreviousSibling = thePage.getPreviousSibling();
 					var previoussiblingdescendentidlist = PreviousSibling.getDescendentPageIDList();
 					decreaseamount = PreviousSibling.getRightValue() - PreviousSibling.getLeftValue() + 1;
-					if( ListLen( thePage.getDescendentPageIDList() ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue - :decreaseamount, rightvalue = rightvalue - :decreaseamount where pageid in ( #Page.getDescendentPageIDList()# )", { decreaseamount=decreaseamount });
+					if( ListLen( thePage.getDescendentPageIDList() ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue - :decreaseamount, rightvalue = rightvalue - :decreaseamount where pageid in ( #thePage.getDescendentPageIDList()# )", { decreaseamount=decreaseamount });
 					if( ListLen( previoussiblingdescendentidlist ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue + :increaseamount, rightvalue = rightvalue + :increaseamount where pageid in ( #previoussiblingdescendentidlist# )", { increaseamount=increaseamount });
 					thePage.setLeftValue( thePage.getLeftValue() - decreaseamount );
 					thePage.setRightValue( thePage.getRightValue() - decreaseamount );
@@ -109,7 +204,7 @@
 					var NextSibling = thePage.getNextSibling();
 					var nextsiblingdescendentidlist = NextSibling.getDescendentPageIDList();
 					increaseamount = NextSibling.getRightValue() - NextSibling.getLeftValue() + 1;
-					if( ListLen( thePage.getDescendentPageIDList() ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue + :increaseamount, rightvalue = rightvalue + :increaseamount where pageid in ( #Page.getDescendentPageIDList()# )", { increaseamount=increaseamount });
+					if( ListLen( thePage.getDescendentPageIDList() ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue + :increaseamount, rightvalue = rightvalue + :increaseamount where pageid in ( #thePage.getDescendentPageIDList()# )", { increaseamount=increaseamount });
 					if( ListLen( nextsiblingdescendentidlist ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue - :decreaseamount, rightvalue = rightvalue - :decreaseamount where pageid in ( #nextsiblingdescendentidlist# )", { decreaseamount=decreaseamount });
 					thePage.setLeftValue( thePage.getLeftValue() + increaseamount );
 					thePage.setRightValue( thePage.getRightValue() + increaseamount );

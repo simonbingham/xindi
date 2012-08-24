@@ -22,6 +22,7 @@ component accessors="true" extends="model.abstract.BaseService"{
 
 	property name="MetaData" getter="false";
 	property name="NewsGateway" getter="false";
+	property name="SecurityService" getter="false";
 	property name="Validator" getter="false";
 
 	// ------------------------ PUBLIC METHODS ------------------------ //
@@ -53,8 +54,8 @@ component accessors="true" extends="model.abstract.BaseService"{
 	/**
 	 * I return an article matching a unique id
 	 */		
-	Article function getArticleByLabel( required string label ){
-		return variables.NewsGateway.getArticleByLabel( argumentCollection=arguments );
+	Article function getArticleBySlug( required string slug ){
+		return variables.NewsGateway.getArticleBySlug( argumentCollection=arguments );
 	}
 	
 	/**
@@ -76,9 +77,10 @@ component accessors="true" extends="model.abstract.BaseService"{
 	/**
 	 * I validate and save an article
 	 */		
-	struct function saveArticle( required struct properties ){
+	struct function saveArticle( required struct properties, required string websitetitle ){
 		transaction{
 			param name="arguments.properties.articleid" default="0";
+			param name="arguments.properties.metagenerated" default="false";
 			var Article = variables.NewsGateway.getArticle( Val( arguments.properties.articleid ) );
 			// ensure data is in the correct format
 			try{
@@ -87,6 +89,13 @@ component accessors="true" extends="model.abstract.BaseService"{
 			catch( any e ){
 				arguments.properties.published = "";
 			}
+			if( arguments.properties.metagenerated ){
+				arguments.properties.metatitle = variables.MetaData.generatePageTitle( arguments.websitetitle, arguments.properties.title );
+				arguments.properties.metadescription = variables.MetaData.generateMetaDescription( arguments.properties.content );
+				arguments.properties.metakeywords = variables.MetaData.generateMetaKeywords( arguments.properties.title );
+			}
+			var User = variables.SecurityService.getCurrentUser();
+			if( !IsNull( User ) ) arguments.properties.updatedby = User.getFullName();
 			populate( Article, arguments.properties );
 			var result = variables.Validator.validate( theObject=Article );
 			if( !result.hasErrors() ){

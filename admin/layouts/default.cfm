@@ -28,14 +28,14 @@
 			
 			<base href="#rc.basehref##request.subsystem#/">
 
-			<title>Xindi</title>
+			<title>Xindi Site Manager</title>
 
 			<link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 			<link href="assets/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
 			<link href="assets/css/smoothness/jquery-ui-1.8.19.custom.css" rel="stylesheet">
 			<link href="assets/css/core.css?r=#rc.config.revision#" rel="stylesheet">
 
-			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 			<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js" type="text/javascript"></script>
 			<script src="assets/js/jquery-ui-1.8.19.custom.min.js"></script>
 			<script src="assets/js/jquery.field.min.js"></script>
@@ -50,6 +50,10 @@
 		</head>
 		
 		<body>
+			<cfif rc.config.development>
+				<span class="dev-mode label label-warning">Development Mode</span>
+			</cfif>			
+			
 			<div class="navbar navbar-fixed-top">
 				<div class="navbar-inner">
 					<div class="container">
@@ -64,6 +68,7 @@
 						<div class="nav-collapse">
 							<ul class="nav pull-right">
 								<cfif StructKeyExists( rc, "CurrentUser" )>
+									<li><a href="#rc.basehref##request.subsystem#/">Dashboard</a></li>
 									<li><a href="#buildURL( 'pages' )#">Pages</a></li>
 									<cfif rc.config.news.enabled><li><a href="#buildURL( 'news' )#">News</a></li></cfif>
 									<cfif rc.config.enquiry.enabled><li><a href="#buildURL( 'enquiries' )#">Enquiries<cfif rc.unreadenquirycount> <span class="badge badge-info">#NumberFormat( rc.unreadenquirycount )#</span></cfif></a></li></cfif>

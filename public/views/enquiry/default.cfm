@@ -17,7 +17,7 @@
 --->
 
 <cfoutput>
-	<div class="page-header"><h1>Contact Us</h1></div>
+	<h1>Contact Us</h1>
 
 	#view( "helpers/messages" )#
 	

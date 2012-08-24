@@ -26,7 +26,8 @@ component accessors="true" extends="abstract"{
 	
 	void function default( required struct rc ){
 		param name="rc.searchterm" default="";
-		if( Len( Trim( rc.searchterm ) ) ) rc.pages = variables.ContentService.getPages( searchterm=rc.searchterm );
+		rc.Page = variables.ContentService.getRoot(); // required for breadcrumb trail
+		if( Len( Trim( rc.searchterm ) ) ) rc.pages = variables.ContentService.findContentBySearchTerm( searchterm=rc.searchterm, thedatasource=rc.config.datasource );
 		rc.MetaData.setMetaTitle( "Search Results" ); 
 		rc.MetaData.setMetaDescription( "" );
 		rc.MetaData.setMetaKeywords( "" );

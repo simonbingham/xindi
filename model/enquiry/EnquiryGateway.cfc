@@ -47,7 +47,7 @@ component accessors="true" extends="model.abstract.BaseGateway"{
 	 * I return a count of unread enquiries
 	 */	
 	numeric function getUnreadCount(){
-		return ORMExecuteQuery( "select count( * ) from Enquiry where read = false", true );
+		return ORMExecuteQuery( "select count( * ) from Enquiry where read = false", [], true );
 	}
 
 	/**

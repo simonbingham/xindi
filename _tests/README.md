@@ -6,6 +6,7 @@ The test suite uses:
 
 * unit testing to test entities and gateways
 * integration testing to test services
+* Selenium to automate testing of the application in the browser
 
 ## What is a Unit Test?
 
@@ -20,3 +21,8 @@ An integration test is done to demonstrate that different pieces of the system w
 and they require much more effort to put together. They usually require resources like database instances and hardware to be allocated for 
 them. The integration tests do a more convincing job of demonstrating the system works (especially to non-programmers) than a set of unit 
 tests can, at least to the extent the integration test environment resembles production.
+
+## What is Selenium?
+
+Selenium is a tool that can be used to automate browsers. Primarily it is used for automating web applications for testing purposes, 
+but it is certainly not limited to just that. More information can be found at [seleniumhq.org] (http://seleniumhq.org/).
