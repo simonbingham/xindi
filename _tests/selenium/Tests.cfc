@@ -29,12 +29,8 @@ component extends="mxunit.framework.TestCase"{
 		browserCommand = "*firefox";
 		// create a new instance of CFSelenium
 	   	selenium = createobject( "component", "CFSelenium.selenium" ).init();
-	   	// assertion used by testStartAndStopBrowser test
-	   	assertFalse( Len( selenium.getSessionId() ) );
 		// start Selenium server
 		selenium.start( browserUrl, browserCommand );
-		// assertion used by testStartAndStopBrowser test
-		assertTrue( Len( selenium.getSessionId() ) );
 		// set timeout period to be used when waiting for page to load
 		timeout = 30000;
 		// rebuild Xindi (reset data in database)
@@ -53,13 +49,7 @@ component extends="mxunit.framework.TestCase"{
 	function afterTests() {
 		// stop Selenium server
 		selenium.stopServer();
-		// assertion used by testStartAndStopBrowser test
-		assertFalse( Len( selenium.getSessionId() ) );
 	}	
-
-	function testStartAndStopBrowser() {
-		// the asserts for this are in beforeTests and afterTests
-	}
 
 	function testHomePageLoads() {
 		selenium.open( browserUrl );
