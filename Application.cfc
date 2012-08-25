@@ -149,7 +149,6 @@ component extends="frameworks.org.corfield.framework"{
 	private struct function getConfig(){
 		var config = {
 			development = this.development
-			, datasource = this.datasource
 			, enquiry = {
 				enabled = true
 				, subject = "Enquiry"

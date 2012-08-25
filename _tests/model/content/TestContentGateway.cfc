@@ -35,7 +35,7 @@ component extends="mxunit.framework.TestCase"{
 	
 	// test should only pass in MySQL where weighting is applied
 	function testFindContentBySearchTerm(){
-		var result = CUT.findContentBySearchTerm( searchterm='xindi', thedatasource='xindi_testsuite' );
+		var result = CUT.findContentBySearchTerm( searchterm='xindi' );
 		assertEquals( 3, result.recordcount );
 		// check weighting (word in title should rank higher than in content)
 		assertEquals( 'Title contains Xindi', result.title[1] );
