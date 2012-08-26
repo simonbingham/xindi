@@ -38,13 +38,11 @@
 		<cfargument name="maxresults" type="numeric" required="false" default="50">
 		<cfset var qPages = "">
 		<cfset var keyword = "">
-		
 		<cfif variables.dbengine eq "MYSQL">
 			<cfset findFunction = "locate">
 		<cfelse>
 			<cfset findFunction = "charindex"><!--- MSSQL --->
 		</cfif>
-
 		<!--- extract pages and articles that match search term - includes conditional statements based upon datasource type --->
 		<cfquery name="qPages" maxrows="#arguments.maxresults#">
 			select 

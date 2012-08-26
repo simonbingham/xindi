@@ -16,14 +16,12 @@
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 <cfcomponent output="false">
-
 	<cfscript>
 	// ------------------------ CONSTRUCTOR ------------------------ //
 	any function init(){
 		variables.dbengine = getDBEngine();
 		return this;		
 	}
-	
 	
 	// ------------------------ PUBLIC METHODS ------------------------ //
 
@@ -57,11 +55,9 @@
 		EntitySave( arguments.entity );
 		return arguments.entity;
 	}
-	
-	
-
-	// ------------------------ PRIVATE METHODS ------------------------ //
     </cfscript>
+    
+    <!--- ------------------------ PRIVATE METHODS ------------------------ --->
     
     <cffunction name="getDBEngine" returntype="string" output="false" access="private">
 		<cfset var dbinfo = "">
