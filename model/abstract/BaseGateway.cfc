@@ -1,4 +1,4 @@
-/*
+<!---
 	Xindi - http://www.getxindi.com/
 	
 	Copyright (c) 2012, Simon Bingham
@@ -14,10 +14,16 @@
 	OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE 
 	LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
 	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
+--->
 
-component{
-
+<cfcomponent output="false">
+	<cfscript>
+	// ------------------------ CONSTRUCTOR ------------------------ //
+	any function init(){
+		variables.dbengine = getDBEngine();
+		return this;		
+	}
+	
 	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	/**
@@ -50,5 +56,13 @@ component{
 		EntitySave( arguments.entity );
 		return arguments.entity;
 	}
-
-}
+    </cfscript>
+    
+    <!--- ------------------------ PRIVATE METHODS ------------------------ --->
+    
+    <cffunction name="getDBEngine" returntype="string" output="false" access="private">
+		<cfset var dbinfo = "">
+		<cfdbinfo type="version" name="dbinfo">
+		<cfreturn UCase( dbinfo.DATABASE_PRODUCTNAME )>
+	</cffunction>
+</cfcomponent>
