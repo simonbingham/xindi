@@ -33,18 +33,16 @@ component extends="mxunit.framework.TestCase"{
 		assertEquals( 12, result );
 	}
 	
-	// test should only pass in MySQL where weighting is applied
 	function testFindContentBySearchTerm(){
-		var result = CUT.findContentBySearchTerm( searchterm='xindi', thedatasource='xindi_testsuite' );
+		var result = CUT.findContentBySearchTerm( searchterm='xindi' );
 		assertEquals( 3, result.recordcount );
 		// check weighting (word in title should rank higher than in content)
 		assertEquals( 'Title contains Xindi', result.title[1] );
 		assertEquals( 'title', result.title[3] );
 	}
 	
-	// test should only pass in MySQL where weighting is applied
 	function testFindContentBySearchTermWithLimit(){
-		var result = CUT.findContentBySearchTerm( searchterm='xindi', thedatasource='xindi_testsuite', maxresults=1 );
+		var result = CUT.findContentBySearchTerm( searchterm='xindi', maxresults=1 );
 		assertEquals( 1, result.recordcount );
 		// check weighting (word in title should rank higher than in content)
 		assertEquals( 'Title contains Xindi', result.title[1] );

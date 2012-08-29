@@ -1,5 +1,5 @@
 /*
-	Xindi - http://www.getxindi.com/ - Version 2012.08.24
+	Xindi - http://www.getxindi.com/ - Version 2012.08.26
 	
 	Copyright (c) 2012, Simon Bingham
 	
@@ -149,7 +149,6 @@ component extends="frameworks.org.corfield.framework"{
 	private struct function getConfig(){
 		var config = {
 			development = this.development
-			, datasource = this.datasource
 			, enquiry = {
 				enabled = true
 				, subject = "Enquiry"
