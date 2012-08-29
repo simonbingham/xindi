@@ -52,7 +52,7 @@ jQuery( function($) {
 	CKEDITOR.config[ "baseHref" ] = currentURI;
 	CKEDITOR.config.toolbar_Custom =
 	[
-		{ name: "document", items : [ "Source" ] },
+		{ name: "document", items : [ "Source", "Templates" ] },
 		{ name: "clipboard", items : [ "Cut", "Copy", "Paste", "PasteText", "PasteFromWord", "-", "Undo", "Redo" ] },
 		{ name: "editing", items : [ "Find", "Replace", "-", "SelectAll" ] },
 		{ name: "styles", items : [ "Styles", "Format", "Font", "FontSize" ] },
@@ -83,7 +83,7 @@ jQuery( function($) {
 	CKEDITOR.config[ "contentsCss" ] = CKEDITOR.config[ "baseHref" ] + "public/assets/css/editor.css";
 	CKEDITOR.config[ "skin" ] = "kama";
 	CKEDITOR.config[ "bodyId" ] = "content";
-	fileBrowserpath = CKEDITOR.config[ "baseHref" ] + "index.cfm?action=admin:filemanager.configure&";
+	var fileBrowserpath = CKEDITOR.config[ "baseHref" ] + "index.cfm?action=admin:filemanager.configure&";
 	CKEDITOR.config[ "filebrowserBrowseUrl" ] = fileBrowserpath + "editorType=cke&EDITOR_RESOURCE_TYPE=file";
 	CKEDITOR.config[ "filebrowserImageBrowseUrl" ] = fileBrowserpath + "editorType=cke&EDITOR_RESOURCE_TYPE=image";
 	CKEDITOR.config[ "filebrowserFlashBrowseUrl" ] = fileBrowserpath + "editorType=cke&EDITOR_RESOURCE_TYPE=flash";
