@@ -63,7 +63,7 @@ component accessors="true" extends="model.abstract.BaseService" {
 	 * I return a page matching a slug
 	 */		
 	Page function getPageBySlug( required string slug ){
-		return variables.ContentGateway.getPageBySlug( argumentCollection=arguments );
+		return variables.ContentGateway.getPageBySlug( slug=Trim( arguments.slug ) );
 	}
 	
 	/**
@@ -77,8 +77,13 @@ component accessors="true" extends="model.abstract.BaseService" {
 	/**
 	 * I return a query of pages making up the site hierarchy
 	 */	
-	query function getNavigation(){
-		return variables.ContentGateway.getNavigation();
+	query function getNavigation( Page, clearcache=false ){
+		if ( StructKeyExists( arguments, "Page" ) ){
+			return variables.ContentGateway.getNavigation( left=arguments.Page.getleftvalue(), right=arguments.Page.getrightvalue(), clearcache=arguments.clearcache );
+		}
+		else{
+			return variables.ContentGateway.getNavigation( clearcache=arguments.clearcache );
+		}
 	}
 	
 	/**
@@ -149,5 +154,22 @@ component accessors="true" extends="model.abstract.BaseService" {
 		}
 		return result;
 	}
+
 	
+	// accepts an array of structs
+	boolean function saveSortOrder( required array pages ) {
+		transaction{
+			for ( var page in arguments.pages ){
+				var PageEntity = getPage( page.pageid );
+				if ( IsNull( PageEntity ) || !PageEntity.isPersisted() ){
+					return false;
+				}
+				PageEntity.setleftvalue( page.left );
+				PageEntity.setrightvalue( page.right );
+				variables.ContentGateway.savePage( PageEntity, 0 );
+			}
+		}
+		return true;
+	}
+		
 }

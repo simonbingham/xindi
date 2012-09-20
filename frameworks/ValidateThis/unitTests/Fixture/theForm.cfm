@@ -93,12 +93,12 @@
 		<div class="ctrlHolder">
 			#isErrorMsg("firstName")#
 			<label for="firstName">First Name</label>
-			<input name="firstName" id="firstName" value="#user.getFirstName()#" size="35" maxlength="50" type="text" class="textInput" />
+	<input name="firstName" id="firstName" value="#user.getFirstName()#" size="35" maxlength="50" type="text" class="textInput" />
 		</div>
 		<div class="ctrlHolder">
 			#isErrorMsg("lastName")#
 			<label for="lastName">Last Name</label>
-			<input name="lastName" id="lastName" value="#user.getLastName()#" size="35" maxlength="50" type="text" class="textInput" />
+	<input name="lastName" id="lastName" value="#user.getLastName()#" size="35" maxlength="50" type="text" class="textInput" />
 		</div>
 	</fieldset>
 

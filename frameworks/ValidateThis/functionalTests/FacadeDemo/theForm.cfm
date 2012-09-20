@@ -91,15 +91,15 @@
 		<legend>Dummy Form</legend>
 		<div class="ctrlHolder">
 			<label for="UserName">UserName</label>	
-			<input name="UserName" id="UserName_dummy" value="" size="35" maxlength="50" type="text" class="textInput" />
+	<input name="UserName" id="UserName_dummy" value="" size="35" maxlength="50" type="text" class="textInput" />
 		</div>
 		<div class="ctrlHolder">
 			<label for="UserName">UserPass</label>	
-			<input name="UserPass" id="UserPass_dummy" value="" size="35" maxlength="50" type="text" class="textInput" />
+	<input name="UserPass" id="UserPass_dummy" value="" size="35" maxlength="50" type="text" class="textInput" />
 		</div>
 		<div class="ctrlHolder">
 			<label for="Nickname">Nickname</label>	
-			<input name="Nickname" id="Nickname_dummy" value="" size="35" maxlength="50" type="text" class="textInput" />
+	<input name="Nickname" id="Nickname_dummy" value="" size="35" maxlength="50" type="text" class="textInput" />
 		</div>
 	</fieldset>
 </form>
@@ -113,25 +113,25 @@
 		<div class="ctrlHolder">
 			#isErrorMsg("UserName")#
 			<label for="UserName">#isRequired("UserName")#Email Address</label>
-			<input name="UserName" id="UserName" value="#trim(user.getUserName())#" size="35" maxlength="50" type="text" class="textInput" />
+	<input name="UserName" id="UserName" value="#trim(user.getUserName())#" size="35" maxlength="50" type="text" class="textInput" />
 			<p class="formHint">Validations: Required, Must be a valid Email Address.</p>
 		</div>
 		<div class="ctrlHolder">
 			#isErrorMsg("Nickname")#
 			<label for="Nickname">#isRequired("Nickname")#Nickname</label>
-			<input name="Nickname" id="Nickname" value="#trim(user.getNickname())#" size="35" maxlength="50" type="text" class="textInput" />
+	<input name="Nickname" id="Nickname" value="#trim(user.getNickname())#" size="35" maxlength="50" type="text" class="textInput" />
 			<p class="formHint">Validations: Custom - must be unique. Try 'BobRules'.</p>
 		</div>
 		<div class="ctrlHolder">
 			#isErrorMsg("UserPass")#
 			<label for="UserPass">#isRequired("UserPass")#Password</label>
-			<input name="UserPass" id="UserPass" value="" size="35" maxlength="50" type="password" class="textInput" />
+	<input name="UserPass" id="UserPass" value="" size="35" maxlength="50" type="password" class="textInput" />
 			<p class="formHint">Validations: Required, Must be between 5 and 10 characters, Must be the same as the Verify password field.</p>
 		</div>
 		<div class="ctrlHolder">
 			#isErrorMsg("VerifyPassword")#
 			<label for="VerifyPassword">#isRequired("VerifyPassword")#Verify Password</label>
-			<input name="VerifyPassword" id="VerifyPassword" value="" size="35" maxlength="50" type="password" class="textInput" />
+	<input name="VerifyPassword" id="VerifyPassword" value="" size="35" maxlength="50" type="password" class="textInput" />
 			<p class="formHint">Validations: Required.</p>
 		</div>
 		<div class="ctrlHolder">
@@ -163,13 +163,13 @@
 		<div class="ctrlHolder">
 			#isErrorMsg("FirstName")#
 			<label for="FirstName">#isRequired("FirstName")#First Name</label>
-			<input name="FirstName" id="FirstName" value="#trim(user.getFirstName())#" size="35" maxlength="50" type="text" class="textInput" />
+	<input name="FirstName" id="FirstName" value="#trim(user.getFirstName())#" size="35" maxlength="50" type="text" class="textInput" />
 			<p class="formHint">Validations: Required on Update.</p>
 		</div>
 		<div class="ctrlHolder">
 			#isErrorMsg("LastName")#
 			<label for="LastName">#isRequired("LastName")#Last Name</label>
-			<input name="LastName" id="LastName" value="#trim(user.getLastName())#" size="35" maxlength="50" type="text" class="textInput" />
+	<input name="LastName" id="LastName" value="#trim(user.getLastName())#" size="35" maxlength="50" type="text" class="textInput" />
 			<p class="formHint">Validations: Required on Update OR if a First Name has been specified during Register.</p>
 		</div>
 		<div class="ctrlHolder">
@@ -187,13 +187,13 @@
 		<div class="ctrlHolder">
 			#isErrorMsg("LikeOther")#
 			<label for="LikeOther">#isRequired("LikeOther")#What do you like?</label>
-			<input name="LikeOther" id="LikeOther" value="#trim(user.getLikeOther())#" size="35" maxlength="50" type="text" class="textInput" />
+	<input name="LikeOther" id="LikeOther" value="#trim(user.getLikeOther())#" size="35" maxlength="50" type="text" class="textInput" />
 			<p class="formHint">Validations: Required if neither Do you like Cheese? nor Do you like Chocolate? are true.</p>
 		</div>
 		<div class="ctrlHolder">
 			#isErrorMsg("HowMuch")#
 			<label for="HowMuch">#isRequired("HowMuch")#How much money would you like?</label>
-			<input name="HowMuch" id="HowMuch" value="#trim(user.getHowMuch())#" size="35" maxlength="50" type="text" class="textInput" />
+	<input name="HowMuch" id="HowMuch" value="#trim(user.getHowMuch())#" size="35" maxlength="50" type="text" class="textInput" />
 			<p class="formHint">Validations: Numeric - notice that an invalid value is redisplayed upon server side validation failure.</p>
 		</div>
 		<div class="ctrlHolder">
