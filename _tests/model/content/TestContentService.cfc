@@ -85,6 +85,27 @@ component extends="mxunit.framework.TestCase"{
 		var result = ArrayLen( pages );
 		assertEquals( 5, result );
 	}
+	
+	function testgetNavigation(){
+		var pages = CUT.getNavigation();
+		assertTrue( isQuery( pages ) );
+	}
+	
+	function testgetNavigationByPage(){
+		var Page = mock().getleftvalue().returns(1).getrightvalue().returns(20);
+		var pages = CUT.getNavigation( page=Page );
+		assertTrue( isQuery( pages ) );
+	}
+	
+	function testgetNavigationClearPage(){
+		var pages = CUT.getNavigation( clearcache=true );
+		assertTrue( isQuery( pages ) );
+	}
+	
+	function testgetNavigationPath(){
+		var pages = CUT.getNavigationPath( 1 );
+		assertTrue( isQuery( pages ) );
+	}
 
 	function testGetRoot(){
 		var Page = CUT.getRoot();
@@ -140,6 +161,18 @@ component extends="mxunit.framework.TestCase"{
 		var savepageresult = CUT.savePage( { title="foo", content="bar" }, 1, "create", "" );
 		var result = savepageresult.getIsSuccess();
 		assertTrue( result );
+	}
+	
+	function testsaveSortOrder(){
+		var pages = [{pageid=1, left=1, right=26}]; 
+		var result = CUT.saveSortOrder( pages );
+		assertTrue( result );
+	}
+
+	function testSaveSortOrderInvalid(){
+		var pages = [{pageid=999, left=1, right=26}]; 
+		var result = CUT.saveSortOrder( pages );
+		assertFalse( result );
 	}
 	
 	// ------------------------ IMPLICIT ------------------------ // 
