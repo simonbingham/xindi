@@ -9,6 +9,8 @@ td.chevron-right{ background:url("../img/ico-chevron-right.gif") no-repeat; }
 #container{ padding-top:60px; }
 #footer{ background:#F5F5F5; border-top:solid 1px #e9e9e9; margin-top:20px; padding:40px 0; width:100%; }
 #image-preview{ background:#333; border:1px solid #ccc; color:#fff; display:none; padding:5px; position:absolute; }
+#sortable li { list-style-type:none; background-color:white;line-height: 20px; border-top: 1px solid #DDD; padding: 4px 5px; cursor:move; }
+#sortable li:nth-child(odd) { background-color:#F9F9F9; }
 
 /* class styles */
 
@@ -23,11 +25,6 @@ td.chevron-right{ background:url("../img/ico-chevron-right.gif") no-repeat; }
 .inline li{ display:inline-block; margin-right:10px; }
 .navbar-inner{ background:#01324A; background-image: -moz-linear-gradient(center top , #01324a, #012638); }
 .navbar .nav > li > a, .navbar .nav > li > a:hover, .navbar .nav > li > a:visited { color:#fff; }
-
-
-#sortable li { list-style-type:none; background-color:white;line-height: 20px; border-top: 1px solid #DDD; padding: 4px 5px; cursor:move; }
-#sortable li:nth-child(odd) { background-color:#F9F9F9; }
-
 
 @media ( max-width:979px ) {
 	#container{ padding-top:0; }
