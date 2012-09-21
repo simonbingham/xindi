@@ -200,7 +200,7 @@ component persistent="true" table="pages" cacheuse="transactional"{
 	 * I return true if the page is the root (i.e. home page)
 	 */		
 	boolean function isRoot(){
-		return getLevel() == 0;
+		return variables.leftvalue == 1;
 	}
 	
 	/**

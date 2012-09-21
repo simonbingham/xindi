@@ -28,7 +28,7 @@
 			<div class="control-group <cfif rc.result.hasErrors( 'firstname' )>error</cfif>">
 				<label class="control-label" for="firstname">First Name <cfif rc.Validator.propertyIsRequired( "firstname" )>*</cfif></label>
 				<div class="controls">
-					<input class="input-xlarge" type="text" name="firstname" id="firstname" value="#HtmlEditFormat( rc.Enquiry.getFirstName() )#" maxlength="50">
+			<input class="input-xlarge" type="text" name="firstname" id="firstname" value="#HtmlEditFormat( rc.Enquiry.getFirstName() )#" maxlength="50">
 					#view( "helpers/failures", { property="firstname" })#
 				</div>
 			</div>
@@ -36,7 +36,7 @@
 			<div class="control-group <cfif rc.result.hasErrors( 'lastname' )>error</cfif>">
 				<label class="control-label" for="lastname">Last Name <cfif rc.Validator.propertyIsRequired( "lastname" )>*</cfif></label>
 				<div class="controls">
-					<input class="input-xlarge" type="text" name="lastname" id="lastname" value="#HtmlEditFormat( rc.Enquiry.getLastName() )#" maxlength="50">
+			<input class="input-xlarge" type="text" name="lastname" id="lastname" value="#HtmlEditFormat( rc.Enquiry.getLastName() )#" maxlength="50">
 					#view( "helpers/failures", { property="lastname" })#
 				</div>
 			</div>
@@ -44,7 +44,7 @@
 			<div class="control-group <cfif rc.result.hasErrors( 'email' )>error</cfif>">
 				<label class="control-label" for="email">Email Address <cfif rc.Validator.propertyIsRequired( "email" )>*</cfif></label>
 				<div class="controls">
-					<input class="input-xlarge" type="text" name="email" id="email" value="#HtmlEditFormat( rc.Enquiry.getEmail() )#" maxlength="150">
+			<input class="input-xlarge" type="text" name="email" id="email" value="#HtmlEditFormat( rc.Enquiry.getEmail() )#" maxlength="150">
 					#view( "helpers/failures", { property="email" })#
 				</div>
 			</div>
@@ -59,7 +59,7 @@
 		</fieldset>                        
 		
 		<div class="form-actions">
-			<input type="submit" name="submit" id="submit" value="Send" class="btn btn-primary">
+	<input type="submit" name="submit" id="submit" value="Send" class="btn btn-primary">
 		</div>
 	</form>
 	
