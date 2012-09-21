@@ -1,4 +1,4 @@
-component extends="frameworks.org.corfield.framework"{
+component extends="frameworks.org.corfield.framework" {
 			
 	// ------------------------ APPLICATION SETTINGS ------------------------ //
 	
