@@ -1,21 +1,3 @@
-/*
-	Xindi - http://www.getxindi.com/
-	
-	Copyright (c) 2012, Simon Bingham
-	
-	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
-	files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, 
-	modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software 
-	is furnished to do so, subject to the following conditions:
-	
-	The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-	
-	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES 
-	OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE 
-	LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
-	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
-
 component accessors="true" extends="model.abstract.BaseService" {
 
 	// ------------------------ DEPENDENCY INJECTION ------------------------ //
@@ -63,7 +45,7 @@ component accessors="true" extends="model.abstract.BaseService" {
 	 * I return a page matching a slug
 	 */		
 	Page function getPageBySlug( required string slug ){
-		return variables.ContentGateway.getPageBySlug( argumentCollection=arguments );
+		return variables.ContentGateway.getPageBySlug( slug=Trim( arguments.slug ) );
 	}
 	
 	/**
@@ -77,8 +59,13 @@ component accessors="true" extends="model.abstract.BaseService" {
 	/**
 	 * I return a query of pages making up the site hierarchy
 	 */	
-	query function getNavigation(){
-		return variables.ContentGateway.getNavigation();
+	query function getNavigation( Page, clearcache=false ){
+		if ( StructKeyExists( arguments, "Page" ) ){
+			return variables.ContentGateway.getNavigation( left=arguments.Page.getleftvalue(), right=arguments.Page.getrightvalue(), clearcache=arguments.clearcache );
+		}
+		else{
+			return variables.ContentGateway.getNavigation( clearcache=arguments.clearcache );
+		}
 	}
 	
 	/**
@@ -149,5 +136,22 @@ component accessors="true" extends="model.abstract.BaseService" {
 		}
 		return result;
 	}
+
 	
+	// accepts an array of structs
+	boolean function saveSortOrder( required array pages ) {
+		transaction{
+			for ( var page in arguments.pages ){
+				var PageEntity = getPage( page.pageid );
+				if ( IsNull( PageEntity ) || !PageEntity.isPersisted() ){
+					return false;
+				}
+				PageEntity.setleftvalue( page.left );
+				PageEntity.setrightvalue( page.right );
+				variables.ContentGateway.savePage( PageEntity, 0 );
+			}
+		}
+		return true;
+	}
+		
 }

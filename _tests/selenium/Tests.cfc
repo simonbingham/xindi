@@ -1,21 +1,3 @@
-/*
-	Xindi - http://www.getxindi.com/
-	
-	Copyright (c) 2012, Simon Bingham
-	
-	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
-	files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, 
-	modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software 
-	is furnished to do so, subject to the following conditions:
-	
-	The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-	
-	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES 
-	OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE 
-	LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
-	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
-
 /* run these tests in your browser at http://localhost/xindi/_tests/selenium/Tests.cfc?method=runTestRemote */
 
 // component extends mxunit.framework.TestCase
@@ -120,7 +102,7 @@ component extends="mxunit.framework.TestCase"{
 		doLogout();
 	}
 	
-	function testAddEditMoveDeletePage() {
+	function testAddEditDeletePage() {
 		doLogin();
 		// add page
 		selenium.open( browserURL & "/index.cfm/admin:pages" );
@@ -141,15 +123,8 @@ component extends="mxunit.framework.TestCase"{
 		selenium.click( "xpath=(//input[@name='submit'])[2]" );
 		selenium.waitForPageToLoad( timeout );
 		assertTrue( selenium.isTextPresent( "regexp:(The page "".*"" has been saved.)" ) );
-		// move page
-		selenium.click( "//div[@id='content']/table/tbody/tr[10]/td[5]/a/i" );
-		selenium.waitForPageToLoad( timeout );
-		assertTrue( selenium.isTextPresent( "The page ""test edit"" has been moved." ) );
-		selenium.click( "//div[@id='content']/table/tbody/tr[9]/td[6]/a/i" );
-		selenium.waitForPageToLoad( timeout );
-		assertTrue( selenium.isTextPresent( "regexp:(The page "".*"" has been moved.)" ) );
 		// delete page
-		selenium.click( "//div[@id='content']/table/tbody/tr[7]/td[7]/a/i" );
+		selenium.click( "//div[@id='content']/table/tbody/tr[10]/td[6]/a/i" );
 		selenium.waitForPageToLoad( timeout );
 		// when we delete a record a confirmation dialog appears
 		// calling the getConfirmation method forces the Ok button to be clicked in the dialog

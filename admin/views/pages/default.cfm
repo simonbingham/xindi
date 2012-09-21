@@ -1,21 +1,3 @@
-<!---
-	Xindi - http://www.getxindi.com/
-	
-	Copyright (c) 2012, Simon Bingham
-	
-	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
-	files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, 
-	modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software 
-	is furnished to do so, subject to the following conditions:
-	
-	The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-	
-	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES 
-	OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE 
-	LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
-	IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
---->
-
 <cfset local.routes = variables.framework.routes />
 
 <cfoutput>
@@ -30,34 +12,41 @@
 				<th>Last Updated</th>
 				<th class="center">View</th>
 				<cfif rc.config.page.enableadddelete><th class="center">Add Page</th></cfif>
-				<th class="center">Move Up</th>
-				<th class="center">Move Down</th>
+				<th class="center">Sort Sub Pages</th>
 				<cfif rc.config.page.enableadddelete><th class="center">Delete</th></cfif>
 			</tr>
 		</thead>
 		
 		<tbody>
-			<cfloop array="#rc.pages#" index="local.Page">
+			<cfloop query="rc.navigation">
+				<cfset local.offset = ( ( rc.navigation.depth - 1 ) * 15 )>
 				<tr>
-					<td <cfif !local.Page.isRoot()>class="chevron-right" style="padding-left:#( ( Page.getLevel()-1 ) * 26 ) + 26#px; background-position:#( ( local.Page.getLevel() - 1 ) * 26 ) + 5#px 50%"</cfif>>
-						<cfif local.Page.hasRoute( local.routes )>
-							#local.Page.getTitle()# *
+					<td <cfif rc.navigation.depth gt 1>class="chevron-right" style="padding-left:#local.offset+20#px; background-position:#local.offset#px 50%"</cfif>>
+						<cfif isRoute( rc.navigation.slug )>
+							#rc.navigation.title# <i class="icon-exclamation-sign"></i>
 						<cfelse>
-							<a href="#buildURL( action='pages.maintain', querystring='pageid/#local.Page.getPageID()#' )#" title="Edit #local.Page.getTitle()#">#local.Page.getTitle()#</a>
-						</cfif>							
+							<a href="#buildURL( action='pages.maintain', querystring='pageid/#rc.navigation.pageid#' )#" title="Edit #rc.navigation.title#">#rc.navigation.title#</a>
+						</cfif>
 					</td>
-					<td>#DateFormat( local.Page.getUpdated(), "full" )# #TimeFormat( local.Page.getUpdated() )# by #local.Page.getUpdatedBy()#</td>
-					<td class="center"><a href="#buildURL( action="public:" & local.Page.getSlug() )#" title="View" target="_blank"><i class="icon-eye-open"></i></a></td>
-					<cfif rc.config.page.enableadddelete><td class="center"><cfif local.Page.getLevel() lt rc.config.page.maxlevels and !ListFind( rc.config.page.suppressaddpage, local.Page.getPageID() )><a href="#buildURL( action='pages.maintain', querystring='ancestorid/#local.Page.getPageID()#' )#" title="Add Page"><i class="icon-plus-sign"></i></a></cfif></td></cfif>
-					<td class="center"><cfif local.Page.hasPreviousSibling() and !ListFind( rc.config.page.suppressmovepage, local.Page.getPageID() )><a href="#buildURL( action='pages.move', querystring='pageid/#local.Page.getPageID()#/direction/up' )#" title="Move Up"><i class="icon-chevron-up"></i></a></cfif></td>
-					<td class="center"><cfif local.Page.hasNextSibling() and !ListFind( rc.config.page.suppressmovepage, local.Page.getPageID() )><a href="#buildURL( action='pages.move', querystring='pageid/#local.Page.getPageID()#/direction/down' )#" title="Move Down"><i class="icon-chevron-down"></i></a></cfif></td>
-					<cfif rc.config.page.enableadddelete><td class="center"><cfif local.Page.isLeaf() and !local.Page.isRoot() and !local.Page.hasRoute( local.routes ) and !ListFind( rc.config.page.suppressdeletepage, local.Page.getPageID() )><a href="#buildURL( 'pages.delete' )#/pageid/#local.Page.getPageID()#" title="Delete"><i class="icon-remove"></i></a></cfif></td></cfif>
+					<td title="last updated on #DateFormat( rc.navigation.updated, 'medium' )# at #TimeFormat( rc.navigation.updated, 'HH:MM' )#">#getTimeInterval( rc.navigation.updated )# by # rc.navigation.updatedby#</td>
+					<td class="center"><a href="#buildURL( action="public:" & rc.navigation.slug )#" title="View" target="_blank"><i class="icon-eye-open"></i></a></td>
+					<cfif rc.config.page.enableadddelete><td class="center"><cfif rc.navigation.depth lt rc.config.page.maxlevels and !ListFind( rc.config.page.suppressaddpage, rc.navigation.pageid )><a href="#buildURL( action='pages.maintain', querystring='ancestorid/#rc.navigation.pageid#' )#" title="Add Page"><i class="icon-plus-sign"></i></a></cfif></td></cfif>
+					<td class="center"><cfif rc.navigation.descendants gt 1><a href="#buildURL( action='pages.sort', querystring='pageid/#rc.navigation.pageid#' )#" title="Sort"><i class="icon-retweet"></i></a></cfif></td>
+					<cfif rc.config.page.enableadddelete><td class="center"><cfif rc.navigation.descendants eq 0 and !ListFind( rc.config.page.suppressdeletepage, rc.navigation.pageid )><a href="#buildURL( 'pages.delete' )#/pageid/#rc.navigation.pageid#" title="Delete"><i class="icon-remove"></i></a></cfif></td></cfif>
 				</tr>
 			</cfloop>
 		</tbody>
 	</table>
 	
-	<cfif ArrayLen( local.routes )><p>* You cannot edit or delete this page because it redirects to another website feature.</p></cfif>
+	<p id="routes-alert" style="display:none"><i class="icon-exclamation-sign"></i> You cannot edit or delete this page because it redirects to another website feature.</p>
 	
 	<p><span class="label label-info">Heads up!</span> Please allow a minute for the navigation to update when adding and removing pages. We've cached it to make it super fast!</p>
 </cfoutput>
+
+<script>
+jQuery(function($){
+	if($('tr>td i.icon-exclamation-sign').length){
+		$('#routes-alert').show();
+	}
+})
+</script>
