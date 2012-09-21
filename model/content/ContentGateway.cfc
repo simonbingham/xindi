@@ -104,13 +104,6 @@
 				, page.page_left as positionleft
 				, page.page_right as positionright
 				, page.page_updatedby as updatedby
-				, (
-					select <cfif variables.dbengine eq "MSSQL">top 1</cfif> parent.page_id 
-					from pages parent 
-					where parent.page_left < page.page_left and parent.page_right > page.page_right    
-					order by parent.page_right - page.page_right ASC
-					<cfif variables.dbengine eq "MYSQL">LIMIT 1</cfif>
-			      ) as parentid
 				, case when page.page_left = 1 then 1 else (
 					select count(*)
 					from pages as pageSubQuery 
