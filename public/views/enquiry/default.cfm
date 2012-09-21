@@ -41,7 +41,7 @@
 		</fieldset>                        
 		
 		<div class="form-actions">
-	<input type="submit" name="submit" id="submit" value="Send" class="btn btn-primary">
+			<input type="submit" name="submit" id="submit" value="Send" class="btn btn-primary">
 		</div>
 	</form>
 	
