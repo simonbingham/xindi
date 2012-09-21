@@ -97,20 +97,38 @@
 		 * I return a page matching a slug
 		 */			
 		Page function getPageBySlug( required string slug ){
-			var Page = EntityLoad( "Page", { slug=Trim( ListLast( arguments.slug, "/" ) ) }, TRUE );
+			var Page = EntityLoad( "Page", { slug=arguments.slug }, TRUE );
 			if( IsNull( Page ) ) Page = new( "Page" );
 			return Page;
 		}
 	</cfscript>
 	
 	<cffunction name="getNavigation" output="false" returntype="query" hint="I return the pages used to build the navigation">
+		<cfargument name="left" required="false" hint="The left position">
+		<cfargument name="right" required="false" hint="The right position">
+		<cfargument name="clearcache" required="false" default="false">
 		<cfset var qPages = "">
-		<cfquery name="qPages" cachedwithin="#CreateTimeSpan(0,0,1,0)#">
+		<cfif arguments.clearcache>
+			<cfset var timespan = CreateTimeSpan(0,0,0,0)>
+		<cfelse>
+			<cfset var timespan = CreateTimeSpan(0,0,0,30)>
+		</cfif>
+		<cfquery name="qPages" cachedwithin="#timespan#">
 			select 
 				page.page_id as pageid
 				, page.page_slug as slug
 				, page.page_title as title
 				, page.page_updated as updated
+				, page.page_left as positionleft
+				, page.page_right as positionright
+				, page.page_updatedby as updatedby
+				, (
+					select <cfif variables.dbengine eq "MSSQL">top 1</cfif> parent.page_id 
+					from pages parent 
+					where parent.page_left < page.page_left and parent.page_right > page.page_right    
+					order by parent.page_right - page.page_right ASC
+					<cfif variables.dbengine eq "MYSQL">LIMIT 1</cfif>
+			      ) as parentid
 				, case when page.page_left = 1 then 1 else (
 					select count(*)
 					from pages as pageSubQuery 
@@ -119,7 +137,13 @@
 					) end as depth 
 				, ( ( page.page_right - page.page_left - 1) / 2 ) as descendants
 			from pages as page
-			where page_left > 0
+			where 1 = 1
+			<cfif StructKeyExists( arguments, "left" )>
+				and page_left > <cfqueryparam value="#arguments.left#" cfsqltype="cf_sql_integer">
+			</cfif>
+			<cfif StructKeyExists( arguments, "right")>
+				and page_right < <cfqueryparam value="#arguments.right#" cfsqltype="cf_sql_integer">
+			</cfif>
 			order by page_left
 		</cfquery>
 		<cfreturn qPages>

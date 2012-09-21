@@ -53,6 +53,21 @@ component extends="mxunit.framework.TestCase"{
 		assertEquals( 13, result.recordcount );
 	}
 	
+	function testGetNavigationClearCache(){
+		var result = CUT.getNavigation(clearcache=true);
+		assertEquals( 13, result.recordcount );
+	}
+	
+	function testGetNavigationLeft(){
+		var result = CUT.getNavigation( left=1 );
+		assertEquals( 12, result.recordcount );
+	}
+
+	function testGetNavigationLeftRight(){
+		var result = CUT.getNavigation( left=1, right=13 );
+		assertEquals( 5, result.recordcount );
+	}
+	
 	function testGetNavigationPath(){
 		var result = CUT.getNavigationPath(5);
 		assertEquals( 2, result.recordcount );

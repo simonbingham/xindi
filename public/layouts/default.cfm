@@ -46,7 +46,7 @@
 			<cfif rc.config.news.enabled><link rel="alternate" type="application/rss+xml" href="#buildURL( 'news.rss' )#"></cfif>			
 		</head>		
 		
-		<body>
+		<body id="#getSection()#" class="#getItem()#">
 			<cfif rc.config.development>
 				<span class="dev-mode label label-warning">Development Mode</span>
 			</cfif>

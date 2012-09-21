@@ -25,7 +25,7 @@ component accessors="true" extends="abstract"{
 	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	void function default( required struct rc ){
-		rc.pages = variables.ContentService.getPages();
+		rc.navigation = variables.ContentService.getNavigation( clearcache=true );
 	}
 
 	void function delete( required struct rc ){
@@ -77,6 +77,26 @@ component accessors="true" extends="abstract"{
 		}else{
 			variables.fw.redirect( "pages.maintain", "result,Page,ancestorid", "pageid" );
 		}
+	}
+	
+	void function sort( required struct rc ){
+		param name="rc.pageid" default="0";
+		rc.Page = variables.ContentService.getPage( rc.pageid );
+		if ( IsNull( rc.Page ) ){
+			variables.fw.redirect( "pages" );
+		}
+		rc.subpages = variables.ContentService.getNavigation( page=rc.Page );
+	}
+
+	void function savesort( required struct rc ){
+		rc.saved = false;
+		if ( StructKeyExists( rc, "payload" ) ){
+			var pages = DeserializeJSON( rc.payload );
+			rc.saved = variables.ContentService.saveSortOrder( pages );
+		}
+		
+		// convert result to JavaScript boolean
+		rc.saved = rc.saved ? "true" : "false"; 
 	}
 	
 }

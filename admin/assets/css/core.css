@@ -24,6 +24,11 @@ td.chevron-right{ background:url("../img/ico-chevron-right.gif") no-repeat; }
 .navbar-inner{ background:#01324A; background-image: -moz-linear-gradient(center top , #01324a, #012638); }
 .navbar .nav > li > a, .navbar .nav > li > a:hover, .navbar .nav > li > a:visited { color:#fff; }
 
+
+#sortable li { list-style-type:none; background-color:white;line-height: 20px; border-top: 1px solid #DDD; padding: 4px 5px; cursor:move; }
+#sortable li:nth-child(odd) { background-color:#F9F9F9; }
+
+
 @media ( max-width:979px ) {
 	#container{ padding-top:0; }
 }

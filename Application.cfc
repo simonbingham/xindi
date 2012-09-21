@@ -21,7 +21,7 @@ component extends="frameworks.org.corfield.framework"{
 	// ------------------------ APPLICATION SETTINGS ------------------------ //
 	
 	this.applicationroot = getDirectoryFromPath( getCurrentTemplatePath() );
-	this.name = ListLast( this.applicationroot, "\/" );
+	this.name = ListLast( this.applicationroot, "\/" ) & "_" & Hash( this.applicationroot );
 	this.sessionmanagement = true;
 	// prevent bots creating lots of sessions
 	if ( structKeyExists( cookie, "CFTOKEN" ) ) this.sessiontimeout = createTimeSpan( 0, 0, 20, 0 );
@@ -39,7 +39,10 @@ component extends="frameworks.org.corfield.framework"{
 		, eventhandler = "model.aop.GlobalEventHandler"
 		, secondarycacheenabled = true 		
 	};
-	this.development = IsLocalHost( CGI.REMOTE_ADDR );
+	
+	// note: IsLocalHost on CF return YES|NO which can't be passed to hibernate
+	this.development = IsLocalHost( CGI.REMOTE_ADDR ) ? true : false;
+	
 	// create database and populate when the application starts in development environment
 	// you might want to comment out this code after the initial install
 	if( this.development && !isNull( url.rebuild ) ){
@@ -113,7 +116,9 @@ component extends="frameworks.org.corfield.framework"{
 	
 	void function setupView(){
 		// get data need to build the navigation
-		rc.navigation = getBeanFactory().getBean( "ContentService" ).getNavigation();
+		if ( getSubsystem() == "public" ){
+			rc.navigation = getBeanFactory().getBean( "ContentService" ).getNavigation();
+		}
 	}
 	
 	// ------------------------ CALLED WHEN EXCEPTION OCCURS ------------------------ //	
@@ -126,7 +131,8 @@ component extends="frameworks.org.corfield.framework"{
 	// ------------------------ CALLED WHEN VIEW IS MISSING ------------------------ //	
 
 	any function onMissingView( required rc ){
-		var slug = LCase( ListLast( CGI.PATH_INFO, "/" ) );
+		// Note: IIS and Apache report the CGI.PATH_INFO differently
+		var slug = LCase( ReReplace( Replace( CGI.PATH_INFO, CGI.SCRIPT_NAME, "" ), "^/", "", "one" ) );
 		if ( slug == "" ) slug = rc.config.page.defaultslug; // set default
 		rc.Page = getBeanFactory().getBean( "ContentService" ).getPageBySlug( slug );
 		if( !rc.Page.isPersisted() ){
@@ -215,6 +221,60 @@ component extends="frameworks.org.corfield.framework"{
 		else{
 			return result;
 		}
+	}
+
+	string function getTimeInterval( date, datemask="dddd dd mmmm yyyy" ){
+		var timeinseconds = 0;
+		var result = "";
+		var interval = "";
+	 
+		if( IsDate( arguments.date ) ){
+			timeinseconds = DateDiff( 's', arguments.date, Now() );
+			if( timeinseconds < 60 ){ // less than a minute
+				result = " less than a minute ago";
+			}
+			else if ( timeinseconds < 3600 ){ // less than an hour
+				interval = Int( timeinseconds / 60 );
+				// more than 1 minute
+				if ( interval > 1 ){
+					result = interval & " minutes ago";
+				}
+				else{
+					result = interval & " minute ago";
+				}
+			}
+			else if ( timeinseconds < ( 86400 ) && Hour( Now() ) >= Hour( arguments.date ) ){ // less than 24 hours
+				interval = Int( timeinseconds / 3600 );
+				if ( interval > 1 ){ // more than 1 hour
+					result = interval & " hours ago";
+				}
+				else{
+					result = interval & " hour ago";
+				}
+			}
+			else if ( timeinseconds < 172800 ){ // less than 48 hours
+				result = "yesterday" & " at " & TimeFormat( arguments.date, "HH:MM" );
+			}
+			else if ( timeinseconds < 2678400 ){ // less than a month
+				result = Ceiling( timeinseconds / 86400 ) & " days ago at " & TimeFormat( arguments.date, "HH:MM" );
+			}
+			else if ( timeinseconds < 31536000 ){ // less than a year
+				result = DateDiff( 'w', arguments.date, Now() ) & " weeks ago at " & TimeFormat( arguments.date, "HH:MM" );;
+			}
+			else{ // return the date
+				result = timeinseconds & DateFormat( arguments.date, arguments.datemask ) & " at " & TimeFormat( arguments.date, "HH:MM" );
+			}
+		}
+		return result;
+	}
+	
+	boolean function isRoute( required slug ){
+		for ( var el in getRoutes() ){
+			if ( StructKeyExists( el, arguments.slug ) ){
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
