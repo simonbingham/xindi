@@ -1,10 +1,12 @@
-component extends="frameworks.org.corfield.framework" {
+component extends="frameworks.org.corfield.framework"{
 			
 	// ------------------------ APPLICATION SETTINGS ------------------------ //
 	
 	this.applicationroot = getDirectoryFromPath( getCurrentTemplatePath() );
 	this.name = ListLast( this.applicationroot, "\/" ) & "_" & Hash( this.applicationroot );
 	this.sessionmanagement = true;
+	// note: IsLocalHost on CF returns YES|NO which can't be passed to hibernate
+	this.development = IsLocalHost( CGI.REMOTE_ADDR ) ? true : false;
 	// prevent bots creating lots of sessions
 	if ( structKeyExists( cookie, "CFTOKEN" ) ) this.sessiontimeout = createTimeSpan( 0, 0, 20, 0 );
 	else this.sessiontimeout = createTimeSpan( 0, 0, 0, 1 );
@@ -22,9 +24,6 @@ component extends="frameworks.org.corfield.framework" {
 		, logsql = this.development
 		, secondarycacheenabled = true 		
 	};
-	
-	// note: IsLocalHost on CF return YES|NO which can't be passed to hibernate
-	this.development = IsLocalHost( CGI.REMOTE_ADDR ) ? true : false;
 	
 	// create database and populate when the application starts in development environment
 	// you might want to comment out this code after the initial install
@@ -100,7 +99,7 @@ component extends="frameworks.org.corfield.framework" {
 	
 	void function setupView(){
 		// get data need to build the navigation
-		if ( getSubsystem() == "public" ){ rc.navigation = getBeanFactory().getBean( "ContentService" ).getNavigation();
+		if ( getSubsystem() == "public" ) rc.navigation = getBeanFactory().getBean( "ContentService" ).getNavigation();
 	}
 	
 	// ------------------------ CALLED WHEN EXCEPTION OCCURS ------------------------ //	
