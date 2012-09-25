@@ -81,7 +81,7 @@ component extends="frameworks.org.corfield.framework"{
 	void function setupRequest(){
 		if( this.development && !isNull( url.rebuild ) ) ORMReload();
 
-		if( this.development ) writedump( var="*** Request Start ***", output="console" );
+		if( this.development ) writedump( var="*** Request Start - #TimeFormat( Now(), 'full' )# ***", output="console" );
 
 		// define base url
 		if( CGI.HTTPS eq "on" ) rc.basehref = "https://";
