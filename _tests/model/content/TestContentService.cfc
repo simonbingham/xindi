@@ -14,6 +14,12 @@ component extends="mxunit.framework.TestCase"{
 		assertTrue( result );
 	}
 
+	function testGetChildren(){
+		var Page = CUT.getPage( 1 );
+		var result = Page.getChildren( Page );
+		assertEquals( 3, result );
+	}
+
 	function testGetPageWherePageDoesNotExist(){
 		var Page = CUT.getPage( 14 );
 		var result = Page.isPersisted();

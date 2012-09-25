@@ -30,6 +30,11 @@ component extends="mxunit.framework.TestCase"{
 		assertEquals( 'Title contains Xindi', result.title[1] );
 	}
 	
+	function testGetChildren(){
+		var result = CUT.getChildren( 1, 26, true );
+		assertEquals( 3, result.recordcount );
+	}	
+	
 	function testGetNavigation(){
 		var result = CUT.getNavigation();
 		assertEquals( 13, result.recordcount );

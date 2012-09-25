@@ -35,6 +35,13 @@ component accessors="true" extends="model.abstract.BaseService" {
 	}
 	
 	/**
+	 * I return a query of child pages
+	 */	
+	query function getChildren( Page, clearcache=false ){
+		return variables.ContentGateway.getChildren( left=arguments.Page.getLeftValue(), right=arguments.Page.getRightValue(), clearcache=arguments.clearcache );
+	}	
+	
+	/**
 	 * I return a page matching an id
 	 */		
 	Page function getPage( required pageid ){
@@ -60,12 +67,8 @@ component accessors="true" extends="model.abstract.BaseService" {
 	 * I return a query of pages making up the site hierarchy
 	 */	
 	query function getNavigation( Page, clearcache=false ){
-		if ( StructKeyExists( arguments, "Page" ) ){
-			return variables.ContentGateway.getNavigation( left=arguments.Page.getleftvalue(), right=arguments.Page.getrightvalue(), clearcache=arguments.clearcache );
-		}
-		else{
-			return variables.ContentGateway.getNavigation( clearcache=arguments.clearcache );
-		}
+		if ( StructKeyExists( arguments, "Page" ) ) return variables.ContentGateway.getNavigation( left=arguments.Page.getleftvalue(), right=arguments.Page.getrightvalue(), clearcache=arguments.clearcache );
+		else return variables.ContentGateway.getNavigation( clearcache=arguments.clearcache );
 	}
 	
 	/**
