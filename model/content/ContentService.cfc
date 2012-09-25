@@ -146,9 +146,7 @@ component accessors="true" extends="model.abstract.BaseService" {
 		transaction{
 			for ( var page in arguments.pages ){
 				var PageEntity = getPage( page.pageid );
-				if ( IsNull( PageEntity ) || !PageEntity.isPersisted() ){
-					return false;
-				}
+				if ( IsNull( PageEntity ) || !PageEntity.isPersisted() ) return false;
 				PageEntity.setleftvalue( page.left );
 				PageEntity.setrightvalue( page.right );
 				variables.ContentGateway.savePage( PageEntity, 0 );

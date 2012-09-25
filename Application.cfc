@@ -81,7 +81,7 @@ component extends="frameworks.org.corfield.framework"{
 	void function setupRequest(){
 		if( this.development && !isNull( url.rebuild ) ) ORMReload();
 
-		if( this.development ) writedump( var="*** Request Start ***", output="console" );
+		if( this.development ) writedump( var="*** Request Start - #TimeFormat( Now(), 'full' )# ***", output="console" );
 
 		// define base url
 		if( CGI.HTTPS eq "on" ) rc.basehref = "https://";
@@ -123,7 +123,6 @@ component extends="frameworks.org.corfield.framework"{
 			return view( "public:main/notfound" );
 		}else{
 			rc.breadcrumbs = getBeanFactory().getBean( "ContentService" ).getNavigationPath( rc.Page.getPageID() );
-			
 			rc.MetaData.setMetaTitle( rc.Page.getMetaTitle() ); 
 			rc.MetaData.setMetaDescription( rc.Page.getMetaDescription() );
 			rc.MetaData.setMetaKeywords( rc.Page.getMetaKeywords() );
@@ -196,8 +195,8 @@ component extends="frameworks.org.corfield.framework"{
 	// ------------------------ VIEW HELPERS ------------------------ //
 	
 	string function snippet( content, charactercount=100 ){
-		var result = Trim( reReplace( arguments.content,"<[^>]{1,}>"," ","all" ) );
-		if ( Len( result ) > arguments.charactercount+10 ) return Trim( Left( result, arguments.charactercount ) ) & "&hellip;";
+		var result = Trim( reReplace( arguments.content, "<[^>]{1,}>", " ", "all" ) );
+		if ( Len( result ) > arguments.charactercount + 10 ) return Trim( Left( result, arguments.charactercount ) ) & "&hellip;";
 		else return result;
 	}
 
@@ -218,7 +217,8 @@ component extends="frameworks.org.corfield.framework"{
 				if ( interval > 1 ) result = interval & " minutes ago";
 				else result = interval & " minute ago";
 			}
-			else if ( timeinseconds < ( 86400 ) && Hour( Now() ) >= Hour( arguments.date ) ){ // less than 24 hours
+			// less than 24 hours
+			else if ( timeinseconds < ( 86400 ) && Hour( Now() ) >= Hour( arguments.date ) ){ 
 				interval = Int( timeinseconds / 3600 );
 				// more than 1 hour
 				if ( interval > 1 ) result = interval & " hours ago";
@@ -227,14 +227,6 @@ component extends="frameworks.org.corfield.framework"{
 			// less than 48 hours
 			else if ( timeinseconds < 172800 ){ 
 				result = "yesterday" & " at " & TimeFormat( arguments.date, "HH:MM" );
-			}
-			// less than a month
-			else if ( timeinseconds < 2678400 ){ 
-				result = Ceiling( timeinseconds / 86400 ) & " days ago at " & TimeFormat( arguments.date, "HH:MM" );
-			}
-			// less than a year
-			else if ( timeinseconds < 31536000 ){ 
-				result = DateDiff( 'w', arguments.date, Now() ) & " weeks ago at " & TimeFormat( arguments.date, "HH:MM" );;
 			}
 			// return the date
 			else{ 
