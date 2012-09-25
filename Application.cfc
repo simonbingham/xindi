@@ -19,6 +19,7 @@ component extends="frameworks.org.corfield.framework" {
 		, cfclocation = this.mappings[ "/model" ]
 		, eventhandling = true
 		, eventhandler = "model.aop.GlobalEventHandler"
+		, logsql = this.development
 		, secondarycacheenabled = true 		
 	};
 	
@@ -81,6 +82,8 @@ component extends="frameworks.org.corfield.framework" {
 	void function setupRequest(){
 		if( this.development && !isNull( url.rebuild ) ) ORMReload();
 
+		if( this.development ) writedump( var="*** Request Start ***", output="console" );
+
 		// define base url
 		if( CGI.HTTPS eq "on" ) rc.basehref = "https://";
 		else rc.basehref = "http://";
@@ -97,9 +100,7 @@ component extends="frameworks.org.corfield.framework" {
 	
 	void function setupView(){
 		// get data need to build the navigation
-		if ( getSubsystem() == "public" ){
-			rc.navigation = getBeanFactory().getBean( "ContentService" ).getNavigation();
-		}
+		if ( getSubsystem() == "public" ){ rc.navigation = getBeanFactory().getBean( "ContentService" ).getNavigation();
 	}
 	
 	// ------------------------ CALLED WHEN EXCEPTION OCCURS ------------------------ //	
@@ -197,53 +198,47 @@ component extends="frameworks.org.corfield.framework" {
 	
 	string function snippet( content, charactercount=100 ){
 		var result = Trim( reReplace( arguments.content,"<[^>]{1,}>"," ","all" ) );
-		if ( Len( result ) > arguments.charactercount+10 ){
-			return Trim( Left( result, arguments.charactercount ) ) & "&hellip;";
-		}
-		else{
-			return result;
-		}
+		if ( Len( result ) > arguments.charactercount+10 ) return Trim( Left( result, arguments.charactercount ) ) & "&hellip;";
+		else return result;
 	}
 
 	string function getTimeInterval( date, datemask="dddd dd mmmm yyyy" ){
 		var timeinseconds = 0;
 		var result = "";
 		var interval = "";
-	 
 		if( IsDate( arguments.date ) ){
 			timeinseconds = DateDiff( 's', arguments.date, Now() );
-			if( timeinseconds < 60 ){ // less than a minute
+			// less than a minute
+			if( timeinseconds < 60 ){ 
 				result = " less than a minute ago";
 			}
-			else if ( timeinseconds < 3600 ){ // less than an hour
+			// less than an hour
+			else if ( timeinseconds < 3600 ){ 
 				interval = Int( timeinseconds / 60 );
 				// more than 1 minute
-				if ( interval > 1 ){
-					result = interval & " minutes ago";
-				}
-				else{
-					result = interval & " minute ago";
-				}
+				if ( interval > 1 ) result = interval & " minutes ago";
+				else result = interval & " minute ago";
 			}
 			else if ( timeinseconds < ( 86400 ) && Hour( Now() ) >= Hour( arguments.date ) ){ // less than 24 hours
 				interval = Int( timeinseconds / 3600 );
-				if ( interval > 1 ){ // more than 1 hour
-					result = interval & " hours ago";
-				}
-				else{
-					result = interval & " hour ago";
-				}
+				// more than 1 hour
+				if ( interval > 1 ) result = interval & " hours ago";
+				else result = interval & " hour ago";
 			}
-			else if ( timeinseconds < 172800 ){ // less than 48 hours
+			// less than 48 hours
+			else if ( timeinseconds < 172800 ){ 
 				result = "yesterday" & " at " & TimeFormat( arguments.date, "HH:MM" );
 			}
-			else if ( timeinseconds < 2678400 ){ // less than a month
+			// less than a month
+			else if ( timeinseconds < 2678400 ){ 
 				result = Ceiling( timeinseconds / 86400 ) & " days ago at " & TimeFormat( arguments.date, "HH:MM" );
 			}
-			else if ( timeinseconds < 31536000 ){ // less than a year
+			// less than a year
+			else if ( timeinseconds < 31536000 ){ 
 				result = DateDiff( 'w', arguments.date, Now() ) & " weeks ago at " & TimeFormat( arguments.date, "HH:MM" );;
 			}
-			else{ // return the date
+			// return the date
+			else{ 
 				result = timeinseconds & DateFormat( arguments.date, arguments.datemask ) & " at " & TimeFormat( arguments.date, "HH:MM" );
 			}
 		}
@@ -252,9 +247,7 @@ component extends="frameworks.org.corfield.framework" {
 	
 	boolean function isRoute( required slug ){
 		for ( var el in getRoutes() ){
-			if ( StructKeyExists( el, arguments.slug ) ){
-				return true;
-			}
+			if ( StructKeyExists( el, arguments.slug ) ) return true;
 		}
 		return false;
 	}
