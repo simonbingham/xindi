@@ -230,7 +230,7 @@ component extends="frameworks.org.corfield.framework"{
 			}
 			// return the date
 			else{ 
-				result = timeinseconds & DateFormat( arguments.date, arguments.datemask ) & " at " & TimeFormat( arguments.date, "HH:MM" );
+				result = DateFormat( arguments.date, arguments.datemask ) & " at " & TimeFormat( arguments.date, "HH:MM" );
 			}
 		}
 		return result;
