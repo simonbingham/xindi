@@ -86,15 +86,6 @@ component persistent="true" table="pages" cacheuse="transactional"{
 	}
 	
 	/**
-	 * I return the page summary
-	 */		
-	string function getSummary(){
-		var plaintext = Trim( ReReplace( REReplaceNoCase( Trim( variables.content ), "<[^>]{1,}>", " ", "all" ), " +", " ", "all" ) );
-		if( Len( plaintext ) > 500 ) return Left( plaintext, 500 ) & "...";
-		return plaintext;
-	}
-	
-	/**
 	 * I return true if the page has a child
 	 */		
 	boolean function hasChild(){
