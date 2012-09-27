@@ -4,8 +4,7 @@ component persistent="true" table="enquiries" cacheuse="transactional"{
 	
 	property name="enquiryid" column="enquiry_id" fieldtype="id" setter="false" generator="native";
 	
-	property name="firstname" column="enquiry_firstname" ormtype="string" length="50";
-	property name="lastname" column="enquiry_lastname" ormtype="string" length="50";
+	property name="name" column="enquiry_name" ormtype="string" length="50";
 	property name="email" column="enquiry_email" ormtype="string" length="150";
 	property name="message" column="enquiry_message" ormtype="text";
 	property name="read" column="enquiry_read" ormtype="boolean";
@@ -17,8 +16,7 @@ component persistent="true" table="enquiries" cacheuse="transactional"{
 	 * I initialise this component
 	 */	
 	Enquiry function init(){
-		variables.firstname = "";
-		variables.lastname = "";
+		variables.name = "";
 		variables.read = false;
 		return this;
 	}
@@ -29,13 +27,6 @@ component persistent="true" table="enquiries" cacheuse="transactional"{
 	string function getDisplayMessage(){
 		return REReplace( HTMLEditFormat( variables.message ), "[\r\n]+", "<br /><br />", "ALL" );
 	}	
-
-	/**
-	 * I return the full name
-	 */		
-	string function getFullName(){
-		return variables.firstname & " " & variables.lastname;
-	}
 
 	/**
 	 * I return true if the enquiry is persisted

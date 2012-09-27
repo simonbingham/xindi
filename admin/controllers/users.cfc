@@ -27,8 +27,7 @@ component accessors="true" extends="abstract"{
 	
 	void function save( required struct rc ){
 		param name="rc.userid" default="0";
-		param name="rc.firstname" default="";
-		param name="rc.lastname" default="";
+		param name="rc.name" default="";
 		param name="rc.email" default="";
 		param name="rc.username" default="";
 		param name="rc.password" default="";

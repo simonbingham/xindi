@@ -7,22 +7,14 @@
 		<fieldset>
 			<legend>User Details</legend>	
 	
-			<div class="control-group <cfif rc.result.hasErrors( 'firstname' )>error</cfif>">
-				<label class="control-label" for="firstname">First Name <cfif rc.Validator.propertyIsRequired( "firstname", rc.context )>*</cfif></label>
+			<div class="control-group <cfif rc.result.hasErrors( 'name' )>error</cfif>">
+				<label class="control-label" for="name">Name <cfif rc.Validator.propertyIsRequired( "name", rc.context )>*</cfif></label>
 				<div class="controls">
-			<input class="input-xlarge" type="text" name="firstname" id="firstname" value="#HtmlEditFormat( rc.User.getFirstName() )#" maxlength="50">
-					#view( "helpers/failures",{ property="firstname" })#
+			<input class="input-xlarge" type="text" name="name" id="name" value="#HtmlEditFormat( rc.User.getName() )#" maxlength="50">
+					#view( "helpers/failures",{ property="name" })#
 				</div>
 			</div>
 
-			<div class="control-group <cfif rc.result.hasErrors( 'lastname' )>error</cfif>"">
-				<label class="control-label" for="lastname">Last Name <cfif rc.Validator.propertyIsRequired( "lastname", rc.context )>*</cfif></label>
-				<div class="controls">
-			<input class="input-xlarge" type="text" name="lastname" id="lastname" value="#HtmlEditFormat( rc.User.getLastName() )#" maxlength="50">
-					#view( "helpers/failures", { property="lastname" })#
-				</div>
-			</div>
-			
 			<div class="control-group <cfif rc.result.hasErrors( 'email' )>error</cfif>"">
 				<label class="control-label" for="email">Email Address <cfif rc.Validator.propertyIsRequired( "email", rc.context )>*</cfif></label>
 				<div class="controls">

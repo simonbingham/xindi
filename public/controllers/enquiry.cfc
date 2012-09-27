@@ -17,8 +17,7 @@ component accessors="true" extends="abstract"{
 	}
 	
 	void function send( required struct rc ){
-		param name="rc.firstname" default="";
- 		param name="rc.lastname" default="";
+		param name="rc.name" default="";
  		param name="rc.email" default="";
  		param name="rc.message" default="";
 		rc.result = variables.EnquiryService.sendEnquiry( rc, variables.config.enquiry, "../../public/views/enquiry/email.cfm" );

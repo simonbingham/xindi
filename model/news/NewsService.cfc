@@ -77,7 +77,7 @@ component accessors="true" extends="model.abstract.BaseService"{
 				arguments.properties.metakeywords = variables.MetaData.generateMetaKeywords( arguments.properties.title );
 			}
 			var User = variables.SecurityService.getCurrentUser();
-			if( !IsNull( User ) ) arguments.properties.updatedby = User.getFullName();
+			if( !IsNull( User ) ) arguments.properties.updatedby = User.getName();
 			populate( Article, arguments.properties );
 			var result = variables.Validator.validate( theObject=Article );
 			if( !result.hasErrors() ){

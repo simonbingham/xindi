@@ -4,8 +4,7 @@ component persistent="true" table="users" cacheuse="transactional"{
 	
 	property name="userid" column="user_id" fieldtype="id" setter="false" generator="native";
 
-	property name="firstname" column="user_firstname" ormtype="string" length="50";
-	property name="lastname" column="user_lastname" ormtype="string" length="50";
+	property name="name" column="user_name" ormtype="string" length="50";
 	property name="email" column="user_email" ormtype="string" length="150";
 	property name="username" column="user_username" ormtype="string" length="50";
 	property name="password" column="user_password" ormtype="string" length="65" setter="false";
@@ -21,13 +20,6 @@ component persistent="true" table="users" cacheuse="transactional"{
 		return this;
 	}
 	
-	/**
-	 * I return the full name
-	 */		
-	string function getFullName(){
-		return variables.firstname & " " & variables.lastname;
-	}
-
 	/**
 	 * I return true if the email address is unique
 	 */		

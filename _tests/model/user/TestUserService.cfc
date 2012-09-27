@@ -101,14 +101,14 @@ component extends="mxunit.framework.TestCase"{
 	}
 
 	function testSaveUserWhereUserIsInvalid(){
-		var properties = { firstname="Simon", lastname="Bingham", email="foobarfoobarcom", username="foo", password="bar"  };
+		var properties = { name="Simon Bingham", email="foobarfoobarcom", username="foo", password="bar"  };
 		var saveuserresult = CUT.saveUser( properties, "create" );
 		var result = saveuserresult.getIsSuccess();
 		assertFalse( result );
 	}
 	
 	function testSaveUserWhereUserIsValid(){
-		var properties = { firstname="Simon", lastname="Bingham", email="foobar@foobar.com", username="foo", password="bar"  };
+		var properties = { name="Simon Bingham", email="foobar@foobar.com", username="foo", password="bar"  };
 		var saveuserresult = CUT.saveUser( properties, "create" );
 		var result = saveuserresult.getIsSuccess();
 		assertTrue( result );
@@ -134,8 +134,8 @@ component extends="mxunit.framework.TestCase"{
 		// insert test data into database
 		var q = new Query();
 		q.setSQL( "
-			INSERT INTO Users ( user_firstname, user_lastname, user_email, user_username, user_password, user_created, user_updated ) 
-			VALUES ( 'Default', 'User', 'example@example.com', 'admin', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB', '20120422', '20120422' );
+			INSERT INTO Users ( user_name, user_email, user_username, user_password, user_created, user_updated ) 
+			VALUES ( 'Default User', 'example@example.com', 'admin', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB', '20120422', '20120422' );
 		" );
 		q.execute();
 	}

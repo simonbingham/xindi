@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <validateThis xsi:noNamespaceSchemaLocation="validateThis.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<objectProperties>
-		<property name="firstname" desc="first name">
-			<rule type="required" contexts="create,update" />
-			<rule type="maxLength" contexts="create,update">
-				<param name="maxLength" value="50" />
-			</rule>	
-		</property>
-		<property name="lastname" desc="last name">
+		<property name="name" desc="name">
 			<rule type="required" contexts="create,update" />
 			<rule type="maxLength" contexts="create,update">
 				<param name="maxLength" value="50" />
