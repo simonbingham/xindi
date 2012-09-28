@@ -58,9 +58,7 @@ component persistent="true" table="users" cacheuse="transactional"{
 		if( arguments.password != "" ){
 			variables.password = arguments.password;
 			// to help prevent rainbow attacks hash several times
-			for ( var i=0; i<50; i++ ){			
-				variables.password = Hash( variables.password, "SHA-256" );
-			}
+			for ( var i=0; i<50; i++ ) variables.password = Hash( variables.password, "SHA-256" );
 		}
 	}
 	

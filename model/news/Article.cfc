@@ -93,7 +93,6 @@ component persistent="true" table="articles" cacheuse="transactional"{
 		setSlug();
 	}
 
-
 	/**
      * I generate a unique id for the article
 	 */		

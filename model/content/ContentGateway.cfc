@@ -202,7 +202,6 @@
 		<cfreturn qPages>
 	</cffunction>
 	
-	
 	<cfscript>
 		/**
 		 * I return the root page (i.e. home page)

@@ -10,13 +10,13 @@
 			<div class="control-group <cfif rc.result.hasErrors( 'username' )>error</cfif>">
 				<label class="control-label" for="username">Email or Username</label>
 				<div class="controls">
-			<input class="input-xlarge" type="text" name="username" id="username">
+					<input class="input-xlarge" type="text" name="username" id="username">
 					#view( "helpers/failures", { property="username" })#
 				</div>
 			</div>
 			
 			<div class="form-actions">
-		<input type="submit" name="submit" id="submit" value="Reset Password" class="btn btn-primary">
+				<input type="submit" name="submit" id="submit" value="Reset Password" class="btn btn-primary">
 			</div>
 		</fieldset>
 	</form>

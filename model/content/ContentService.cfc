@@ -139,7 +139,6 @@ component accessors="true" extends="model.abstract.BaseService" {
 		}
 		return result;
 	}
-
 	
 	// accepts an array of structs
 	boolean function saveSortOrder( required array pages ) {
