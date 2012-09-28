@@ -134,25 +134,6 @@ component extends="mxunit.framework.TestCase"{
 		assertFalse( result );
 	}	
 
-	function testMovePageDown(){
-		var Page = EntityLoadByPK( "Page", 12 );
-		var result = Page.getLeftValue();
-		assertEquals( 21, result );
-		Page = CUT.movePage( Page, "down" );
-		result = Page.getLeftValue();
-		assertEquals( 23, result );
-	}
-
-	function testMovePageUp(){
-		var Page = EntityLoadByPK( "Page", 7 );
-		var result = Page.getLeftValue();
-		assertEquals( 7, result );
-		Page = CUT.movePage( Page, "up" );
-		result = Page.getLeftValue();
-		assertEquals( 5, result );
-
-	}
-
 	function testSavePage(){
 		var pages = EntityLoad( "Page" );
 		var result = ArrayLen( pages );

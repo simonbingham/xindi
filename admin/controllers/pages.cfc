@@ -29,13 +29,6 @@ component accessors="true" extends="abstract"{
 		if( !StructKeyExists( rc, "result" ) ) rc.result = rc.Validator.newResult();
 	}	
 	
-	void function move( required struct rc ){
-		param name="rc.pageid" default="0";
-		param name="rc.direction" default="";
-		rc.result = variables.ContentService.movePage( rc.pageid, rc.direction );
-		variables.fw.redirect( "pages", "result" );
-	}	
-	
 	void function save( required struct rc ){
 		param name="rc.pageid" default="0";
 		param name="rc.ancestorid" default="0";

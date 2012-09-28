@@ -211,48 +211,6 @@
 		}
 
 		/**
-		 * I move a page
-		 */
-		/*	
-		Page function movePage( required Page thePage, required string direction ){
-			var decreaseamount = "";
-			var increaseamount = "";
-			if( arguments.direction eq "up" ){
-				if( thePage.hasPreviousSibling() ){
-					increaseamount = thePage.getRightValue() - thePage.getLeftValue() + 1;
-					var PreviousSibling = thePage.getPreviousSibling();
-					var previoussiblingdescendentidlist = PreviousSibling.getDescendentPageIDList();
-					decreaseamount = PreviousSibling.getRightValue() - PreviousSibling.getLeftValue() + 1;
-					if( ListLen( thePage.getDescendentPageIDList() ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue - :decreaseamount, rightvalue = rightvalue - :decreaseamount where pageid in ( #thePage.getDescendentPageIDList()# )", { decreaseamount=decreaseamount });
-					if( ListLen( previoussiblingdescendentidlist ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue + :increaseamount, rightvalue = rightvalue + :increaseamount where pageid in ( #previoussiblingdescendentidlist# )", { increaseamount=increaseamount });
-					thePage.setLeftValue( thePage.getLeftValue() - decreaseamount );
-					thePage.setRightValue( thePage.getRightValue() - decreaseamount );
-					PreviousSibling.setLeftValue( previoussibling.getLeftValue() + increaseamount );
-					PreviousSibling.setRightValue( previoussibling.getRightValue() + increaseamount );
-					save( thePage );
-					save( PreviousSibling );
-				}
-			}else{
-				if( thePage.hasNextSibling() ){
-					decreaseamount = thePage.getRightValue() - thePage.getLeftValue() + 1;
-					var NextSibling = thePage.getNextSibling();
-					var nextsiblingdescendentidlist = NextSibling.getDescendentPageIDList();
-					increaseamount = NextSibling.getRightValue() - NextSibling.getLeftValue() + 1;
-					if( ListLen( thePage.getDescendentPageIDList() ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue + :increaseamount, rightvalue = rightvalue + :increaseamount where pageid in ( #thePage.getDescendentPageIDList()# )", { increaseamount=increaseamount });
-					if( ListLen( nextsiblingdescendentidlist ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue - :decreaseamount, rightvalue = rightvalue - :decreaseamount where pageid in ( #nextsiblingdescendentidlist# )", { decreaseamount=decreaseamount });
-					thePage.setLeftValue( thePage.getLeftValue() + increaseamount );
-					thePage.setRightValue( thePage.getRightValue() + increaseamount );
-					NextSibling.setLeftValue( nextsibling.getLeftValue() - decreaseamount );
-					NextSibling.setRightValue( nextsibling.getRightValue() - decreaseamount );
-					save( thePage );
-					save( NextSibling );
-				}
-			}
-			return thePage;
-		}
-		*/
-		
-		/**
 		 * I save a page
 		 */
 		Page function savePage( required Page thePage, required numeric ancestorid ){

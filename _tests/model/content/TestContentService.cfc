@@ -107,38 +107,6 @@ component extends="mxunit.framework.TestCase"{
 		assertTrue( result );
 	}
 
-	function testMovePageWherePageCanBeMovedDown(){
-		var movepageresult = CUT.movePage( 12, "down" );
-		var result = movepageresult.getIsSuccess();
-		assertTrue( result );
-		result = movepageresult.getTheObject().getLeftValue();
-		assertEquals( 23, result );
-		result = movepageresult.getTheObject().getRightValue();
-		assertEquals( 24, result );
-	}
-
-	function testMovePageWherePageCanBeMovedUp(){
-		var movepageresult = CUT.movePage( 7, "up" );
-		var result = movepageresult.getIsSuccess();
-		assertTrue( result );
-		result = movepageresult.getTheObject().getLeftValue();
-		assertEquals( 5, result );
-		result = movepageresult.getTheObject().getRightValue();
-		assertEquals( 6, result );
-	}
-
-	function testMovePageWherePageCannotBeMovedDown(){
-		var movepageresult = CUT.movePage( 13, "down" );
-		var result = movepageresult.getIsSuccess();
-		assertFalse( result );
-	}
-
-	function testMovePageWherePageCannotBeMovedUp(){
-		var movepageresult = CUT.movePage( 11, "up" );
-		var result = movepageresult.getIsSuccess();
-		assertFalse( result );
-	}
-
 	function testSavePageWherePageIsInvalid(){
 		var savepageresult = CUT.savePage( { title="", content="" }, 1, "create", "" );
 		var result = savepageresult.getIsSuccess();

@@ -87,34 +87,6 @@ component accessors="true" extends="model.abstract.BaseService" {
 	}	
 	
 	/**
-	 * I move a page
-	 */
-	/*	
-	struct function movePage( required pageid, required string direction ){
-		transaction{
-			var result = variables.Validator.newResult();
-			var Page = variables.ContentGateway.getPage( Val( arguments.pageid ) );
-			result.setErrorMessage( "The page could not be moved." );
-			if( Page.isPersisted() && ListFindNoCase( "up,down", Trim( arguments.direction ) ) ){
-				if( arguments.direction eq "up" ){
-					if( Page.hasPreviousSibling() ){
-						variables.ContentGateway.movePage( Page, "up" );
-						result.setSuccessMessage( "The page &quot;#Page.getTitle()#&quot; has been moved." );
-					}
-				}else{
-					if( Page.hasNextSibling() ){
-						variables.ContentGateway.movePage( Page, "down" );
-						result.setSuccessMessage( "The page &quot;#Page.getTitle()#&quot; has been moved." );
-					}
-				}
-			}
-			result.setTheObject( Page );
-		}
-		return result;
-	}
-	*/
-	
-	/**
 	 * I validate and save a page
 	 */		
 	struct function savePage( required struct properties, required ancestorid, required string context, required string websitetitle ){
@@ -143,6 +115,7 @@ component accessors="true" extends="model.abstract.BaseService" {
 	}
 	
 	// accepts an array of structs
+	// TODO: doesn't currently update left and right values of sub pages - need to fix
 	boolean function saveSortOrder( required array pages ) {
 		transaction{
 			for ( var page in arguments.pages ){

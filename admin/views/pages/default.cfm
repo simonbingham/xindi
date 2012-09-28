@@ -12,7 +12,8 @@
 				<th>Last Updated</th>
 				<th class="center">View</th>
 				<cfif rc.config.page.enableadddelete><th class="center">Add Page</th></cfif>
-				<th class="center">Sort Sub Pages</th>
+				<!--- temporarily disabled sorting of pages until bug is fixed - https://github.com/simonbingham/xindi/issues/101 --->
+				<!---<th class="center">Sort Sub Pages</th>--->
 				<cfif rc.config.page.enableadddelete><th class="center">Delete</th></cfif>
 			</tr>
 		</thead>
@@ -31,7 +32,7 @@
 					<td title="last updated on #DateFormat( rc.navigation.updated, 'medium' )# at #TimeFormat( rc.navigation.updated, 'HH:MM' )#">#getTimeInterval( rc.navigation.updated )# by # rc.navigation.updatedby#</td>
 					<td class="center"><a href="#buildURL( action="public:" & rc.navigation.slug )#" title="View" target="_blank"><i class="icon-eye-open"></i></a></td>
 					<cfif rc.config.page.enableadddelete><td class="center"><cfif rc.navigation.depth lt rc.config.page.maxlevels and !ListFind( rc.config.page.suppressaddpage, rc.navigation.pageid )><a href="#buildURL( action='pages.maintain', querystring='ancestorid/#rc.navigation.pageid#' )#" title="Add Page"><i class="icon-plus-sign"></i></a></cfif></td></cfif>
-					<td class="center"><cfif rc.navigation.descendants gt 1><a href="#buildURL( action='pages.sort', querystring='pageid/#rc.navigation.pageid#' )#" title="Sort"><i class="icon-retweet"></i></a></cfif></td>
+					<!---<td class="center"><cfif rc.navigation.descendants gt 1><a href="#buildURL( action='pages.sort', querystring='pageid/#rc.navigation.pageid#' )#" title="Sort"><i class="icon-retweet"></i></a></cfif></td>--->
 					<cfif rc.config.page.enableadddelete><td class="center"><cfif rc.navigation.descendants eq 0 and !ListFind( rc.config.page.suppressdeletepage, rc.navigation.pageid )><a href="#buildURL( 'pages.delete' )#/pageid/#rc.navigation.pageid#" title="Delete"><i class="icon-remove"></i></a></cfif></td></cfif>
 				</tr>
 			</cfloop>
