@@ -290,24 +290,6 @@ component extends="mxunit.framework.TestCase"{
 		assertTrue( result );
 	}
 
-	function testIsSlugUniqueWhereSlugDoesNotExist(){
-		CUT.setTitle( "foobar" );
-		makePublic( CUT, "setSlug" );
-		makePublic( CUT, "isSlugUnique" );
-		CUT.setSlug();
-		var result = CUT.isSlugUnique();
-		assertTrue( result );
-	}
-	
-	function testIsSlugUniqueWhereSlugExists(){
-		CUT.setTitle( "title" );
-		makePublic( CUT, "setSlug" );
-		makePublic( CUT, "isSlugUnique" );
-		CUT.setSlug();
-		var result = CUT.isSlugUnique();
-		assertTrue( result );
-	}	
-
 	function testIsLeaf(){
 		var Page = EntityLoadByPK( "Page", 1 );
 		var result = Page.isLeaf();
@@ -345,16 +327,6 @@ component extends="mxunit.framework.TestCase"{
 		Page = EntityLoadByPK( "Page", 13 );
 		result = Page.isRoot();
 		assertFalse( result );
-	}
-	
-	function testSetSlug(){
-		var Page = EntityNew( "Page" );
-		Page.setTitle( "this is a unique id" ); // setSlug uses value returned by getTitle
-		Page.setLeftValue( 2 );
-		Page.setRightValue( 9 );
-		Page.setSlug();
-		var result = Page.getSlug();
-		assertEquals( "this-is-a-unique-id", result );
 	}
 
 	// ------------------------ IMPLICIT ------------------------ // 

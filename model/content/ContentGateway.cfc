@@ -1,6 +1,6 @@
 <cfcomponent accessors="true" output="false" extends="model.abstract.BaseGateway">
 	<cfscript>
-		// ------------------------ PUBLIC METHODS ------------------------ //		
+		// ------------------------ PUBLIC METHODS ------------------------ //
 		
 		/**
 		 * I delete a page
@@ -252,10 +252,15 @@
 		
 		/**
 		 * I save a page
-		 */			
+		 */
 		Page function savePage( required Page thePage, required numeric ancestorid ){
 			if( !arguments.thePage.isPersisted() && arguments.ancestorid ){
 				var Ancestor = get( "Page", arguments.ancestorid );
+				var slug = "";
+				if( Len( Trim( Ancestor.getSlug() ) ) ) slug = Ancestor.getSlug() & "/";				
+				slug &= ReReplace( LCase( arguments.thePage.getTitle() ), "[^a-z0-9]{1,}", "-", "all" );
+				while ( !isSlugUnique( slug ) ) slug &= "-";
+				arguments.thePage.setSlug( slug );
 				arguments.thePage.setLeftValue( Ancestor.getRightValue() );
 				arguments.thePage.setRightValue( Ancestor.getRightValue() + 1 );
 				ORMExecuteQuery( "update Page set leftvalue = leftvalue + 2 where leftvalue > :startingvalue", { startingvalue=Ancestor.getRightValue() - 1 } );
@@ -264,6 +269,13 @@
 			}else if( arguments.thePage.isPersisted() ){
 				return save( arguments.thePage );
 			}
+		}
+		
+		// ------------------------ PRIVATE METHODS ------------------------ //
+		
+		private boolean function isSlugUnique( required string slug ){
+			var matches = ORMExecuteQuery( "from Page where slug=:slug", { slug=arguments.slug });
+			return !ArrayLen( matches );
 		}
 	</cfscript>
 </cfcomponent>
