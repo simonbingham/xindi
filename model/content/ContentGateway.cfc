@@ -212,7 +212,8 @@
 
 		/**
 		 * I move a page
-		 */			
+		 */
+		/*	
 		Page function movePage( required Page thePage, required string direction ){
 			var decreaseamount = "";
 			var increaseamount = "";
@@ -249,6 +250,7 @@
 			}
 			return thePage;
 		}
+		*/
 		
 		/**
 		 * I save a page

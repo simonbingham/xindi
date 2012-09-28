@@ -88,7 +88,8 @@ component accessors="true" extends="model.abstract.BaseService" {
 	
 	/**
 	 * I move a page
-	 */		
+	 */
+	/*	
 	struct function movePage( required pageid, required string direction ){
 		transaction{
 			var result = variables.Validator.newResult();
@@ -111,6 +112,7 @@ component accessors="true" extends="model.abstract.BaseService" {
 		}
 		return result;
 	}
+	*/
 	
 	/**
 	 * I validate and save a page
