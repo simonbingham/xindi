@@ -83,7 +83,7 @@ component accessors="true" extends="model.abstract.BaseService"{
 		User = variables.UserGateway.getUserByCredentials( User );
 		if( User.isPersisted() ){
 			setCurrentUser( User );
-			result.setSuccessMessage( "Welcome #User.getFirstName()#. You have been logged in." );
+			result.setSuccessMessage( "Welcome #User.getName()#. You have been logged in." );
 		}else{
 			var message = "Sorry, your login details have not been recognised.";
 			result.setErrorMessage( message );

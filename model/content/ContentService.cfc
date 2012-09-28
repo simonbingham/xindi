@@ -35,6 +35,13 @@ component accessors="true" extends="model.abstract.BaseService" {
 	}
 	
 	/**
+	 * I return a query of child pages
+	 */	
+	query function getChildren( Page, clearcache=false ){
+		return variables.ContentGateway.getChildren( left=arguments.Page.getLeftValue(), right=arguments.Page.getRightValue(), clearcache=arguments.clearcache );
+	}	
+	
+	/**
 	 * I return a page matching an id
 	 */		
 	Page function getPage( required pageid ){
@@ -60,12 +67,8 @@ component accessors="true" extends="model.abstract.BaseService" {
 	 * I return a query of pages making up the site hierarchy
 	 */	
 	query function getNavigation( Page, clearcache=false ){
-		if ( StructKeyExists( arguments, "Page" ) ){
-			return variables.ContentGateway.getNavigation( left=arguments.Page.getleftvalue(), right=arguments.Page.getrightvalue(), clearcache=arguments.clearcache );
-		}
-		else{
-			return variables.ContentGateway.getNavigation( clearcache=arguments.clearcache );
-		}
+		if ( StructKeyExists( arguments, "Page" ) ) return variables.ContentGateway.getNavigation( left=arguments.Page.getleftvalue(), right=arguments.Page.getrightvalue(), clearcache=arguments.clearcache );
+		else return variables.ContentGateway.getNavigation( clearcache=arguments.clearcache );
 	}
 	
 	/**
@@ -84,32 +87,6 @@ component accessors="true" extends="model.abstract.BaseService" {
 	}	
 	
 	/**
-	 * I move a page
-	 */		
-	struct function movePage( required pageid, required string direction ){
-		transaction{
-			var result = variables.Validator.newResult();
-			var Page = variables.ContentGateway.getPage( Val( arguments.pageid ) );
-			result.setErrorMessage( "The page could not be moved." );
-			if( Page.isPersisted() && ListFindNoCase( "up,down", Trim( arguments.direction ) ) ){
-				if( arguments.direction eq "up" ){
-					if( Page.hasPreviousSibling() ){
-						variables.ContentGateway.movePage( Page, "up" );
-						result.setSuccessMessage( "The page &quot;#Page.getTitle()#&quot; has been moved." );
-					}
-				}else{
-					if( Page.hasNextSibling() ){
-						variables.ContentGateway.movePage( Page, "down" );
-						result.setSuccessMessage( "The page &quot;#Page.getTitle()#&quot; has been moved." );
-					}
-				}
-			}
-			result.setTheObject( Page );
-		}
-		return result;
-	}
-	
-	/**
 	 * I validate and save a page
 	 */		
 	struct function savePage( required struct properties, required ancestorid, required string context, required string websitetitle ){
@@ -124,7 +101,7 @@ component accessors="true" extends="model.abstract.BaseService" {
 				arguments.properties.metakeywords = variables.MetaData.generateMetaKeywords( arguments.properties.title );
 			}
 			var User = variables.SecurityService.getCurrentUser();
-			if( !IsNull( User ) ) arguments.properties.updatedby = User.getFullName();
+			if( !IsNull( User ) ) arguments.properties.updatedby = User.getName();
 			populate( Page, arguments.properties );
 			var result = variables.Validator.validate( theObject=Page, context=arguments.context );
 			if( !result.hasErrors() ){
@@ -136,16 +113,14 @@ component accessors="true" extends="model.abstract.BaseService" {
 		}
 		return result;
 	}
-
 	
 	// accepts an array of structs
+	// TODO: doesn't currently update left and right values of sub pages - need to fix
 	boolean function saveSortOrder( required array pages ) {
 		transaction{
 			for ( var page in arguments.pages ){
 				var PageEntity = getPage( page.pageid );
-				if ( IsNull( PageEntity ) || !PageEntity.isPersisted() ){
-					return false;
-				}
+				if ( IsNull( PageEntity ) || !PageEntity.isPersisted() ) return false;
 				PageEntity.setleftvalue( page.left );
 				PageEntity.setrightvalue( page.right );
 				variables.ContentGateway.savePage( PageEntity, 0 );

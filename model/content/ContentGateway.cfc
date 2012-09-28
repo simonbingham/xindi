@@ -1,6 +1,6 @@
 <cfcomponent accessors="true" output="false" extends="model.abstract.BaseGateway">
 	<cfscript>
-		// ------------------------ PUBLIC METHODS ------------------------ //		
+		// ------------------------ PUBLIC METHODS ------------------------ //
 		
 		/**
 		 * I delete a page
@@ -66,6 +66,41 @@
 		</cfquery>
 		<cfreturn qPages>
 	</cffunction>
+	
+	<cffunction name="getChildren" output="false" returntype="query" hint="I return a query of child pages based upon the left and right value arguments">
+		<cfargument name="left" required="false" hint="The left position">
+		<cfargument name="right" required="false" hint="The right position">
+		<cfargument name="clearcache" required="false" default="false">
+		<cfset var qChildren = "">
+		<cfif arguments.clearcache>
+			<cfset var timespan = CreateTimeSpan(0,0,0,0)>
+		<cfelse>
+			<cfset var timespan = CreateTimeSpan(0,0,0,30)>
+		</cfif>
+		<cfquery name="qChildren" cachedwithin="#timespan#">
+			select 
+				page.page_id as pageid
+				, page.page_slug as slug
+				, page.page_title as title
+				, page.page_updated as updated
+				, page.page_left as positionleft
+				, page.page_right as positionright
+				, page.page_updatedby as updatedby
+			from pages as page
+			where 1 = 1
+			and (
+					select count(*)
+					from pages as pageSubQuery 
+					where pageSubQuery.page_left < page.page_left
+					and pageSubQuery.page_right > page.page_right 
+				) = 
+				( select Count( * ) from Pages where page_left < <cfqueryparam value="#arguments.left#" cfsqltype="cf_sql_integer"> and page_right > <cfqueryparam value="#arguments.right#" cfsqltype="cf_sql_integer"> ) + 1
+			and page_left > <cfqueryparam value="#arguments.left#" cfsqltype="cf_sql_integer">
+			and page_right < <cfqueryparam value="#arguments.right#" cfsqltype="cf_sql_integer">
+			order by page_left;			
+		</cfquery>
+		<cfreturn qChildren>
+	</cffunction>	
 	
 	<cfscript>	
 		/**
@@ -167,7 +202,6 @@
 		<cfreturn qPages>
 	</cffunction>
 	
-	
 	<cfscript>
 		/**
 		 * I return the root page (i.e. home page)
@@ -177,51 +211,16 @@
 		}
 
 		/**
-		 * I move a page
-		 */			
-		Page function movePage( required Page thePage, required string direction ){
-			var decreaseamount = "";
-			var increaseamount = "";
-			if( arguments.direction eq "up" ){
-				if( thePage.hasPreviousSibling() ){
-					increaseamount = thePage.getRightValue() - thePage.getLeftValue() + 1;
-					var PreviousSibling = thePage.getPreviousSibling();
-					var previoussiblingdescendentidlist = PreviousSibling.getDescendentPageIDList();
-					decreaseamount = PreviousSibling.getRightValue() - PreviousSibling.getLeftValue() + 1;
-					if( ListLen( thePage.getDescendentPageIDList() ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue - :decreaseamount, rightvalue = rightvalue - :decreaseamount where pageid in ( #thePage.getDescendentPageIDList()# )", { decreaseamount=decreaseamount });
-					if( ListLen( previoussiblingdescendentidlist ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue + :increaseamount, rightvalue = rightvalue + :increaseamount where pageid in ( #previoussiblingdescendentidlist# )", { increaseamount=increaseamount });
-					thePage.setLeftValue( thePage.getLeftValue() - decreaseamount );
-					thePage.setRightValue( thePage.getRightValue() - decreaseamount );
-					PreviousSibling.setLeftValue( previoussibling.getLeftValue() + increaseamount );
-					PreviousSibling.setRightValue( previoussibling.getRightValue() + increaseamount );
-					save( thePage );
-					save( PreviousSibling );
-				}
-			}else{
-				if( thePage.hasNextSibling() ){
-					decreaseamount = thePage.getRightValue() - thePage.getLeftValue() + 1;
-					var NextSibling = thePage.getNextSibling();
-					var nextsiblingdescendentidlist = NextSibling.getDescendentPageIDList();
-					increaseamount = NextSibling.getRightValue() - NextSibling.getLeftValue() + 1;
-					if( ListLen( thePage.getDescendentPageIDList() ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue + :increaseamount, rightvalue = rightvalue + :increaseamount where pageid in ( #thePage.getDescendentPageIDList()# )", { increaseamount=increaseamount });
-					if( ListLen( nextsiblingdescendentidlist ) ) ORMExecuteQuery( "update Page set leftvalue = leftvalue - :decreaseamount, rightvalue = rightvalue - :decreaseamount where pageid in ( #nextsiblingdescendentidlist# )", { decreaseamount=decreaseamount });
-					thePage.setLeftValue( thePage.getLeftValue() + increaseamount );
-					thePage.setRightValue( thePage.getRightValue() + increaseamount );
-					NextSibling.setLeftValue( nextsibling.getLeftValue() - decreaseamount );
-					NextSibling.setRightValue( nextsibling.getRightValue() - decreaseamount );
-					save( thePage );
-					save( NextSibling );
-				}
-			}
-			return thePage;
-		}
-		
-		/**
 		 * I save a page
-		 */			
+		 */
 		Page function savePage( required Page thePage, required numeric ancestorid ){
 			if( !arguments.thePage.isPersisted() && arguments.ancestorid ){
 				var Ancestor = get( "Page", arguments.ancestorid );
+				var slug = "";
+				if( Len( Trim( Ancestor.getSlug() ) ) ) slug = Ancestor.getSlug() & "/";				
+				slug &= ReReplace( LCase( arguments.thePage.getTitle() ), "[^a-z0-9]{1,}", "-", "all" );
+				while ( !isSlugUnique( slug ) ) slug &= "-";
+				arguments.thePage.setSlug( slug );
 				arguments.thePage.setLeftValue( Ancestor.getRightValue() );
 				arguments.thePage.setRightValue( Ancestor.getRightValue() + 1 );
 				ORMExecuteQuery( "update Page set leftvalue = leftvalue + 2 where leftvalue > :startingvalue", { startingvalue=Ancestor.getRightValue() - 1 } );
@@ -230,6 +229,13 @@
 			}else if( arguments.thePage.isPersisted() ){
 				return save( arguments.thePage );
 			}
+		}
+		
+		// ------------------------ PRIVATE METHODS ------------------------ //
+		
+		private boolean function isSlugUnique( required string slug ){
+			var matches = ORMExecuteQuery( "from Page where slug=:slug", { slug=arguments.slug });
+			return !ArrayLen( matches );
 		}
 	</cfscript>
 </cfcomponent>

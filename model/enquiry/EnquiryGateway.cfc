@@ -16,7 +16,7 @@ component accessors="true" extends="model.abstract.BaseGateway"{
 		var ormoptions = {};
 		if( arguments.maxresults ) ormoptions.maxresults = arguments.maxresults;	
 		return EntityLoad( "Enquiry", {}, "read, created DESC", ormoptions );
-	}	
+	}
 
 	/**
 	 * I return an enquiry matching an id

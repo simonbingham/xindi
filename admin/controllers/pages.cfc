@@ -29,13 +29,6 @@ component accessors="true" extends="abstract"{
 		if( !StructKeyExists( rc, "result" ) ) rc.result = rc.Validator.newResult();
 	}	
 	
-	void function move( required struct rc ){
-		param name="rc.pageid" default="0";
-		param name="rc.direction" default="";
-		rc.result = variables.ContentService.movePage( rc.pageid, rc.direction );
-		variables.fw.redirect( "pages", "result" );
-	}	
-	
 	void function save( required struct rc ){
 		param name="rc.pageid" default="0";
 		param name="rc.ancestorid" default="0";
@@ -64,10 +57,8 @@ component accessors="true" extends="abstract"{
 	void function sort( required struct rc ){
 		param name="rc.pageid" default="0";
 		rc.Page = variables.ContentService.getPage( rc.pageid );
-		if ( IsNull( rc.Page ) ){
-			variables.fw.redirect( "pages" );
-		}
-		rc.subpages = variables.ContentService.getNavigation( page=rc.Page );
+		if ( IsNull( rc.Page ) ) variables.fw.redirect( "pages" );
+		rc.subpages = variables.ContentService.getChildren( page=rc.Page, clearcache=true );
 	}
 
 	void function savesort( required struct rc ){
@@ -76,7 +67,6 @@ component accessors="true" extends="abstract"{
 			var pages = DeserializeJSON( rc.payload );
 			rc.saved = variables.ContentService.saveSortOrder( pages );
 		}
-		
 		// convert result to JavaScript boolean
 		rc.saved = rc.saved ? "true" : "false"; 
 	}

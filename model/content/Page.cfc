@@ -72,29 +72,6 @@ component persistent="true" table="pages" cacheuse="transactional"{
 	}
 	
 	/**
-	 * I return the page slug
-	 */		
-	string function getSlug(){
-		var slug = "";
-		if( !isRoot() ){
-			for( var Page in getPath() ){
-				if( !Page.isRoot() ) slug &= Page.getSlug() & "/";
-			}
-			slug &= variables.slug;
-		}
-		return slug;
-	}
-	
-	/**
-	 * I return the page summary
-	 */		
-	string function getSummary(){
-		var plaintext = Trim( ReReplace( REReplaceNoCase( Trim( variables.content ), "<[^>]{1,}>", " ", "all" ), " +", " ", "all" ) );
-		if( Len( plaintext ) > 500 ) return Left( plaintext, 500 ) & "...";
-		return plaintext;
-	}
-	
-	/**
 	 * I return true if the page has a child
 	 */		
 	boolean function hasChild(){
@@ -185,21 +162,6 @@ component persistent="true" table="pages" cacheuse="transactional"{
 		return variables.leftvalue == 1;
 	}
 	
-	/**
-	 * I am called after the page is inserted into the database 
-	 */		
-	void function preInsert(){
-		setSlug();
-	}
-	
-	/**
-	 * I generate a unique id for the page
-	 */
-	void function setSlug(){
-		variables.slug = ReReplace( LCase( variables.title ), "[^a-z0-9]{1,}", "-", "all" );
-		while ( !isSlugUnique() ) variables.slug &= "-"; 
-	}	
-
 	// ------------------------ PRIVATE METHODS ------------------------ //
 	
 	/**
@@ -251,14 +213,4 @@ component persistent="true" table="pages" cacheuse="transactional"{
 		return getLevel() != 0;
 	}	
 
-	/**
-	 * I return true if the id of the page is unique
-	 */		
-	private boolean function isSlugUnique(){
-		var matches = []; 
-		if( isPersisted() ) matches = ORMExecuteQuery( "from Page where pageid <> :pageid and slug = :slug", { pageid=variables.pageid, slug=variables.slug } );
-		else matches = ORMExecuteQuery( "from Page where slug=:slug", { slug=variables.slug });
-		return !ArrayLen( matches );
-	}
-	
 }

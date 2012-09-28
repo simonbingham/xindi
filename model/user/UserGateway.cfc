@@ -38,7 +38,7 @@ component accessors="true" extends="model.abstract.BaseGateway"{
 	 * I return an array of users
 	 */	
 	array function getUsers(){
-		return EntityLoad( "User", {}, "firstname" );
+		return EntityLoad( "User", {}, "name" );
 	}
 	
 	/**

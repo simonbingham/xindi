@@ -12,7 +12,8 @@
 		<cfloop query="rc.pages">
 			<cfset local.slug = rc.pages.slug>
 			
-			<cfif rc.pages.type eq 'article'><!--- TODO: this is a horrible hack! --->
+			<!--- TODO: this is a horrible hack! --->
+			<cfif rc.pages.type eq 'article'>
 				<cfset local.slug = 'news/article/slug/' & local.slug>
 			</cfif>
 			

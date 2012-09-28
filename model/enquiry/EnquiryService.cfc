@@ -17,7 +17,7 @@ component accessors="true" extends="model.abstract.BaseService"{
 			var result = variables.Validator.newResult();
 			if( Enquiry.isPersisted() ){ 
 				variables.EnquiryGateway.deleteEnquiry( Enquiry );
-				result.setSuccessMessage( "The enquiry from &quot;#Enquiry.getFullName()#&quot; has been deleted." );
+				result.setSuccessMessage( "The enquiry from &quot;#Enquiry.getName()#&quot; has been deleted." );
 			}else{
 				result.setErrorMessage( "The enquiry could not be deleted." );
 			}

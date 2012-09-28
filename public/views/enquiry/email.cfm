@@ -19,7 +19,7 @@
 				<tbody>
 					<tr>
 						<th style="text-align:left; vertical-align:top;">Name</th>
-						<td style="text-align:left; vertical-align:top;">#Enquiry.getFullName()#</td>
+						<td style="text-align:left; vertical-align:top;">#Enquiry.getName()#</td>
 					</tr>
 					<tr>
 						<th style="text-align:left; vertical-align:top;">Email Address</th>

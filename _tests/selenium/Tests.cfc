@@ -60,8 +60,7 @@ component extends="mxunit.framework.TestCase"{
 	function testContactForm() {
 		selenium.open( browserURL & "/index.cfm/enquiry" );
 		selenium.waitForPageToLoad( timeout );
-		selenium.type( "id=firstname", "test" );
-		selenium.type( "id=lastname", "test" );
+		selenium.type( "id=name", "test" );
 		selenium.type( "id=email", "test@example.com" );
 		selenium.type( "id=message", "test" );
 		selenium.click( "id=submit" );
@@ -98,7 +97,7 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testValidLogin() {
 		doLogin();
-		assertTrue( selenium.isTextPresent( "Welcome Default. You have been logged in." ) );
+		assertTrue( selenium.isTextPresent( "Welcome Default User. You have been logged in." ) );
 		doLogout();
 	}
 	
@@ -124,7 +123,7 @@ component extends="mxunit.framework.TestCase"{
 		selenium.waitForPageToLoad( timeout );
 		assertTrue( selenium.isTextPresent( "regexp:(The page "".*"" has been saved.)" ) );
 		// delete page
-		selenium.click( "//div[@id='content']/table/tbody/tr[10]/td[6]/a/i" );
+		selenium.click( "//div[@id='content']/table/tbody/tr[10]/td[5]/a/i" );
 		selenium.waitForPageToLoad( timeout );
 		// when we delete a record a confirmation dialog appears
 		// calling the getConfirmation method forces the Ok button to be clicked in the dialog
@@ -195,8 +194,7 @@ component extends="mxunit.framework.TestCase"{
 		selenium.waitForPageToLoad( timeout );
 		selenium.click( "link=Add user" );
 		selenium.waitForPageToLoad( timeout );
-		selenium.type( "id=firstname", "test" );		
-		selenium.type( "id=lastname", "test" );		
+		selenium.type( "id=name", "test" );		
 		selenium.type( "id=email", "test@example.com" );		
 		selenium.type( "id=username", "test" );		
 		selenium.type( "id=password", "test" );		
@@ -204,9 +202,9 @@ component extends="mxunit.framework.TestCase"{
 		selenium.waitForPageToLoad( timeout );
 		assertTrue( selenium.isTextPresent( "regexp:(The user "".*"" has been saved.)" ) );
 		// edit user
-		selenium.click( "link=test test" );
+		selenium.click( "link=test" );
 		selenium.waitForPageToLoad( timeout );
-		selenium.type( "id=firstname", "test edit" );
+		selenium.type( "id=name", "test edit" );
 		selenium.click( "id=submit" );
 		selenium.waitForPageToLoad( timeout );
 		assertTrue( selenium.isTextPresent( "regexp:(The user "".*"" has been saved.)" ) );

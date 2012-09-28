@@ -106,4 +106,4 @@ jQuery(function($){
 		if( !Len( Trim( result ) ) ) result = "*";
 		return result;
 	}
-</cfscript>	
+</cfscript>

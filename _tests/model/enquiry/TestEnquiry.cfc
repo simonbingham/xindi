@@ -19,13 +19,6 @@ component extends="mxunit.framework.TestCase"{
 		assertTrue( result );
 	}
 	
-	function testGetFullName(){
-		CUT.setFirstName( "simon" );
-		CUT.setLastName( "bingham" );
-		var result = CUT.getFullname();
-		assertEquals( "simon bingham", result );
-	}
-	
 	function testIsPersisted(){
 		var result = CUT.isPersisted();
 		assertFalse( result );

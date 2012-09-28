@@ -32,16 +32,9 @@ component persistent="true" table="articles" cacheuse="transactional"{
      * I return the summary in xml format
 	 */
 	string function getRSSSummary() {
-		return XMLFormat( getSummary() );
-	}
-
-	/**
-     * I return the summary
-	 */
-	string function getSummary(){
 		var plaintext = Trim( ReReplace( REReplaceNoCase( Trim( variables.content ), "<[^>]{1,}>", " ", "all" ), " +", " ", "all" ) );
 		if( Len( plaintext ) > 500 ) return Left( plaintext, 500 ) & "...";
-		return plaintext;
+		return XMLFormat( plaintext );
 	}
 
 	/**
@@ -99,7 +92,6 @@ component persistent="true" table="articles" cacheuse="transactional"{
 	void function preInsert(){
 		setSlug();
 	}
-
 
 	/**
      * I generate a unique id for the article

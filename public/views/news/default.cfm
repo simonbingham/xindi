@@ -10,7 +10,7 @@
 					<small class="pull-right">#DateFormat( local.Article.getPublished(), "full" )#</small>
 				</h2>
 				
-				#local.Article.getSummary()#
+				#snippet( local.Article.getContent(), 500 )#
 			</div>
 		</cfloop>
 		

@@ -16,7 +16,7 @@ component accessors="true" extends="model.abstract.BaseService"{
 			var result = variables.Validator.newResult();
 			if( User.isPersisted() ){
 				variables.UserGateway.deleteUser( User );
-				result.setSuccessMessage( "The user &quot;#User.getFullName()#&quot; has been deleted." );
+				result.setSuccessMessage( "The user &quot;#User.getName()#&quot; has been deleted." );
 			}else{
 				result.setErrorMessage( "The user could not be deleted." );
 			}
@@ -76,7 +76,7 @@ component accessors="true" extends="model.abstract.BaseService"{
 			populate( User, arguments.properties );
 			var result = variables.Validator.validate( theObject=User, context=arguments.context );
 			if( !result.hasErrors() ){
-				result.setSuccessMessage( "The user &quot;#User.getFullName()#&quot; has been saved." );
+				result.setSuccessMessage( "The user &quot;#User.getName()#&quot; has been saved." );
 				variables.UserGateway.saveUser( User );
 			}else{
 				result.setErrorMessage( "The user could not be saved. Please amend the highlighted fields." );
