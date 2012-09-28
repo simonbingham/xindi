@@ -101,7 +101,7 @@ component extends="mxunit.framework.TestCase"{
 	function testGetPagesBySortOrder(){
 		var pages = CUT.getPages( sortorder="pageid" );
 		var result = pages[ 1 ].getSlug();
-		assertEquals( "", result );
+		assertEquals( "home", result );
 	}
 
 	function testGetPagesBySortOrderDescending(){
