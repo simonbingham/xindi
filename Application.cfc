@@ -33,6 +33,7 @@ component extends="frameworks.org.corfield.framework"{
 	}
 
 	// ------------------------ FW/1 SETTINGS ------------------------ //
+	
 	variables.framework = {
 		cacheFileExists = !this.development
 		, defaultSubsystem = "public"
