@@ -44,8 +44,7 @@ component accessors="true"{
 	void function resetpassword( required struct rc ){
 		param name="rc.username" default="";
 		rc.result = variables.SecurityService.resetPassword( rc, rc.config.name, rc.config.security, "../../admin/views/security/email.cfm" );
-		if( rc.result.getIsSuccess() ) variables.fw.redirect( "security", "result" );
-		else variables.fw.redirect( "security.password", "result" );
+		variables.fw.redirect( "security.password", "result" );
 	}
 
 }

@@ -18,7 +18,7 @@
 			</rule>	
 		</property>
 		<property name="username" desc="username">
-			<rule type="required" contexts="create,update,login,password" />
+			<rule type="required" contexts="create,update,login" />
 			<rule type="custom" contexts="create,update" failureMessage="The username is registered to an existing account.">
         		<param name="methodname" value="isUsernameUnique" />
 		    </rule>
