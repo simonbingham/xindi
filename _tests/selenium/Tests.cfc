@@ -123,7 +123,7 @@ component extends="mxunit.framework.TestCase"{
 		selenium.waitForPageToLoad( timeout );
 		assertTrue( selenium.isTextPresent( "regexp:(The page "".*"" has been saved.)" ) );
 		// delete page
-		selenium.click( "//div[@id='content']/table/tbody/tr[10]/td[5]/a/i" );
+		selenium.click( "//div[@id='content']/table/tbody/tr[10]/td[6]/a/i" );
 		selenium.waitForPageToLoad( timeout );
 		// when we delete a record a confirmation dialog appears
 		// calling the getConfirmation method forces the Ok button to be clicked in the dialog

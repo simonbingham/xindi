@@ -15,11 +15,17 @@ component extends="mxunit.framework.TestCase"{
 	}
 
 	function testGetChildren(){
-		var Page = CUT.getPage( 1 );
-		var result = CUT.getChildren( Page, true );
-		assertEquals( 3, result.RecordCount );
+		var Page = mock().getLeftValue().returns( 1 ).getRightValue().returns( 18 );
+		var result = CUT.getChildren( Page );
+		assertEquals( 2, result.recordcount );
 	}
-
+	
+	function testGetChildrenClearCache(){
+		var Page = mock().getLeftValue().returns( 1 ).getRightValue().returns( 18 );
+		var result = CUT.getChildren( Page=Page, clearcache=true );
+		assertEquals( 2, result.recordcount );
+	}
+	
 	function testGetPageWherePageDoesNotExist(){
 		var Page = CUT.getPage( 14 );
 		var result = Page.isPersisted();

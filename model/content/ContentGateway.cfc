@@ -68,8 +68,8 @@
 	</cffunction>
 	
 	<cffunction name="getChildren" output="false" returntype="query" hint="I return a query of child pages based upon the left and right value arguments">
-		<cfargument name="left" required="false" hint="The left position">
-		<cfargument name="right" required="false" hint="The right position">
+		<cfargument name="left" required="true" hint="The left position">
+		<cfargument name="right" required="true" hint="The right position">
 		<cfargument name="clearcache" required="false" default="false">
 		<cfset var qChildren = "">
 		<cfif arguments.clearcache>
@@ -238,4 +238,18 @@
 			return !ArrayLen( matches );
 		}
 	</cfscript>
+	
+	<cffunction name="shiftPages" output="false" returntype="void">
+		<cfargument name="affectedpages" required="true" hint="The moved page's id"> 
+		<cfargument name="shift" required="true" hint="The number of positions to shift">
+		
+		<cfquery>
+			update Pages set
+				page_left = page_left + #shift#,
+				page_right = page_right + #shift#
+			where page_id in (
+				<cfqueryparam value="#arguments.affectedpages#" cfsqltype="cf_sql_integer" list="true">
+			)
+		</cfquery>
+	</cffunction>
 </cfcomponent>
