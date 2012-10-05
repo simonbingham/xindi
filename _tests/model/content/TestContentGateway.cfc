@@ -31,9 +31,14 @@ component extends="mxunit.framework.TestCase"{
 	}
 	
 	function testGetChildren(){
-		var result = CUT.getChildren( 1, 26, true );
-		assertEquals( 3, result.recordcount );
-	}	
+		var result = CUT.getChildren( left=1, right=18 );
+		assertEquals( 2, result.recordcount ); // note: 2 as only returns direct descendants
+	}
+	
+	function testGetChildrenClearCache(){
+		var result = CUT.getChildren( left=1, right=18,clearcache=true );
+		assertEquals( 2, result.recordcount );
+	}
 	
 	function testGetNavigation(){
 		var result = CUT.getNavigation();
@@ -145,6 +150,10 @@ component extends="mxunit.framework.TestCase"{
 		pages = EntityLoad( "Page" );
 		result = ArrayLen( pages );
 		assertEquals( 14, result );
+	}
+	
+	function testShiftPages(){
+		CUT.ShiftPages( affectedpages="1,2,3", shift=0 );
 	}
 
 	// ------------------------ IMPLICIT ------------------------ // 
