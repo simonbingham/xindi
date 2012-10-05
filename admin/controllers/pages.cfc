@@ -85,7 +85,7 @@ component accessors="true" extends="abstract"{
 		if ( IsNull( rc.Page ) ){
 			variables.fw.redirect( "pages" );
 		}
-		rc.subpages = variables.ContentService.getNavigation( page=rc.Page );
+		rc.subpages = variables.ContentService.getChildren( page=rc.Page, clearcache=true );
 	}
 
 	void function savesort( required struct rc ){

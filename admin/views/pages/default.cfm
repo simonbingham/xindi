@@ -38,7 +38,7 @@
 		<tbody>
 			<cfloop query="rc.navigation">
 				<cfset local.offset = ( ( rc.navigation.depth - 1 ) * 15 )>
-				<tr data-depth="#rc.navigation.depth#" data-descendants="#Int( rc.navigation.descendants )#" data-parentid="#rc.navigation.parentid#">
+				<tr>
 					<td <cfif rc.navigation.depth gt 1>class="chevron-right" style="padding-left:#local.offset+20#px; background-position:#local.offset#px 50%"</cfif>>
 						<cfif isRoute( rc.navigation.slug )>
 							#rc.navigation.title# <i class="icon-exclamation-sign"></i>

@@ -53,6 +53,13 @@ component accessors="true" extends="model.abstract.BaseService" {
 	}
 	
 	/**
+	 * I return a query of child pages
+	 */	
+	query function getChildren( Page, clearcache=false ){
+		return variables.ContentGateway.getChildren( left=arguments.Page.getLeftValue(), right=arguments.Page.getRightValue(), clearcache=arguments.clearcache );
+	}
+	
+	/**
 	 * I return a page matching an id
 	 */		
 	Page function getPage( required pageid ){
@@ -158,17 +165,60 @@ component accessors="true" extends="model.abstract.BaseService" {
 	
 	// accepts an array of structs
 	boolean function saveSortOrder( required array pages ) {
-		transaction{
-			for ( var page in arguments.pages ){
-				var PageEntity = getPage( page.pageid );
-				if ( IsNull( PageEntity ) || !PageEntity.isPersisted() ){
-					return false;
+		var newLeft = -1;
+		var width = -1;
+		var newRight = -1;
+		var affectedpages = -1;
+		var sorted = [];
+		
+		for ( var page in arguments.pages ){
+			var PageEntity = getPage( page.pageid );
+			if ( IsNull( PageEntity ) || !PageEntity.isPersisted() ){
+				return false;
+			}
+			
+			width = PageEntity.getrightvalue() - PageEntity.getleftvalue();
+			
+			if ( newLeft == -1 ){
+				// first time thorough the loop
+				newLeft = page.left;
+			}
+			else{
+				newLeft = newRight + 1;
+			}
+			newRight = newLeft + width;
+			shift = newLeft - PageEntity.getleftvalue();
+			affectedpages = PageEntity.getPageID();
+			
+			if ( shift != 0 ){
+				var qDescendants = variables.ContentGateway.getNavigation( left=PageEntity.getleftvalue(), right=PageEntity.getrightvalue() );
+				if ( qDescendants.recordCount ){
+					affectedpages &= "," & ValueList( qDescendants.pageid );
 				}
-				PageEntity.setleftvalue( page.left );
-				PageEntity.setrightvalue( page.right );
-				variables.ContentGateway.savePage( PageEntity, 0 );
+			}
+			
+			// storing extra info to help debug
+			ArrayAppend( sorted, {
+				shift=shift, 
+				affectedpages=affectedpages, 
+				newLeft=newLeft, 
+				newRight=newRight, 
+				width=width,
+				title=PageEntity.getTitle()
+			} );
+		}
+		
+		// now it's all figured out, save it
+		transaction{
+			for ( var node in sorted ) {
+				if ( node.shift != 0 ){
+					variables.ContentGateway.shiftPages( affectedpages=node.affectedpages, shift=node.shift );
+				}
 			}
 		}
+		// as we've used SQL instead of ORM to adjust clear ORM cache
+		ORMEvictEntity( "Page" );
+		
 		return true;
 	}
 		

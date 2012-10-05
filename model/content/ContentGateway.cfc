@@ -85,6 +85,41 @@
 		<cfreturn qPages>
 	</cffunction>
 	
+	<cffunction name="getChildren" output="false" returntype="query" hint="I return a query of child pages based upon the left and right value arguments">
+		<cfargument name="left" required="true" hint="The left position">
+		<cfargument name="right" required="true" hint="The right position">
+		<cfargument name="clearcache" required="false" default="false">
+		<cfset var qChildren = "">
+		<cfif arguments.clearcache>
+			<cfset var timespan = CreateTimeSpan(0,0,0,0)>
+		<cfelse>
+			<cfset var timespan = CreateTimeSpan(0,0,0,30)>
+		</cfif>
+		<cfquery name="qChildren" cachedwithin="#timespan#">
+			select 
+				page.page_id as pageid
+				, page.page_slug as slug
+				, page.page_title as title
+				, page.page_updated as updated
+				, page.page_left as positionleft
+				, page.page_right as positionright
+				, page.page_updatedby as updatedby
+			from pages as page
+			where 1 = 1
+			and (
+					select count(*)
+					from pages as pageSubQuery 
+					where pageSubQuery.page_left < page.page_left
+					and pageSubQuery.page_right > page.page_right 
+				) = 
+				( select Count( * ) from Pages where page_left < <cfqueryparam value="#arguments.left#" cfsqltype="cf_sql_integer"> and page_right > <cfqueryparam value="#arguments.right#" cfsqltype="cf_sql_integer"> ) + 1
+			and page_left > <cfqueryparam value="#arguments.left#" cfsqltype="cf_sql_integer">
+			and page_right < <cfqueryparam value="#arguments.right#" cfsqltype="cf_sql_integer">
+			order by page_left;			
+		</cfquery>
+		<cfreturn qChildren>
+	</cffunction>
+	
 	<cfscript>	
 		/**
 		 * I return a page matching an id
@@ -122,13 +157,6 @@
 				, page.page_left as positionleft
 				, page.page_right as positionright
 				, page.page_updatedby as updatedby
-				, (
-					select <cfif variables.dbengine eq "MSSQL">top 1</cfif> parent.page_id 
-					from pages parent 
-					where parent.page_left < page.page_left and parent.page_right > page.page_right    
-					order by parent.page_right - page.page_right ASC
-					<cfif variables.dbengine eq "MYSQL">LIMIT 1</cfif>
-			      ) as parentid
 				, case when page.page_left = 1 then 1 else (
 					select count(*)
 					from pages as pageSubQuery 
@@ -257,4 +285,18 @@
 			}
 		}
 	</cfscript>
+	
+	<cffunction name="shiftPages" output="false" returntype="void">
+		<cfargument name="affectedpages" required="true" hint="The moved page's id"> 
+		<cfargument name="shift" required="true" hint="The number of positions to shift">
+		
+		<cfquery>
+			update Pages set
+				page_left = page_left + #shift#,
+				page_right = page_right + #shift#
+			where page_id in (
+				<cfqueryparam value="#arguments.affectedpages#" cfsqltype="cf_sql_integer" list="true">
+			)
+		</cfquery>
+	</cffunction>
 </cfcomponent>
