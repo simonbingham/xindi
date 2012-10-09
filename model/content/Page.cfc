@@ -17,7 +17,7 @@ component persistent="true" table="pages" cacheuse="transactional"{
 	property name="updated" column="page_updated" ormtype="timestamp";
 	property name="updatedby" column="page_updatedby" ormtype="string" length="150";
 
-	// ------------------------ PUBLIC METHODS ------------------------ //
+	// ------------------------ CONSTRUCTOR ------------------------ //
 
 	/**
 	 * I initialise this component
@@ -26,6 +26,8 @@ component persistent="true" table="pages" cacheuse="transactional"{
 		variables.metagenerated = true;
 		return this;
 	}
+	
+	// ------------------------ PUBLIC METHODS ------------------------ //
 	
 	/**
 	 * I return the page ancestor

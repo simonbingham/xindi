@@ -16,7 +16,7 @@ component persistent="true" table="articles" cacheuse="transactional"{
 	property name="updated" column="article_updated" ormtype="timestamp";
 	property name="updatedby" column="article_updatedby" ormtype="string" length="150";
 
-	// ------------------------ PUBLIC METHODS ------------------------ //
+	// ------------------------ CONSTRUCTOR ------------------------ //
 
 	/**
      * I initialise this component
@@ -27,6 +27,8 @@ component persistent="true" table="articles" cacheuse="transactional"{
 		variables.metagenerated = true;
 		return this;
 	}
+
+	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	/**
      * I return the summary in xml format
