@@ -8,6 +8,7 @@ component persistent="true" table="pages" cacheuse="transactional"{
 	property name="leftvalue" column="page_left" ormtype="int";
 	property name="rightvalue" column="page_right" ormtype="int";
 	property name="ancestorid" column="page_ancestorid" ormtype="int";
+	property name="depth" column="page_depth" ormtype="int";
 	property name="title" column="page_title" ormtype="string" length="150";
 	property name="content" column="page_content" ormtype="text";
 	property name="metagenerated" column="page_metagenerated" ormtype="boolean";
@@ -45,13 +46,6 @@ component persistent="true" table="pages" cacheuse="transactional"{
 		var pageidlist = "";
 		for( var looppage in getDescendents() ) pageidlist = ListAppend( pageidlist, looppage.getPageID() );
 		return pageidlist; 
-	}
-
-	/**
-	 * I return the page level
-	 */	
-	function getLevel(){
-		return ORMExecuteQuery( "select Count( pageSubQuery ) from Page as pageSubQuery where pageSubQuery.leftvalue < :leftvalue and pageSubQuery.rightvalue > :rightvalue", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue } )[ 1 ];
 	}
 
 	/**
@@ -214,7 +208,7 @@ component persistent="true" table="pages" cacheuse="transactional"{
 	 * I return true if the page has a parent
 	 */		
 	private boolean function isChild(){
-		return getLevel() != 0;
+		return variables.ancestorid != 0;
 	}	
 
 }

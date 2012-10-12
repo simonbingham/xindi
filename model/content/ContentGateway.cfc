@@ -221,7 +221,8 @@
 				slug &= ReReplace( LCase( arguments.thePage.getTitle() ), "[^a-z0-9]{1,}", "-", "all" );
 				while ( !isSlugUnique( slug ) ) slug &= "-";
 				arguments.thePage.setSlug( slug );
-				arguments.thePage.setAncestorID( arguments.ancestorid );
+				arguments.thePage.setAncestorID( Ancestor.getPageID() );
+				arguments.thePage.setDepth( Ancestor.getDepth() );
 				arguments.thePage.setLeftValue( Ancestor.getRightValue() );
 				arguments.thePage.setRightValue( Ancestor.getRightValue() + 1 );
 				ORMExecuteQuery( "update Page set leftvalue = leftvalue + 2 where leftvalue > :startingvalue", { startingvalue=Ancestor.getRightValue() - 1 } );
