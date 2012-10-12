@@ -7,6 +7,7 @@ component persistent="true" table="pages" cacheuse="transactional"{
 	property name="slug" column="page_slug" ormtype="string" length="150";
 	property name="leftvalue" column="page_left" ormtype="int";
 	property name="rightvalue" column="page_right" ormtype="int";
+	property name="ancestorid" column="page_ancestorid" ormtype="int";
 	property name="title" column="page_title" ormtype="string" length="150";
 	property name="content" column="page_content" ormtype="text";
 	property name="metagenerated" column="page_metagenerated" ormtype="boolean";
@@ -23,6 +24,7 @@ component persistent="true" table="pages" cacheuse="transactional"{
 	 * I initialise this component
 	 */	
 	Page function init(){
+		variables.ancestorid = 0;
 		variables.metagenerated = true;
 		return this;
 	}
@@ -33,7 +35,7 @@ component persistent="true" table="pages" cacheuse="transactional"{
 	 * I return the page ancestor
 	 */		
 	any function getAncestor(){
-		return ORMExecuteQuery( "from Page where leftvalue < :leftvalue and rightvalue > :rightvalue order by leftvalue desc", { leftvalue=variables.leftvalue, rightvalue=variables.rightvalue }, true, { maxresults=1 } );
+		return ORMExecuteQuery( "from Page where pageid = :ancestorid", { ancestorid=variables.ancestorid }, true );
 	}
 	
 	/**
