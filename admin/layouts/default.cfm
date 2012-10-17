@@ -36,7 +36,7 @@
 				<span class="dev-mode label label-warning">Development Mode</span>
 			</cfif>			
 			
-			<div class="navbar navbar-fixed-top">
+			<div class="navbar navbar-fixed-top" role="banner">
 				<div class="navbar-inner">
 					<div class="container">
 						<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -48,7 +48,7 @@
 						<a class="brand" href="#rc.basehref##request.subsystem#/" title="Return to home page"><img src="assets/img/xindi-logo.png" alt="Xindi logo" /></a>
 						
 						<div class="nav-collapse">
-							<ul class="nav pull-right">
+							<ul class="nav pull-right" role="navigation">
 								<cfif StructKeyExists( rc, "CurrentUser" )>
 									<li><a href="#rc.basehref##request.subsystem#/">Dashboard</a></li>
 									<li><a href="#buildURL( 'pages' )#">Pages</a></li>
@@ -65,7 +65,7 @@
 		
 			<div id="container" class="container">
 				<div class="row">
-					<div id="content" class="span12">
+					<div id="content" class="span12" role="main">
 						<h2 class="pull-right"><cfif StructKeyExists( rc, "CurrentUser" )><small class="pull-right">#rc.CurrentUser.getName()#</small></cfif></h2>
 						
 						#body#
@@ -75,7 +75,7 @@
 				</div>
 			</div>
 	
-			<div id="footer">
+			<div id="footer" role="contentinfo">
 				<div class="container">
 					<div class="row">
 						<div class="span12">

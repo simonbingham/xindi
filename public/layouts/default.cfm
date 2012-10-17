@@ -33,7 +33,7 @@
 				<span class="dev-mode label label-warning">Development Mode</span>
 			</cfif>
 			
-			<div class="navbar navbar-fixed-top">
+			<div class="navbar navbar-fixed-top" role="banner">
 				<div class="navbar-inner">
 					<div class="container">
 						<a class="brand" href="#rc.basehref#" title="Return to home page"><img src="public/assets/img/global/xindi-logo.png" alt="Xindi logo" /></a>
@@ -47,7 +47,7 @@
 			
 			<div id="container" class="container">
 				<div class="row">
-					<nav class="span12" id="primary-navigation">
+					<nav class="span12" id="primary-navigation" role="navigation">
 						<cfset local.prevLevel = -1>
 						<cfset local.currLevel = -1>
 
@@ -86,7 +86,7 @@
 					<div class="span12">#body#</div>
 				</div>
 
-				<footer id="footer" class="row">
+				<footer id="footer" class="row" role="contentinfo">
 					<div class="span12"><a href="#buildURL( 'navigation/map' )#">Site Map</a></div>
 				</footer>
 			</div>
