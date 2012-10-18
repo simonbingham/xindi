@@ -1,15 +1,14 @@
 <cfset request.layout = false />
 
-<cfsavecontent variable="local.xml">
-	<!--- no space between opening cfoutput tag and start of xml --->
-	<cfoutput><?xml version="1.0" encoding="UTF-8"?>
+<!--- no space between the ColdFusion tags and start of xml --->
+<cfsavecontent variable="local.xml"><cfoutput><?xml version="1.0" encoding="UTF-8"?>
 		<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 			<!--- add pages to sitemap --->
-			<cfloop array="#rc.pages#" index="local.Page">
+			<cfloop query="rc.navigation">
 				<cfif( rc.sesomitindex )>
-					<url><loc>#rc.basehref##local.Page.getSlug()#</loc></url>
+					<url><loc>#rc.basehref#<cfif rc.config.page.defaultslug neq slug>#slug#</cfif></loc></url>
 				<cfelse>
-					<url><loc>#rc.basehref#index.cfm/#local.Page.getSlug()#</loc></url>
+					<url><loc>#rc.basehref#<cfif rc.config.page.defaultslug neq slug>index.cfm/#slug#</cfif></loc></url>
 				</cfif>
 			</cfloop>
 			

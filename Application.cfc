@@ -53,13 +53,13 @@ component extends="frameworks.org.corfield.framework"{
 	void function setupApplication(){
 		// add exception tracker to application scope
 		var HothConfig = new hoth.config.HothConfig();
-		HothConfig.setApplicationName( getConfig().name );
+		HothConfig.setApplicationName( getConfiguration().name );
 		HothConfig.setLogPath( this.applicationroot & "logs/hoth" );
 		HothConfig.setLogPathIsRelative( false );
-		HothConfig.setEmailNewExceptions( getConfig().exceptiontracker.emailnewexceptions );
-		HothConfig.setEmailNewExceptionsTo( getConfig().exceptiontracker.emailnewexceptionsto );
-		HothConfig.setEmailNewExceptionsFrom( getConfig().exceptiontracker.emailnewexceptionsfrom );
-		HothConfig.setEmailExceptionsAsHTML( getConfig().exceptiontracker.emailexceptionsashtml );
+		HothConfig.setEmailNewExceptions( getConfiguration().exceptiontracker.emailnewexceptions );
+		HothConfig.setEmailNewExceptionsTo( getConfiguration().exceptiontracker.emailnewexceptionsto );
+		HothConfig.setEmailNewExceptionsFrom( getConfiguration().exceptiontracker.emailnewexceptionsfrom );
+		HothConfig.setEmailExceptionsAsHTML( getConfiguration().exceptiontracker.emailexceptionsashtml );
 		application.exceptiontracker = new Hoth.HothTracker( HothConfig );
 	
 		// setup bean factory
@@ -74,7 +74,7 @@ component extends="frameworks.org.corfield.framework"{
 		beanFactory.addBean( "MetaData", new model.content.MetaData() );
 
 		// add config bean to factory
-		beanFactory.addBean( "config", getConfig() );
+		beanFactory.addBean( "config", getConfiguration() );
 	}
 	
 	// ------------------------ CALLED WHEN PAGE REQUEST STARTS ------------------------ //	
@@ -133,7 +133,7 @@ component extends="frameworks.org.corfield.framework"{
 	
 	// ------------------------ CONFIGURATION ------------------------ //	
 	
-	private struct function getConfig(){
+	private struct function getConfiguration(){
 		var config = {
 			development = this.development
 			, enquiry = {
