@@ -170,7 +170,7 @@ component extends="frameworks.org.corfield.framework"{
 				, resetpasswordemailsubject = ""
 				, whitelist = "^admin:security,^public:" // list of unsecure actions - by default all requests require authentication
 			}
-			, version = "2012.10.5"
+			, version = "2012.10.19"
 		};
 		// override config in development mode
 		if( config.development ){
