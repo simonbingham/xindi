@@ -10,7 +10,7 @@ component persistent="true" table="enquiries" cacheuse="transactional"{
 	property name="read" column="enquiry_read" ormtype="boolean";
 	property name="created" column="enquiry_created" ormtype="timestamp";
 
-	// ------------------------ PUBLIC METHODS ------------------------ //
+	// ------------------------ CONSTRUCTOR ------------------------ //
 
 	/**
 	 * I initialise this component
@@ -20,6 +20,8 @@ component persistent="true" table="enquiries" cacheuse="transactional"{
 		variables.read = false;
 		return this;
 	}
+
+	// ------------------------ PUBLIC METHODS ------------------------ //
 	
 	/**
 	 * I return the message formatted for display

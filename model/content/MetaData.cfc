@@ -6,9 +6,7 @@ component accessors="true"{
 	property name="metakeywords";
 	property name="metadescription";
 
-	/*
-	 * PUBLIC METHODS
-	 */
+	// ------------------------ CONSTRUCTOR ------------------------ //
 
 	/**
 	 * I initialise this component
@@ -19,6 +17,8 @@ component accessors="true"{
 		variables.metadescription = "";
 		return this;
 	}
+	
+	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	/**
 	 * I generate a meta description

@@ -43,10 +43,10 @@ component accessors="true" extends="abstract"{
 		rc.result = variables.ContentService.savePage( rc, rc.ancestorid, rc.context, rc.config.name );
 		rc.Page = rc.result.getTheObject();
 		if( rc.result.getIsSuccess() ){
-			if( !rc.config.development ){
+			//if( !rc.config.development ){
 				var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:navigation/xml", method="get" );
 				refreshsitemap.send();
-			}
+			//}
 			if( rc.submit == "Save & Continue" )  variables.fw.redirect( "pages.maintain", "result,Page,ancestorid", "pageid" );
 			else variables.fw.redirect( "pages", "result" );
 		}else{

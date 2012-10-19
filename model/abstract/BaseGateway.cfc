@@ -1,6 +1,7 @@
 <cfcomponent output="false">
 	<cfscript>
 	// ------------------------ CONSTRUCTOR ------------------------ //
+	
 	any function init(){
 		variables.dbengine = getDBEngine();
 		return this;		
@@ -40,7 +41,7 @@
 	}
     </cfscript>
     
-    <!--- ------------------------ PRIVATE METHODS ------------------------ --->
+    <!------------------------ PRIVATE METHODS ------------------------>
     
     <cffunction name="getDBEngine" returntype="string" output="false" access="private">
 		<cfset var dbinfo = "">

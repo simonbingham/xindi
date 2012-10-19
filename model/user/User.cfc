@@ -11,7 +11,7 @@ component persistent="true" table="users" cacheuse="transactional"{
 	property name="created" column="user_created" ormtype="timestamp";
 	property name="updated" column="user_updated" ormtype="timestamp";
 	
-	// ------------------------ PUBLIC METHODS ------------------------ //
+	// ------------------------ CONSTRUCTOR ------------------------ //
 
 	/**
 	 * I initialise this component
@@ -19,6 +19,8 @@ component persistent="true" table="users" cacheuse="transactional"{
 	User function init(){
 		return this;
 	}
+
+	// ------------------------ PUBLIC METHODS ------------------------ //
 	
 	/**
 	 * I return true if the email address is unique

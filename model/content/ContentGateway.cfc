@@ -221,6 +221,8 @@
 				slug &= ReReplace( LCase( arguments.thePage.getTitle() ), "[^a-z0-9]{1,}", "-", "all" );
 				while ( !isSlugUnique( slug ) ) slug &= "-";
 				arguments.thePage.setSlug( slug );
+				arguments.thePage.setAncestorID( Ancestor.getPageID() );
+				arguments.thePage.setDepth( Ancestor.getDepth() );
 				arguments.thePage.setLeftValue( Ancestor.getRightValue() );
 				arguments.thePage.setRightValue( Ancestor.getRightValue() + 1 );
 				ORMExecuteQuery( "update Page set leftvalue = leftvalue + 2 where leftvalue > :startingvalue", { startingvalue=Ancestor.getRightValue() - 1 } );
@@ -230,15 +232,8 @@
 				return save( arguments.thePage );
 			}
 		}
-		
-		// ------------------------ PRIVATE METHODS ------------------------ //
-		
-		private boolean function isSlugUnique( required string slug ){
-			var matches = ORMExecuteQuery( "from Page where slug=:slug", { slug=arguments.slug });
-			return !ArrayLen( matches );
-		}
 	</cfscript>
-	
+
 	<cffunction name="shiftPages" output="false" returntype="void">
 		<cfargument name="affectedpages" required="true" hint="The moved page's id"> 
 		<cfargument name="shift" required="true" hint="The number of positions to shift">
@@ -252,4 +247,13 @@
 			)
 		</cfquery>
 	</cffunction>
+	
+	<cfscript>
+		// ------------------------ PRIVATE METHODS ------------------------ //
+		
+		private boolean function isSlugUnique( required string slug ){
+			var matches = ORMExecuteQuery( "from Page where slug=:slug", { slug=arguments.slug });
+			return !ArrayLen( matches );
+		}
+	</cfscript>
 </cfcomponent>
