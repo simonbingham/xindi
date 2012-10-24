@@ -19,7 +19,7 @@
 			
 			<h2><a href="#buildURL( local.slug )#">#rc.pages.title#</a></h2>
 			
-			<p>#snippet( rc.pages.content, 200 )#</p>
+			#snippet( rc.pages.content, 200 )#
 		</cfloop>
 	<cfelseif StructKeyExists( rc, "pages" )>
 		<div class="alert alert-info">No records were found matching &quot;#rc.searchterm#&quot;.</div>
