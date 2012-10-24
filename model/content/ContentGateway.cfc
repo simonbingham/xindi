@@ -213,11 +213,11 @@
 		/**
 		 * I save a page
 		 */
-		Page function savePage( required Page thePage, required numeric ancestorid ){
+		Page function savePage( required Page thePage, required numeric ancestorid, required string defaultslug ){
 			if( !arguments.thePage.isPersisted() && arguments.ancestorid ){
 				var Ancestor = get( "Page", arguments.ancestorid );
 				var slug = "";
-				if( Len( Trim( Ancestor.getSlug() ) ) ) slug = Ancestor.getSlug() & "/";				
+				if( Len( Trim( Ancestor.getSlug() ) ) && Ancestor.getSlug() != arguments.defaultslug ) slug = Ancestor.getSlug() & "/";				
 				slug &= ReReplace( LCase( arguments.thePage.getTitle() ), "[^a-z0-9]{1,}", "-", "all" );
 				while ( !isSlugUnique( slug ) ) slug &= "-";
 				arguments.thePage.setSlug( slug );
