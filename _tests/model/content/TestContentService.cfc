@@ -114,13 +114,13 @@ component extends="mxunit.framework.TestCase"{
 	}
 
 	function testSavePageWherePageIsInvalid(){
-		var savepageresult = CUT.savePage( { title="", content="" }, 1, "create", "" );
+		var savepageresult = CUT.savePage( { title="", content="" }, 1, "create", "", "home" );
 		var result = savepageresult.getIsSuccess();
 		assertFalse( result );
 	}
 	 
 	function testSavePageWherePageIsValid(){
-		var savepageresult = CUT.savePage( { title="foo", content="bar" }, 1, "create", "" );
+		var savepageresult = CUT.savePage( { title="foo", content="bar" }, 1, "create", "", "home" );
 		var result = savepageresult.getIsSuccess();
 		assertTrue( result );
 	}

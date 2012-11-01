@@ -13,7 +13,7 @@
 			
 			<base href="#rc.basehref##request.subsystem#/">
 
-			<title>Xindi Filemanager</title>
+			<title>Xindi File Manager</title>
 
 			<link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 			<link href="assets/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">

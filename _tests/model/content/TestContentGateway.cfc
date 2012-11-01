@@ -146,7 +146,7 @@ component extends="mxunit.framework.TestCase"{
 		var Page = EntityNew( "Page" );
 		Page.setTitle( "foo" );
 		Page.setContent( "bar" );
-		CUT.savePage( Page, 1 );
+		CUT.savePage( Page, 1, "home" );
 		pages = EntityLoad( "Page" );
 		result = ArrayLen( pages );
 		assertEquals( 14, result );

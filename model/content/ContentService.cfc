@@ -89,7 +89,7 @@ component accessors="true" extends="model.abstract.BaseService" {
 	/**
 	 * I validate and save a page
 	 */		
-	struct function savePage( required struct properties, required ancestorid, required string context, required string websitetitle ){
+	struct function savePage( required struct properties, required ancestorid, required string context, required string websitetitle, required string defaultslug ){
 		transaction{
 			param name="arguments.properties.pageid" default="";
 			param name="arguments.properties.metagenerated" default="false";
@@ -105,7 +105,7 @@ component accessors="true" extends="model.abstract.BaseService" {
 			populate( Page, arguments.properties );
 			var result = variables.Validator.validate( theObject=Page, context=arguments.context );
 			if( !result.hasErrors() ){
-				variables.ContentGateway.savePage( Page, ancestorid );
+				variables.ContentGateway.savePage( Page, arguments.ancestorid, arguments.defaultslug );
 				result.setSuccessMessage( "The page &quot;#Page.getTitle()#&quot; has been saved." );
 			}else{
 				result.setErrorMessage( "Your page could not be saved. Please amend the highlighted fields." );

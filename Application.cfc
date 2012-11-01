@@ -170,7 +170,7 @@ component extends="frameworks.org.corfield.framework"{
 				, resetpasswordemailsubject = ""
 				, whitelist = "^admin:security,^public:" // list of unsecure actions - by default all requests require authentication
 			}
-			, version = "2012.10.19"
+			, version = "2012.11.1"
 		};
 		// override config in development mode
 		if( config.development ){
@@ -196,7 +196,7 @@ component extends="frameworks.org.corfield.framework"{
 	
 	string function snippet( content, charactercount=100 ){
 		var result = Trim( reReplace( arguments.content, "<[^>]{1,}>", " ", "all" ) );
-		if ( Len( result ) > arguments.charactercount + 10 ) return Trim( Left( result, arguments.charactercount ) ) & "&hellip;";
+		if ( Len( result ) > arguments.charactercount + 10 ) return "<p>" & Trim( Left( result, arguments.charactercount ) ) & "&hellip;</p>";
 		else return result;
 	}
 
