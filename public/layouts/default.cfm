@@ -1,6 +1,8 @@
 ﻿<cfset request.layout = false>
 
-<cfoutput><!DOCTYPE html>
+<cfoutput>
+	<!DOCTYPE html>
+	
 	<html lang="en">
 		<head>
 			<meta charset="utf-8">
