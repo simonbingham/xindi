@@ -18,6 +18,13 @@
 #RewriteEngine On
 
 # --------------------------------------------------------------------
+# 301 redirect for non-www links to www 
+# --------------------------------------------------------------------
+
+#RewriteCond %{HTTP_HOST}  ^domainname\.co\.uk [nocase]
+#RewriteRule ^(.*)         http://www.domainname.co.uk/$1 [redirect=301,last]
+
+# --------------------------------------------------------------------
 # trap invalid URLs and return 410 (G=Gone)
 # --------------------------------------------------------------------
 
