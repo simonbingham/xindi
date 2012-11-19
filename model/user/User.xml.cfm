@@ -31,6 +31,9 @@
 		</property>
 		<property name="password" desc="password">
 			<rule type="required" contexts="create,login" />
+			<rule type="minLength" contexts="create,update" failureMessage="The password must be a minimum of 8 characters in length.">
+				<param name="minLength" value="8" />
+			</rule>			
 		</property>
 	</objectProperties>
 </validateThis>
