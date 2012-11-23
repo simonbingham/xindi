@@ -9,13 +9,35 @@
 # Also change "AllowOverride None" to "AllowOverride All" in the
 # <Directory "C:/mywebserver-root/htdocs">
 # section
+#
+# documentation for mod_rewrite can be found at:
+# http://httpd.apache.org/docs/current/mod/mod_rewrite.html
+#
 # --------------------------------------------------------------------
 
-# RewriteEngine On
+#RewriteEngine On
+
+# --------------------------------------------------------------------
+# 301 redirect for non-www links to www 
+# --------------------------------------------------------------------
+
+#RewriteCond %{HTTP_HOST}  ^domainname\.com [nocase,OR]
+#RewriteCond %{HTTP_HOST}  ^otherdomainname\.com [nocase,OR]
+#RewriteCond %{HTTP_HOST}  ^www.otherdomainname\.com [nocase]
+#RewriteRule ^(.*)         http://www.domainname.com/$1 [redirect=301,last]
 
 # --------------------------------------------------------------------
 # trap invalid URLs and return 410 (G=Gone)
 # --------------------------------------------------------------------
 
-# RewriteRule ^index\.cfm/(.)+\.(ico|css|js)$ - [L,G]
-# RewriteRule ^.*favicon.ico$ - [L,G]
+#RewriteRule ^index\.cfm/(.)+\.(ico|css|js)$ - [L,G]
+#RewriteRule ^.*favicon.ico$ - [L,G]
+
+# --------------------------------------------------------------------
+# exclude index.cfm from URL
+# --------------------------------------------------------------------
+
+#RewriteRule ^$ index.cfm [QSA]
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteRule ^(.*)$ index.cfm/%{REQUEST_URI} [QSA,L]
