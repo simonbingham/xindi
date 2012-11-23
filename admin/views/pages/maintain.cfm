@@ -80,5 +80,6 @@
 	
 	#rc.Validator.getInitializationScript()#
 
-	#rc.Validator.getValidationScript( formName="page-form", context=rc.context )#	
+	#rc.Validator.getValidationScript( formName="page-form", context=rc.context )#
+
 </cfoutput>
