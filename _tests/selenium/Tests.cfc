@@ -197,7 +197,7 @@ component extends="mxunit.framework.TestCase"{
 		selenium.type( "id=name", "test" );		
 		selenium.type( "id=email", "test@example.com" );		
 		selenium.type( "id=username", "test" );		
-		selenium.type( "id=password", "test" );		
+		selenium.type( "id=password", "test1234" );		
 		selenium.click( "id=submit" );
 		selenium.waitForPageToLoad( timeout );
 		assertTrue( selenium.isTextPresent( "regexp:(The user "".*"" has been saved.)" ) );
