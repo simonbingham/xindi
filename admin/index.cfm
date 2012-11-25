@@ -1,1 +1,1 @@
-<cflocation url="../index.cfm/admin:main" addtoken="false">
+<!--- intentionally blank --->
