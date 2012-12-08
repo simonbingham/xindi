@@ -5,6 +5,7 @@ component accessors="true"{
 	property name="metatitle";
 	property name="metakeywords";
 	property name="metadescription";
+	property name="metaauthor";
 
 	// ------------------------ CONSTRUCTOR ------------------------ //
 
@@ -15,6 +16,7 @@ component accessors="true"{
 		variables.metatitle = "";
 		variables.metakeywords = "";
 		variables.metadescription = "";
+		variables.metaauthor = "";
 		return this;
 	}
 	
@@ -24,21 +26,29 @@ component accessors="true"{
 	 * I generate a meta description
 	 */	
 	string function generateMetaDescription( string description="" ){
-		return Left( Trim( replaceMultipleSpacesWithSingleSpace( removeUnrequiredCharacters( stripHTML( arguments.description ) ) ) ), 169 );
+		return Left( Trim( replaceMultipleSpacesWithSingleSpace( removeUnrequiredCharacters( stripHTML( arguments.description ) ) ) ), 200 );
 	}
 
 	/**
 	 * I generate meta keywords
 	 */	
 	string function generateMetaKeywords( string keywords="" ){
-		return Left( replaceMultipleSpacesWithSingleSpace( removeUnrequiredCharacters( listDeleteDuplicatesNoCase( ListChangeDelims( removeNonKeywords( stripHTML( arguments.keywords ) ), ",", " ." ) ) ) ), 169 );
+		return Left( replaceMultipleSpacesWithSingleSpace( removeUnrequiredCharacters( listDeleteDuplicatesNoCase( ListChangeDelims( removeNonKeywords( stripHTML( arguments.keywords ) ), ",", " ." ) ) ) ), 200 );
 	}
 
 	/**
 	 * I generate a page title
 	 */	
 	string function generatePageTitle( required string websitetitle, required string pagetitle ){
-		return Left( stripHTML( arguments.pagetitle ) & " | " & stripHTML( arguments.websitetitle ), 69 );
+		return Left( stripHTML( arguments.pagetitle ) & " | " & stripHTML( arguments.websitetitle ), 100 );
+	}
+
+	/**
+	 * I return true if metaauthor does not have zero length
+	 */
+	boolean function hasMetaAuthor(){
+		if( Len( Trim( variables.metaauthor ) ) ) return true;
+		return false;
 	}
 
 	/**

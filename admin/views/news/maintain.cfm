@@ -15,6 +15,14 @@
 				</div>
 			</div>
 
+			<div class="control-group <cfif rc.result.hasErrors( 'author' )>error</cfif>">
+				<label class="control-label" for="author">Author <cfif rc.Validator.propertyIsRequired( "author" )>*</cfif></label>
+				<div class="controls">
+					<input class="input-xlarge" type="text" name="author" id="author" value="#HtmlEditFormat( rc.Article.getAuthor() )#" maxlength="100">
+					#view( "helpers/failures", { property="author" })#
+				</div>
+			</div>
+
 			<div class="control-group <cfif rc.result.hasErrors( 'published' )>error</cfif>">
 				<label class="control-label" for="published">Date <cfif rc.Validator.propertyIsRequired( "published" )>*</cfif></label>
 				<div class="controls">
