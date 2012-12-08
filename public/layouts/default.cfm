@@ -8,6 +8,7 @@
 			<meta charset="utf-8">
 			<meta name="description" content="#rc.MetaData.getMetaDescription()#">
 			<meta name="keywords" content="#rc.MetaData.getMetaKeywords()#">
+			<cfif rc.MetaData.hasMetaAuthor()><meta name="author" content="#rc.MetaData.getMetaAuthor()#"></cfif>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 			<base href="#rc.basehref#">

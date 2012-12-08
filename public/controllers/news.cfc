@@ -13,6 +13,7 @@ component accessors="true" extends="abstract"{
 			rc.MetaData.setMetaTitle( rc.Article.getMetaTitle() ); 
 			rc.MetaData.setMetaDescription( rc.Article.getMetaDescription() );
 			rc.MetaData.setMetaKeywords( rc.Article.getMetaKeywords() );
+			rc.MetaData.setMetaAuthor( rc.Article.getAuthor() );
 		}else{
 			variables.fw.redirect( "main.notfound" );
 		}		
