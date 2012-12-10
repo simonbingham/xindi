@@ -5,6 +5,7 @@ component accessors="true"{
 	property name="metatitle";
 	property name="metakeywords";
 	property name="metadescription";
+	property name="metaauthor";
 
 	// ------------------------ CONSTRUCTOR ------------------------ //
 
@@ -15,6 +16,7 @@ component accessors="true"{
 		variables.metatitle = "";
 		variables.metakeywords = "";
 		variables.metadescription = "";
+		variables.metaauthor = "";
 		return this;
 	}
 	
@@ -39,6 +41,14 @@ component accessors="true"{
 	 */	
 	string function generatePageTitle( required string websitetitle, required string pagetitle ){
 		return Left( stripHTML( arguments.pagetitle ) & " | " & stripHTML( arguments.websitetitle ), 100 );
+	}
+
+	/**
+	 * I return true if metaauthor does not have zero length
+	 */
+	boolean function hasMetaAuthor(){
+		if( Len( Trim( variables.metaauthor ) ) ) return true;
+		return false;
 	}
 
 	/**

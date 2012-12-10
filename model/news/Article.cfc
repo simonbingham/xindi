@@ -11,6 +11,7 @@ component persistent="true" table="articles" cacheuse="transactional"{
 	property name="metatitle" column="article_metatitle" ormtype="string" length="69";
 	property name="metadescription" column="article_metadescription" ormtype="string" length="169";
 	property name="metakeywords" column="article_metakeywords" ormtype="string" length="169";
+	property name="author" column="article_author" ormtype="string" length="100";
 	property name="published" column="article_published" ormtype="timestamp";
 	property name="created" column="article_created" ormtype="timestamp";
 	property name="updated" column="article_updated" ormtype="timestamp";
@@ -37,6 +38,13 @@ component persistent="true" table="articles" cacheuse="transactional"{
 		var plaintext = Trim( ReReplace( REReplaceNoCase( Trim( variables.content ), "<[^>]{1,}>", " ", "all" ), " +", " ", "all" ) );
 		if( Len( plaintext ) > 500 ) return Left( plaintext, 500 ) & "...";
 		return XMLFormat( plaintext );
+	}
+
+	/**
+     * I return true if the article has an author
+	 */
+	boolean function hasAuthor(){
+		return Len( Trim( variables.author ) );	
 	}
 
 	/**

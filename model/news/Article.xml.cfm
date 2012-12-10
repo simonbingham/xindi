@@ -7,6 +7,11 @@
 				<param name="maxLength" value="150" />
 			</rule>				
 		</property>
+		<property name="author" desc="author">
+			<rule type="maxLength">
+				<param name="maxLength" value="100" />
+			</rule>				
+		</property>		
 		<property name="published" desc="published">
 			<rule type="required" />
 			<rule type="date" />

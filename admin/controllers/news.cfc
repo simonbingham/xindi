@@ -27,6 +27,7 @@ component accessors="true" extends="abstract"{
 		param name="rc.articleid" default="0";
 		param name="rc.title" default="";
 		param name="rc.published" default="";
+		param name="rc.author" default="";
 		param name="rc.content" default="";
 		param name="rc.metagenerated" default="false";
 		param name="rc.metatitle" default="";
