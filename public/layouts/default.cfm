@@ -17,7 +17,7 @@
 			<link href="public/assets/css/core.css?r=#rc.config.revision#" rel="stylesheet">
 
 			<!--[if lt IE 9]>
-				<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+				<script src="public/assets/js/html5shiv.js"></script>
 			<![endif]-->
 			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 
