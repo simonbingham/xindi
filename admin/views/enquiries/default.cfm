@@ -2,7 +2,7 @@
 	<div class="page-header clear"><h1>Enquiries</h1></div>
 	
 	<cfif rc.unreadenquirycount>
-		<p><a href="#buildURL( 'enquiries.markread' )#" class="btn btn-primary">Mark all as read <i class="icon-chevron-right icon-white"></i></a></p>
+		<p><a href="#buildURL( 'enquiries.markread' )#" class="btn btn-primary">Mark All Read</a></p>
 	</cfif>
 	
 	#view( "helpers/messages" )#
