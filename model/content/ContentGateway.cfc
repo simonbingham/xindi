@@ -222,7 +222,7 @@
 				while ( !isSlugUnique( slug ) ) slug &= "-";
 				arguments.thePage.setSlug( slug );
 				arguments.thePage.setAncestorID( Ancestor.getPageID() );
-				arguments.thePage.setDepth( Ancestor.getDepth() );
+				arguments.thePage.setDepth( Ancestor.getDepth() + 1 );
 				arguments.thePage.setLeftValue( Ancestor.getRightValue() );
 				arguments.thePage.setRightValue( Ancestor.getRightValue() + 1 );
 				ORMExecuteQuery( "update Page set leftvalue = leftvalue + 2 where leftvalue > :startingvalue", { startingvalue=Ancestor.getRightValue() - 1 } );
