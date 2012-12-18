@@ -12,9 +12,9 @@ component persistent="true" table="pages" cacheuse="transactional"{
 	property name="title" column="page_title" ormtype="string" length="150";
 	property name="content" column="page_content" ormtype="text";
 	property name="metagenerated" column="page_metagenerated" ormtype="boolean";
-	property name="metatitle" column="page_metatitle" ormtype="string" length="69";
-	property name="metadescription" column="page_metadescription" ormtype="string" length="169";
-	property name="metakeywords" column="page_metakeywords" ormtype="string" length="169";
+	property name="metatitle" column="page_metatitle" ormtype="string" length="200";
+	property name="metadescription" column="page_metadescription" ormtype="string" length="200";
+	property name="metakeywords" column="page_metakeywords" ormtype="string" length="200";
 	property name="created" column="page_created" ormtype="timestamp";
 	property name="updated" column="page_updated" ormtype="timestamp";
 	property name="updatedby" column="page_updatedby" ormtype="string" length="150";
