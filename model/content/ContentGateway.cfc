@@ -123,6 +123,7 @@
 	<cffunction name="getNavigation" output="false" returntype="query" hint="I return the pages used to build the navigation">
 		<cfargument name="left" required="false" hint="The left position">
 		<cfargument name="right" required="false" hint="The right position">
+		<cfargument name="depth" required="false" hint="The page depth">
 		<cfargument name="clearcache" required="false" default="false">
 		<cfset var qPages = "">
 		<cfif arguments.clearcache>
@@ -153,6 +154,9 @@
 			</cfif>
 			<cfif StructKeyExists( arguments, "right")>
 				and page_right < <cfqueryparam value="#arguments.right#" cfsqltype="cf_sql_integer">
+			</cfif>
+			<cfif StructKeyExists( arguments, "depth")>
+				and page_depth <= <cfqueryparam value="#arguments.depth#" cfsqltype="cf_sql_integer">
 			</cfif>
 			order by page_left
 		</cfquery>
