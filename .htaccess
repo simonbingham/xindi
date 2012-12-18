@@ -18,6 +18,18 @@
 #RewriteEngine On
 
 # --------------------------------------------------------------------
+# SQL Injection Protection 
+# --------------------------------------------------------------------
+
+#RewriteRule ^.*EXEC\(@.*$        - [R=404,L,NC]
+#RewriteRule ^.*CAST\(.*$         - [R=404,L,NC] 
+#RewriteRule ^.*DECLARE.*$        - [R=404,L,NC]  
+#RewriteRule ^.*DECLARE%20.*$     - [R=404,L,NC]
+#RewriteRule ^.*NVARCHAR.*$       - [R=404,L,NC]  
+#RewriteRule ^.*sp_password.*$    - [R=404,L,NC]
+#RewriteRule ^.*%20xp_.*$         - [R=404,L,NC]
+
+# --------------------------------------------------------------------
 # 301 redirect for non-www links to www 
 # --------------------------------------------------------------------
 
