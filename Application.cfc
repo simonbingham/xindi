@@ -22,7 +22,9 @@ component extends="frameworks.org.corfield.framework"{
 		, eventhandling = true
 		, eventhandler = "model.aop.GlobalEventHandler"
 		, logsql = this.development
-		, secondarycacheenabled = true 		
+		// secondary cache temporarily disabled for application to work in Railo 4
+		// bug reported to Railo team - https://issues.jboss.org/browse/RAILO-2233
+		//, secondarycacheenabled = true 		
 	};
 	
 	// create database and populate when the application starts in development environment
@@ -170,7 +172,7 @@ component extends="frameworks.org.corfield.framework"{
 				, resetpasswordemailsubject = ""
 				, whitelist = "^admin:security,^public:" // list of unsecure actions - by default all requests require authentication
 			}
-			, version = "2012.12.8"
+			, version = "2013.1.6"
 		};
 		// override config in development mode
 		if( config.development ){

@@ -6,9 +6,9 @@ component extends="mxunit.framework.TestCase"{
 	// run once before all tests
 	function beforeTests() {
 		// set url of Xindi installation
-		browserURL = "http://localhost/xindi";
+		browserURL = "http://localhost:8888/xindi/";
 		// set browser to be used for testing
-		browserCommand = "*firefox";
+		browserCommand = "*chrome";
 		// create a new instance of CFSelenium
 	   	selenium = createobject( "component", "CFSelenium.selenium" ).init();
 		// start Selenium server
@@ -23,13 +23,12 @@ component extends="mxunit.framework.TestCase"{
 	
 	// run once after each test
 	function tearDown() {
-		// stop the test
-		selenium.stop();
+		// tests fail in Railo 4 if next line uncommented
+		//selenium.stop();
 	}	
 
 	// run once after all tests
 	function afterTests() {
-		// stop Selenium server
 		selenium.stopServer();
 	}	
 
