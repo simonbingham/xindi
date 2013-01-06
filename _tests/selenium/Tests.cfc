@@ -14,7 +14,7 @@ component extends="mxunit.framework.TestCase"{
 		// start Selenium server
 		selenium.start( browserUrl, browserCommand );
 		// set timeout period to be used when waiting for page to load
-		timeout = 30000;
+		timeout = 60000;
 		// rebuild Xindi (reset data in database)
 		httpService = new http();
 		httpService.setUrl( browserURL & "/index.cfm?rebuild=true" );
@@ -23,8 +23,8 @@ component extends="mxunit.framework.TestCase"{
 	
 	// run once after each test
 	function tearDown() {
-		// stop the test
-		selenium.stop();
+		// tests fail in Railo 4 if next line uncommented
+		//selenium.stop();
 	}	
 
 	// run once after all tests
