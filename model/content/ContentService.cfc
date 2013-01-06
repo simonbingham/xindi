@@ -65,10 +65,20 @@ component accessors="true" extends="model.abstract.BaseService" {
 
 	/**
 	 * I return a query of pages making up the site hierarchy
-	 */	
-	query function getNavigation( Page, clearcache=false ){
-		if ( StructKeyExists( arguments, "Page" ) ) return variables.ContentGateway.getNavigation( left=arguments.Page.getleftvalue(), right=arguments.Page.getrightvalue(), clearcache=arguments.clearcache );
-		else return variables.ContentGateway.getNavigation( clearcache=arguments.clearcache );
+	 */
+	query function getNavigation( Page, depth, clearcache=false ){
+		var params = {};
+		params.clearcache=arguments.clearcache;
+		
+		if ( StructKeyExists( arguments, "Page" ) ) {
+			params.left = arguments.Page.getleftvalue();
+			params.right = arguments.Page.getrightvalue();
+		}
+		if ( StructKeyExists( arguments, "depth" ) ) {
+			params.depth = arguments.depth;
+		}
+
+		return variables.ContentGateway.getNavigation( argumentCollection=params );
 	}
 	
 	/**

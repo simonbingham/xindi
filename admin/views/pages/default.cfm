@@ -38,9 +38,9 @@
 		</tbody>
 	</table>
 	
-	<p id="routes-alert" style="display:none"><i class="icon-exclamation-sign"></i> You cannot edit or delete this page because it redirects to another website feature.</p>
+	<p id="routes-alert" style="display:none"><i class="icon-exclamation-sign"></i> You cannot edit or delete this page because it redirects to a site feature.</p>
 	
-	<p><span class="label label-info">Heads up!</span> Please allow a minute for the navigation to update when adding and removing pages. We've cached it to make it super fast!</p>
+	<p><span class="label label-info">Heads up!</span> Please wait a minute for the navigation to refresh when adding or removing pages.</p>
 </cfoutput>
 
 <script>

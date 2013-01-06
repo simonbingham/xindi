@@ -52,7 +52,7 @@ component accessors="true" extends="model.abstract.BaseService"{
 	struct function markRead( enquiryid=0 ){
 		transaction{
 			var result = variables.Validator.newResult();
-			if( Len( Trim( arguments.enquiryid ) ) ){
+			if( Val( arguments.enquiryid ) ){
 				var Enquiry = variables.EnquiryGateway.getEnquiry( Val( arguments.enquiryid ) );
 				if( !IsNull( Enquiry ) ){
 					variables.EnquiryGateway.markRead( Enquiry );

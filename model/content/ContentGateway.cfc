@@ -123,6 +123,7 @@
 	<cffunction name="getNavigation" output="false" returntype="query" hint="I return the pages used to build the navigation">
 		<cfargument name="left" required="false" hint="The left position">
 		<cfargument name="right" required="false" hint="The right position">
+		<cfargument name="depth" required="false" hint="The page depth">
 		<cfargument name="clearcache" required="false" default="false">
 		<cfset var qPages = "">
 		<cfif arguments.clearcache>
@@ -153,6 +154,9 @@
 			</cfif>
 			<cfif StructKeyExists( arguments, "right")>
 				and page_right < <cfqueryparam value="#arguments.right#" cfsqltype="cf_sql_integer">
+			</cfif>
+			<cfif StructKeyExists( arguments, "depth")>
+				and page_depth <= <cfqueryparam value="#arguments.depth#" cfsqltype="cf_sql_integer">
 			</cfif>
 			order by page_left
 		</cfquery>
@@ -222,7 +226,7 @@
 				while ( !isSlugUnique( slug ) ) slug &= "-";
 				arguments.thePage.setSlug( slug );
 				arguments.thePage.setAncestorID( Ancestor.getPageID() );
-				arguments.thePage.setDepth( Ancestor.getDepth() );
+				arguments.thePage.setDepth( Ancestor.getDepth() + 1 );
 				arguments.thePage.setLeftValue( Ancestor.getRightValue() );
 				arguments.thePage.setRightValue( Ancestor.getRightValue() + 1 );
 				ORMExecuteQuery( "update Page set leftvalue = leftvalue + 2 where leftvalue > :startingvalue", { startingvalue=Ancestor.getRightValue() - 1 } );
