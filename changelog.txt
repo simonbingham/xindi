@@ -1,0 +1,1 @@
+- Updated FW/1 to version 1.2 (http://corfield.org/blog/post.cfm/fw-1-version-2-1-released)
