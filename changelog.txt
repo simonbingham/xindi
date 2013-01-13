@@ -1,3 +1,5 @@
-- Updated FW/1 to version 1.2 (http://corfield.org/blog/post.cfm/fw-1-version-2-1-released)
+- Updated to version 1.2 of FW/1
 - Removed username field (email address used for login)
-- Updated to latest versions of jQuery and jQuery UI
+- Updated to version 1.8.3 of jQuery
+- Updated to version 1.9.2 of jQuery UI
+- Updated to version 2.2.2 of Bootstrap
