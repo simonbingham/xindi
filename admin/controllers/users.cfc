@@ -29,7 +29,6 @@ component accessors="true" extends="abstract"{
 		param name="rc.userid" default="0";
 		param name="rc.name" default="";
 		param name="rc.email" default="";
-		param name="rc.username" default="";
 		param name="rc.password" default="";
 		param name="rc.context" default="create";
 		param name="rc.submit" default="Save & exit";

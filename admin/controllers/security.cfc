@@ -23,7 +23,7 @@ component accessors="true"{
 	}
 	
 	void function login( required struct rc ){
-		param name="rc.username" default="";
+		param name="rc.email" default="";
 		param name="rc.password" default="";
 		rc.result = variables.SecurityService.loginUser( rc );
 		if( rc.result.getIsSuccess() ) variables.fw.redirect( "main", "result" );
@@ -42,7 +42,7 @@ component accessors="true"{
 	}
 	
 	void function resetpassword( required struct rc ){
-		param name="rc.username" default="";
+		param name="rc.email" default="";
 		rc.result = variables.SecurityService.resetPassword( rc, rc.config.name, rc.config.security, "../../admin/views/security/email.cfm" );
 		variables.fw.redirect( "security.password", "result" );
 	}

@@ -17,18 +17,6 @@
 				<param name="maxLength" value="150" />
 			</rule>	
 		</property>
-		<property name="username" desc="username">
-			<rule type="required" contexts="create,update,login" />
-			<rule type="custom" contexts="create,update" failureMessage="The username is registered to an existing account.">
-        		<param name="methodname" value="isUsernameUnique" />
-		    </rule>
-			<rule type="maxLength" contexts="create,update">
-				<param name="maxLength" value="50" />
-			</rule>	
-			<rule type="notregex" contexts="create,update" failureMessage="The username must not be an email address.">
-				<param name="Regex" value="^(\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,6})$" />
-			</rule>
-		</property>
 		<property name="password" desc="password">
 			<rule type="required" contexts="create,login" />
 			<rule type="minLength" contexts="create,update" failureMessage="The password must be a minimum of 8 characters in length.">

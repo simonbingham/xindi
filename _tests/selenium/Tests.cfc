@@ -88,7 +88,7 @@ component extends="mxunit.framework.TestCase"{
 	function testInvalidLogin() {
 		selenium.open( browserURL & "/index.cfm/admin:security" );
 		selenium.waitForPageToLoad( timeout );
-		selenium.type( "id=username", "foo" );
+		selenium.type( "id=email", "foo" );
 		selenium.type( "id=password", "bar" );
 		selenium.click( "id=login" );
 		selenium.waitForPageToLoad( timeout );
@@ -196,7 +196,6 @@ component extends="mxunit.framework.TestCase"{
 		selenium.waitForPageToLoad( timeout );
 		selenium.type( "id=name", "test" );		
 		selenium.type( "id=email", "test@example.com" );		
-		selenium.type( "id=username", "test" );		
 		selenium.type( "id=password", "test1234" );		
 		selenium.click( "id=submit" );
 		selenium.waitForPageToLoad( timeout );
@@ -228,7 +227,7 @@ component extends="mxunit.framework.TestCase"{
 	private function doLogin(){
 		selenium.open( browserURL & "/index.cfm/admin:security" );
 		selenium.waitForPageToLoad( timeout );
-		selenium.type( "id=username", "admin" );
+		selenium.type( "id=email", "admin@getxindi.com" );
 		selenium.type( "id=password", "admin" );
 		selenium.click( "id=login" );
 		selenium.waitForPageToLoad( timeout );

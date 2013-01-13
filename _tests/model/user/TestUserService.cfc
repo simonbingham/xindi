@@ -28,20 +28,7 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testGetUserByCredentialsReturnsUserForCorrectCredentialsByEmail(){
 		var User = new model.user.User();
-		User.setUsername( "" );
 		User.setEmail( "example@example.com" );
-		User.setPassword( "admin" );
-		var User = CUT.getUserByCredentials( User );
-		var result = IsNull( User );
-		assertFalse( result );
-		result = User.getEmail();
-		assertEquals( "example@example.com", result );
-	}
-
-	function testGetUserByCredentialsReturnsUserForCorrectCredentialsByUsername(){
-		var User = new model.user.User();
-		User.setUsername( "admin" );
-		User.setEmail( "" );
 		User.setPassword( "admin" );
 		var User = CUT.getUserByCredentials( User );
 		var result = IsNull( User );
@@ -52,28 +39,11 @@ component extends="mxunit.framework.TestCase"{
 
 	function testGetUserByCredentialsReturnsNullForIncorrectCredentials(){
 		var User = new model.user.User();
-		User.setUsername( "foo" );
 		User.setEmail( "" );
 		User.setPassword( "bar" );		
 		var User = CUT.getUserByCredentials( User );
 		var result = User.isPersisted();
 		assertFalse( result );
-	}
-	
-	function testGetUserByEmailOrUsernameWhereEmailIsSpecified(){
-		var User = CUT.newUser();
-		User.setEmail( "example@example.com" );
-		User = CUT.getUserByEmailOrUsername( User );
-		var result = User.isPersisted();
-		assertTrue( result );
-	}
-
-	function testGetUserByEmailOrUsernameWhereUsernameIsSpecified(){
-		var User = CUT.newUser();
-		User.setUsername( "admin" );
-		User = CUT.getUserByEmailOrUsername( User );
-		var result = User.isPersisted();
-		assertTrue( result );
 	}
 	
 	function testGetUsers(){
@@ -101,14 +71,14 @@ component extends="mxunit.framework.TestCase"{
 	}
 
 	function testSaveUserWhereUserIsInvalid(){
-		var properties = { name="Simon Bingham", email="foobarfoobarcom", username="foo", password="bar"  };
+		var properties = { name="Simon Bingham", email="foobarfoobarcom", password="bar"  };
 		var saveuserresult = CUT.saveUser( properties, "create" );
 		var result = saveuserresult.getIsSuccess();
 		assertFalse( result );
 	}
 	
 	function testSaveUserWhereUserIsValid(){
-		var properties = { name="Simon Bingham", email="foobar@foobar.com", username="foo", password="bar"  };
+		var properties = { name="Simon Bingham", email="foobar@foobar.com", password="bar"  };
 		var saveuserresult = CUT.saveUser( properties, "create" );
 		var result = saveuserresult.getIsSuccess();
 		assertTrue( result );
@@ -134,8 +104,8 @@ component extends="mxunit.framework.TestCase"{
 		// insert test data into database
 		var q = new Query();
 		q.setSQL( "
-			INSERT INTO Users ( user_name, user_email, user_username, user_password, user_created, user_updated ) 
-			VALUES ( 'Default User', 'example@example.com', 'admin', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB', '20120422', '20120422' );
+			INSERT INTO Users ( user_name, user_email, user_password, user_created, user_updated ) 
+			VALUES ( 'Default User', 'example@example.com', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB', '20120422', '20120422' );
 		" );
 		q.execute();
 	}

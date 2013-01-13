@@ -17,19 +17,19 @@ component accessors="true" extends="model.abstract.BaseGateway"{
 	}
 
 	/**
-	 * I return a user matching a username or email address and password
+	 * I return a user matching a email address and password
 	 */	
 	User function getUserByCredentials( required User theUser ){
-		var User = ORMExecuteQuery( "from User where ( username=:username or email=:email ) and password=:password", { username=arguments.theUser.getUsername(), email=arguments.theUser.getEmail(), password=arguments.theUser.getPassword() }, true );
+		var User = ORMExecuteQuery( "from User where email=:email and password=:password", { email=arguments.theUser.getEmail(), password=arguments.theUser.getPassword() }, true );
 		if( IsNull( User ) ) User = new( "User" );
 		return User;
 	}
 
 	/**
-	 * I return a user matching a username or email address
+	 * I return a user matching an email address
 	 */	
-	User function getUserByEmailOrUsername( required User theUser ){
-		var User = ORMExecuteQuery( "from User where username=:username or email=:email", { username=arguments.theUser.getUsername(), email=arguments.theUser.getEmail() }, true );
+	User function getUserByEmail( required User theUser ){
+		var User = ORMExecuteQuery( "from User where email=:email", { email=arguments.theUser.getEmail() }, true );
 		if( IsNull( User ) ) User = new( "User" );
 		return User;		
 	}

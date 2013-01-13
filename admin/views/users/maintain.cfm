@@ -21,15 +21,7 @@
 					<input class="input-xlarge" type="text" name="email" id="email" value="#HtmlEditFormat( rc.User.getEmail() )#" maxlength="50">
 					#view( "helpers/failures", { property="email" })#
 				</div>
-			</div>			
-			
-			<div class="control-group <cfif rc.result.hasErrors( 'username' )>error</cfif>"">
-				<label class="control-label" for="username">Username <cfif rc.Validator.propertyIsRequired( "username", rc.context )>*</cfif></label>
-				<div class="controls">
-					<input class="input-xlarge" type="text" name="username" id="username" value="#HtmlEditFormat( rc.User.getUsername() )#" maxlength="50">
-					#view( "helpers/failures", { property="username" })#
-				</div>
-			</div>			
+			</div>						
 
 			<div class="control-group <cfif rc.result.hasErrors( 'password' )>error</cfif>"">
 				<label class="control-label" for="password">Password <cfif rc.Validator.propertyIsRequired( "password", rc.context )>*</cfif></label>
