@@ -20,7 +20,7 @@
 			<!--[if lt IE 9]>
 				<script src="public/assets/js/html5shiv.js"></script>
 			<![endif]-->
-			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 
 			<link rel="shortcut icon" href="favicon.ico">
 
