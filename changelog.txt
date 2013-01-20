@@ -3,3 +3,4 @@
 - Updated to version 1.8.3 of jQuery
 - Updated to version 1.9.2 of jQuery UI
 - Updated to version 2.2.2 of Bootstrap
+- Updated ARIA landmark roles
