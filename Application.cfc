@@ -121,15 +121,15 @@ component extends="frameworks.org.corfield.framework"{
 		rc.Page = getBeanFactory().getBean( "ContentService" ).getPageBySlug( slug );
 		if( !rc.Page.isPersisted() ){
 			var pagecontext = getPageContext().getResponse();
-			pagecontext.getResponse().setStatus( 404 );
+			pagecontext.setStatus( 404 );
 			rc.MetaData.setMetaTitle( "Page Not Found" ); 
-			return view( "public:main/notfound" );
+			return view( "public#variables.framework.subsystemDelimiter#main/notfound" );
 		}else{
 			rc.breadcrumbs = getBeanFactory().getBean( "ContentService" ).getNavigationPath( rc.Page.getPageID() );
 			rc.MetaData.setMetaTitle( rc.Page.getMetaTitle() ); 
 			rc.MetaData.setMetaDescription( rc.Page.getMetaDescription() );
 			rc.MetaData.setMetaKeywords( rc.Page.getMetaKeywords() );
-			return view( "public:main/missingview" );
+			return view( "public#variables.framework.subsystemDelimiter#main/missingview" );
 		}
 	}
 	
@@ -170,7 +170,7 @@ component extends="frameworks.org.corfield.framework"{
 			, security = {
 				resetpasswordemailfrom = ""
 				, resetpasswordemailsubject = ""
-				, whitelist = "^admin:security,^public:" // list of unsecure actions - by default all requests require authentication
+				, whitelist = "^admin#variables.framework.subsystemDelimiter#security,^public#variables.framework.subsystemDelimiter#" // list of unsecure actions - by default all requests require authentication
 			}
 			, version = "2013.1.6"
 		};
