@@ -1,5 +1,6 @@
 /*.project
 /*.xml
+/.idea/
 /.settings/
 /logs/hoth/exceptions/*.log
 /logs/hoth/incidents/*.log
