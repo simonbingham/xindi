@@ -1,4 +1,7 @@
+Version 2013.2.2
+
 - Removed username field (email address used for login)
+- Railo fix and support for basic support for changing subsystemDelimiter - contribution from John Whish
 - Updated ARIA landmark roles
 - Updated to version 2.1.1 of FW/1
 - Updated to version 1.8.3 of jQuery
