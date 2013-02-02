@@ -21,9 +21,9 @@
 			<link href="assets/css/imgareaselect-animated.css?r=#rc.config.revision#" rel="stylesheet">
 			<link href="assets/css/core.css?r=#rc.config.revision#" rel="stylesheet">
 
-			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 			<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
-			<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.19/jquery-ui.min.js"></script>
+			<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
 			<script src="assets/bootstrap/js/bootstrap.min.js"></script>
 			<script src="assets/js/jquery.imgareaselect.min.js"></script>
 			<script src="assets/ckeditor/ckeditor.js"></script>

@@ -20,7 +20,7 @@
 			<!--[if lt IE 9]>
 				<script src="public/assets/js/html5shiv.js"></script>
 			<![endif]-->
-			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 
 			<link rel="shortcut icon" href="favicon.ico">
 
@@ -41,7 +41,7 @@
 					<div class="container">
 						<a class="brand" href="#rc.basehref#" title="Return to home page"><img src="public/assets/img/global/xindi-logo.png" alt="Xindi logo" /></a>
 						
-					    <form action="#buildURL( 'search' )#" method="post" class="navbar-search pull-right" id="search">
+					    <form action="#buildURL( 'search' )#" method="post" class="navbar-search pull-right" id="search" role="search">
 					    	<input type="text" name="searchterm" id="searchterm" class="search-query" placeholder="Search">
 					    </form>							
 					</div>

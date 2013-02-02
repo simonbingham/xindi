@@ -22,7 +22,7 @@ component extends="mxunit.framework.TestCase"{
 	}	
 	
 	function testGetCurrentUser(){
-		var loginuserresult = CUT.loginUser( { username="admin", password="admin" } );
+		var loginuserresult = CUT.loginUser( { email="admin@getxindi.com", password="admin" } );
 		result = session.userid;
 		assertTrue( 1, result );
 	}
@@ -62,37 +62,25 @@ component extends="mxunit.framework.TestCase"{
 	}		
 
 	function testLoginUserForInvalidUser(){
-		var loginuserresult = CUT.loginUser( { username="", password="" } );
+		var loginuserresult = CUT.loginUser( { email="", password="" } );
 		var result = loginuserresult.getIsSuccess();
 		assertFalse( result );
 	}
 		
 	function testLoginUserForValidUser(){
-		var loginuserresult = CUT.loginUser( { username="admin", password="admin" } );
+		var loginuserresult = CUT.loginUser( { email="admin@getxindi.com", password="admin" } );
 		var result = loginuserresult.getIsSuccess();
 		assertTrue( result ); 
 	}
 
-	function testResetPasswordByEmailWhereUsernameIsInvalid(){
+	function testResetPasswordByEmailWhereEmailIsInvalid(){
 		var resetpasswordresult = CUT.resetPassword( { email="foo@bar.com" }, "Default", { resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, "../../admin/views/security/email.cfm" );
 		var result = resetpasswordresult.getIsSuccess();
 		assertFalse( result );
 	}
 	
-	function testResetPasswordByEmailWhereUsernameIsValid(){
-		var resetpasswordresult = CUT.resetPassword( { email="example@example.com" }, "Default", { resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, "../../admin/views/security/email.cfm" );
-		var result = resetpasswordresult.getIsSuccess();
-		assertTrue( result );
-	}
-	
-	function testResetPasswordByUsernameWhereUsernameIsInvalid(){
-		var resetpasswordresult = CUT.resetPassword( { username="foobar" }, "Default", { resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, "../../admin/views/security/email.cfm" );
-		var result = resetpasswordresult.getIsSuccess();
-		assertFalse( result );
-	}
-	
-	function testResetPasswordByUsernameWhereUsernameIsValid(){
-		var resetpasswordresult = CUT.resetPassword( { username="admin" }, "Default", { resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, "../../admin/views/security/email.cfm" );
+	function testResetPasswordByEmailWhereEmailIsValid(){
+		var resetpasswordresult = CUT.resetPassword( { email="admin@getxindi.com" }, "Default", { resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test" }, "../../admin/views/security/email.cfm" );
 		var result = resetpasswordresult.getIsSuccess();
 		assertTrue( result );
 	}
@@ -130,8 +118,8 @@ component extends="mxunit.framework.TestCase"{
 		// insert test data into database
 		var q = new Query();
 		q.setSQL( "
-			INSERT INTO Users ( user_name, user_email, user_username, user_password, user_created, user_updated ) 
-			VALUES ( 'Default User', 'example@example.com', 'admin', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB', '20120422', '20120422' );
+			INSERT INTO Users ( user_name, user_email, user_password, user_created, user_updated ) 
+			VALUES ( 'Default User', 'admin@getxindi.com', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB', '20120422', '20120422' );
 		" );
 		q.execute();
 	}

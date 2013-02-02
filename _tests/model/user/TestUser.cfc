@@ -25,20 +25,6 @@ component extends="mxunit.framework.TestCase"{
 		assertEquals( true, result );
 	}
 
-	function testIsUsernameUniqueWhereUsernameIsNotUnique(){
-		CUT.setUsername( "admin" );
-		var isusernameuniqueresult = CUT.isUsernameUnique();
-		var result = isusernameuniqueresult.issuccess;
-		assertEquals( false, result );
-	}
-
-	function testIsUniqueUsernameWhereUsernameIsUnique(){
-		CUT.setUsername( "sdjalkdjakdjasd" );
-		var isusernameuniqueresult = CUT.isUsernameUnique();
-		var result = isusernameuniqueresult.issuccess;
-		assertEquals( true, result );
-	}
-
 	function testSetPassword(){
 		CUT.setPassword( "admin" );
 		var result = CUT.getPassword();
@@ -60,8 +46,8 @@ component extends="mxunit.framework.TestCase"{
 		// insert test data into database
 		var q = new Query();
 		q.setSQL( "
-			INSERT INTO Users ( user_name, user_email, user_username, user_password, user_created, user_updated ) 
-			VALUES ( 'Default User', 'example@example.com', 'admin', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB', '20120422', '20120422' );
+			INSERT INTO Users ( user_name, user_email, user_password, user_created, user_updated ) 
+			VALUES ( 'Default User', 'example@example.com', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB', '20120422', '20120422' );
 		" );
 		q.execute();
 	}

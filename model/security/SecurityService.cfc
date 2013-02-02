@@ -71,12 +71,8 @@ component accessors="true" extends="model.abstract.BaseService"{
 	 * I verify and login a user
 	 */	
 	struct function loginUser( required struct properties ){
-		param name="arguments.properties.username" default="";
+		param name="arguments.properties.email" default="";
 		param name="arguments.properties.password" default="";
-		if( IsValid( "email", arguments.properties.username ) ){
-			arguments.properties.email = arguments.properties.username;
-			StructDelete( arguments.properties, "username" );
-		}
 		var User = variables.UserGateway.newUser();
 		populate( User, arguments.properties );
 		var result = variables.Validator.validate( theObject=User, context="login" );
@@ -87,7 +83,7 @@ component accessors="true" extends="model.abstract.BaseService"{
 		}else{
 			var message = "Sorry, your login details have not been recognised.";
 			result.setErrorMessage( message );
-			var failure = { propertyName="username", clientFieldname="username", message=message };
+			var failure = { propertyName="email", clientFieldname="email", message=message };
 			result.addFailure( failure );
 		}
 		return result;
@@ -98,15 +94,11 @@ component accessors="true" extends="model.abstract.BaseService"{
 	 */		
 	struct function resetPassword( required struct properties, required string name, required struct config, required string emailtemplatepath ){
 		transaction{
-			param name="arguments.properties.username" default="";
-			if( IsValid( "email", arguments.properties.username ) ){
-				arguments.properties.email = arguments.properties.username;
-				StructDelete( arguments.properties, "username" );
-			}
+			param name="arguments.properties.email" default="";
 			var User = variables.UserGateway.newUser();
 			populate( User, arguments.properties );
 			var result = variables.Validator.validate( theObject=User, context="password" );
-			User = variables.UserGateway.getUserByEmailOrUsername( User );
+			User = variables.UserGateway.getUserByEmail( User );
 			if( User.isPersisted() ){
 				var password = variables.UserService.newPassword();
 				User.setPassword( password );
@@ -114,9 +106,9 @@ component accessors="true" extends="model.abstract.BaseService"{
 				variables.NotificationService.send( arguments.config.resetpasswordemailsubject, User.getEmail(), arguments.config.resetpasswordemailfrom, emailtemplate );
 				result.setSuccessMessage( "A new password has been sent to #User.getEmail()#." );
 			}else{
-				var message = "Sorry, your username or email address has not been recognised.";
+				var message = "Sorry, your email address has not been recognised.";
 				result.setErrorMessage( message );
-				var failure = { propertyName="username", clientFieldname="username", message=message };
+				var failure = { propertyName="email", clientFieldname="email", message=message };
 				result.addFailure( failure );
 			}
 		}

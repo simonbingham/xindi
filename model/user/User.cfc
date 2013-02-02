@@ -6,7 +6,6 @@ component persistent="true" table="users" cacheuse="transactional"{
 
 	property name="name" column="user_name" ormtype="string" length="50";
 	property name="email" column="user_email" ormtype="string" length="150";
-	property name="username" column="user_username" ormtype="string" length="50";
 	property name="password" column="user_password" ormtype="string" length="65" setter="false";
 	property name="created" column="user_created" ormtype="timestamp";
 	property name="updated" column="user_updated" ormtype="timestamp";
@@ -33,18 +32,6 @@ component persistent="true" table="users" cacheuse="transactional"{
 		if( !ArrayLen( matches ) ) result.issuccess = true;
 		return result;
 	}
-
-	/**
-	 * I return true if the username is unique
-	 */	
-	struct function isUsernameUnique(){
-		var matches = []; 
-		var result = { issuccess = false, failuremessage = "The username '#variables.username#' is registered to an existing account." };
-		if( isPersisted() ) matches = ORMExecuteQuery( "from User where userid <> :userid and username = :username", { userid=variables.userid, username=variables.username } );
-		else matches = OrmExecuteQuery( "from User where username = :username", { username=variables.username } );
-		if( !ArrayLen( matches ) ) result.issuccess = true;
-		return result;
-	}	
 
 	/**
 	 * I return true if the user is persisted

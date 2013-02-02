@@ -32,17 +32,17 @@ component accessors="true" extends="model.abstract.BaseService"{
 	}
 
 	/**
-	 * I return a user matching a username or email address and password
+	 * I return a user matching an email address and password
 	 */	
 	User function getUserByCredentials( required User theUser ){
 		return variables.UserGateway.getUserByCredentials( theUser );
 	}
 
 	/**
-	 * I return a user matching a username or email address
+	 * I return a user matching an email address
 	 */	
-	User function getUserByEmailOrUsername( required User theUser ){
-		return variables.UserGateway.getUserByEmailOrUsername( theUser );
+	User function getUserByEmail( required User theUser ){
+		return variables.UserGateway.getUserByEmail( theUser );
 	}
 
 	/**

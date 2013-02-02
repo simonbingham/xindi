@@ -6,7 +6,11 @@ component extends="mxunit.framework.TestCase"{
 	// run once before all tests
 	function beforeTests() {
 		// set url of Xindi installation
+<<<<<<< HEAD
 		browserURL = "http://localhost:8888/xindi/";
+=======
+		browserURL = "http://127.0.0.1:8500/xindi";
+>>>>>>> develop
 		// set browser to be used for testing
 		browserCommand = "*chrome";
 		// create a new instance of CFSelenium
@@ -14,7 +18,7 @@ component extends="mxunit.framework.TestCase"{
 		// start Selenium server
 		selenium.start( browserUrl, browserCommand );
 		// set timeout period to be used when waiting for page to load
-		timeout = 30000;
+		timeout = 60000;
 		// rebuild Xindi (reset data in database)
 		httpService = new http();
 		httpService.setUrl( browserURL & "/index.cfm?rebuild=true" );
@@ -87,7 +91,7 @@ component extends="mxunit.framework.TestCase"{
 	function testInvalidLogin() {
 		selenium.open( browserURL & "/index.cfm/admin:security" );
 		selenium.waitForPageToLoad( timeout );
-		selenium.type( "id=username", "foo" );
+		selenium.type( "id=email", "foo" );
 		selenium.type( "id=password", "bar" );
 		selenium.click( "id=login" );
 		selenium.waitForPageToLoad( timeout );
@@ -195,7 +199,6 @@ component extends="mxunit.framework.TestCase"{
 		selenium.waitForPageToLoad( timeout );
 		selenium.type( "id=name", "test" );		
 		selenium.type( "id=email", "test@example.com" );		
-		selenium.type( "id=username", "test" );		
 		selenium.type( "id=password", "test1234" );		
 		selenium.click( "id=submit" );
 		selenium.waitForPageToLoad( timeout );
@@ -227,7 +230,7 @@ component extends="mxunit.framework.TestCase"{
 	private function doLogin(){
 		selenium.open( browserURL & "/index.cfm/admin:security" );
 		selenium.waitForPageToLoad( timeout );
-		selenium.type( "id=username", "admin" );
+		selenium.type( "id=email", "admin@getxindi.com" );
 		selenium.type( "id=password", "admin" );
 		selenium.click( "id=login" );
 		selenium.waitForPageToLoad( timeout );

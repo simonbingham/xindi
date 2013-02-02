@@ -42,7 +42,6 @@ component extends="mxunit.framework.TestCase"{
 
 	function testGetUserByCredentialsReturnsNewUserForIncorrectCredentials(){
 		var User = EntityNew( "User" );
-		User.setUsername( "foo" );
 		User.setEmail( "foo@bar.com" );
 		User.setPassword( "bar" );
 		var getuserbycredentialsresult = CUT.getUserByCredentials( User );
@@ -52,35 +51,10 @@ component extends="mxunit.framework.TestCase"{
 	
 	function testGetUserByCredentialsReturnsUserForCorrectCredentialsByEmail(){
 		var User = EntityNew( "User" );
-		User.setEmail( "example@example.com" );
+		User.setEmail( "admin@getxindi.com" );
 		User.setPassword( "admin" );		
 		var getuserbycredentialsresult = CUT.getUserByCredentials( User );
 		var result = getuserbycredentialsresult.isPersisted();
-		assertTrue( result );
-	}
-
-	function testGetUserByCredentialsReturnsUserForCorrectCredentialsByUsername(){
-		var User = EntityNew( "User" );
-		User.setUsername( "admin" );
-		User.setPassword( "admin" );		
-		var getuserbycredentialsresult = CUT.getUserByCredentials( User );
-		var result = getuserbycredentialsresult.isPersisted();
-		assertTrue( result );
-	}
-
-	function testGetUserByEmailOrUsernameWhereEmailIsSpecified(){
-		var User = CUT.newUser();
-		User.setEmail( "example@example.com" );
-		User = CUT.getUserByEmailOrUsername( User );
-		var result = User.isPersisted();
-		assertTrue( result );
-	}
-
-	function testGetUserByEmailOrUsernameWhereUsernameIsSpecified(){
-		var User = CUT.newUser();
-		User.setUsername( "admin" );
-		User = CUT.getUserByEmailOrUsername( User );
-		var result = User.isPersisted();
 		assertTrue( result );
 	}
 	
@@ -103,7 +77,6 @@ component extends="mxunit.framework.TestCase"{
 		var User = EntityNew( "User" );
 		User.setName( "Simon Bingham" );
 		User.setEmail( "foo@bar.com" );
-		User.setUsername( "foo" );
 		User.setPassword( "bar" );
 		CUT.saveUser( User );
 		users = EntityLoad( "User" );
@@ -126,8 +99,8 @@ component extends="mxunit.framework.TestCase"{
 		// insert test data into database
 		var q = new Query();
 		q.setSQL( "
-			INSERT INTO Users ( user_name, user_email, user_username, user_password, user_created, user_updated ) 
-			VALUES ( 'Default User', 'example@example.com', 'admin', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB', '20120422', '20120422' );
+			INSERT INTO Users ( user_name, user_email, user_password, user_created, user_updated ) 
+			VALUES ( 'Default User', 'admin@getxindi.com', '1492D0A411AD79F0D1897DB928AA05612023D222D7E4D6B802C68C6F750E0BDB', '20120422', '20120422' );
 		" );
 		q.execute();
 	}
