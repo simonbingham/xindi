@@ -6,11 +6,7 @@ component extends="mxunit.framework.TestCase"{
 	// run once before all tests
 	function beforeTests() {
 		// set url of Xindi installation
-<<<<<<< HEAD
-		browserURL = "http://localhost:8888/xindi/";
-=======
 		browserURL = "http://127.0.0.1:8500/xindi";
->>>>>>> develop
 		// set browser to be used for testing
 		browserCommand = "*chrome";
 		// create a new instance of CFSelenium

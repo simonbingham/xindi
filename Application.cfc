@@ -24,11 +24,7 @@ component extends="frameworks.org.corfield.framework"{
 		, logsql = this.development
 		// secondary cache temporarily disabled for application to work in Railo 4
 		// bug reported to Railo team - https://issues.jboss.org/browse/RAILO-2233
-<<<<<<< HEAD
-		//, secondarycacheenabled = true 		
-=======
 		//, secondarycacheenabled = true 	
->>>>>>> develop
 	};
 	
 	// create database and populate when the application starts in development environment
