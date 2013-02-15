@@ -1,3 +1,7 @@
+Version XXXX.X.X
+
+- Updated to version 2.3 of Bootstrap
+
 Version 2013.2.2
 
 - Removed username field (email address used for login)
