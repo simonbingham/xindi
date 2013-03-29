@@ -2,6 +2,8 @@
 
 ## Introduction
 
+> From small beginnings come great things. ~ American Proverb
+
 Xindi is a small, lightweight and flexible CFML content management system. It's great for web developers looking for a simple way to make site content editable by their clients.
 
 Open source, free and flexible, Xindi is a great choice for your next web project.
