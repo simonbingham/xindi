@@ -1,16 +1,19 @@
 <cfoutput>
-	<h1>Contact Us</h1>
+	<ul class="breadcrumb">
+		<li><a href="#rc.basehref#">Home</a> <span class="divider">/</span></li>
+		<li class="active">Contact</li>
+	</ul>
+	
+	<h1>Contact</h1>
 
 	#view( "helpers/messages" )#
 	
 	<form action="#buildURL( 'enquiry.send' )#" method="post" class="form-horizontal" id="enquiry-form">
 		<fieldset>
-			<legend>Enquiry Form</legend>	
-	
 			<div class="control-group <cfif rc.result.hasErrors( 'name' )>error</cfif>">
 				<label class="control-label" for="name">Name <cfif rc.Validator.propertyIsRequired( "name" )>*</cfif></label>
 				<div class="controls">
-					<input class="input-xlarge" type="text" name="name" id="name" value="#HtmlEditFormat( rc.Enquiry.getName() )#" maxlength="50">
+					<input class="input-xlarge" type="text" name="name" id="name" value="#HtmlEditFormat( rc.Enquiry.getName() )#" maxlength="50" placeholder="Name">
 					#view( "helpers/failures", { property="name" })#
 				</div>
 			</div>
@@ -18,7 +21,7 @@
 			<div class="control-group <cfif rc.result.hasErrors( 'email' )>error</cfif>">
 				<label class="control-label" for="email">Email Address <cfif rc.Validator.propertyIsRequired( "email" )>*</cfif></label>
 				<div class="controls">
-					<input class="input-xlarge" type="text" name="email" id="email" value="#HtmlEditFormat( rc.Enquiry.getEmail() )#" maxlength="150">
+					<input class="input-xlarge" type="text" name="email" id="email" value="#HtmlEditFormat( rc.Enquiry.getEmail() )#" maxlength="150" placeholder="Email Address">
 					#view( "helpers/failures", { property="email" })#
 				</div>
 			</div>
@@ -26,7 +29,7 @@
 			<div class="control-group <cfif rc.result.hasErrors( 'message' )>error</cfif>">
 				<label class="control-label" for="message">Message <cfif rc.Validator.propertyIsRequired( "message" )>*</cfif></label>
 				<div class="controls">
-					<textarea class="input-xlarge" name="message" id="message">#HtmlEditFormat( rc.Enquiry.getMessage() )#</textarea>
+					<textarea class="input-xlarge" name="message" id="message" placeholder="Message">#HtmlEditFormat( rc.Enquiry.getMessage() )#</textarea>
 					#view( "helpers/failures", { property="message" })#
 				</div>
 			</div>

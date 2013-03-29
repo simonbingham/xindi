@@ -28,7 +28,7 @@ Xindi uses the frameworks listed below.
 ## Minimum Requirements
 
 * Adobe ColdFusion 9.0.1 or Railo 3.3
-* MySQL 5 or MSSQL
+* MySQL 5
 
 ## Quick Start
 

@@ -1,4 +1,9 @@
 <cfoutput>
+	<ul class="breadcrumb">
+		<li><a href="#rc.basehref#">Home</a> <span class="divider">/</span></li>
+		<li class="active">News</li>
+	</ul>
+
 	<div><h1>News</h1></div>
 	
 	<cfif ArrayLen( rc.articles )>

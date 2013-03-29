@@ -8,9 +8,9 @@
 			#view( "helpers/messages" )#
 			
 			<div class="control-group <cfif rc.result.hasErrors( 'email' )>error</cfif>">
-				<label class="control-label" for="email">Email</label>
+				<label class="control-label" for="email">Email Address</label>
 				<div class="controls">
-					<input class="input-xlarge" type="text" name="email" id="email">
+					<input class="input-xlarge" type="text" name="email" id="email" placeholder="Email Address">
 					#view( "helpers/failures", { property="email" })#
 				</div>
 			</div>

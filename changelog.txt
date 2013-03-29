@@ -1,6 +1,7 @@
-Version XXXX.X.X
+Version 2013.3.29
 
 - Updated to version 2.3 of Bootstrap
+- User interface enhancements
 
 Version 2013.2.2
 

@@ -70,7 +70,7 @@
 							<td><a href="##" onclick="return sendToEditor( '#rc.listing.name#' )" <cfif IsImageFile( local.relativepathtofile )>class="image-preview" rel="#local.relativepathtofile#"</cfif>>#rc.listing.name#</a></td>
 							<td <cfif rc.listing.size gt 15360>class="error"</cfif>>#NumberFormat( rc.listing.size / 1024 )# kb</td>
 							<td class="center"><a href="#buildURL( action='filemanager.crop', querystring='subdirectory=*#urlSafePath( rc.subdirectory )#&image=#rc.listing.name#' )#" title="Edit"><i class="icon-pencil"></i></a></td>
-							<td class="center"><a href="#buildURL( action='filemanager.delete', querystring='subdirectory=*#urlSafePath( rc.subdirectory )#&delete=#rc.listing.name#' )#" title="Delete"><i class="icon-remove"></i></a></td>
+							<td class="center"><a href="#buildURL( action='filemanager.delete', querystring='subdirectory=*#urlSafePath( rc.subdirectory )#&delete=#rc.listing.name#' )#" title="Delete"><i class="icon-trash"></i></a></td>
 						</tr>
 					</cfif>
 				</cfloop>
