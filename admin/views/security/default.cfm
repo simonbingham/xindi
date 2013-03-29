@@ -10,7 +10,7 @@
 			<div class="control-group <cfif rc.result.hasErrors( 'email' )>error</cfif>">
 				<label class="control-label" for="email">Email Address</label>
 				<div class="controls">
-					<input class="input-xlarge" type="text" name="email" id="email">
+					<input class="input-xlarge" type="text" name="email" id="email" placeholder="Email Address">
 					#view( "helpers/failures", { property="email" })#
 				</div>
 			</div>
@@ -18,7 +18,7 @@
 			<div class="control-group <cfif rc.result.hasErrors( 'password' )>error</cfif>">
 				<label class="control-label" for="password">Password</label>
 				<div class="controls">
-					<input class="input-xlarge" type="password" name="password" id="password">
+					<input class="input-xlarge" type="password" name="password" id="password" placeholder="Password">
 					#view( "helpers/failures", { property="password" })#
 					<p class="help-block"><a href="#buildURL( 'security/password' )#">Forgotten your password?</a></p>
 				</div>

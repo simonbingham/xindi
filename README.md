@@ -2,6 +2,8 @@
 
 ## Introduction
 
+> From small beginnings come great things. ~ American Proverb
+
 Xindi is a small, lightweight and flexible CFML content management system. It's great for web developers looking for a simple way to make site content editable by their clients.
 
 Open source, free and flexible, Xindi is a great choice for your next web project.
@@ -28,7 +30,7 @@ Xindi uses the frameworks listed below.
 ## Minimum Requirements
 
 * Adobe ColdFusion 9.0.1 or Railo 3.3
-* MySQL 5 or MSSQL
+* MySQL 5
 
 Versions of Xindi with version numbers beginning with '2013' are tested solely on Railo 4 and MySQL 5.
 

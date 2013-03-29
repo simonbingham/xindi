@@ -21,7 +21,7 @@
 		<label><input type="radio" name="resize-width" value="#rc.ImageInfo.width#" checked="checked" /> Original (#rc.ImageInfo.width# x #rc.ImageInfo.height#)</label>
 		<br />
 		<label for="resize-width-slider">Width (px):</label>
-		<input type="text" id="width" name="width" value="#rc.ImageInfo.width#" class="textField" style="font-weight:bold; width:40px" />
+		<input type="text" id="width" name="width" value="#rc.ImageInfo.width#" class="textField" style="font-weight:bold; width:40px" placeholder="Width (px)" />
 		<input type="hidden" name="height" id="height" value="#rc.ImageInfo.height#" />
 		<input type="hidden" name="x1" id="x1" />
 		<input type="hidden" name="x2" id="x2" />

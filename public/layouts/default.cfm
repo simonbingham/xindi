@@ -21,6 +21,22 @@
 				<script src="public/assets/js/html5shiv.js"></script>
 			<![endif]-->
 			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+			
+			<cfif Len(rc.config.googleanalyticstrackingid)>
+				<script type="text/javascript">
+				var _gaq = _gaq || [];
+				_gaq.push(['_setAccount', '#rc.config.googleanalyticstrackingid#']);
+				_gaq.push(['_trackPageview']);
+				
+				(function() {
+					var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+					ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+					var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+				})();
+				</script>
+				<script src="public/assets/js/outbound-link-tracking.js"></script>
+			</cfif>
+					
 
 			<link rel="shortcut icon" href="favicon.ico">
 

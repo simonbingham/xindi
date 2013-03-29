@@ -1,5 +1,6 @@
 /*.project
 /*.xml
+/*.DS_Store
 /.idea/
 /.settings/
 /logs/hoth/exceptions/*.log

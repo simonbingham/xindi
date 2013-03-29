@@ -1,6 +1,20 @@
 <cfoutput>
 	<div class="page-header clear"><cfif rc.Page.isPersisted()><h1>Edit Page</h1><cfelse><h1>Add Page</h1></cfif></div>
 
+	<div class="btn-group pull-right append-bottom" data-toggle="buttons-checkbox">
+		<a href="#buildURL('pages')#" class="btn"><i class="icon-arrow-left"></i> Back to Pages</a>
+		<cfif 
+			rc.config.page.enableadddelete and 
+			rc.Page.isPersisted() and
+			!rc.Page.hasChild() and 
+			!ListFind( rc.config.page.suppressdeletepage, rc.Page.getPageID() ) 
+			>
+			<a href="#buildURL( 'pages.delete' )#/pageid/#rc.Page.getPageID()#" title="Delete" class="btn btn-danger"><i class="icon-trash icon-white"></i> Delete</a>
+		</cfif>
+	</div>
+
+	<div class="clear"></div>
+
 	#view( "helpers/messages" )#
 	
 	<form action="#buildURL( 'pages.save' )#" method="post" class="form-horizontal" id="page-form">
@@ -10,7 +24,7 @@
 			<div class="control-group <cfif rc.result.hasErrors( 'title' )>error</cfif>">
 				<label class="control-label" for="title">Title <cfif rc.Validator.propertyIsRequired( "title", rc.context )>*</cfif></label>
 				<div class="controls">
-					<input class="input-xlarge" type="text" name="title" id="title" value="#HtmlEditFormat( rc.Page.getTitle() )#" maxlength="100">
+					<input class="input-xlarge" type="text" name="title" id="title" value="#HtmlEditFormat( rc.Page.getTitle() )#" maxlength="100" placeholder="Title">
 					#view( "helpers/failures", { property="title" })#
 				</div>
 			</div>
@@ -42,7 +56,7 @@
 				<div class="control-group <cfif rc.result.hasErrors( 'metatitle' )>error</cfif>">
 					<label class="control-label" for="metatitle">Title <cfif rc.Validator.propertyIsRequired( "metatitle", rc.context )>*</cfif></label>
 					<div class="controls">
-						<input class="input-xlarge" type="text" name="metatitle" id="metatitle" value="#HtmlEditFormat( rc.Page.getMetaTitle() )#" maxlength="100">
+						<input class="input-xlarge" type="text" name="metatitle" id="metatitle" value="#HtmlEditFormat( rc.Page.getMetaTitle() )#" maxlength="100" placeholder="Meta title">
 						#view( "helpers/failures", { property="metatitle" })#
 					</div>
 				</div>
@@ -50,7 +64,7 @@
 				<div class="control-group <cfif rc.result.hasErrors( 'metadescription' )>error</cfif>">
 					<label class="control-label" for="metadescription">Description <cfif rc.Validator.propertyIsRequired( "metadescription", rc.context )>*</cfif></label>
 					<div class="controls">
-						<input class="input-xlarge" type="text" name="metadescription" id="metadescription" value="#HtmlEditFormat( rc.Page.getMetaDescription() )#" maxlength="200">
+						<input class="input-xlarge" type="text" name="metadescription" id="metadescription" value="#HtmlEditFormat( rc.Page.getMetaDescription() )#" maxlength="200" placeholder="Meta description">
 						#view( "helpers/failures", { property="metadescription" })#
 					</div>
 				</div>
@@ -58,7 +72,7 @@
 				<div class="control-group <cfif rc.result.hasErrors( 'metakeywords' )>error</cfif>">
 					<label class="control-label" for="metakeywords">Keywords <cfif rc.Validator.propertyIsRequired( "metakeywords", rc.context )>*</cfif></label>
 					<div class="controls">
-						<input class="input-xlarge" type="text" name="metakeywords" id="metakeywords" value="#HtmlEditFormat( rc.Page.getMetaKeywords() )#" maxlength="200">
+						<input class="input-xlarge" type="text" name="metakeywords" id="metakeywords" value="#HtmlEditFormat( rc.Page.getMetaKeywords() )#" maxlength="200" placeholder="Meta keywords">
 						#view( "helpers/failures", { property="metakeywords" })#
 					</div>
 				</div>
