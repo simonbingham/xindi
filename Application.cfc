@@ -152,6 +152,7 @@ component extends="frameworks.org.corfield.framework"{
 			, filemanager = {
 				allowedextensions = "txt,gif,jpg,png,wav,mpeg3,pdf,zip,mp3,jpeg"
 			}
+			, googleanalyticstrackingid = ""
 			, name = ""
 			, news = {
 				enabled = true

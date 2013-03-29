@@ -2,6 +2,9 @@ Version 2013.3.29
 
 - Updated to version 2.3 of Bootstrap
 - User interface enhancements
+- Added Google Analytics tracking id variable to configuration settings
+- Added Google Analytics tracking code to public site header
+- Added event tracking JavaScript - useful for tracking outbound events in Google Analytics
 
 Version 2013.2.2
 
