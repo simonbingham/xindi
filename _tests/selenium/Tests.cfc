@@ -1,4 +1,7 @@
-/* run these tests in your browser at http://localhost/xindi/_tests/selenium/Tests.cfc?method=runTestRemote */
+/* 
+	- run these tests in your browser at http://localhost/xindi/_tests/selenium/Tests.cfc?method=runTestRemote
+	- occasionally it maybe necessary to start the Java server manually by double clicking cfselenium/Selenium-PC/selenium-server-standalone-2.24.1.jar 
+*/
 
 // component extends mxunit.framework.TestCase
 component extends="mxunit.framework.TestCase"{
