@@ -26,6 +26,7 @@ component persistent="true" table="articles" cacheuse="transactional"{
 		variables.slug = "";
 		variables.content = "";
 		variables.metagenerated = true;
+		variables.published = "";
 		return this;
 	}
 
