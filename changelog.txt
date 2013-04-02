@@ -1,3 +1,8 @@
+Version XXXX.X.X
+
+- Set default value for published variable in Article.cfc file.
+- Added headings to sample news articles.
+
 Version 2013.3.29
 
 - Updated Bootstrap to version 2.3
