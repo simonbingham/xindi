@@ -23,6 +23,7 @@ p, li{ line-height:1.6em; }
 .navbar-inner{ background:#01324A; background-image:-moz-linear-gradient(center top , #01324a, #012638) !important; }
 .navbar-search .search-query:-moz-placeholder { color:#333; }
 .navbar-search .search-query { background-color:#f5f5f5; color:#000; }
+.img-right { float:right; margin:0 0 30px 30px; }
 
 @media ( max-width:979px ) {
 	#container{ padding-top:0; }

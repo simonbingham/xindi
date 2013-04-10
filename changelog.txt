@@ -2,6 +2,7 @@ Version XXXX.X.X
 
 - Set default value for published variable in Article.cfc file.
 - Added headings to sample news articles.
+- Added placeholder images to sample site.
 
 Version 2013.3.29
 
