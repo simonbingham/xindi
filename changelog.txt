@@ -12,7 +12,6 @@ Version 2013.3.29
 - Added Google Analytics tracking id variable to configuration settings in Application.cfc
 - Added Google Analytics tracking code to public site header
 - Added event tracking JavaScript - useful for tracking outbound site activity in Google Analytics
-- Dropped support for SQL Server. Xindi should still run on SQL Server, but this and future versions will no longer be tested against it.
 
 Version 2013.2.2
 

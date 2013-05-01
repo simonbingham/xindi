@@ -9,7 +9,7 @@ component extends="mxunit.framework.TestCase"{
 	// run once before all tests
 	function beforeTests() {
 		// set url of Xindi installation
-		browserURL = "http://127.0.0.1:8500/xindi";
+		browserURL = "http://127.0.0.1:8888/xindi";
 		// set browser to be used for testing
 		browserCommand = "*chrome";
 		// create a new instance of CFSelenium
@@ -38,7 +38,7 @@ component extends="mxunit.framework.TestCase"{
 	function testHomePageLoads() {
 		selenium.open( browserUrl );
 		selenium.waitForPageToLoad( timeout );
-		assertEquals( "Welcome to Xindi", selenium.getTitle() );
+		assertEquals( "Home", selenium.getTitle() );
 	}
 
 	function testShowPage() {
@@ -54,9 +54,9 @@ component extends="mxunit.framework.TestCase"{
 		selenium.waitForPageToLoad( timeout );
 		selenium.click( "link=News" );
 		selenium.waitForPageToLoad( timeout );
-		selenium.click( "link=exact:Why choose Xindi?" );
+		selenium.click( "link=exact:Sample Article A" );
 		selenium.waitForPageToLoad( timeout );
-		assertEquals( "Why choose Xindi?", selenium.getTitle() );
+		assertEquals( "Sample Article A", selenium.getTitle() );
 	}
 		
 	function testContactForm() {
@@ -118,14 +118,14 @@ component extends="mxunit.framework.TestCase"{
 		selenium.waitForPageToLoad( timeout );
 		assertTrue( selenium.isTextPresent( "regexp:(The page "".*"" has been saved.)" ) );
 		// edit page
-		selenium.click( "link=test" );
+		selenium.click( "//div[@id='content']/table/tbody/tr[10]/td[6]/a/i" );
 		selenium.waitForPageToLoad( timeout );
 		selenium.type( "id=title", "test edit" );		
 		selenium.click( "xpath=(//input[@name='submit'])[2]" );
 		selenium.waitForPageToLoad( timeout );
 		assertTrue( selenium.isTextPresent( "regexp:(The page "".*"" has been saved.)" ) );
 		// delete page
-		selenium.click( "//div[@id='content']/table/tbody/tr[10]/td[6]/a/i" );
+		selenium.click( "//div[@id='content']/table/tbody/tr[10]/td[7]/a/i" );
 		selenium.waitForPageToLoad( timeout );
 		// when we delete a record a confirmation dialog appears
 		// calling the getConfirmation method forces the Ok button to be clicked in the dialog
@@ -150,14 +150,14 @@ component extends="mxunit.framework.TestCase"{
 		selenium.waitForPageToLoad( timeout );
 		assertTrue( selenium.isTextPresent( "regexp:(The article "".*"" has been saved.)" ) );
 		// edit article
-		selenium.click( "link=test" );
+		selenium.click( "//div[@id='content']/table/tbody/tr[4]/td[5]/a/i" );
 		selenium.waitForPageToLoad( timeout );
 		selenium.type( "id=title", "test edit" );		
 		selenium.click( "id=submit" );
 		selenium.waitForPageToLoad( timeout );
 		assertTrue( selenium.isTextPresent( "regexp:(The article "".*"" has been saved.)" ) );
 		// delete article
-		selenium.click( "css=i.icon-remove" );
+		selenium.click( "//div[@id='content']/table/tbody/tr[4]/td[6]/a/i" );
 		// when we delete a record a confirmation dialog appears
 		// the getConfirmation method forces the Ok button to be clicked in the dialog
 		selenium.getConfirmation();
@@ -172,7 +172,7 @@ component extends="mxunit.framework.TestCase"{
 		selenium.waitForPageToLoad( timeout );
 		selenium.click( "css=i.icon-eye-open" );
 		selenium.waitForPageToLoad( timeout );
-		assertTrue( selenium.isTextPresent( "Phasellus ut tortor in erat dignissim eleifend at nec leo!" ) );
+		assertTrue( selenium.isTextPresent( "Cupcake ipsum dolor sit amet brownie sugar plum jelly beans." ) );
 		doLogout();
 	}
 	
@@ -180,7 +180,7 @@ component extends="mxunit.framework.TestCase"{
 		doLogin();
 		selenium.open( browserURL & "/index.cfm/admin:enquiries" );
 		selenium.waitForPageToLoad( timeout );
-		selenium.click( "css=i.icon-remove" );
+		selenium.click( "//div[@id='content']/table/tbody/tr[3]/td[4]/a/i" );
 		// when we delete a record a confirmation dialog appears
 		// the getConfirmation method forces the Ok button to be clicked in the dialog
 		selenium.getConfirmation();
@@ -203,14 +203,14 @@ component extends="mxunit.framework.TestCase"{
 		selenium.waitForPageToLoad( timeout );
 		assertTrue( selenium.isTextPresent( "regexp:(The user "".*"" has been saved.)" ) );
 		// edit user
-		selenium.click( "link=test" );
+		selenium.click( "//div[@id='content']/table/tbody/tr[2]/td[4]/a/i" );
 		selenium.waitForPageToLoad( timeout );
 		selenium.type( "id=name", "test edit" );
 		selenium.click( "id=submit" );
 		selenium.waitForPageToLoad( timeout );
 		assertTrue( selenium.isTextPresent( "regexp:(The user "".*"" has been saved.)" ) );
 		// delete user
-		selenium.click( "css=i.icon-remove" );
+		selenium.click( "//div[@id='content']/table/tbody/tr[2]/td[5]/a/i" );
 		// when we delete a record a confirmation dialog appears
 		// the getConfirmation method forces the Ok button to be clicked in the dialog
 		selenium.getConfirmation();
@@ -230,7 +230,7 @@ component extends="mxunit.framework.TestCase"{
 		selenium.open( browserURL & "/index.cfm/admin:security" );
 		selenium.waitForPageToLoad( timeout );
 		selenium.type( "id=email", "admin@getxindi.com" );
-		selenium.type( "id=password", "admin" );
+		selenium.type( "id=password", "password" );
 		selenium.click( "id=login" );
 		selenium.waitForPageToLoad( timeout );
 	}
