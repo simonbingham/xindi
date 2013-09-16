@@ -44,11 +44,18 @@ component extends="frameworks.org.corfield.framework"{
 		, password = ""
 		, reloadApplicationOnEveryRequest = this.development
 		, usingSubsystems = true
+		, SESOmitIndex = false /* set this to true if you have url rewrite enabled */
+		, subsystemDelimiter = ":" // see note below
 		, routes = [
 			{ "news"="news", hint="Redirect to news feature" }
 			, { "enquiry"="enquiry", hint="Redirect to enquiry feature" }
-		]
+		]  
 	};
+	
+	/* 
+	There is a known issue with Apache on a Windows server and colons, if you have this issue, change the subsystemDelimiter setting to something like "~"
+	You will also need to update admin/Application.cfc 
+	*/
 	
 	// ------------------------ CALLED WHEN APPLICATION STARTS ------------------------ //	
 	
