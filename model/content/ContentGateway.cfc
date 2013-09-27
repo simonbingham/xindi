@@ -94,7 +94,7 @@
 					where pageSubQuery.page_left < page.page_left
 					and pageSubQuery.page_right > page.page_right 
 				) = 
-				( select Count( * ) from Pages where page_left < <cfqueryparam value="#arguments.left#" cfsqltype="cf_sql_integer"> and page_right > <cfqueryparam value="#arguments.right#" cfsqltype="cf_sql_integer"> ) + 1
+				( select Count( * ) from pages where page_left < <cfqueryparam value="#arguments.left#" cfsqltype="cf_sql_integer"> and page_right > <cfqueryparam value="#arguments.right#" cfsqltype="cf_sql_integer"> ) + 1
 			and page_left > <cfqueryparam value="#arguments.left#" cfsqltype="cf_sql_integer">
 			and page_right < <cfqueryparam value="#arguments.right#" cfsqltype="cf_sql_integer">
 			order by page_left;			
