@@ -34,6 +34,7 @@
 		<cfargument name="componentPath" type="any" required="true" hint="The component path to the object - used to read annotations using getComponentMetadata" />
 		<cfargument name="debuggingMode" type="string" required="true" hint="The debuggingMode from the VTConfig struct" />
 		<cfargument name="defaultLocale" type="string" required="true" hint="The defaultLocale for the resource bundle" />
+		<cfargument name="injectResultIntoBO" type="boolean" required="true" />
 
 		<cfset variables.instance = {objectType = arguments.objectType, propertyDescs = {}, clientFieldDescs = {}, ClientFieldNames = {}, formContexts = {}, validations = {contexts = {___Default = arrayNew(1)}}, newRules = {}} />
 		<cfset variables.FileSystem = arguments.FileSystem />
@@ -49,6 +50,7 @@
 		<cfset variables.Version = arguments.Version />
 		<cfset variables.debuggingMode = arguments.debuggingMode />
 		<cfset variables.defaultLocale = arguments.defaultLocale />
+		<cfset variables.injectResultIntoBO = arguments.injectResultIntoBO />
 
 		<!--- Prepend a specified definitionPath to the paths in the ValidateThisConfig --->
 		<cfset variables.definitionPath = listPrepend(arguments.definitionPath,arguments.specificDefinitionPath) />
@@ -196,13 +198,14 @@
 		<cfargument name="debuggingMode" type="string" required="false" default="#variables.debuggingMode#" />
 		<cfargument name="ignoreMissingProperties" type="boolean" required="false" default="false" />
 		<cfargument name="locale" type="string" required="false" default="#variables.defaultLocale#" />
+		<cfargument name="injectResultIntoBO" type="boolean" default="#variables.injectResultIntoBO#" />
 
 		<cfif IsSimpleValue(arguments.Result)>
 			<cfset arguments.Result = newResult() />
 		</cfif>
 		<!--- Put the object into the result so it can be retrieved from there --->
 		<cfset arguments.Result.setTheObject(arguments.theObject) />
-		<cfset variables.ServerValidator.validate(this,arguments.theObject,arguments.Context,arguments.Result,arguments.objectList,arguments.debuggingMode,arguments.ignoreMissingProperties,arguments.locale) />
+		<cfset variables.ServerValidator.validate(this,arguments.theObject,arguments.Context,arguments.Result,arguments.objectList,arguments.debuggingMode,arguments.ignoreMissingProperties,arguments.locale,arguments.injectResultIntoBO) />
 		<cfreturn arguments.Result />
 		
 	</cffunction>

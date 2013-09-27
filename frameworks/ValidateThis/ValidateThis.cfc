@@ -89,12 +89,13 @@
 		<cfargument name="debuggingMode" type="string" required="false" default="#variables.ValidateThisConfig.debuggingMode#" />
 		<cfargument name="ignoreMissingProperties" type="boolean" required="false" default="false" />
 		<cfargument name="locale" type="string" required="false" default="#variables.ValidateThisConfig.defaultLocale#" />
+		<cfargument name="injectResultIntoBO" type="boolean" required="false" default="#variables.ValidateThisConfig.injectResultIntoBO#" />
 
 		<cfset var BOValidator = getValidator(argumentCollection=arguments) />
 		
 		<cfset arguments.theObject = createWrapper(arguments.theObject)/>
 
-		<cfset arguments.Result = BOValidator.validate(arguments.theObject,arguments.Context,arguments.Result,arguments.objectList,arguments.debuggingMode,arguments.ignoreMissingProperties,arguments.locale) />
+		<cfset arguments.Result = BOValidator.validate(arguments.theObject,arguments.Context,arguments.Result,arguments.objectList,arguments.debuggingMode,arguments.ignoreMissingProperties,arguments.locale,arguments.injectResultIntoBO) />
 		
 		<cfreturn arguments.Result />
 

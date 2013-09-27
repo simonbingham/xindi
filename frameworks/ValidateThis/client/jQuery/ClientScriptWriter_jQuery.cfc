@@ -52,17 +52,17 @@
 		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfset var theScript = "" />
+		<cfset var content = "" />
 
 		<cfsavecontent variable="theScript">
-			<cfoutput>
-				<cfif Len(arguments.locale) and ListFirst(arguments.locale,"_") NEQ "en">
-					<script type="text/javascript">
-					/*<![CDATA[*/
-					<cfinclude template="JS/localization/messages_#ListFirst(arguments.locale,'_')#.js">
-					/*]]>*/
-					</script>
-				</cfif>
-			</cfoutput>
+			<cfif Len(arguments.locale) and ListFirst(arguments.locale,"_") NEQ "en">
+				<script type="text/javascript">
+				/*<![CDATA[*/
+				<cffile action="read" file="#getDirectoryFromPath(getCurrentTemplatePath())#/JS/localization/messages_#ListFirst(arguments.locale,'_')#.js" variable="content" charset="utf-8">
+				<cfoutput>#content#</cfoutput>
+				/*]]>*/
+				</script>
+			</cfif>
 		</cfsavecontent>
 		<cfreturn theScript />
 

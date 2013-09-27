@@ -1,6 +1,7 @@
 Version XXXX.X.X
 
 - Remove links to favicons located in root directory.
+- Updated ValidateThis.
 
 Version 2013.5.1
 

@@ -78,6 +78,7 @@ methods in this CFC:
 			var isOk=false; // success flag
 			var rB = createObject("java", "java.util.PropertyResourceBundle");
 			var fis=createObject("java", "java.io.FileInputStream");
+			var isr=createObject("java", "java.io.InputStreamReader");
 			var keys=""; // var to hold rb keys
 			var resourceBundle=structNew(); // structure to hold resource bundle
 			var thisKey="";
@@ -85,13 +86,15 @@ methods in this CFC:
 			if (RBFileExists(arguments.rbFile)) {
 				isOk=true;
 				fis.init(arguments.rbFile);
-				rB.init(fis);
+				isr.init(fis, "UTF8");
+				rB.init(isr);
 				keys=rB.getKeys();
 				while (keys.hasMoreElements()) {
 					thisKEY=keys.nextElement();
 					thisMSG=rB.handleGetObject(thisKey);
 					resourceBundle[thisKEY]=thisMSG;
 				}
+				isr.close();
 				fis.close();
 			}
 		</cfscript>

@@ -63,6 +63,12 @@
 		<cfset ArrayAppend(variables.instance.Failures,arguments.failure) />
 		<cfset setIsSuccess(false) />
 	</cffunction>
+	
+	<cffunction name="addFailureMessage" access="public" output="false" returntype="void" hint="adds a Failure to the collection of failures in the object.">
+		<cfargument name="message" type="string" required="true" hint="the failure message" />
+		<cfset var newFailure = {Message = arguments.message}>
+		<cfset addFailure(newFailure) />
+	</cffunction>
 
 	<cffunction name="getRawFailures" access="public" output="false" returntype="any" hint="returns the internal array of failure structs">
 		<cfreturn variables.instance.Failures />
