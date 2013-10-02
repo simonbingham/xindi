@@ -1,4 +1,4 @@
-Version XXXX.X.X
+Version 2013.10.2
 
 - Remove links to favicons located in root directory.
 - Updated ValidateThis.
