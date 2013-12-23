@@ -1,3 +1,7 @@
+Version 2013.12.23
+
+- Upgraded to latest versions of FW1 and DI1.
+
 Version 2013.10.2
 
 - Remove links to favicons located in root directory.
