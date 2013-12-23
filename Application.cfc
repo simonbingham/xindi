@@ -1,7 +1,7 @@
 component extends="frameworks.org.corfield.framework"{
-			
+
 	// ------------------------ APPLICATION SETTINGS ------------------------ //
-	
+
 	this.applicationroot = getDirectoryFromPath( getCurrentTemplatePath() );
 	this.name = ListLast( this.applicationroot, "\/" ) & "_" & Hash( this.applicationroot );
 	this.sessionmanagement = true;
@@ -24,9 +24,9 @@ component extends="frameworks.org.corfield.framework"{
 		, logsql = this.development
 		// secondary cache temporarily disabled for application to work in Railo 4
 		// bug reported to Railo team - https://issues.jboss.org/browse/RAILO-2233
-		//, secondarycacheenabled = true 	
+		//, secondarycacheenabled = true
 	};
-	
+
 	// create database and populate when the application starts in development environment
 	// you might want to comment out this code after the initial install
 	if( this.development && !isNull( url.rebuild ) ){
@@ -35,7 +35,7 @@ component extends="frameworks.org.corfield.framework"{
 	}
 
 	// ------------------------ FW/1 SETTINGS ------------------------ //
-	
+
 	variables.framework = {
 		cacheFileExists = !this.development
 		, defaultSubsystem = "public"
@@ -49,16 +49,16 @@ component extends="frameworks.org.corfield.framework"{
 		, routes = [
 			{ "news"="news", hint="Redirect to news feature" }
 			, { "enquiry"="enquiry", hint="Redirect to enquiry feature" }
-		]  
+		]
 	};
-	
-	/* 
+
+	/*
 	There is a known issue with Apache on a Windows server and colons, if you have this issue, change the subsystemDelimiter setting to something like "~"
-	You will also need to update admin/Application.cfc 
+	You will also need to update admin/Application.cfc
 	*/
-	
-	// ------------------------ CALLED WHEN APPLICATION STARTS ------------------------ //	
-	
+
+	// ------------------------ CALLED WHEN APPLICATION STARTS ------------------------ //
+
 	void function setupApplication(){
 		// add exception tracker to application scope
 		var HothConfig = new hoth.config.HothConfig();
@@ -70,7 +70,7 @@ component extends="frameworks.org.corfield.framework"{
 		HothConfig.setEmailNewExceptionsFrom( getConfiguration().exceptiontracker.emailnewexceptionsfrom );
 		HothConfig.setEmailExceptionsAsHTML( getConfiguration().exceptiontracker.emailexceptionsashtml );
 		application.exceptiontracker = new Hoth.HothTracker( HothConfig );
-	
+
 		// setup bean factory
 		var beanfactory = new frameworks.org.corfield.ioc( "/model", { singletonPattern = "(Service|Gateway)$" } );
 		setBeanFactory( beanfactory );
@@ -85,8 +85,8 @@ component extends="frameworks.org.corfield.framework"{
 		// add config bean to factory
 		beanFactory.addBean( "config", getConfiguration() );
 	}
-	
-	// ------------------------ CALLED WHEN PAGE REQUEST STARTS ------------------------ //	
+
+	// ------------------------ CALLED WHEN PAGE REQUEST STARTS ------------------------ //
 
 	void function setupRequest(){
 		if( this.development && !isNull( url.rebuild ) ) ORMReload();
@@ -97,29 +97,29 @@ component extends="frameworks.org.corfield.framework"{
 		if( CGI.HTTPS eq "on" ) rc.basehref = "https://";
 		else rc.basehref = "http://";
 		rc.basehref &= CGI.HTTP_HOST & variables.framework.base;
-	  	
+
 	  	// define default meta data
 		rc.MetaData = getBeanFactory().getBean( "MetaData" );
-		
+
 		// store config in request context
 		rc.config = getBeanFactory().getBean( "Config" );
 	}
-	
-	// ------------------------ CALLED WHEN VIEW RENDERING STARTS ------------------------ //	
-	
+
+	// ------------------------ CALLED WHEN VIEW RENDERING STARTS ------------------------ //
+
 	void function setupView(){
 		// get data need to build the navigation
 		if ( getSubsystem() == "public" ) rc.navigation = getBeanFactory().getBean( "ContentService" ).getNavigation();
 	}
-	
-	// ------------------------ CALLED WHEN EXCEPTION OCCURS ------------------------ //	
-	
-	void function onError( Exception, event ){	
+
+	// ------------------------ CALLED WHEN EXCEPTION OCCURS ------------------------ //
+
+	void function onError( Exception, event ){
 		if( StructKeyExists( application, "exceptiontracker" ) ) application.exceptiontracker.track( arguments.Exception );
 		super.onError( arguments.Exception, arguments.event );
-	}	
-	
-	// ------------------------ CALLED WHEN VIEW IS MISSING ------------------------ //	
+	}
+
+	// ------------------------ CALLED WHEN VIEW IS MISSING ------------------------ //
 
 	any function onMissingView( required rc ){
 		// Note: IIS and Apache report the CGI.PATH_INFO differently
@@ -129,19 +129,19 @@ component extends="frameworks.org.corfield.framework"{
 		if( !rc.Page.isPersisted() ){
 			var pagecontext = getPageContext().getResponse();
 			pagecontext.setStatus( 404 );
-			rc.MetaData.setMetaTitle( "Page Not Found" ); 
+			rc.MetaData.setMetaTitle( "Page Not Found" );
 			return view( "public#variables.framework.subsystemDelimiter#main/notfound" );
 		}else{
 			rc.breadcrumbs = getBeanFactory().getBean( "ContentService" ).getNavigationPath( rc.Page.getPageID() );
-			rc.MetaData.setMetaTitle( rc.Page.getMetaTitle() ); 
+			rc.MetaData.setMetaTitle( rc.Page.getMetaTitle() );
 			rc.MetaData.setMetaDescription( rc.Page.getMetaDescription() );
 			rc.MetaData.setMetaKeywords( rc.Page.getMetaKeywords() );
 			return view( "public#variables.framework.subsystemDelimiter#main/missingview" );
 		}
 	}
-	
-	// ------------------------ CONFIGURATION ------------------------ //	
-	
+
+	// ------------------------ CONFIGURATION ------------------------ //
+
 	private struct function getConfiguration(){
 		var config = {
 			development = this.development
@@ -150,7 +150,7 @@ component extends="frameworks.org.corfield.framework"{
 				, subject = "Enquiry"
 				, emailto = ""
 			}
-			, exceptiontracker = { 
+			, exceptiontracker = {
 				emailnewexceptions = true
 				, emailnewexceptionsto = ""
 				, emailnewexceptionsfrom = ""
@@ -167,7 +167,7 @@ component extends="frameworks.org.corfield.framework"{
 				, rsstitle = ""
 				, rssdescription = ""
 			}
-			, page = { 
+			, page = {
 				enableadddelete = true
 				, maxlevels = 2 // number of page tiers that can be added - Bootstrap dropdown supports a maximum of 2
 				, suppressaddpage = "" // comma delimited list of page ids for pages that cannot have child pages added
@@ -180,19 +180,19 @@ component extends="frameworks.org.corfield.framework"{
 				, resetpasswordemailsubject = ""
 				, whitelist = "^admin#variables.framework.subsystemDelimiter#security,^public#variables.framework.subsystemDelimiter#" // list of unsecure actions - by default all requests require authentication
 			}
-			, version = "2013.10.2"
+			, version = "2013.12.23"
 		};
 		// override config in development mode
 		if( config.development ){
 			config.enquiry.emailto = "";
 			config.exceptiontracker.emailnewexceptions = false;
 			config.security.resetpasswordemailfrom = "";
-		} 
+		}
 		return config;
 	}
-	
+
 	// ------------------------ FRAMEWORK HELPERS ------------------------ //
-	
+
 	/**
 	* I override the FW/1 buildURL method to clean up the homepage URLs *
 	**/
@@ -203,7 +203,7 @@ component extends="frameworks.org.corfield.framework"{
 	}
 
 	// ------------------------ VIEW HELPERS ------------------------ //
-	
+
 	string function snippet( content, charactercount=100 ){
 		var result = Trim( reReplace( arguments.content, "<[^>]{1,}>", " ", "all" ) );
 		if ( Len( result ) > arguments.charactercount + 10 ) return "<p>" & Trim( Left( result, arguments.charactercount ) ) & "&hellip;</p>";
@@ -217,35 +217,35 @@ component extends="frameworks.org.corfield.framework"{
 		if( IsDate( arguments.date ) ){
 			timeinseconds = DateDiff( 's', arguments.date, Now() );
 			// less than a minute
-			if( timeinseconds < 60 ){ 
+			if( timeinseconds < 60 ){
 				result = " less than a minute ago";
 			}
 			// less than an hour
-			else if ( timeinseconds < 3600 ){ 
+			else if ( timeinseconds < 3600 ){
 				interval = Int( timeinseconds / 60 );
 				// more than 1 minute
 				if ( interval > 1 ) result = interval & " minutes ago";
 				else result = interval & " minute ago";
 			}
 			// less than 24 hours
-			else if ( timeinseconds < ( 86400 ) && Hour( Now() ) >= Hour( arguments.date ) ){ 
+			else if ( timeinseconds < ( 86400 ) && Hour( Now() ) >= Hour( arguments.date ) ){
 				interval = Int( timeinseconds / 3600 );
 				// more than 1 hour
 				if ( interval > 1 ) result = interval & " hours ago";
 				else result = interval & " hour ago";
 			}
 			// less than 48 hours
-			else if ( timeinseconds < 172800 ){ 
+			else if ( timeinseconds < 172800 ){
 				result = "yesterday" & " at " & TimeFormat( arguments.date, "HH:MM" );
 			}
 			// return the date
-			else{ 
+			else{
 				result = DateFormat( arguments.date, arguments.datemask ) & " at " & TimeFormat( arguments.date, "HH:MM" );
 			}
 		}
 		return result;
 	}
-	
+
 	boolean function isRoute( required slug ){
 		for ( var el in getRoutes() ){
 			if ( StructKeyExists( el, arguments.slug ) ) return true;
