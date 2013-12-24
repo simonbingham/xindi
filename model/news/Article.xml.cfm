@@ -5,34 +5,34 @@
 			<rule type="required" />
 			<rule type="maxLength">
 				<param name="maxLength" value="150" />
-			</rule>				
+			</rule>
 		</property>
 		<property name="author" desc="author">
 			<rule type="maxLength">
 				<param name="maxLength" value="100" />
-			</rule>				
-		</property>		
-		<property name="published" desc="published">
+			</rule>
+		</property>
+		<property name="published" desc="published date">
 			<rule type="required" />
 			<rule type="date" />
-		</property>			
+		</property>
 		<property name="content" desc="content">
 			<rule type="required" />
-		</property>	
+		</property>
 		<property name="metatitle" desc="meta title">
 			<rule type="maxLength">
 				<param name="maxLength" value="100" />
-			</rule>				
+			</rule>
 		</property>
 		<property name="metadescription" desc="meta description">
 			<rule type="maxLength">
 				<param name="maxLength" value="200" />
-			</rule>				
+			</rule>
 		</property>
 		<property name="metakeywords" desc="meta keywords">
 			<rule type="maxLength">
 				<param name="maxLength" value="200" />
 			</rule>
-		</property>					
+		</property>
 	</objectProperties>
 </validateThis>
