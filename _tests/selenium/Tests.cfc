@@ -9,13 +9,13 @@ component extends="mxunit.framework.TestCase"{
 	// run once before all tests
 	function beforeTests() {
 		// set url of Xindi installation
-		browserURL = "http://127.0.0.1:8500/xindi";
+		browserURL = "http://127.0.0.1:8888/xindi";
 		// set browser to be used for testing
-		browserCommand = "*firefox";
+		browserStartCommand = "*googlechrome";
 		// create a new instance of CFSelenium
 		selenium = createobject("component", "CFSelenium.selenium").init();
 		// start Selenium server
-		selenium.start(browserUrl, browserCommand);
+		selenium.start(browserUrl, browserStartCommand);
 		// set timeout period to be used when waiting for page to load
 		timeout = 60000;
 		// rebuild Xindi (reset data in database)
