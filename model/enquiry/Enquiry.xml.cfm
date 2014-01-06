@@ -5,17 +5,17 @@
 			<rule type="required" failuremessage="Enter your name." />
 			<rule type="maxLength">
 				<param name="maxLength" value="50" />
-			</rule>				
+			</rule>
 		</property>
 		<property name="email" desc="email address">
-			<rule type="required" failuremessage="Enter your email address."  />
+			<rule type="required" failuremessage="Enter your email address." />
 			<rule type="email" failuremessage="Enter a valid email address." />
 			<rule type="maxLength">
 				<param name="maxLength" value="150" />
-			</rule>				
-		</property>		
+			</rule>
+		</property>
 		<property name="message" desc="message">
 			<rule type="required" failuremessage="Enter a message." />
-		</property>	
+		</property>
 	</objectProperties>
 </validateThis>

@@ -5,23 +5,23 @@
 			<rule type="required" contexts="create,update" />
 			<rule type="maxLength" contexts="create,update">
 				<param name="maxLength" value="50" />
-			</rule>	
+			</rule>
 		</property>
 		<property name="email" desc="email address">
 			<rule type="required" contexts="create,update" />
 			<rule type="email" contexts="create,update" />
 			<rule type="custom" contexts="create,update" failureMessage="The email address is registered to an existing account.">
-        		<param name="methodname" value="isEmailUnique" />
-		    </rule>
+				<param name="methodname" value="isEmailUnique" />
+			</rule>
 			<rule type="maxLength" contexts="create,update">
 				<param name="maxLength" value="150" />
-			</rule>	
+			</rule>
 		</property>
 		<property name="password" desc="password">
 			<rule type="required" contexts="create,login" />
 			<rule type="minLength" contexts="create,update" failureMessage="The password must be a minimum of 8 characters in length.">
 				<param name="minLength" value="8" />
-			</rule>			
+			</rule>
 		</property>
 	</objectProperties>
 </validateThis>

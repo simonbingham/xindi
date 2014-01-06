@@ -1,22 +1,22 @@
-component accessors="true" extends="abstract"{
+component accessors="true" extends="abstract" {
 
-	// ------------------------ DEPENDENCY INJECTION ------------------------ //	
+	// ------------------------ DEPENDENCY INJECTION ------------------------ //
 
 	property name="ContentService" setter="true" getter="false";
 	property name="NewsService" setter="true" getter="false";
 
-	// ------------------------ PUBLIC METHODS ------------------------ //	
-	
-	void function map( required struct rc ){
+	// ------------------------ PUBLIC METHODS ------------------------ //
+
+	void function map(required struct rc) {
 		rc.Page = variables.ContentService.getRoot(); // required for breadcrumb trail
-		rc.MetaData.setMetaTitle( "Site Map" ); 
-		rc.MetaData.setMetaDescription( "" );
-		rc.MetaData.setMetaKeywords( "" );		
+		rc.MetaData.setMetaTitle("Site Map");
+		rc.MetaData.setMetaDescription("");
+		rc.MetaData.setMetaKeywords("");
 	}
-	
-	void function xml( required struct rc ){
+
+	void function xml(required struct rc) {
 		rc.sesomitindex = variables.fw.getConfig().sesomitindex;
-		if( rc.config.news.enabled ) rc.articles = variables.NewsService.getArticles( published=true );
-	}		
-	
+		if(rc.config.news.enabled) rc.articles = variables.NewsService.getArticles(published=true);
+	}
+
 }

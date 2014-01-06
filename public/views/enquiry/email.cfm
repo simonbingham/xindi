@@ -2,19 +2,19 @@
 
 <cfoutput>
 	<!DOCTYPE html>
-	
+
 	<html lang="en">
 		<head>
 			<meta charset="utf-8">
-			
+
 			<title>Website Enquiry</title>
 		</head>
 
 		<body>
 			<p>Hello,</p>
-			
+
 			<p>Please find attached an enquiry from your website.</p>
-		
+
 			<table>
 				<tbody>
 					<tr>
@@ -31,10 +31,10 @@
 					</tr>
 				</tbody>
 			</table>
-			
+
 			<p>Kind regards,</p>
-			
+
 			<p>Your Website</p>
 		</body>
-	</html>	
+	</html>
 </cfoutput>

@@ -1,9 +1,9 @@
-component persistent="true" table="enquiries" cacheuse="transactional"{
-	
+component persistent="true" table="enquiries" cacheuse="transactional" {
+
 	// ------------------------ PROPERTIES ------------------------ //
-	
+
 	property name="enquiryid" column="enquiry_id" fieldtype="id" setter="false" generator="native";
-	
+
 	property name="name" column="enquiry_name" ormtype="string" length="50";
 	property name="email" column="enquiry_email" ormtype="string" length="150";
 	property name="message" column="enquiry_message" ormtype="text";
@@ -14,34 +14,34 @@ component persistent="true" table="enquiries" cacheuse="transactional"{
 
 	/**
 	 * I initialise this component
-	 */	
-	Enquiry function init(){
+	 */
+	Enquiry function init() {
 		variables.name = "";
 		variables.read = false;
 		return this;
 	}
 
 	// ------------------------ PUBLIC METHODS ------------------------ //
-	
+
 	/**
 	 * I return the message formatted for display
-	 */	
-	string function getDisplayMessage(){
-		return REReplace( HTMLEditFormat( variables.message ), "[\r\n]+", "<br /><br />", "ALL" );
-	}	
+	 */
+	string function getDisplayMessage() {
+		return REReplace(HTMLEditFormat(variables.message), "[\r\n]+", "<br /><br />", "ALL");
+	}
 
 	/**
 	 * I return true if the enquiry is persisted
-	 */	
-	boolean function isPersisted(){
-		return !IsNull( variables.enquiryid );
+	 */
+	boolean function isPersisted() {
+		return !IsNull(variables.enquiryid);
 	}
-	
+
 	/**
 	 * I return true if the enquiry is read
-	 */		
-	boolean function isRead(){
+	 */
+	boolean function isRead() {
 		return variables.read;
 	}
-	
+
 }

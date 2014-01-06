@@ -1,39 +1,39 @@
-component extends="mxunit.framework.TestCase"{
-			
+component extends="mxunit.framework.TestCase" {
+
 	// ------------------------ UNIT TESTS ------------------------ //
-	
-	function getValidator(){
-		var Page = EntityNew( "Page" );
-		result = CUT.getValidator( Page );
-		assertTrue( IsObject( result ) );
+
+	function getValidator() {
+		var Page = EntityNew("Page");
+		result = CUT.getValidator(Page);
+		assertTrue(IsObject(result));
 	}
-	
-	// ------------------------ IMPLICIT ------------------------ // 
-	
+
+	// ------------------------ IMPLICIT ------------------------ //
+
 	/**
 	* this will run before every single test in this test case
 	*/
-	function setUp(){
+	function setUp() {
 		// initialise component under test
 		CUT = new model.abstract.BaseService();
-		var validatorconfig = { definitionPath="/model/", JSIncludes=false, resultPath="model.utility.ValidatorResult" };
-		var Validator = new ValidateThis.ValidateThis( validatorconfig );
-		CUT.setValidator( Validator );
+		var validatorconfig = {definitionPath="/model/", JSIncludes=false, resultPath="model.utility.ValidatorResult"};
+		var Validator = new ValidateThis.ValidateThis(validatorconfig);
+		CUT.setValidator(Validator);
 	}
-	
+
 	/**
 	* this will run after every single test in this test case
 	*/
-	function tearDown(){}
-	
+	function tearDown() {}
+
 	/**
 	* this will run once after initialization and before setUp()
 	*/
-	function beforeTests(){}
-	
+	function beforeTests() {}
+
 	/**
 	* this will run once after all tests have been run
 	*/
-	function afterTests(){}
-	
+	function afterTests() {}
+
 }

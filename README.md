@@ -32,8 +32,6 @@ Xindi uses the frameworks listed below.
 * Adobe ColdFusion 9.0.1 or Railo 3.3
 * MySQL 5 or MSSQL
 
-Versions of Xindi with version numbers beginning with '2013' are tested solely on Railo 4 and MySQL 5.
-
 ## Quick Start
 
 Clone the git repo - `git clone git@github.com:simonbingham/xindi.git` - or [download it] (https://github.com/simonbingham/xindi/zipball/master).
@@ -56,12 +54,10 @@ Xindi is authored by [Simon Bingham] (https://twitter.com/#!/simonbingham) with 
 
 If you experience any problems with Xindi please:
 
-* [visit our Google Group for help and advice] (https://groups.google.com/forum/?hl=en&fromgroups#!forum/getxindi)
-* [submit a ticket to our issue tracker] (https://github.com/simonbingham/xindi/issues)
-* fix the error yourself and send us a pull request
+* [visit the Google Group for help and advice] (https://groups.google.com/forum/?hl=en&fromgroups#!forum/getxindi)
+* [submit a ticket to the issue tracker] (https://github.com/simonbingham/xindi/issues)
+* fix the error yourself and submit a pull request
 
 ## Social Media
 
-You'll find us on [Twitter] (https://twitter.com/#!/getxindi), [Facebook] (http://www.facebook.com/getxindi) and [Google+] (https://plus.google.com/112798469896267857099).
-
-Finally, you can find a collection of [blog posts about Xindi on Simon Bingham's website] (http://www.simonbingham.me.uk/index.cfm/main/default/uuid/xindi-19).
+You'll find Xindi on [Twitter] (https://twitter.com/#!/getxindi), [Facebook] (http://www.facebook.com/getxindi) and [Google+] (https://plus.google.com/112798469896267857099).
