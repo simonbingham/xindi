@@ -4,13 +4,13 @@
 
 <cfoutput>
 	<!DOCTYPE html>
-	
+
 	<html lang="en">
 		<head>
 			<meta charset="utf-8">
 			<meta name="author" content="Simon Bingham (http://www.simonbingham.me.uk/)">
 			<meta name="viewport" content="width=device-width, initial-scale=1.0">
-			
+
 			<base href="#rc.basehref##request.subsystem#/">
 
 			<title>Xindi File Manager</title>
@@ -28,24 +28,24 @@
 			<script src="assets/js/jquery.imgareaselect.min.js"></script>
 			<script src="assets/ckeditor/ckeditor.js"></script>
 			<script src="assets/js/core.js?r=#rc.config.revision#"></script>
-			
+
 			<link rel="shortcut icon" href="assets/ico/favicon.ico">
 			<link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144x144-precomposed.png">
 			<link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114x114-precomposed.png">
 			<link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72x72-precomposed.png">
 			<link rel="apple-touch-icon-precomposed" sizes="57x57" href="assets/ico/apple-touch-icon-57x57-precomposed.png">
-			<link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-precomposed.png">			
-			<link rel="apple-touch-icon" href="assets/ico/apple-touch-icon.png">		
+			<link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-precomposed.png">
+			<link rel="apple-touch-icon" href="assets/ico/apple-touch-icon.png">
 		</head>
-		
-		<body>	
+
+		<body>
 			<div id="container" class="container">
 				<div class="row">
-					<div id="content" class="span12">		
+					<div id="content" class="span12">
 						#body#
 					</div>
 				</div>
 			</div>
-		</body>		
-	</html>	
+		</body>
+	</html>
 </cfoutput>

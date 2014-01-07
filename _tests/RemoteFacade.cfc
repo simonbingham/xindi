@@ -1,1 +1,1 @@
-component extends="mxunit.framework.RemoteFacade" wsversion="1"{}
+component extends="mxunit.framework.RemoteFacade" wsversion="1" {}

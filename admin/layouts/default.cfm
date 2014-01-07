@@ -2,12 +2,12 @@
 
 <cfoutput>
 	<!DOCTYPE html>
-	
+
 	<html lang="en">
 		<head>
 			<meta charset="utf-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1.0">
-			
+
 			<base href="#rc.basehref##request.subsystem#/">
 
 			<title>Xindi Site Manager</title>
@@ -24,21 +24,21 @@
 			<script src="assets/bootstrap/js/bootstrap.min.js"></script>
 			<script src="assets/ckeditor/ckeditor.js"></script>
 			<script src="assets/js/core.js?r=#rc.config.revision#"></script>
-			
+
 			<link rel="shortcut icon" href="assets/ico/favicon.ico">
 			<link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144x144-precomposed.png">
 			<link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114x114-precomposed.png">
 			<link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72x72-precomposed.png">
 			<link rel="apple-touch-icon-precomposed" sizes="57x57" href="assets/ico/apple-touch-icon-57x57-precomposed.png">
-			<link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-precomposed.png">			
-			<link rel="apple-touch-icon" href="assets/ico/apple-touch-icon.png">		
+			<link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-precomposed.png">
+			<link rel="apple-touch-icon" href="assets/ico/apple-touch-icon.png">
 		</head>
-		
+
 		<body>
 			<cfif rc.config.development>
 				<span class="dev-mode label label-warning">Development Mode</span>
-			</cfif>			
-			
+			</cfif>
+
 			<div class="navbar navbar-fixed-top" role="banner">
 				<div class="navbar-inner">
 					<div class="container">
@@ -47,37 +47,37 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</a>
-						
+
 						<a class="brand" href="#rc.basehref##request.subsystem#/" title="Return to home page"><img src="assets/img/xindi-logo.png" alt="Xindi logo" /></a>
-						
+
 						<div class="nav-collapse">
 							<ul class="nav pull-right" role="navigation">
-								<cfif StructKeyExists( rc, "CurrentUser" )>
+								<cfif StructKeyExists(rc, "CurrentUser")>
 									<li><a href="#rc.basehref##request.subsystem#/">Dashboard</a></li>
-									<li><a href="#buildURL( 'pages' )#">Pages</a></li>
-									<cfif rc.config.news.enabled><li><a href="#buildURL( 'news' )#">News</a></li></cfif>
-									<cfif rc.config.enquiry.enabled><li><a href="#buildURL( 'enquiries' )#">Enquiries<cfif rc.unreadenquirycount> <span class="badge badge-info">#NumberFormat( rc.unreadenquirycount )#</span></cfif></a></li></cfif>
-									<li><a href="#buildURL( 'users' )#">Users</a></li>
-									<li><a href="#buildURL( 'security/logout' )#">Logout</a></li>
+									<li><a href="#buildURL('pages')#">Pages</a></li>
+									<cfif rc.config.news.enabled><li><a href="#buildURL('news')#">News</a></li></cfif>
+									<cfif rc.config.enquiry.enabled><li><a href="#buildURL('enquiries')#">Enquiries<cfif rc.unreadenquirycount> <span class="badge badge-info">#NumberFormat(rc.unreadenquirycount)#</span></cfif></a></li></cfif>
+									<li><a href="#buildURL('users')#">Users</a></li>
+									<li><a href="#buildURL('security/logout')#">Logout</a></li>
 								</cfif>
 							</ul>
 						</div>
 					</div>
 				</div>
-			</div>		
-		
+			</div>
+
 			<div id="container" class="container">
 				<div class="row">
 					<div id="content" class="span12" role="main">
-						<h2 class="pull-right"><cfif StructKeyExists( rc, "CurrentUser" )><small class="pull-right">#rc.CurrentUser.getName()#</small></cfif></h2>
-						
+						<h2 class="pull-right"><cfif StructKeyExists(rc, "CurrentUser")><small class="pull-right">#rc.CurrentUser.getName()#</small></cfif></h2>
+
 						#body#
-						
+
 						<div class="clearfix append-bottom"></div>
 					</div>
 				</div>
 			</div>
-	
+
 			<div id="footer" role="contentinfo">
 				<div class="container">
 					<div class="row">
@@ -89,7 +89,7 @@
 						</div>
 					</div>
 				</div>
-			</div>		
-		</body>		
+			</div>
+		</body>
 	</html>
 </cfoutput>

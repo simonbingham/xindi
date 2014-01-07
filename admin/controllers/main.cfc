@@ -1,1 +1,1 @@
-component accessors="true" extends="abstract"{}
+component accessors="true" extends="abstract" {}

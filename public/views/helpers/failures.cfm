@@ -1,9 +1,9 @@
 <cfoutput>
-	<cfif StructKeyExists( rc.result.getFailureMessagesByProperty(), local.property )>
+	<cfif StructKeyExists(rc.result.getFailureMessagesByProperty(), local.property)>
 		<span class="error">
-			<cfloop array="#rc.result.getFailureMessagesByProperty()[ local.property ]#" index="local.message">
+			<cfloop array="#rc.result.getFailureMessagesByProperty()[local.property]#" index="local.message">
 				#local.message#
-			</cfloop> 
+			</cfloop>
 		</span>
 	</cfif>
 </cfoutput>

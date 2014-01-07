@@ -1,4 +1,4 @@
-component accessors="true"{
+component accessors="true" {
 
 	// ------------------------ DEPENDENCY INJECTION ------------------------ //
 
@@ -7,14 +7,14 @@ component accessors="true"{
 
 	// ------------------------ PUBLIC METHODS ------------------------ //
 
-	void function init( required any fw ){
+	void function init(required any fw) {
 		variables.fw = arguments.fw;
 	}
-	
-	void function before( required struct rc ){
-		rc.isallowed = variables.SecurityService.isAllowed( variables.fw.getFullyQualifiedAction() );
-		if( !rc.isallowed ){
-			variables.fw.redirect( "security" );
+
+	void function before(required struct rc) {
+		rc.isallowed = variables.SecurityService.isAllowed(variables.fw.getFullyQualifiedAction());
+		if(!rc.isallowed) {
+			variables.fw.redirect("security");
 		}else{
 			rc.CurrentUser = variables.SecurityService.getCurrentUser();
 			rc.unreadenquirycount = variables.EnquiryService.getUnreadCount();

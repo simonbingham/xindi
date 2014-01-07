@@ -3,13 +3,11 @@
 	Occasionally it maybe necessary to start the Java server manually by double clicking cfselenium/Selenium-PC/selenium-server-standalone-x.xx.x.jar
 */
 
-// component extends mxunit.framework.TestCase
-component extends="mxunit.framework.TestCase"{
+component extends="mxunit.framework.TestCase" {
 
-	// run once before all tests
 	function beforeTests() {
 		// set url of Xindi installation
-		browserURL = "http://127.0.0.1:8888/xindi";
+		browserURL = "http://#CGI.HTTP_HOST#/xindi";
 		// set browser to be used for testing
 		browserStartCommand = "*googlechrome";
 		// create a new instance of CFSelenium
@@ -24,13 +22,11 @@ component extends="mxunit.framework.TestCase"{
 		httpService.send();
 	}
 
-	// run once after each test
 	function tearDown() {
 		// tests fail in Railo 4 if next line uncommented
 		//selenium.stop();
 	}
 
-	// run once after all tests
 	function afterTests() {
 		selenium.stopServer();
 	}
@@ -113,7 +109,7 @@ component extends="mxunit.framework.TestCase"{
 		selenium.type("id=title", "test");
 		// use JavaScript to enter content into CKEditor
 		selenium.runScript("CKEDITOR.instances['page-content'].setData('<p>test</p>');");
-		selenium.runScript("document.getElementById('page-form').onsubmit=function(){CKEDITOR.instances[ 'page-content' ].updateElement();};");
+		selenium.runScript("document.getElementById('page-form').onsubmit=function() {CKEDITOR.instances['page-content'].updateElement();};");
 		selenium.click("xpath=(//input[@name='submit'])[2]");
 		selenium.waitForPageToLoad(timeout);
 		assertTrue(selenium.isTextPresent("regexp:(The page "".*"" has been saved.)"));
@@ -145,7 +141,7 @@ component extends="mxunit.framework.TestCase"{
 		selenium.type("id=published", "01/07/2012");
 		// use JavaScript to enter content into CKEditor
 		selenium.runScript("CKEDITOR.instances['article-content'].setData('<p>test</p>');");
-		selenium.runScript("document.getElementById('article-form').onsubmit=function(){CKEDITOR.instances[ 'article-content' ].updateElement();};");
+		selenium.runScript("document.getElementById('article-form').onsubmit=function() {CKEDITOR.instances['article-content'].updateElement();};");
 		selenium.click("id=submit");
 		selenium.waitForPageToLoad(timeout);
 		assertTrue(selenium.isTextPresent("regexp:(The article "".*"" has been saved.)"));
@@ -166,7 +162,7 @@ component extends="mxunit.framework.TestCase"{
 		doLogout();
 	}
 
-	function testViewEnquiry(){
+	function testViewEnquiry() {
 		doLogin();
 		selenium.open(browserURL & "/index.cfm/admin:enquiries");
 		selenium.waitForPageToLoad(timeout);
@@ -176,7 +172,7 @@ component extends="mxunit.framework.TestCase"{
 		doLogout();
 	}
 
-	function testDeleteEnquiry(){
+	function testDeleteEnquiry() {
 		doLogin();
 		selenium.open(browserURL & "/index.cfm/admin:enquiries");
 		selenium.waitForPageToLoad(timeout);
@@ -219,14 +215,14 @@ component extends="mxunit.framework.TestCase"{
 		doLogout();
 	}
 
-	function testLogout(){
+	function testLogout() {
 		doLogin();
 		doLogout();
 		assertTrue(selenium.isTextPresent("You have been logged out."));
 	}
 
 	// login user to content management system
-	private function doLogin(){
+	private function doLogin() {
 		selenium.open(browserURL & "/index.cfm/admin:security");
 		selenium.waitForPageToLoad(timeout);
 		selenium.type("id=email", "admin@getxindi.com");
@@ -236,7 +232,7 @@ component extends="mxunit.framework.TestCase"{
 	}
 
 	// logout user from content management system
-	private function doLogout(){
+	private function doLogout() {
 		selenium.open(browserURL & "/index.cfm/admin:security/logout");
 		selenium.waitForPageToLoad(timeout);
 	}

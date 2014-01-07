@@ -1,9 +1,9 @@
-component persistent="true" table="articles" cacheuse="transactional"{
+component persistent="true" table="articles" cacheuse="transactional" {
 
 	// ------------------------ PROPERTIES ------------------------ //
 
 	property name="articleid" column="article_id" fieldtype="id" setter="false" generator="native";
-	
+
 	property name="slug" column="article_slug" ormtype="string" length="150";
 	property name="title" column="article_title" ormtype="string" length="150";
 	property name="content" column="article_content" ormtype="text";
@@ -20,9 +20,9 @@ component persistent="true" table="articles" cacheuse="transactional"{
 	// ------------------------ CONSTRUCTOR ------------------------ //
 
 	/**
-     * I initialise this component
+	 * I initialise this component
 	 */
-	Article function init(){
+	Article function init() {
 		variables.slug = "";
 		variables.content = "";
 		variables.metagenerated = true;
@@ -33,95 +33,95 @@ component persistent="true" table="articles" cacheuse="transactional"{
 	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	/**
-     * I return the summary in xml format
+	 * I return the summary in xml format
 	 */
 	string function getRSSSummary() {
-		var plaintext = Trim( ReReplace( REReplaceNoCase( Trim( variables.content ), "<[^>]{1,}>", " ", "all" ), " +", " ", "all" ) );
-		if( Len( plaintext ) > 500 ) return Left( plaintext, 500 ) & "...";
-		return XMLFormat( plaintext );
+		var plaintext = Trim(ReReplace(REReplaceNoCase(Trim(variables.content), "<[^>]{1,}>", " ", "all"), " +", " ", "all"));
+		if(Len(plaintext) > 500) return Left(plaintext, 500) & "...";
+		return XMLFormat(plaintext);
 	}
 
 	/**
-     * I return true if the article has an author
+	 * I return true if the article has an author
 	 */
-	boolean function hasAuthor(){
-		return Len( Trim( variables.author ) );	
+	boolean function hasAuthor() {
+		return Len(Trim(variables.author));
 	}
 
 	/**
-     * I return true if the article has a meta description
+	 * I return true if the article has a meta description
 	 */
-	boolean function hasMetaDescription(){
-		return Len( Trim( variables.metadescription ) );	
-	}
-	
-	/**
-     * I return true if the article has meta keywords
-	 */	
-	boolean function hasMetaKeywords(){
-		return Len( Trim( variables.metakeywords ) );
+	boolean function hasMetaDescription() {
+		return Len(Trim(variables.metadescription));
 	}
 
 	/**
-     * I return true if the article has a meta title
+	 * I return true if the article has meta keywords
 	 */
-	boolean function hasMetaTitle(){
-		return Len( Trim( variables.metatitle ) );		
+	boolean function hasMetaKeywords() {
+		return Len(Trim(variables.metakeywords));
 	}
 
 	/**
-     * I return true if the article meta tags are generated automatically
+	 * I return true if the article has a meta title
 	 */
-	boolean function isMetaGenerated(){
+	boolean function hasMetaTitle() {
+		return Len(Trim(variables.metatitle));
+	}
+
+	/**
+	 * I return true if the article meta tags are generated automatically
+	 */
+	boolean function isMetaGenerated() {
 		return variables.metagenerated;
 	}
 
 	/**
-     * I return true if the article is new
+	 * I return true if the article is new
 	 */
-	boolean function isNew(){
-		return DateDiff( "ww", variables.published, Now() ) < 1;
+	boolean function isNew() {
+		return DateDiff("ww", variables.published, Now()) < 1;
 	}
 
 	/**
-     * I return true if the article is persisted
+	 * I return true if the article is persisted
 	 */
-	boolean function isPersisted(){
-		return !IsNull( variables.articleid );
+	boolean function isPersisted() {
+		return !IsNull(variables.articleid);
 	}
-	
+
 	/**
-     * I return true if the article is published
-	 */	
-	boolean function isPublished(){
+	 * I return true if the article is published
+	 */
+	boolean function isPublished() {
 		return variables.published < Now();
 	}
 
 	/**
 	* I am called before inserting the article into the database
 	*/
-	void function preInsert(){
+	void function preInsert() {
 		setSlug();
 	}
 
 	/**
-     * I generate a unique id for the article
-	 */		
-	void function setSlug( string slug ){
-		variables.slug = ReReplace( LCase( variables.title ), "[^a-z0-9]{1,}", "-", "all" );
-		while ( !isSlugUnique() ) variables.slug &= "-"; 
+	 * I generate a unique id for the article
+	 */
+	void function setSlug(string slug) {
+		variables.slug = ReReplace(LCase(variables.title), "[^a-z0-9]{1,}", "-", "all");
+		while (!isSlugUnique()) variables.slug &= "-";
 	}
-	
+
 	// ------------------------ PRIVATE METHODS ------------------------ //
 
 	/**
-     * I return true if the id of the article is unique
-	 */	
-	private boolean function isSlugUnique(){
-		var matches = []; 
-		if( isPersisted() ) matches = ORMExecuteQuery( "from Article where articleid <> :articleid and slug = :slug", { articleid=variables.articleid, slug=variables.slug } );
-		else matches = ORMExecuteQuery( "from Article where slug=:slug", { slug=variables.slug } );
-		return !ArrayLen( matches );
+	 * I return true if the id of the article is unique
+	 */
+	private boolean function isSlugUnique() {
+		var matches = [];
+		if(isPersisted()) matches = ORMExecuteQuery("from Article where articleid <> :articleid and slug = :slug", {articleid=variables.articleid, slug=variables.slug});
+		else matches = ORMExecuteQuery("from Article where slug=:slug", {slug=variables.slug});
+		return !ArrayLen(matches);
 	}
-		
+
 }

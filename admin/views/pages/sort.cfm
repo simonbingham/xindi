@@ -17,37 +17,37 @@
 		<cfloop query="rc.subpages">
 		originalOrder.push({left: #rc.subpages.positionleft#, right: #rc.subpages.positionright#});
 		</cfloop>
-		
-		$( "##sortable" ).sortable({
+
+		$("##sortable").sortable({
 			placeholder: "ui-state-highlight"
 		}).disableSelection();
-		
+
 		$('##savesort').bind('click', function (e){
 			// figure out new positions...
 			var newOrder = [];
 			$('##sortable>li').each(function (i,el){
-				newOrder.push( {pageid: parseInt(el.getAttribute('data-pageid')), left: originalOrder[i].left, right: originalOrder[i].right } );	
+				newOrder.push({pageid: parseInt(el.getAttribute('data-pageid')), left: originalOrder[i].left, right: originalOrder[i].right});
 			});
-			
+
 			// send to server
 			$.ajax({
 				type: 'POST',
-				url: '#buildURL( ".savesort" )#',
-				data: { payload: JSON.stringify(newOrder) },
+				url: '#buildURL(".savesort")#',
+				data: {payload: JSON.stringify(newOrder)},
 				dataType: 'json'
 			})
 			.done(function (data, textStatus) {
 				if (data.saved) {
-					window.location.href = '#buildURL( "pages" )#';
+					window.location.href = '#buildURL("pages")#';
 				}
 			})
-			.fail(function (jqXHR, exception) { 
+			.fail(function (jqXHR, exception) {
 			})
 			.always(function () {});
-			
+
 			e.preventDefault();
 		});
-		
+
 	});
 	</script>
 </cfoutput>
