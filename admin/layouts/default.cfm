@@ -15,6 +15,7 @@
 			<link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 			<link href="assets/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
 			<link href="assets/css/smoothness/jquery-ui-1.8.19.custom.css" rel="stylesheet">
+			<link href="assets/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 			<link href="assets/css/core.css?r=#rc.config.revision#" rel="stylesheet">
 
 			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
@@ -56,6 +57,7 @@
 									<li><a href="#rc.basehref##request.subsystem#/">Dashboard</a></li>
 									<li><a href="#buildURL('pages')#">Pages</a></li>
 									<cfif rc.config.news.enabled><li><a href="#buildURL('news')#">News</a></li></cfif>
+									<cfif rc.config.forms.enabled><li><a href="#buildURL( 'forms' )#">Forms</a></li></cfif>
 									<cfif rc.config.enquiry.enabled><li><a href="#buildURL('enquiries')#">Enquiries<cfif rc.unreadenquirycount> <span class="badge badge-info">#NumberFormat(rc.unreadenquirycount)#</span></cfif></a></li></cfif>
 									<li><a href="#buildURL('users')#">Users</a></li>
 									<li><a href="#buildURL('security/logout')#">Logout</a></li>
