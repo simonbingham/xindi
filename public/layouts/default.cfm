@@ -23,6 +23,10 @@
 			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 			<script src="public/assets/bootstrap/js/bootstrap.min.js"></script>
 			<script src="public/assets/js/prettify/prettify.js"></script>
+			<cfif rc.action IS "public:forms.form">
+				<script src="public/assets/js/amplify/amplify.min.js"></script>
+				<script src="public/assets/js/form.js"></script>
+			</cfif>
 			<cfif Len(rc.config.googleanalyticstrackingid)>
 				<script type="text/javascript">
 				var _gaq = _gaq || [];

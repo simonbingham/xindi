@@ -1,27 +1,27 @@
 component persistent="true" table="form_fields" cacheuse="transactional"{
 
 	property name="fieldid" column="field_id" fieldtype="id" setter="false" generator="native";
-	property name="name" column="field_name" ormtype="string" length="150";
-	property name="prompt" column="field_prompt" ormtype="text";
-	property name="instructions" column="field_instructions" ormtype="text";
-	property name="sortorder" column="field_sortorder" ormtype="int";
-	property name="css_class" column="field_css_class" ormtype="string" length="150";
-	property name="required" column="field_required" ormtype="boolean" default="0" ;
-	property name="addother" column="field_addother" ormtype="boolean" default="0" ;
+	property name="name" column="field_name" sqltype="varchar(150)" index="idx_name";
+	property name="label" column="field_label" sqltype="varchar(750)" index="idx_label";
+	property name="helptext" column="field_helptext" ormtype="text";
+	property name="maxLength" column="field_maxlength" ormtype="integer" default="50" dbdefault="50";
+	property name="css_class" column="field_css_class" sqltype="varchar(150)";
+	property name="sortorder" column="field_sortorder" ormtype="int" default="0" dbdefault="0";
+	property name="required" column="field_required" ormtype="boolean" default="true" dbdefault="1" index="idx_required";
+	property name="addother" column="field_addother" ormtype="boolean" default="false" dbdefault="0" index="idx_addother";
 	property name="created" column="field_created" ormtype="timestamp";
 	property name="updated" column="field_updated" ormtype="timestamp";
-	property name="updatedby" column="field_updatedby" ormtype="string" length="150";
+	property name="updatedby" column="field_updatedby" sqltype="varchar(150)";
 	
-	// many FormField entities can have one Section entity 
-	property name="Section" fieldtype="many-to-one" cfc="FormSection" fkcolumn="section_id" lazy="false"; 
+	// many Field entities can have one Form entity 
+	property name="Form" fieldtype="many-to-one" cfc="Form" fkcolumn="form_id"  lazy="true" fetch="join"; 
 	
 	// many FormField entities can have one FormFieldType entity 
-	property name="FieldType" fieldtype="many-to-one" cfc="FormFieldType" fkcolumn="type_id" lazy="false"; 
+	property name="FieldType" fieldtype="many-to-one" cfc="FormFieldType" fkcolumn="type_id"  lazy="true" fetch="join"; 
 	
 	// one Field can have many options 
-	 property name="options" fieldtype="one-to-many" cfc="FormFieldOption" 
-		fkcolumn="field_id" type="array" singularname="option" orderby="sortorder asc" 
-    	inverse="true"; 
+	 property name="options" fieldtype="one-to-many" cfc="FormFieldOption" fkcolumn="field_id" type="array" lazy="extra" batchsize="25" 
+	 	 singularname="option" orderby="sortorder asc" inverse="true" cascade="all-delete-orphan"; 
 
 	// ------------------------ CONSTRUCTOR ------------------------ //
 
@@ -30,7 +30,8 @@ component persistent="true" table="form_fields" cacheuse="transactional"{
 	 */
 	FormField function init(){
 		variables.name = "";
-		variables.prompt = "";
+		variables.label = "";
+		variables.helptext = "";
 		variables.options = [];
 		return this;
 	}
@@ -38,7 +39,7 @@ component persistent="true" table="form_fields" cacheuse="transactional"{
 	// ------------------------ PUBLIC METHODS ------------------------ //
 	
 	/**
-     * I return true if the form section is persisted
+     * I return true if the form field is persisted
 	 */
 	boolean function isPersisted(){
 		return !IsNull( variables.fieldid );

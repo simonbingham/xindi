@@ -1,7 +1,9 @@
 component persistent="true" table="form_fieldtypes" cacheuse="transactional"{
 
 	property name="typeid" column="type_id" fieldtype="id" setter="false" generator="native";
-	property name="name" column="type_name" ormtype="string" length="150";
+	property name="name" column="type_name" sqltype="varchar(150)";
+	property name="showoptions" column="type_showoptions" ormtype="boolean" default="0" dbdefault="0";
+	property name="settingstohide" column="type_settingstohide" sqltype="varchar(150)";
 	property name="sortorder" column="type_sortorder" ormtype="int";
 	
 	// one Field Type can have many fields 
@@ -16,6 +18,7 @@ component persistent="true" table="form_fieldtypes" cacheuse="transactional"{
 	 */
 	FormFieldType function init(){
 		variables.typename = "";
+		variables.settingstohide = "";
 		variables.fields = [];
 		return this;
 	}

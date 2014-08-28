@@ -26,17 +26,13 @@ component accessors="true" extends="abstract"{
 		if( !StructKeyExists( rc, "Form" ) ) rc.Form = variables.FormService.getForm( rc.formid );
 		if( rc.Form.isPersisted() ) {
 			rc.context = "update";
-			rc.SectionType = rc.Form.getSectionType();
-			rc.typeid = rc.SectionType.getTypeID();
 		}
-		rc.sectiontypes = variables.FormService.getSectionTypes();
 		rc.Validator = variables.FormService.getValidator( rc.Form );
 		if( !StructKeyExists( rc, "result" ) ) rc.result = rc.Validator.newResult();
 	}	
 	
 	void function save( required struct rc ){
 		param name="rc.formid" default="0";
-		param name="rc.typeid" default="0";
 		param name="rc.name" default="";
 		param name="rc.longname" default="";
 		param name="rc.instructions" default="";
@@ -50,7 +46,7 @@ component accessors="true" extends="abstract"{
 				var refreshsitemap = new Http( url="#rc.basehref#index.cfm/public:navigation/xml", method="get" );
 				refreshsitemap.send();
 			}
-			if( rc.submit == "Save & Continue" )  variables.fw.redirect( "forms.maintain", "result,Form", "formid" );
+			if( rc.submit == "Save & Continue" )  variables.fw.redirect( "formfields.default", "result,Form", "formid" );
 			else variables.fw.redirect( "forms", "result" );
 		}else{
 			variables.fw.redirect( "forms.maintain", "result,Form", "formid" );

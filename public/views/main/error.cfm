@@ -1,7 +1,7 @@
 <cfoutput>
 	<h1>Oops!</h1>
 
-	<cfif !rc.config.exceptiontracker.emailnewexceptions>
+	<!---<cfif !rc.config.exceptiontracker.emailnewexceptions>--->
 		<p>An error has occurred.</p>
 
 		<h2>Failed Action</h2>
@@ -11,7 +11,7 @@
 		<h2>Exception</h2>
 
 		<cfdump var="#request.exception#">
-	<cfelse>
+	<!----<cfelse>
 		<p>An error has occurred and the site administrator has been notified.</p>
-	</cfif>
+	</cfif>--->
 </cfoutput>

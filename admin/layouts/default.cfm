@@ -15,8 +15,8 @@
 			<link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 			<link href="assets/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
 			<link href="assets/css/smoothness/jquery-ui-1.8.19.custom.css" rel="stylesheet">
-			<link href="assets/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 			<link href="assets/css/core.css?r=#rc.config.revision#" rel="stylesheet">
+			<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
 			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 			<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>

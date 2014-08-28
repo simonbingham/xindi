@@ -1,1 +1,0 @@
-<cfsetting showdebugoutput="false" enablecfoutputonly="true"><cfset request.layout = false><cfoutput>{"saved":#rc.saved#}</cfoutput>

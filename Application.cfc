@@ -6,7 +6,7 @@ component extends="frameworks.org.corfield.framework"{
 	this.name = ListLast(this.applicationroot, "\/") & "_" & Hash(this.applicationroot);
 	this.sessionmanagement = true;
 	// note: IsLocalHost on CF returns YES|NO which can't be passed to hibernate
-	this.development = IsLocalHost(CGI.REMOTE_ADDR) ? true : false;
+	this.development = true;
 	// prevent bots creating lots of sessions
 	if (structKeyExists(cookie, "CFTOKEN")) this.sessiontimeout = createTimeSpan(0, 0, 20, 0);
 	else this.sessiontimeout = createTimeSpan(0, 0, 0, 1);
@@ -14,6 +14,7 @@ component extends="frameworks.org.corfield.framework"{
 	this.mappings["/model"] = this.applicationroot & "model/";
 	this.mappings["/ValidateThis"] = this.applicationroot & "frameworks/ValidateThis/";
 	this.datasource = ListLast(this.applicationroot, "\/");
+	this.secureJson = false;
 	this.ormenabled = true;
 	this.ormsettings = {
 		flushatrequestend = false
@@ -178,6 +179,7 @@ component extends="frameworks.org.corfield.framework"{
 			, forms = {
 				enabled = true
 				, recordsperpage = 10
+				, emailfrom = ""
 			}
 			, revision = Hash(Now())
 			, security = {

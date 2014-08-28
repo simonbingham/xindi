@@ -27,4 +27,17 @@ component accessors="true" extends="abstract"{
 		rc.MetaData.setMetaKeywords( "" );
 	}
 
+	void function submit( required struct rc ){
+		param name="rc.formid" default="0";
+		param name="rc.submit" default="Save & exit";
+		rc.result = variables.FormService.submitForm( rc );
+		if(rc.result.getIsSuccess()) {
+			variables.fw.redirect("forms.thanks", "result");
+		}else{
+			rc.Submission = rc.result.getTheObject();
+			rc.slug = rc.Submission.getForm().getSlug();
+			variables.fw.redirect("form", "Submission,result");
+		}
+	}
+
 }

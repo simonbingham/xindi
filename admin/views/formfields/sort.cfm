@@ -1,7 +1,6 @@
 <cfoutput>
 	<div class="page-header clear">		
-		<h2>#rc.Section.getForm().getName()#:</h2>
-		<h3>#rc.Section.getName()#</h3>
+		<h3>#rc.Form.getName()#</h3>
 		<h2>Sort Form Fields</h2>
 	</div>
 

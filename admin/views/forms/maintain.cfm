@@ -31,19 +31,6 @@
 					<p class="text-info">Full form name displayed as the title </p>
 				</div>
 			</div>
-			
-			<div class="control-group <cfif rc.result.hasErrors( 'typeid' )>error</cfif>">
-				<label class="control-label" for="typeid">Section Handling <cfif rc.Validator.propertyIsRequired( "typeid" )>*</cfif></label>
-				<div class="controls">
-					<select id="typeid" name="typeid" class="input-xlarge">
-				      <cfloop array="#rc.sectiontypes#" index="sectiontype" >
-					<option value="#sectiontype.getTypeID()#" <cfif rc.Form.isPersisted() AND sectiontype.getTypeID() IS rc.typeid>selected="selected"</cfif> > #sectiontype.getName()#</option>
-					</cfloop>
-				    </select>
-					#view( "helpers/failures", { property="typeid" })#  
-					<p class="text-info">Sets whether sections will be displayed on tabs, in fieldsets, or not used (admin use only). </p>
-				</div>
-			</div>
 
 			<div class="control-group <cfif rc.result.hasErrors( 'ispublished' )>error</cfif>">
 				<label class="control-label" for="ispublished">Published <cfif rc.Validator.propertyIsRequired( "ispublished" )>*</cfif></label>
@@ -63,7 +50,56 @@
 				<div class="controls">
 					<textarea class="input ckeditor" name="instructions" id="form-instructions">#HtmlEditFormat( rc.Form.getInstructions() )#</textarea>
 					#view( "helpers/failures", { property="instructions" })#
-					<p class="text-info">Form instructions to display before form sections/fields</p>
+					<p class="text-info"> &nbsp;Form instructions to display at the start of the form (max 4000 chars)</p>
+				</div>
+			</div>
+
+			<div class="control-group <cfif rc.result.hasErrors( 'submitmessage' )>error</cfif>">
+				<label class="control-label" for="form-content">Submit Message <cfif rc.Validator.propertyIsRequired( "submitmessage" )>*</cfif></label>
+				<div class="controls">
+					<textarea class="input ckeditor" name="submitmessage" id="form-submitmessage">#HtmlEditFormat( rc.Form.getSubmitMessage() )#</textarea>
+					#view( "helpers/failures", { property="submitmessage" })#
+					<p class="text-info"> &nbsp;Message to display to users after submitting the form (max 4000 chars)</p>
+				</div>
+			</div>
+
+			<div class="control-group <cfif rc.result.hasErrors( 'sendemail' )>error</cfif>">
+				<label class="control-label" for="sendemail">Send Email? <cfif rc.Validator.propertyIsRequired( "sendemail" )>*</cfif></label>
+				<div class="controls">
+					<div class="btn-group" data-input="sendemail" data-toggle="buttons-radio" >
+					  <button type="button" value="0" class="btn" data-toggle="button">No</button>
+					  <button type="button" value="1" class="btn" data-toggle="button">Yes</button>
+					  <input type="hidden" name="sendemail" value="#rc.Form.sendEmailVal()#" />
+					</div>
+					  #view( "helpers/failures", { property="sendemail" })#
+					  <p class="text-info">For the Form Submissions</p>
+				</div>
+			</div>
+
+			<div class="control-group <cfif rc.result.hasErrors( 'emailto' )>error</cfif>">
+				<label class="control-label" for="name">Send Email(s) To <cfif rc.Validator.propertyIsRequired( "emailto" )>*</cfif></label>
+				<div class="controls">
+					<input class="input-xlarge" type="text" name="emailto" id="emailto" value="#HtmlEditFormat( rc.Form.getEmailTo() )#" maxlength="250" placeholder="Enter Email Addreess(es)">
+					#view( "helpers/failures", { property="emailto" })#
+					<p class="text-info">For the Form Submissions</p>
+				</div>
+			</div>
+
+			<div class="control-group <cfif rc.result.hasErrors( 'css_id' )>error</cfif>">
+				<label class="control-label" for="name">Form CSS ID <cfif rc.Validator.propertyIsRequired( "css_id" )>*</cfif></label>
+				<div class="controls">
+					<input class="input-xlarge" type="text" name="css_id" id="css_id" value="#HtmlEditFormat( rc.Form.getCSS_ID() )#" maxlength="150" placeholder="CSS ID">
+					#view( "helpers/failures", { property="css_id" })#
+					<p class="text-info">(For Designers)</p>
+				</div>
+			</div>
+
+			<div class="control-group <cfif rc.result.hasErrors( 'css_class' )>error</cfif>">
+				<label class="control-label" for="name">Form CSS Class <cfif rc.Validator.propertyIsRequired( "css_class" )>*</cfif></label>
+				<div class="controls">
+					<input class="input-xlarge" type="text" name="css_class" id="css_class" value="#HtmlEditFormat( rc.Form.getCSS_Class() )#" maxlength="150" placeholder="CSS Class">
+					#view( "helpers/failures", { property="css_class" })#
+					<p class="text-info">(For Designers)</p>
 				</div>
 			</div>
 		</fieldset>                        
@@ -83,8 +119,11 @@
 		CKEDITOR.replace( 'instructions', {
 		    height: 150
 		});
+		CKEDITOR.replace( 'submitmessage', {
+		    height: 100
+		});
 			 
-		//habndles the on/off published switch
+		//handles the on/off switches
 		jQuery(function($){	
 			$('.btn-group[data-input]').each(function() {
 				var hidden = $('[name="' + $(this).data('input') + '"]');

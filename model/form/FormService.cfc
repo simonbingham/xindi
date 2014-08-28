@@ -4,6 +4,7 @@ component accessors="true" extends="model.abstract.BaseService"{
 	
 	property name="FormGateway" getter="false";
 	property name="SecurityService" getter="false";
+	property name="NotificationService" getter="false";
 	property name="Validator" getter="false";
 
 	// ------------------------ PUBLIC METHODS FOR FORMS ------------------------ //
@@ -68,106 +69,90 @@ component accessors="true" extends="model.abstract.BaseService"{
 	struct function saveForm( required struct properties ){
 		transaction{
 			param name="arguments.properties.formid" default="0";
-			param name="arguments.properties.typeid" default="0";
 			var Form = variables.FormGateway.getForm( Val( arguments.properties.formid ) );
 			var User = variables.SecurityService.getCurrentUser();
 			if( !IsNull( User ) ) arguments.properties.updatedby = User.getName();
 			populate( Form, arguments.properties );
 			var result = variables.Validator.validate( theObject=Form );
 			if( !result.hasErrors() ){
-				variables.FormGateway.saveForm( Form, arguments.properties.typeid );
+				variables.FormGateway.saveForm( Form );
 				result.setSuccessMessage( "The form &quot;#Form.getName()#&quot; has been saved." );
 			}else{
+				writedump(result.getErrors());
+				writedump(result.getFailureMessges());
+				abort;
 				result.setErrorMessage( "Your form could not be saved. Please correct the highlighted fields." );
 			}
 		}
 		return result;
 	}
-	
-	// ------------------------ PUBLIC METHODS FOR FORM SECTIONS ------------------------ //
-	/**
-	 * I delete a form section
-	 */	
-	struct function deleteSection( required sectionid ){
-		transaction{
-			var Section = variables.FormGateway.getSection( Val( arguments.sectionid ) );
-			var result = variables.Validator.newResult();
-			if( Section.isPersisted() ){ 
-				variables.FormGateway.deleteSection( Section );
-				result.setSuccessMessage( "The form section &quot;#Section.getName()#&quot; has been deleted." );
-			}else{
-				result.setErrorMessage( "The form section could not be deleted." );
-			}
-		}
-		return result;
-	}
 
-	/**
-	 * I return a form section matching an id
-	 */	
-	FormSection function getSection( required sectionid ){
-		return variables.FormGateway.getSection( Val( arguments.sectionid ) );
-	}
-	
-	/**
-	 * I return a new form section
-	 */		
-	FormSection function newSection(){
-		return variables.FormGateway.newSection();
-	}
-	
-	/**
-	 * I validate and save a form section
-	 */		
-	struct function saveSection( required struct properties ){
-		transaction{
-			param name="arguments.properties.sectionid" default="0";
-			param name="arguments.properties.formid" default="0";
-			var Section = variables.FormGateway.getSection( Val( arguments.properties.sectionid ) );
-			var User = variables.SecurityService.getCurrentUser();
-			if( !IsNull( User ) ) arguments.properties.updatedby = User.getName();
-			populate( Section, arguments.properties );
-			var result = variables.Validator.validate( theObject=Section );
-			if( !result.hasErrors() ){
-				variables.FormGateway.saveSection( Section, arguments.properties.formid );
-				result.setSuccessMessage( "The form section &quot;#Section.getName()#&quot; has been saved." );
-			}else{
-				result.setErrorMessage( "The form section could not be saved. Please correct the highlighted fields." );
-			}
-		}
-		return result;
-	}
-	
 	// accepts an array of structs
-	boolean function saveSectionSortOrder( required array sections ) {
+	boolean function saveFormSortOrder( required array forms ) {
 		var newSortOrder = 0;
 		var sorted = [];
-		for ( var section in arguments.sections ){
-			var theSection = getSection( section.sectionid );
-			if ( IsNull( theSection ) || !theSection.isPersisted() ) return false;
+		for ( var form in arguments.forms ){
+			var theForm = getForm( form.formid );
+			if ( IsNull( theForm ) || !theForm.isPersisted() ) return false;
 			transaction{
-				theSection.setSortOrder(section.sortorder);
-				variables.FormGateway.saveSection( theSection );
+				theForm.setSortOrder(form.sortorder);
+				variables.FormGateway.saveForm( theForm );
 			}
 		}
 		return true;
 	}
-	
-	// ------------------------ PUBLIC METHODS FOR FORM SECTION TYPES ------------------------ //
-	/**
-	 * I return an array of form section types
-	 */	
-	array function getSectionTypes(){
-		return variables.FormGateway.getSectionTypes();
+
+	struct function submitForm( required struct properties ) {
+		//TODO: set field submissions to the default value if they come in blank.
+		transaction{
+			param name="arguments.properties.formid" default="0";
+			var Form = variables.FormGateway.getForm( Val( arguments.properties.formid ) );
+			var Submission = newSubmission();
+			var strFormIDs = {};
+			var strFormData = {};
+			for (var field IN arguments.properties) {
+				if ( ListLen( field, "~") IS 2 ) {
+					var sortOrder = ReplaceNoCase( ListGetAt( field, 1, "~"), "field", "" );
+					var fieldID = ListGetAt( field, 2, "~");
+					var fieldData = arguments.properties[ field ];
+					//Check for an Other option
+					if ( structKeyExists(arguments.properties, "field" & sortOrder & "~" & fieldID & "_Other_Detail" ) AND ListFind(fieldData, "Other")) {
+						fieldData = ListDeleteAt(fieldData, ListFind(fieldData, "Other"));
+						var otherDetail = "Other: " & arguments.properties["field" & sortOrder & "~" & fieldID & "_Other_Detail"];
+						fieldData = ListAppend(fieldData, otherDetail);
+					}
+					//skip this field if it is Other Details
+					if ( NOT FindNoCase( "_Other_Detail", fieldID) ) {
+						strFormIDs[ fieldID ] = sortOrder;
+						strFormData[ fieldID ] = fieldData;
+					}
+				}
+			}		
+			var arrSortedForm = structSort(strFormIDs, "numeric");
+			var arrSortedData = arrayNew(1);
+			for (var item IN arrSortedForm) {
+				var objField = getFieldById(item);
+				var newStruct = { id=item, name=objField.getName(), data=strFormData[item] };
+				arrayAppend(arrSortedData, newStruct);		
+			}
+			Submission.setData(serializeJSON(arrSortedData));
+			Submission.setSubmission_IP(cgi.REMOTE_ADDR);
+			Submission.setSubmission_Date(now());
+			var result = variables.Validator.validate( theObject=Submission );
+			if( !result.hasErrors() ){
+				variables.FormGateway.saveSubmission(Submission, arguments.properties.formid);
+				result.setSuccessMessage( Form.getSubmitMessage() );
+				if ( Form.getSendEmail() && len(Form.getEmailTo()) ) {
+					sendSubmissionEmail( Submission, "../../public/views/forms/email.cfm");
+				}
+			}else{
+				result.setErrorMessage( "Your form could not be saved. Please correct the highlighted fields." );
+			}
+			return result;	
+		}	
 	}
-	
-	/**
-	 * I return a form section type matching an id
-	 */	
-	FormSectionType function getSectionType( required numeric typeid ){
-		return variables.FormGateway.getSectionType( arguments.typeid );
-	}
-	
+
+
 	// ------------------------ PUBLIC METHODS FOR FORM FIELDS ------------------------ //
 	/**
 	 * I delete a form field
@@ -212,24 +197,27 @@ component accessors="true" extends="model.abstract.BaseService"{
 	 */	
 	struct function cloneField( required fieldid ){
 		var oldField = getField(fieldId);
-		var theSection = oldField.getSection();
+		var theForm = oldField.getForm();
 		var theType = oldField.getFieldType();
 		var arrOptions = oldField.getOptions();
 		var args = {
 			fieldid = 0,
-			sectionid = theSection.getSectionID(),
+			formid = theForm.getFormID(),
 			typeid = theType.getTypeID(),
 			delete_list = 0,
 			name = oldField.getName() & " Copy",
-			prompt = oldField.getPrompt(),
-			instructions = oldField.getInstructions(),
+			label = oldField.getLabel(),
+			helptext = oldField.getHelpText(),
+			maxlength = oldField.getMaxLength(),
+			css_class = oldField.getCss_Class(),
+			sortorder = oldField.getSortOrder(),
 			required = oldField.getRequired(),
 			addother = oldField.getAddother(),
 			num_newoptions = arrayLen( arrOptions) 
 		};
 		// add options
 		for ( local.i = 1; local.i LTE arrayLen( arrOptions); local.i++ ) {
-			args['optionnew' & local.i] = arrOptions[local.i].getPrompt();
+			args['optionnew' & local.i] = arrOptions[local.i].getLabel();
 		}
 		return saveField(args);
 	}
@@ -240,7 +228,7 @@ component accessors="true" extends="model.abstract.BaseService"{
 	struct function saveField( required struct properties ){
 		transaction{
 			param name="arguments.properties.fieldid" default="0";
-			param name="arguments.properties.sectionid" default="0";
+			param name="arguments.properties.formid" default="0";
 			param name="arguments.properties.typeid" default="0";
 			param name="arguments.properties.delete_list" default="0";
 			var Field = variables.FormGateway.getField( Val( arguments.properties.fieldid ) );
@@ -250,7 +238,7 @@ component accessors="true" extends="model.abstract.BaseService"{
 			var arrOptions = populateOptions( Field, arguments.properties );
 			var result = variables.Validator.validate( theObject=Field );
 			if( !result.hasErrors() ){
-				variables.FormGateway.saveField( Field, arguments.properties.sectionid, arguments.properties.typeid, arrOptions, arguments.properties.delete_list );
+				variables.FormGateway.saveField( Field, arguments.properties.formid, arguments.properties.typeid, arrOptions, arguments.properties.delete_list );
 				result.setSuccessMessage( "The form field has been saved." );
 			}else{
 				result.setErrorMessage( "The form field could not be saved. Please correct the highlighted fields." );
@@ -258,6 +246,14 @@ component accessors="true" extends="model.abstract.BaseService"{
 		}
 		return result;
 	}
+
+	/**
+	 * I return a form field matching its id
+	 */		
+	FormField function getFieldById( required numeric fieldid ){
+		return variables.FormGateway.getFieldById( argumentCollection=arguments );
+	}
+
 	
 	array function populateOptions( required FormField theField, required struct properties ) {
 		param name="arguments.properties.num_newoptions" default="0";
@@ -271,9 +267,9 @@ component accessors="true" extends="model.abstract.BaseService"{
 			//check if this option ID is available in the request
 			if ( StructKeyExists( arguments.properties, "option" & local.optID ) ) {
 				sortOrder++;
-				var local.prompt = arguments.properties[ "option" & local.optID ];
-				if ( len( trim( local.prompt ) ) ) {
-					local.opt.setPrompt( local.prompt );
+				var local.label = arguments.properties[ "option" & local.optID ];
+				if ( len( trim( local.label ) ) ) {
+					local.opt.setLabel( local.label );
 					local.opt.setSortOrder ( sortOrder );
 					arrayAppend( arrOptions, local.opt );
 				}
@@ -283,11 +279,11 @@ component accessors="true" extends="model.abstract.BaseService"{
 		var numNewOptions = arguments.properties.num_newoptions;
 		for (local.i = numOldOptions+1; local.i <= numNewOptions ; local.i++ ) {
 			if ( StructKeyExists( arguments.properties, "optionNew" & local.i ) ) {
-				var local.prompt = arguments.properties[ "optionNew" & local.i ];
-				if ( len( trim( local.prompt ) ) ) {
+				var local.label = arguments.properties[ "optionNew" & local.i ];
+				if ( len( trim( local.label ) ) ) {
 					sortOrder++;
 					local.opt = newOption();
-					local.opt.setPrompt( local.prompt );
+					local.opt.setLabel( local.label );
 					local.opt.setSortOrder ( arrayLen( arrOptions ) + 1 );
 					arrayAppend( arrOptions, local.opt );
 				}
@@ -379,6 +375,58 @@ component accessors="true" extends="model.abstract.BaseService"{
 		}
 		return true;
 	}
+
+	// ------------------------ PUBLIC METHODS FOR FORM SUBMISSIONS ------------------------ //
+	/**
+	 * I delete a form submission object
+	 */	
+	struct function deleteSubmission( required submissionid ){
+		transaction{
+			var theSubmission = variables.FormGateway.getSubmission( Val( arguments.submissionid ) );
+			var result = variables.Validator.newResult();
+			if( theSubmission.isPersisted() ){ 
+				variables.FormGateway.deleteSubmission( theSubmission );
+				result.setSuccessMessage( "The form submission has been deleted." );
+			}else{
+				result.setErrorMessage( "The form submission could not be deleted." );
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * I return a form submission object matching an id
+	 */	
+	FormSubmission function getSubmission( required submissionid ){
+		return variables.FormGateway.getSubmission( Val( arguments.submissionid ) );
+	}
+	
+	/**
+	 * I return a new form submission object
+	 */		
+	FormSubmission function newSubmission(){
+		return variables.FormGateway.newSubmission();
+	}
+	
+	/**
+	 * I email a form submission
+	 */
+	struct function sendSubmissionEmail(required FormSubmission Submission, required string emailtemplatepath) {
+		var result = { success = true };
+		var Form = Submission.getForm();
+		try {
+			var outEmails = Form.getEmailTo();
+			var subject = "New submission from the " & Form.getName() & " form.";
+			var formData = deserializeJSON(Submission.getData());
+			savecontent variable="emailtemplate" {include arguments.emailtemplatepath;}
+			variables.NotificationService.send(subject, Form.getEmailTo(), 'maryjo@dogpatchsw.com', emailtemplate);
+			result.successMessage = "The form submission has been sent.";
+		} catch (e any) {
+			result.errorMessage = "Your form could not be sent. Please correct the highlighted fields.";
+			}
+		return result;
+	}
+	
 	
 	// ------------------------ PUBLIC METHODS FOR FORM FIELD TYPES ------------------------ //
 	/**

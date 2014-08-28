@@ -43,73 +43,24 @@
 	/**
 	 * I save a form
 	 */		
-	Form function saveForm( required Form theForm, numeric typeid=0 ){
+	Form function saveForm( required Form theForm ){
 		if( !arguments.theForm.isPersisted() ){
-      		var theType = get( "FormSectionType", arguments.typeid );
-			theType.addForm( theForm );
-		}else if( arguments.theForm.isPersisted() ){
-			var theType = theForm.getSectionType();
-			if (typeid GT 0 AND typeid IS NOT theType.getTypeID()) {
-				theType.removeForm( theForm );
-				var newType = get( "FormSectionType", arguments.typeid );
-				newType.addForm( theForm );
-			}
+      		arguments.theForm.setSortOrder( theForm.getMaxSortOrder() + 1 );      		
+			var slug = ReReplace(LCase(arguments.theForm.getName()), "[^a-z0-9]{1,}", "-", "all");
+			while (!isSlugUnique(slug)) slug &= "-";
+			arguments.theForm.setSlug(slug);
 		}
 		return save( arguments.theForm );		
 	}
-	
-	// ------------------------ PUBLIC METHODS FOR FORM SECTIONS ------------------------ //
 
 	/**
-	 * I delete a form section
-	 */	
-	void function deleteSection( required FormSection theSection ){
-		delete( arguments.theSection );
-	}
-
-	/**
-	 * I return a form section matching an id
-	 */	
-	FormSection function getSection( required numeric sectionid ){
-		return get( "FormSection", arguments.sectionid );
-	}
-
-	/**
-	 * I return a new form section
+	 * I save a form sort
 	 */		
-	FormSection function newSection(){
-		return new( "FormSection" );
+	Form function saveFormSort( required Form theForm ) {
+		return save( arguments.theForm );
 	}
 	
-	/**
-	 * I save a form section
-	 */		
-	FormSection function saveSection( required FormSection theSection, numeric formid ){
-       if( !arguments.theSection.isPersisted() ){
-			var theForm = get( "Form", arguments.formid );
-			arguments.theSection.setSortOrder( theForm.getMaxSortOrder() + 1 );
-			theForm.addSection( theSection );
-			return save( arguments.theSection );
-		}else if( arguments.theSection.isPersisted() ){
-			return save( arguments.theSection );
-		}
-	}
-	
-	// ------------------------ PUBLIC METHODS FOR FORM SECTION TYPES ------------------------ //
-	/**
-	 * I return an array of form section types
-	 */	
-	array function getSectionTypes(){
-		return EntityLoad( "FormSectionType", {}, "sortorder asc" );
-	}
-	
-	/**
-	 * I return a form section type matching an id
-	 */	
-	FormSectionType function getSectionType( required numeric typeid ){
-		return get( "FormSectionType", arguments.typeid );
-	}
-	
+		
 	// ------------------------ PUBLIC METHODS FOR FORM FIELDS ------------------------ //
 
 	/**
@@ -136,26 +87,21 @@
 	/**
 	 * I save a form field
 	 */		
-	FormField function saveField( required FormField theField, numeric sectionid=0, numeric typeid=0, array arrOptions, string delete_list ){
+	FormField function saveField( required FormField theField, numeric formid=0, numeric typeid=0, array arrOptions, string delete_list ){
       	if( !arguments.theField.isPersisted() ){
-      		var theSection = get( "FormSection", arguments.sectionid );
+      		var theForm = get( "Form", arguments.formid );
 			var theType = get( "FormFieldType", arguments.typeid );
-			arguments.theField.setSortOrder( theSection.getMaxSortOrder() + 1 );
-			theSection.addField( theField );
+			arguments.theField.setSortOrder( theForm.getMaxSortOrder() + 1 );
+			theForm.addField( theField );
 			theType.addField( theField );
 			arguments.theField = save( arguments.theField );
 		}else if( arguments.theField.isPersisted() ){
-			var theSection = theField.getSection();
+			var theForm = theField.getForm();
 			var theType = theField.getFieldType();
 			if (typeid GT 0 AND typeid IS NOT theType.getTypeID()) {
 				theType.removeField( theField );
 				var newType = get( "FormFieldType", arguments.typeid );
 				newType.addField( theField );
-			}
-			if (sectionid GT 0 AND sectionid IS NOT theSection.getSectionID()) {
-				theSection.removeField( theField );
-				var newSection = get( "FormSection", arguments.sectionid );
-				newSection.addField( theField );
 			}
 			arguments.theField = save( arguments.theField );
 		}
@@ -182,6 +128,15 @@
 	 */		
 	FormField function saveFieldSort( required FormField theField ) {
 		return save( arguments.theField );
+	}
+
+	/**
+	 * I return a form field matching its id
+	 */				
+	FormField function getFieldById( required numeric fieldid ){
+		var Field = ORMExecuteQuery( "from FormField where fieldid=:fieldid", { fieldid=arguments.fieldid }, true );
+		if( IsNull( Field ) ) Field = new( "FormField" );
+		return Field;
 	}
 	
 	// ------------------------ PUBLIC METHODS FOR FORM FIELD OPTIONS ------------------------ //
@@ -236,6 +191,48 @@
 		return get( "FormFieldType", arguments.typeid );
 	}
 	
+	// ------------------------ PUBLIC METHODS FOR FORM SUBMISSIONS ------------------------ //
+
+	/**
+	 * I delete a submission
+	 */	
+	 void function deleteSubmission( required FormSubmission theSubmission ){
+		delete( arguments.theSubmission );
+	}	
+
+	/**
+	 * I return a submission matching an id
+	 */	
+	FormSubmission function getSubmission( required numeric submissionid ){
+		return get( "FormSubmission", arguments.submissionid );
+	}	
+
+	/**
+	 * I return a new form submission object
+	 */		
+	FormSubmission function newSubmission(){
+		return new( "FormSubmission" );
+	}	
+	
+	/**
+	 * I save a submission object
+	 */		
+	FormSubmission function saveSubmission( required FormSubmission theSubmission, numeric formid ){
+       if( !arguments.theSubmission.isPersisted() ){
+			var theForm = get( "Form", arguments.formid );
+			theForm.addSubmission( theSubmission );
+			return save( arguments.theSubmission );
+		}else if( arguments.theSubmission.isPersisted() ){
+			return save( arguments.theSubmission );
+		}
+	}
+
+	// ------------------------ PRIVATE METHODS ------------------------ //
+	private boolean function isSlugUnique(required string slug) {
+			var matches = ORMExecuteQuery("from Form where slug=:slug", {slug=arguments.slug});
+			return !ArrayLen(matches);
+		}
+
 	</cfscript>
 	
 	<cffunction name="getForms" output="false" returntype="Array" hint="I return an array of forms">
@@ -256,7 +253,7 @@
 			<cfif arguments.ispublished>
 				and ispublished = <cfqueryparam cfsqltype="cf_sql_bit" value="1">
 			</cfif>
-			order by created DESC
+			order by sortorder
 		</cfquery>
 		<cfreturn qForms>
 	</cffunction> 
