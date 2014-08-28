@@ -21,7 +21,12 @@
 				<script src="public/assets/js/html5shiv.js"></script>
 			<![endif]-->
 			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-
+			<script src="public/assets/bootstrap/js/bootstrap.min.js"></script>
+			<script src="public/assets/js/prettify/prettify.js"></script>
+			<cfif rc.action IS "public:forms.form">
+				<script src="public/assets/js/amplify/amplify.min.js"></script>
+				<script src="public/assets/js/form.js"></script>
+			</cfif>
 			<cfif Len(rc.config.googleanalyticstrackingid)>
 				<script type="text/javascript">
 				var _gaq = _gaq || [];
@@ -37,6 +42,25 @@
 				<script src="public/assets/js/outbound-link-tracking.js"></script>
 			</cfif>
 
+			<script>
+				// Activate Google Prettify in this page
+				addEventListener('load', prettyPrint, false);
+			
+				$(document).ready(function(){
+					// Add prettyprint class to pre elements
+						$('pre').addClass('prettyprint');
+									
+				}); // end document.ready
+			</script>
+					
+			<link rel="shortcut icon" href="favicon.ico">
+			<link rel="apple-touch-icon-precomposed" sizes="144x144" href="apple-touch-icon-144x144-precomposed.png">
+			<link rel="apple-touch-icon-precomposed" sizes="114x114" href="apple-touch-icon-114x114-precomposed.png">
+			<link rel="apple-touch-icon-precomposed" sizes="72x72" href="apple-touch-icon-72x72-precomposed.png">
+			<link rel="apple-touch-icon-precomposed" sizes="57x57" href="apple-touch-icon-57x57-precomposed.png">
+			<link rel="apple-touch-icon-precomposed" href="apple-touch-icon-precomposed.png">			
+			<link rel="apple-touch-icon" href="apple-touch-icon.png">
+			
 			<cfif rc.config.news.enabled><link rel="alternate" type="application/rss+xml" href="#buildURL('news.rss')#"></cfif>
 		</head>
 

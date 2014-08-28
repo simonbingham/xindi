@@ -21,3 +21,6 @@ INSERT INTO pages (page_slug, page_left, page_right, page_ancestorid, page_depth
 
 INSERT INTO users (user_name, user_email, user_password, user_created, user_updated) VALUES
 ('Default User', 'admin@getxindi.com', '5119ED792CCFC42DA3F9A5DCF55210E6CD453C7A81FFB52681F62D72022FBE46', '20130501', '20130501');
+
+INSERT INTO form_fieldtypes (type_id, type_name, type_sortorder, type_showoptions, type_settingstohide) VALUES
+(1, 'textfield', 1, 0, 'fieldOptions'), (2, 'textarea', 2, 0, 'fieldOptions'), (3, 'radio', 3, 0, 'maxlength'), (4, 'checkbox', 4, 0, 'maxlength'), (5, 'dropdown', 5, 0, 'maxlength'), (6, 'textblock', 6, 0, 'label,maxlength,fieldOptions'), (8, 'group start', 8, 0, 'maxlength,helptext,fieldOptions'), (9, 'group end', 9, 0, 'label,maxlength,helptext,fieldOptions'), (7, 'new tab', 7, 0, 'maxlength,helptext,fieldOptions');

@@ -22,6 +22,17 @@
 					</cfif>
 				</cfloop>
 			</cfif>
+			
+			<!--- add forms to sitemap --->
+			<cfif rc.config.forms.enabled> 
+				<cfloop array="#rc.forms#" index="local.Form">
+					<cfif( rc.sesomitindex )>
+						<url><loc>#rc.basehref#forms/form/slug/#local.Form.getSlug()#</loc></url>
+					<cfelse>
+						<url><loc>#rc.basehref#index.cfm/forms/form/slug/#local.Form.getSlug()#</loc></url>
+					</cfif>
+				</cfloop>
+			</cfif>
 		</urlset>
 	</cfoutput>
 </cfsavecontent>

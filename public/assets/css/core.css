@@ -32,3 +32,10 @@ p, li{ line-height:1.6em; }
 @media ( max-width:767px ) {
 	#footer{ background:none; border:none; }
 }
+
+.form-horizontal .control-label {
+	width: 250px;
+}
+.form-horizontal .controls {
+margin-left: 270px;
+}

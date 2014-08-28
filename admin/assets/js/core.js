@@ -21,7 +21,7 @@ jQuery( function($) {
 	
 	// delete confirmation
 	$( "a[title~='Delete']" ).click(function(){
-		return confirm( "Delete this item?" );
+		return confirm( "Are you sure you want to delete this item? This action cannot be reversed!" );
 	});
 
 	// populate title when page title is entered

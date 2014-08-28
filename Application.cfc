@@ -14,6 +14,7 @@ component extends="frameworks.org.corfield.framework"{
 	this.mappings["/model"] = this.applicationroot & "model/";
 	this.mappings["/ValidateThis"] = this.applicationroot & "frameworks/ValidateThis/";
 	this.datasource = ListLast(this.applicationroot, "\/");
+	this.secureJson = false;
 	this.ormenabled = true;
 	this.ormsettings = {
 		flushatrequestend = false
@@ -49,6 +50,7 @@ component extends="frameworks.org.corfield.framework"{
 		, routes = [
 			{"news"="news", hint="Redirect to news feature"}
 			, {"enquiry"="enquiry", hint="Redirect to enquiry feature"}
+			, {"forms"="forms", hint="Redirect to forms feature"}
 		]
 	};
 
@@ -173,6 +175,11 @@ component extends="frameworks.org.corfield.framework"{
 				, suppressaddpage = "" // comma delimited list of page ids for pages that cannot have child pages added
 				, suppressdeletepage = "1" // comma delimited list of page ids for pages that cannot be deleted
 				, defaultslug = "home" // default 'slug' to use to get homepage
+			}
+			, forms = {
+				enabled = true
+				, recordsperpage = 10
+				, emailfrom = ""
 			}
 			, revision = Hash(Now())
 			, security = {
