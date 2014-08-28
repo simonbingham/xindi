@@ -6,7 +6,7 @@ component extends="frameworks.org.corfield.framework"{
 	this.name = ListLast(this.applicationroot, "\/") & "_" & Hash(this.applicationroot);
 	this.sessionmanagement = true;
 	// note: IsLocalHost on CF returns YES|NO which can't be passed to hibernate
-	this.development = true;
+	this.development = IsLocalHost(CGI.REMOTE_ADDR) ? true : false;
 	// prevent bots creating lots of sessions
 	if (structKeyExists(cookie, "CFTOKEN")) this.sessiontimeout = createTimeSpan(0, 0, 20, 0);
 	else this.sessiontimeout = createTimeSpan(0, 0, 0, 1);
