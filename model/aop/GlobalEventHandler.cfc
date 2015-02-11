@@ -14,9 +14,9 @@ component implements="cfide.orm.IEventHandler" {
 	 * I am called before inserting the entity into the database
 	 */
 	void function preInsert(any entity) {
-		var timestamp = now();
-		if(StructKeyExists(arguments.entity, "setCreated")) arguments.entity.setCreated(timestamp);
-		if(StructKeyExists(arguments.entity, "setUpdated")) arguments.entity.setUpdated(timestamp);
+		local.timestamp = now();
+		if (StructKeyExists(arguments.entity, "setCreated")) arguments.entity.setCreated(local.timestamp);
+		if (StructKeyExists(arguments.entity, "setUpdated")) arguments.entity.setUpdated(local.timestamp);
 	}
 
 	/**
@@ -28,7 +28,7 @@ component implements="cfide.orm.IEventHandler" {
 	 * I am called before the entity is updated in the database
 	 */
 	void function preUpdate(any entity, struct oldData) {
-		if(StructKeyExists(arguments.entity, "setUpdated")) arguments.entity.setUpdated(Now());
+		if (StructKeyExists(arguments.entity, "setUpdated")) arguments.entity.setUpdated(Now());
 	}
 
 	/**
@@ -45,5 +45,15 @@ component implements="cfide.orm.IEventHandler" {
 	 * I am called after deleting an item from the datastore
 	 */
 	void function postDelete(any entity) {}
+
+    /**
+     * I am called before the session is flushed.
+     */
+    void function preFlush(any entities) {}
+
+    /**
+     * I am called after the session is flushed.
+     */
+    void function postFlush(any entities) {}
 
 }
