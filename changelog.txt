@@ -1,4 +1,4 @@
-Version XXXX.X.X
+Version 2015.2.11
 
 - Fix issue introduced in ColdFusion 11 - "ORM application event handlers that implement the interface CFIDE.orm.IEventHandler will fail with the error "CFC xxxx does not implement the interface CFIDE.orm.IEventHandler". You have to add two new functions preFlush and postFlush to your event handlers."
 - Upgrade to FW/1 3.0.
