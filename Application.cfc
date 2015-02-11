@@ -1,4 +1,4 @@
-component extends="frameworks.org.corfield.framework"{
+component extends="framework.one"{
 
 	// ------------------------ APPLICATION SETTINGS ------------------------ //
 
@@ -7,12 +7,13 @@ component extends="frameworks.org.corfield.framework"{
 	this.sessionmanagement = true;
 	// note: IsLocalHost on CF returns YES|NO which can't be passed to hibernate
 	this.development = IsLocalHost(CGI.REMOTE_ADDR) ? true : false;
+
 	// prevent bots creating lots of sessions
 	if (structKeyExists(cookie, "CFTOKEN")) this.sessiontimeout = createTimeSpan(0, 0, 20, 0);
 	else this.sessiontimeout = createTimeSpan(0, 0, 0, 1);
-	this.mappings["/hoth"] = this.applicationroot & "frameworks/hoth/";
+	this.mappings["/hoth"] = this.applicationroot & "framework/hoth/";
 	this.mappings["/model"] = this.applicationroot & "model/";
-	this.mappings["/ValidateThis"] = this.applicationroot & "frameworks/ValidateThis/";
+	this.mappings["/ValidateThis"] = this.applicationroot & "framework/ValidateThis/";
 	this.datasource = ListLast(this.applicationroot, "\/");
 	this.ormenabled = true;
 	this.ormsettings = {
@@ -22,9 +23,7 @@ component extends="frameworks.org.corfield.framework"{
 		, eventhandling = true
 		, eventhandler = "model.aop.GlobalEventHandler"
 		, logsql = this.development
-		// secondary cache temporarily disabled for application to work in Railo 4
-		// bug reported to Railo team - https://issues.jboss.org/browse/RAILO-2233
-		//, secondarycacheenabled = true
+		, secondarycacheenabled = true
 	};
 
 	// create database and populate when the application starts in development environment
@@ -49,7 +48,9 @@ component extends="frameworks.org.corfield.framework"{
 		, routes = [
 			{"news"="news", hint="Redirect to news feature"}
 			, {"enquiry"="enquiry", hint="Redirect to enquiry feature"}
-		]
+		],
+        trace = this.development
+        , diLocations = "public/controllers"
 	};
 
 	/*
@@ -72,7 +73,7 @@ component extends="frameworks.org.corfield.framework"{
 		application.exceptiontracker = new Hoth.HothTracker(HothConfig);
 
 		// setup bean factory
-		var beanfactory = new frameworks.org.corfield.ioc("/model", {singletonPattern = "(Service|Gateway)$"});
+		var beanfactory = new framework.ioc("/model", {singletonPattern = "(Service|Gateway)$"});
 		setBeanFactory(beanfactory);
 
 		// add validator bean to factory
@@ -88,7 +89,7 @@ component extends="frameworks.org.corfield.framework"{
 
 	// ------------------------ CALLED WHEN PAGE REQUEST STARTS ------------------------ //
 
-	void function setupRequest(){
+	void function before(required rc){
 		if(this.development && !isNull(url.rebuild)) ORMReload();
 
 		if(this.development) writedump(var="*** Request Start - #TimeFormat(Now(), 'full')# ***", output="console");
@@ -107,7 +108,7 @@ component extends="frameworks.org.corfield.framework"{
 
 	// ------------------------ CALLED WHEN VIEW RENDERING STARTS ------------------------ //
 
-	void function setupView(){
+	void function setupView(required rc){
 		// get data needed to build the navigation
 		if (getSubsystem() == "public") rc.navigation = getBeanFactory().getBean("ContentService").getNavigation();
 	}
@@ -180,7 +181,7 @@ component extends="frameworks.org.corfield.framework"{
 				, resetpasswordemailsubject = ""
 				, whitelist = "^admin#variables.framework.subsystemDelimiter#security,^public#variables.framework.subsystemDelimiter#" // list of unsecure actions - by default all requests require authentication
 			}
-			, version = "2014.5.26"
+			, version = "2015.2.11"
 		};
 		// override config in development mode
 		if(config.development){

@@ -29,7 +29,7 @@ Xindi uses the frameworks listed below.
 
 ## Minimum Requirements
 
-* Adobe ColdFusion 9.0.1 or Railo 3.3
+* Adobe ColdFusion 9.0.1
 * MySQL 5 or MSSQL
 
 ## Quick Start
@@ -42,13 +42,13 @@ Clone the git repo - `git clone git@github.com:simonbingham/xindi.git` - or [dow
 
 ## License
 
-Xindi is licensed under the [MIT License (MIT)] (http://www.opensource.org/licenses/mit-license.php). 
+Xindi is licensed under the [MIT License (MIT)] (http://www.opensource.org/licenses/mit-license.php).
 
 However, the frameworks listed above have their own licenses which you should review before using Xindi.
 
 ## Contributors
 
-Xindi is authored by [Simon Bingham] (https://twitter.com/#!/simonbingham) with support from [John Whish] (https://twitter.com/#!/aliaspooryorik) but anyone and everyone is welcome to contribute. 
+Xindi is authored by [Simon Bingham] (https://twitter.com/#!/simonbingham) with support from [John Whish] (https://twitter.com/#!/aliaspooryorik) but anyone and everyone is welcome to contribute.
 
 ## Problems
 

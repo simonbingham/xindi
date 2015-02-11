@@ -11,7 +11,7 @@ component extends="mxunit.framework.TestCase" {
 	function testGenerateMetaKeywords()
 	{
 		var result = CUT.generateMetaKeywords("Morbi at felis quis metus scelerisque venenatis. Curabitur ut tellus nec massa eleifend vestibulum! In non lectus sem; ut lacinia.");
-		assertEquals("metus,curabitur,sem;,venenatis,at,ut,quis,massa,non,scelerisque,felis,lacinia,tellus,lectus,morbi,eleifend,nec,vestibulum!", result);
+		assertEquals("at,curabitur,eleifend,felis,lacinia,lectus,massa,metus,morbi,nec,non,quis,scelerisque,sem;,tellus,ut,venenatis,vestibulum!", listsort(result, "textnocase"));
 	}
 
 	function testGeneratePageTitle()
@@ -23,7 +23,7 @@ component extends="mxunit.framework.TestCase" {
 	function testListDeleteDuplicatesNoCase()
 	{
 		var result = CUT.listDeleteDuplicatesNoCase("foo,bar,foo,bar");
-		assertEquals("foo,bar", result);
+		assertEquals("bar,foo", listsort(result, "textnocase"));
 	}
 
 	function testRemoveNonKeywords()

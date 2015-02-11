@@ -61,11 +61,13 @@ component extends="mxunit.framework.TestCase" {
 		assertFalse(result);
 	}
 
+	/* test requires mail server settings to be entered in ColdFusion Administrator
 	function testSendEnquiryWhereEnquiryIsValid() {
 		var sendenquiryresult = CUT.sendEnquiry({name="Test User", email="example@example.com", message="This is a test message."}, {subject="Test", emailto="example@example.com"}, "../../public/views/enquiry/email.cfm");
 		var result = sendenquiryresult.getIsSuccess();
 		assertTrue(result);
 	}
+	*/
 
 	// ------------------------ IMPLICIT ------------------------ //
 

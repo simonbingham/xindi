@@ -5,4 +5,4 @@
 /.settings/
 /logs/hoth/exceptions/*.log
 /logs/hoth/incidents/*.log
-/frameworks/hoth/db/applications.hoth
+/framework/hoth/db/applications.hoth

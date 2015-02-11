@@ -79,11 +79,13 @@ component extends="mxunit.framework.TestCase" {
 		assertFalse(result);
 	}
 
+	/* test requires mail server settings to be entered in ColdFusion Administrator
 	function testResetPasswordByEmailWhereEmailIsValid() {
 		var resetpasswordresult = CUT.resetPassword({email="admin@getxindi.com"}, "Default", {resetpasswordemailfrom="example@example.com", resetpasswordemailsubject="Test"}, "../../admin/views/security/email.cfm");
 		var result = resetpasswordresult.getIsSuccess();
 		assertTrue(result);
 	}
+	*/
 
 	function testSetCurrentUser() {
 		var User = EntityLoadByPK("User", 1);
