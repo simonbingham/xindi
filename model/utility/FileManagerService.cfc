@@ -8,10 +8,10 @@ component accessors="true" extends="model.abstract.BaseService" {
 	struct function createDirectory(required string directory)
 	{
 		var result = variables.Validator.newResult();
-		if(Len(Trim(arguments.directory))) {
+		if (Len(Trim(arguments.directory))) {
 			result.theobject = CreateObject("java", "java.io.File").init(JavaCast("string", arguments.directory));
 			result.setSuccessMessage("The directory &quot;" & arguments.directory & "&quot; has been created.");
-		}else{
+		} else {
 			result.setErrorMessage("The directory &quot;" & newdirectorypath & "&quot; could not be created.");
 		}
 		return result;
@@ -22,10 +22,10 @@ component accessors="true" extends="model.abstract.BaseService" {
 	 */
 	struct function deleteFile(required string file) {
 		var result = variables.Validator.newResult();
-		if(isFile(arguments.file)) {
+		if (isFile(arguments.file)) {
 			getFile(arguments.file).delete();
 			result.setSuccessMessage("The file &quot;" & arguments.file & "&quot; has been deleted.");
-		}else{
+		} else {
 			result.setErrorMessage("The file &quot;" & arguments.file & "&quot; could not be deleted.");
 		}
 		return result;
@@ -62,12 +62,12 @@ component accessors="true" extends="model.abstract.BaseService" {
 	 */
 	struct function uploadFile(required string file, required string destination, required string allowedextensions) {
 		var result = variables.Validator.newResult();
-		try{
+		try {
 			var fileuploadresult = FileUpload(arguments.destination, arguments.file, "", "MakeUnique");
-			if(!ListFindNoCase(arguments.allowedextensions, fileuploadresult.serverfileext)) {
+			if (!ListFindNoCase(arguments.allowedextensions, fileuploadresult.serverfileext)) {
 				deleteFile(fileuploadresult.serverdirectory & "/" & fileuploadresult.serverfile);
 				result.setErrorMessage("Sorry, you are not permitted to upload this type of file.");
-			}else{
+			} else {
 				result.setSuccessMessage("The file &quot;" & fileuploadresult.serverfile & "&quot; has been uploaded.");
 			}
 		}

@@ -15,10 +15,10 @@ component accessors="true" extends="model.abstract.BaseService" {
 		transaction{
 			var Enquiry = variables.EnquiryGateway.getEnquiry(Val(arguments.enquiryid));
 			var result = variables.Validator.newResult();
-			if(Enquiry.isPersisted()) {
+			if (Enquiry.isPersisted()) {
 				variables.EnquiryGateway.deleteEnquiry(Enquiry);
 				result.setSuccessMessage("The enquiry from &quot;#Enquiry.getName()#&quot; has been deleted.");
-			}else{
+			} else {
 				result.setErrorMessage("The enquiry could not be deleted.");
 			}
 		}
@@ -52,15 +52,15 @@ component accessors="true" extends="model.abstract.BaseService" {
 	struct function markRead(enquiryid=0) {
 		transaction{
 			var result = variables.Validator.newResult();
-			if(Val(arguments.enquiryid)) {
+			if (Val(arguments.enquiryid)) {
 				var Enquiry = variables.EnquiryGateway.getEnquiry(Val(arguments.enquiryid));
-				if(!IsNull(Enquiry)) {
+				if (!IsNull(Enquiry)) {
 					variables.EnquiryGateway.markRead(Enquiry);
 					result.setSuccessMessage("The message has been marked as read.");
-				}else{
+				} else {
 					result.setErrorMessage("The message could not be marked as read.");
 				}
-			}else{
+			} else {
 				variables.EnquiryGateway.markRead();
 				result.setSuccessMessage("All messages have been marked as read.");
 			}
@@ -84,12 +84,12 @@ component accessors="true" extends="model.abstract.BaseService" {
 			var Enquiry = variables.EnquiryGateway.newEnquiry();
 			populate(Enquiry, arguments.properties);
 			var result = variables.Validator.validate(theObject=Enquiry);
-			if(!result.hasErrors()) {
+			if (!result.hasErrors()) {
 				savecontent variable="emailtemplate" {include arguments.emailtemplatepath;}
 				variables.NotificationService.send(arguments.config.subject, arguments.config.emailto, Enquiry.getEmail(), emailtemplate);
 				variables.EnquiryGateway.saveEnquiry(Enquiry);
 				result.setSuccessMessage("Your enquiry has been sent.");
-			}else{
+			} else {
 				result.setErrorMessage("Your enquiry could not be sent. Please amend the highlighted fields.");
 			}
 		}

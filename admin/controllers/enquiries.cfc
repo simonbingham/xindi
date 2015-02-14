@@ -16,7 +16,7 @@ component accessors="true" extends="abstract" {
 	void function enquiry(required struct rc) {
 		param name="rc.enquiryid" default="0";
 		rc.Enquiry = variables.EnquiryService.getEnquiry(rc.enquiryid);
-		if(!IsNull(rc.Enquiry)) variables.EnquiryService.markRead(rc.Enquiry.getEnquiryID());
+		if (!IsNull(rc.Enquiry)) variables.EnquiryService.markRead(rc.Enquiry.getEnquiryID());
 		else variables.fw.redirect("main.notfound");
 	}
 

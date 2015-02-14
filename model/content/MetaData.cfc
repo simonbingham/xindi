@@ -47,7 +47,7 @@ component accessors="true" {
 	 * I return true if metaauthor does not have zero length
 	 */
 	boolean function hasMetaAuthor() {
-		if(Len(Trim(variables.metaauthor))) return true;
+		if (Len(Trim(variables.metaauthor))) return true;
 		return false;
 	}
 
@@ -66,8 +66,8 @@ component accessors="true" {
 	string function removeNonKeywords(required string thestring) {
 		var elements = ListToArray(arguments.thestring, " ");
 		var newstring = "";
-		for(element in elements) {
-			if(!ListFindNoCase("&,a,an,and,are,as,i,if,in,is,it,that,the,this,it,to,of,on,or,us,we", element)) {
+		for (element in elements) {
+			if (!ListFindNoCase("&,a,an,and,are,as,i,if,in,is,it,that,the,this,it,to,of,on,or,us,we", element)) {
 				newstring = ListAppend(newstring, element, " ");
 			}
 		}

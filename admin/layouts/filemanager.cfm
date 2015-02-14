@@ -15,15 +15,14 @@
 
 			<title>Xindi File Manager</title>
 
-			<link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-			<link href="assets/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
-			<link href="assets/css/smoothness/jquery-ui-1.8.19.custom.css" rel="stylesheet">
+			<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+			<link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" rel="stylesheet">
 			<link href="assets/css/imgareaselect-animated.css?r=#rc.config.revision#" rel="stylesheet">
 			<link href="assets/css/core.css?r=#rc.config.revision#" rel="stylesheet">
 
-			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+			<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 			<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
-			<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
 			<script src="assets/bootstrap/js/bootstrap.min.js"></script>
 			<script src="assets/js/jquery.imgareaselect.min.js"></script>
 			<script src="assets/ckeditor/ckeditor.js"></script>
@@ -39,13 +38,7 @@
 		</head>
 
 		<body>
-			<div id="container" class="container">
-				<div class="row">
-					<div id="content" class="span12">
-						#body#
-					</div>
-				</div>
-			</div>
+			<div class="container">#body#</div>
 		</body>
 	</html>
 </cfoutput>

@@ -39,65 +39,65 @@
 </cfoutput>
 
 <script>
-jQuery(function($){
-	$("#cancel").click(function(){
-		document.location.href = <cfoutput>"#buildURL('filemanager?subdirectory=#urlSafePath(rc.subdirectory)#')#"</cfoutput>;
-	});
-
-	$("form").keypress(function (e) {
-		if (e.keyCode == 13) return false;
-	});
-
-	$width = $("#width").bind("blur keypress keyup",function(e){
-		var width = $(this).val();
-		if(typeof e.which == "undefined"||e.which==13){
-			var re = /[^0-9]/gi;
-			if (!re.test(width)) {
-				$slider.slider("value", parseInt(width));
-			}
-			return false;
-		}
-	});
-
-	$(":radio[name='resize-width']").bind('click', function(){
-		$slider.slider("value", parseInt($(this).val()));
-	});
-
-	$photo = $("#photo").imgAreaSelect({
-		onSelectEnd: function (img, selection) {
-			$("input[name=x1]").val(selection.x1);
-			$("input[name=y1]").val(selection.y1);
-			$("input[name=x2]").val(selection.x2);
-			$("input[name=y2]").val(selection.y2);
-		}
-	});
-
-	$slider = $("#slider").slider({
-		min: 0,
-		max: $photo.attr("width"),
-		value: $photo.attr("width"),
-		slide: function(event, ui){
-			$width.val(ui.value);
-			$(":input[name=resize-width]").removeAttr("checked");
-		},
-		change: function(event, ui){
-			var width = ui.value;
-			var height = Math.round($photo.attr("height")/($photo.attr("width")/width));
-			resizeImage(width,height);
-		}
-	});
-
-	if($photo.attr("width") <= <cfoutput>#local.large.width#</cfoutput>) $slider.css({width:$photo.attr("width")+"px"});
-
-	function resizeImage(width, height){
-		$("#width").val(width);
-		$("#height").val(height);
-		$photo.animate({
-			width: width + "px",
-			height: height + "px"
+	jQuery(function($){
+		$("#cancel").click(function(){
+			document.location.href = <cfoutput>"#buildURL('filemanager?subdirectory=#urlSafePath(rc.subdirectory)#')#"</cfoutput>;
 		});
-	}
-});
+
+		$("form").keypress(function (e) {
+			if (e.keyCode == 13) return false;
+		});
+
+		$width = $("#width").bind("blur keypress keyup",function(e){
+			var width = $(this).val();
+			if(typeof e.which == "undefined"||e.which==13){
+				var re = /[^0-9]/gi;
+				if (!re.test(width)) {
+					$slider.slider("value", parseInt(width));
+				}
+				return false;
+			}
+		});
+
+		$(":radio[name='resize-width']").bind('click', function(){
+			$slider.slider("value", parseInt($(this).val()));
+		});
+
+		$photo = $("#photo").imgAreaSelect({
+			onSelectEnd: function (img, selection) {
+				$("input[name=x1]").val(selection.x1);
+				$("input[name=y1]").val(selection.y1);
+				$("input[name=x2]").val(selection.x2);
+				$("input[name=y2]").val(selection.y2);
+			}
+		});
+
+		$slider = $("#slider").slider({
+			min: 0,
+			max: $photo.attr("width"),
+			value: $photo.attr("width"),
+			slide: function(event, ui){
+				$width.val(ui.value);
+				$(":input[name=resize-width]").removeAttr("checked");
+			},
+			change: function(event, ui){
+				var width = ui.value;
+				var height = Math.round($photo.attr("height")/($photo.attr("width")/width));
+				resizeImage(width,height);
+			}
+		});
+
+		if($photo.attr("width") <= <cfoutput>#local.large.width#</cfoutput>) $slider.css({width:$photo.attr("width")+"px"});
+
+		function resizeImage(width, height){
+			$("#width").val(width);
+			$("#height").val(height);
+			$photo.animate({
+				width: width + "px",
+				height: height + "px"
+			});
+		}
+	});
 </script>
 
 <cfscript>

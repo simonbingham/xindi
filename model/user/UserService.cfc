@@ -14,10 +14,10 @@ component accessors="true" extends="model.abstract.BaseService" {
 		transaction{
 			var User = variables.UserGateway.getUser(Val(arguments.userid));
 			var result = variables.Validator.newResult();
-			if(User.isPersisted()) {
+			if (User.isPersisted()) {
 				variables.UserGateway.deleteUser(User);
 				result.setSuccessMessage("The user &quot;#User.getName()#&quot; has been deleted.");
-			}else{
+			} else {
 				result.setErrorMessage("The user could not be deleted.");
 			}
 		}
@@ -75,10 +75,10 @@ component accessors="true" extends="model.abstract.BaseService" {
 			var User = variables.UserGateway.getUser(Val(arguments.properties.userid));
 			populate(User, arguments.properties);
 			var result = variables.Validator.validate(theObject=User, context=arguments.context);
-			if(!result.hasErrors()) {
+			if (!result.hasErrors()) {
 				result.setSuccessMessage("The user &quot;#User.getName()#&quot; has been saved.");
 				variables.UserGateway.saveUser(User);
-			}else{
+			} else {
 				result.setErrorMessage("The user could not be saved. Please amend the highlighted fields.");
 			}
 		}

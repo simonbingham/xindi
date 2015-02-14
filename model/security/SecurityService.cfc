@@ -17,10 +17,10 @@ component accessors="true" extends="model.abstract.BaseService" {
 	 */
 	struct function deleteCurrentUser() {
 		var result = variables.Validator.newResult();
-		if(hasCurrentUser()) {
+		if (hasCurrentUser()) {
 			StructDelete(getCurrentStorage(), variables.userkey);
 			result.setSuccessMessage("You have been logged out.");
-		}else{
+		} else {
 			result.setErrorMessage("You are not logged in.");
 		}
 		return result;
@@ -34,7 +34,7 @@ component accessors="true" extends="model.abstract.BaseService" {
 	}
 
 	function getCurrentUser() {
-		if(hasCurrentUser()) {
+		if (hasCurrentUser()) {
 			var map = getCurrentStorage();
 			var userkey = map[variables.userkey];
 			return variables.UserGateway.getUser(userkey);
@@ -54,13 +54,13 @@ component accessors="true" extends="model.abstract.BaseService" {
 	boolean function isAllowed(required string action, string whitelist) {
 		param name="arguments.whitelist" default=variables.config.security.whitelist;
 		// user is not logged in
-		if(!hasCurrentUser()) {
+		if (!hasCurrentUser()) {
 			// if the requested action is in the whitelist allow access
 			for (var unsecured in ListToArray(arguments.whitelist)) {
-				if(ReFindNoCase(unsecured, arguments.action)) return true;
+				if (ReFindNoCase(unsecured, arguments.action)) return true;
 			}
 		// user is logged in so allow access to requested action
-		}else if(hasCurrentUser()) {
+		} else if(hasCurrentUser()) {
 			return true;
 		}
 		// previous conditions not met so deny access to requested action
@@ -77,10 +77,10 @@ component accessors="true" extends="model.abstract.BaseService" {
 		populate(User, arguments.properties);
 		var result = variables.Validator.validate(theObject=User, context="login");
 		User = variables.UserGateway.getUserByCredentials(User);
-		if(User.isPersisted()) {
+		if (User.isPersisted()) {
 			setCurrentUser(User);
 			result.setSuccessMessage("Welcome #User.getName()#. You have been logged in.");
-		}else{
+		} else {
 			var message = "Sorry, your login details have not been recognised.";
 			result.setErrorMessage(message);
 			var failure = {propertyName="email", clientFieldname="email", message=message};
@@ -93,19 +93,19 @@ component accessors="true" extends="model.abstract.BaseService" {
 	 * I reset the password of a user and send a notification email
 	 */
 	struct function resetPassword(required struct properties, required string name, required struct config, required string emailtemplatepath) {
-		transaction{
+		transaction {
 			param name="arguments.properties.email" default="";
 			var User = variables.UserGateway.newUser();
 			populate(User, arguments.properties);
 			var result = variables.Validator.validate(theObject=User, context="password");
 			User = variables.UserGateway.getUserByEmail(User);
-			if(User.isPersisted()) {
+			if (User.isPersisted()) {
 				var password = variables.UserService.newPassword();
 				User.setPassword(password);
 				savecontent variable="emailtemplate" {include arguments.emailtemplatepath;}
 				variables.NotificationService.send(arguments.config.resetpasswordemailsubject, User.getEmail(), arguments.config.resetpasswordemailfrom, emailtemplate);
 				result.setSuccessMessage("A new password has been sent to #User.getEmail()#.");
-			}else{
+			} else {
 				var message = "Sorry, your email address has not been recognised.";
 				result.setErrorMessage(message);
 				var failure = {propertyName="email", clientFieldname="email", message=message};

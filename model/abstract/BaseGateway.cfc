@@ -21,7 +21,7 @@
 	 */
 	function get(required string entityname, required numeric id) {
 		var Entity = EntityLoadByPK(arguments.entityname, arguments.id);
-		if(IsNull(Entity)) Entity = new(arguments.entityname);
+		if (IsNull(Entity)) Entity = new(arguments.entityname);
 		return Entity;
 	}
 

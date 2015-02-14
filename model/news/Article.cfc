@@ -37,7 +37,7 @@ component persistent="true" table="articles" cacheuse="transactional" {
 	 */
 	string function getRSSSummary() {
 		var plaintext = Trim(ReReplace(REReplaceNoCase(Trim(variables.content), "<[^>]{1,}>", " ", "all"), " +", " ", "all"));
-		if(Len(plaintext) > 500) return Left(plaintext, 500) & "...";
+		if (Len(plaintext) > 500) return Left(plaintext, 500) & "...";
 		return XMLFormat(plaintext);
 	}
 
@@ -119,7 +119,7 @@ component persistent="true" table="articles" cacheuse="transactional" {
 	 */
 	private boolean function isSlugUnique() {
 		var matches = [];
-		if(isPersisted()) matches = ORMExecuteQuery("from Article where articleid <> :articleid and slug = :slug", {articleid=variables.articleid, slug=variables.slug});
+		if (isPersisted()) matches = ORMExecuteQuery("from Article where articleid <> :articleid and slug = :slug", {articleid=variables.articleid, slug=variables.slug});
 		else matches = ORMExecuteQuery("from Article where slug=:slug", {slug=variables.slug});
 		return !ArrayLen(matches);
 	}

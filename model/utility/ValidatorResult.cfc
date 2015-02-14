@@ -13,7 +13,7 @@ component extends="ValidateThis.util.Result" {
 	 * I return a message
 	 */
 	string function getMessage() {
-		if(Len(super.getSuccessMessage()) != 0) return getSuccessMessage();
+		if (Len(super.getSuccessMessage()) != 0) return getSuccessMessage();
 		return variables.message;
 	}
 

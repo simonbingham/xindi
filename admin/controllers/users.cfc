@@ -19,10 +19,10 @@ component accessors="true" extends="abstract" {
 	void function maintain(required struct rc) {
 		param name="rc.userid" default="0";
 		param name="rc.context" default="create";
-		if(!StructKeyExists(rc, "User")) rc.User = variables.UserService.getUser(rc.userid);
-		if(rc.User.isPersisted()) rc.context = "update";
+		if (!StructKeyExists(rc, "User")) rc.User = variables.UserService.getUser(rc.userid);
+		if (rc.User.isPersisted()) rc.context = "update";
 		rc.Validator = variables.UserService.getValidator(rc.User);
-		if(!StructKeyExists(rc, "result")) rc.result = rc.Validator.newResult();
+		if (!StructKeyExists(rc, "result")) rc.result = rc.Validator.newResult();
 	}
 
 	void function save(required struct rc) {
@@ -34,10 +34,10 @@ component accessors="true" extends="abstract" {
 		param name="rc.submit" default="Save & exit";
 		rc.result = variables.UserService.saveUser(rc, rc.context);
 		rc.User = rc.result.getTheObject();
-		if(rc.result.getIsSuccess()) {
-			if(rc.submit == "Save & Continue") variables.fw.redirect("users.maintain", "result,User", "userid");
+		if (rc.result.getIsSuccess()) {
+			if (rc.submit == "Save & Continue") variables.fw.redirect("users.maintain", "result,User", "userid");
 			else variables.fw.redirect("users", "result");
-		}else{
+		} else {
 			variables.fw.redirect("users.maintain", "result,User", "userid");
 		}
 	}

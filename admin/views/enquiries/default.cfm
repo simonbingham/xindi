@@ -5,10 +5,10 @@
 		<p><a href="#buildURL('enquiries.markread')#" class="btn btn-primary">Mark All Read</a></p>
 	</cfif>
 
-	#view("helpers/messages")#
+	#view("partials/messages")#
 
 	<cfif ArrayLen(rc.enquiries)>
-		<table class="table table-striped table-bordered table-condensed">
+		<table class="table table-striped">
 			<thead>
 				<tr>
 					<th>Name</th>
@@ -23,8 +23,8 @@
 					<tr <cfif !local.Enquiry.isRead()>style="font-weight:bold;"</cfif>>
 						<td>#local.Enquiry.getName()#</td>
 						<td>#DateFormat(local.Enquiry.getCreated(), "full")# at #TimeFormat(local.Enquiry.getCreated())#</td>
-						<td class="center"><a href="#buildURL(action='enquiries.enquiry', querystring='enquiryid=#local.Enquiry.getEnquiryID()#')#" title="View"><i class="icon-eye-open"></i></a></td>
-						<td class="center"><a href="#buildURL('enquiries.delete')#/enquiryid/#local.Enquiry.getEnquiryID()#" title="Delete"><i class="icon-trash"></i></a></td>
+						<td class="center"><a href="#buildURL(action='enquiries.enquiry', querystring='enquiryid=#local.Enquiry.getEnquiryID()#')#" title="View"><i class="glyphicon glyphicon-eye-open"></i></a></td>
+						<td class="center"><a href="#buildURL('enquiries.delete')#/enquiryid/#local.Enquiry.getEnquiryID()#" title="Delete"><i class="glyphicon glyphicon-trash"></i></a></td>
 					</tr>
 				</cfloop>
 			</tbody>

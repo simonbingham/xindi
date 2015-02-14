@@ -100,7 +100,7 @@ component extends="mxunit.framework.TestCase" {
 		// add page
 		selenium.open(browserURL & "/index.cfm/admin:pages");
 		selenium.waitForPageToLoad(timeout);
-		selenium.click("css=i.icon-plus-sign");
+		selenium.click("css=i.glyphicon-plus-sign");
 		selenium.waitForPageToLoad(timeout);
 		selenium.type("id=title", "test");
 		// use JavaScript to enter content into CKEditor
@@ -110,14 +110,14 @@ component extends="mxunit.framework.TestCase" {
 		selenium.waitForPageToLoad(timeout);
 		assertTrue(selenium.isTextPresent("regexp:(The page "".*"" has been saved.)"));
 		// edit page
-		selenium.click("//div[@id='content']/table/tbody/tr[10]/td[6]/a/i");
+		selenium.click("//div[@id='container']/table/tbody/tr[10]/td[6]/a/i");
 		selenium.waitForPageToLoad(timeout);
 		selenium.type("id=title", "test edit");
 		selenium.click("xpath=(//input[@name='submit'])[2]");
 		selenium.waitForPageToLoad(timeout);
 		assertTrue(selenium.isTextPresent("regexp:(The page "".*"" has been saved.)"));
 		// delete page
-		selenium.click("//div[@id='content']/table/tbody/tr[10]/td[7]/a/i");
+		selenium.click("//div[@id='container']/table/tbody/tr[10]/td[7]/a/i");
 		selenium.waitForPageToLoad(timeout);
 		// when we delete a record a confirmation dialog appears
 		// calling the getConfirmation method forces the Ok button to be clicked in the dialog
@@ -142,14 +142,14 @@ component extends="mxunit.framework.TestCase" {
 		selenium.waitForPageToLoad(timeout);
 		assertTrue(selenium.isTextPresent("regexp:(The article "".*"" has been saved.)"));
 		// edit article
-		selenium.click("//div[@id='content']/table/tbody/tr[4]/td[5]/a/i");
+		selenium.click("//div[@id='container']/table/tbody/tr[4]/td[5]/a/i");
 		selenium.waitForPageToLoad(timeout);
 		selenium.type("id=title", "test edit");
 		selenium.click("id=submit");
 		selenium.waitForPageToLoad(timeout);
 		assertTrue(selenium.isTextPresent("regexp:(The article "".*"" has been saved.)"));
 		// delete article
-		selenium.click("//div[@id='content']/table/tbody/tr[4]/td[6]/a/i");
+		selenium.click("//div[@id='container']/table/tbody/tr[4]/td[6]/a/i");
 		// when we delete a record a confirmation dialog appears
 		// the getConfirmation method forces the Ok button to be clicked in the dialog
 		selenium.getConfirmation();
@@ -162,7 +162,7 @@ component extends="mxunit.framework.TestCase" {
 		doLogin();
 		selenium.open(browserURL & "/index.cfm/admin:enquiries");
 		selenium.waitForPageToLoad(timeout);
-		selenium.click("css=i.icon-eye-open");
+		selenium.click("css=i.glyphicon-eye-open");
 		selenium.waitForPageToLoad(timeout);
 		assertTrue(selenium.isTextPresent("Cupcake ipsum dolor sit amet brownie sugar plum jelly beans."));
 		doLogout();
@@ -172,7 +172,7 @@ component extends="mxunit.framework.TestCase" {
 		doLogin();
 		selenium.open(browserURL & "/index.cfm/admin:enquiries");
 		selenium.waitForPageToLoad(timeout);
-		selenium.click("//div[@id='content']/table/tbody/tr[3]/td[4]/a/i");
+		selenium.click("//div[@id='container']/table/tbody/tr[3]/td[4]/a/i");
 		// when we delete a record a confirmation dialog appears
 		// the getConfirmation method forces the Ok button to be clicked in the dialog
 		selenium.getConfirmation();
@@ -195,14 +195,14 @@ component extends="mxunit.framework.TestCase" {
 		selenium.waitForPageToLoad(timeout);
 		assertTrue(selenium.isTextPresent("regexp:(The user "".*"" has been saved.)"));
 		// edit user
-		selenium.click("//div[@id='content']/table/tbody/tr[2]/td[4]/a/i");
+		selenium.click("//div[@id='container']/table/tbody/tr[2]/td[4]/a/i");
 		selenium.waitForPageToLoad(timeout);
 		selenium.type("id=name", "test edit");
 		selenium.click("id=submit");
 		selenium.waitForPageToLoad(timeout);
 		assertTrue(selenium.isTextPresent("regexp:(The user "".*"" has been saved.)"));
 		// delete user
-		selenium.click("//div[@id='content']/table/tbody/tr[2]/td[5]/a/i");
+		selenium.click("//div[@id='container']/table/tbody/tr[2]/td[5]/a/i");
 		// when we delete a record a confirmation dialog appears
 		// the getConfirmation method forces the Ok button to be clicked in the dialog
 		selenium.getConfirmation();

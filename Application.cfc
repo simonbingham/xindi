@@ -1,4 +1,4 @@
-component extends="framework.one"{
+component extends="framework.one" {
 
 	// ------------------------ APPLICATION SETTINGS ------------------------ //
 
@@ -28,7 +28,7 @@ component extends="framework.one"{
 
 	// create database and populate when the application starts in development environment
 	// you might want to comment out this code after the initial install
-	if(this.development && !isNull(url.rebuild)){
+	if (this.development && !isNull(url.rebuild)) {
 		this.ormsettings.dbcreate = "dropcreate";
 		this.ormsettings.sqlscript = "_install/setup.sql";
 	}
@@ -49,8 +49,8 @@ component extends="framework.one"{
 			{"news"="news", hint="Redirect to news feature"}
 			, {"enquiry"="enquiry", hint="Redirect to enquiry feature"}
 		],
-        trace = this.development
-        , diLocations = "public/controllers"
+		trace = this.development
+		, diLocations = "public/controllers"
 	};
 
 	/*
@@ -60,7 +60,7 @@ component extends="framework.one"{
 
 	// ------------------------ CALLED WHEN APPLICATION STARTS ------------------------ //
 
-	void function setupApplication(){
+	void function setupApplication() {
 		// add exception tracker to application scope
 		var HothConfig = new hoth.config.HothConfig();
 		HothConfig.setApplicationName(getConfiguration().name);
@@ -89,13 +89,13 @@ component extends="framework.one"{
 
 	// ------------------------ CALLED WHEN PAGE REQUEST STARTS ------------------------ //
 
-	void function before(required rc){
-		if(this.development && !isNull(url.rebuild)) ORMReload();
+	void function before(required rc) {
+		if (this.development && !isNull(url.rebuild)) ORMReload();
 
-		if(this.development) writedump(var="*** Request Start - #TimeFormat(Now(), 'full')# ***", output="console");
+		if (this.development) writedump(var="*** Request Start - #TimeFormat(Now(), 'full')# ***", output="console");
 
 		// define base url
-		if(CGI.HTTPS eq "on") rc.basehref = "https://";
+		if (CGI.HTTPS eq "on") rc.basehref = "https://";
 		else rc.basehref = "http://";
 		rc.basehref &= CGI.HTTP_HOST & variables.framework.base;
 
@@ -108,31 +108,31 @@ component extends="framework.one"{
 
 	// ------------------------ CALLED WHEN VIEW RENDERING STARTS ------------------------ //
 
-	void function setupView(required rc){
+	void function setupView(required rc) {
 		// get data needed to build the navigation
 		if (getSubsystem() == "public") rc.navigation = getBeanFactory().getBean("ContentService").getNavigation();
 	}
 
 	// ------------------------ CALLED WHEN EXCEPTION OCCURS ------------------------ //
 
-	void function onError(Exception, event){
-		if(StructKeyExists(application, "exceptiontracker")) application.exceptiontracker.track(arguments.Exception);
+	void function onError(Exception, event) {
+		if (StructKeyExists(application, "exceptiontracker")) application.exceptiontracker.track(arguments.Exception);
 		super.onError(arguments.Exception, arguments.event);
 	}
 
 	// ------------------------ CALLED WHEN VIEW IS MISSING ------------------------ //
 
-	any function onMissingView(required rc){
+	any function onMissingView(required rc) {
 		// Note: IIS and Apache report the CGI.PATH_INFO differently
 		var slug = LCase(ReReplace(Replace(CGI.PATH_INFO, CGI.SCRIPT_NAME, ""), "^/", "", "one"));
 		if (slug == "") slug = rc.config.page.defaultslug; // set default
 		rc.Page = getBeanFactory().getBean("ContentService").getPageBySlug(slug);
-		if(!rc.Page.isPersisted()){
+		if (!rc.Page.isPersisted()) {
 			var pagecontext = getPageContext().getResponse();
 			pagecontext.setStatus(404);
 			rc.MetaData.setMetaTitle("Page Not Found");
 			return view("public#variables.framework.subsystemDelimiter#main/notfound");
-		}else{
+		} else {
 			rc.breadcrumbs = getBeanFactory().getBean("ContentService").getNavigationPath(rc.Page.getPageID());
 			rc.MetaData.setMetaTitle(rc.Page.getMetaTitle());
 			rc.MetaData.setMetaDescription(rc.Page.getMetaDescription());
@@ -143,7 +143,7 @@ component extends="framework.one"{
 
 	// ------------------------ CONFIGURATION ------------------------ //
 
-	private struct function getConfiguration(){
+	private struct function getConfiguration() {
 		var config = {
 			development = this.development
 			, enquiry = {
@@ -181,10 +181,10 @@ component extends="framework.one"{
 				, resetpasswordemailsubject = ""
 				, whitelist = "^admin#variables.framework.subsystemDelimiter#security,^public#variables.framework.subsystemDelimiter#" // list of unsecure actions - by default all requests require authentication
 			}
-			, version = "2015.2.11"
+			, version = "XXXX.X.X"
 		};
 		// override config in development mode
-		if(config.development){
+		if (config.development) {
 			config.enquiry.emailto = "";
 			config.exceptiontracker.emailnewexceptions = false;
 			config.security.resetpasswordemailfrom = "";
@@ -205,50 +205,50 @@ component extends="framework.one"{
 
 	// ------------------------ VIEW HELPERS ------------------------ //
 
-	string function snippet(content, charactercount=100){
+	string function snippet(content, charactercount=100) {
 		var result = Trim(reReplace(arguments.content, "<[^>]{1,}>", " ", "all"));
 		if (Len(result) > arguments.charactercount + 10) return "<p>" & Trim(Left(result, arguments.charactercount)) & "&hellip;</p>";
 		else return result;
 	}
 
-	string function getTimeInterval(date, datemask="dddd dd mmmm yyyy"){
+	string function getTimeInterval(date, datemask="dddd dd mmmm yyyy") {
 		var timeinseconds = 0;
 		var result = "";
 		var interval = "";
-		if(IsDate(arguments.date)){
+		if (IsDate(arguments.date)) {
 			timeinseconds = DateDiff('s', arguments.date, Now());
 			// less than a minute
-			if(timeinseconds < 60){
+			if (timeinseconds < 60) {
 				result = " less than a minute ago";
 			}
 			// less than an hour
-			else if (timeinseconds < 3600){
+			else if (timeinseconds < 3600) {
 				interval = Int(timeinseconds / 60);
 				// more than 1 minute
 				if (interval > 1) result = interval & " minutes ago";
 				else result = interval & " minute ago";
 			}
 			// less than 24 hours
-			else if (timeinseconds < (86400) && Hour(Now()) >= Hour(arguments.date)){
+			else if (timeinseconds < (86400) && Hour(Now()) >= Hour(arguments.date)) {
 				interval = Int(timeinseconds / 3600);
 				// more than 1 hour
 				if (interval > 1) result = interval & " hours ago";
 				else result = interval & " hour ago";
 			}
 			// less than 48 hours
-			else if (timeinseconds < 172800){
+			else if (timeinseconds < 172800) {
 				result = "yesterday" & " at " & TimeFormat(arguments.date, "HH:MM");
 			}
 			// return the date
-			else{
+			else {
 				result = DateFormat(arguments.date, arguments.datemask) & " at " & TimeFormat(arguments.date, "HH:MM");
 			}
 		}
 		return result;
 	}
 
-	boolean function isRoute(required slug){
-		for (var el in getRoutes()){
+	boolean function isRoute(required slug) {
+		for (var el in getRoutes()) {
 			if (StructKeyExists(el, arguments.slug)) return true;
 		}
 		return false;

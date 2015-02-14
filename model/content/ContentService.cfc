@@ -16,10 +16,10 @@ component accessors="true" extends="model.abstract.BaseService" {
 		transaction{
 			var Page = variables.ContentGateway.getPage(Val(arguments.pageid));
 			var result = variables.Validator.newResult();
-			if(Page.isPersisted()) {
+			if (Page.isPersisted()) {
 				variables.ContentGateway.deletePage(Page);
 				result.setSuccessMessage("The page &quot;#Page.getTitle()#&quot; has been deleted.");
-			}else{
+			} else {
 				result.setErrorMessage("The page could not be deleted.");
 			}
 		}
@@ -105,19 +105,19 @@ component accessors="true" extends="model.abstract.BaseService" {
 			param name="arguments.properties.metagenerated" default="false";
 			arguments.properties.pageid = Val(arguments.properties.pageid);
 			var Page = variables.ContentGateway.getPage(arguments.properties.pageid);
-			if(arguments.properties.metagenerated) {
+			if (arguments.properties.metagenerated) {
 				arguments.properties.metatitle = variables.MetaData.generatePageTitle(arguments.websitetitle, arguments.properties.title);
 				arguments.properties.metadescription = variables.MetaData.generateMetaDescription(arguments.properties.content);
 				arguments.properties.metakeywords = variables.MetaData.generateMetaKeywords(arguments.properties.title);
 			}
 			var User = variables.SecurityService.getCurrentUser();
-			if(!IsNull(User)) arguments.properties.updatedby = User.getName();
+			if (!IsNull(User)) arguments.properties.updatedby = User.getName();
 			populate(Page, arguments.properties);
 			var result = variables.Validator.validate(theObject=Page, context=arguments.context);
-			if(!result.hasErrors()) {
+			if (!result.hasErrors()) {
 				variables.ContentGateway.savePage(Page, arguments.ancestorid, arguments.defaultslug);
 				result.setSuccessMessage("The page &quot;#Page.getTitle()#&quot; has been saved.");
-			}else{
+			} else {
 				result.setErrorMessage("Your page could not be saved. Please amend the highlighted fields.");
 			}
 		}
