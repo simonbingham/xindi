@@ -135,30 +135,30 @@ component accessors="true" extends="model.abstract.BaseService" {
 		for (var page in arguments.pages) {
 			var PageEntity = getPage(page.pageid);
 			if (IsNull(PageEntity) || !PageEntity.isPersisted()) return false;
-			width = PageEntity.getrightvalue() - PageEntity.getleftvalue();
+			width = PageEntity.getRightValue() - PageEntity.getLeftValue();
 			if (newLeft == -1) newLeft = page.left; // first time thorough the loop
 			else newLeft = newRight + 1;
 			newRight = newLeft + width;
-			shift = newLeft - PageEntity.getleftvalue();
+			shift = newLeft - PageEntity.getLeftValue();
 			affectedpages = PageEntity.getPageID();
 			if (shift != 0) {
-				var qDescendants = variables.ContentGateway.getNavigation(left=PageEntity.getleftvalue(), right=PageEntity.getrightvalue());
+				var qDescendants = variables.ContentGateway.getNavigation(left = PageEntity.getLeftValue(), right = PageEntity.getRightValue());
 				if (qDescendants.recordCount) affectedpages &= "," & ValueList(qDescendants.pageid);
 			}
 			// storing extra info to help debug
 			ArrayAppend(sorted, {
-				shift=shift,
-				affectedpages=affectedpages,
-				newLeft=newLeft,
-				newRight=newRight,
-				width=width,
-				title=PageEntity.getTitle()
+				shift = shift,
+				affectedpages = affectedpages,
+				newLeft = newLeft,
+				newRight = newRight,
+				width = width,
+				title = PageEntity.getTitle()
 			});
 		}
 		// now it's all figured out, save it
 		transaction{
 			for (var node in sorted) {
-				if (node.shift != 0) variables.ContentGateway.shiftPages(affectedpages=node.affectedpages, shift=node.shift);
+				if (node.shift != 0) variables.ContentGateway.shiftPages(affectedpages = node.affectedpages, shift = node.shift);
 			}
 		}
 		// as we've used SQL instead of ORM to adjust clear ORM cache

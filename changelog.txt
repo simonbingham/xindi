@@ -1,7 +1,9 @@
-Version XXXX.X.X
+Version 2015.2.23
 
-- Upgraded to Bootstrap 3.3.2.
-- Upgraded to jQuery 1.11.2.
+- Upgrade to Bootstrap version 3.3.2.
+- Upgrade to jQuery version 1.11.2.
+- Add `this.name` to the admin application.
+- Port test suite to Testbox.
 
 Version 2015.2.11
 

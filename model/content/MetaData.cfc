@@ -54,7 +54,7 @@ component accessors="true" {
 	/**
 	 * I remove duplicates from a list
 	 */
-	string function listDeleteDuplicatesNoCase(required string thelist, string delimiter=",") {
+	private string function listDeleteDuplicatesNoCase(required string thelist, string delimiter=",") {
 		var elements = ListToArray(arguments.thelist, arguments.delimiter);
 		elements = CreateObject("java", "java.util.HashSet").init(elements).toArray();
 		return ArrayToList(elements);
@@ -63,7 +63,7 @@ component accessors="true" {
 	/**
 	 * I remove non-keywords from a string
 	 */
-	string function removeNonKeywords(required string thestring) {
+	private string function removeNonKeywords(required string thestring) {
 		var elements = ListToArray(arguments.thestring, " ");
 		var newstring = "";
 		for (element in elements) {
@@ -77,21 +77,21 @@ component accessors="true" {
 	/**
 	 * I remove unrequired characters from a string
 	 */
-	string function removeUnrequiredCharacters(required string thestring) {
+	private string function removeUnrequiredCharacters(required string thestring) {
 		return replaceMultipleSpacesWithSingleSpace(REReplaceNoCase(arguments.thestring, "([#Chr(09)#-#Chr(30)#])", " ", "all"));
 	}
 
 	/**
 	 * I replace multiple spaces in a string with a single space
 	 */
-	string function replaceMultipleSpacesWithSingleSpace(required string thestring) {
+	private string function replaceMultipleSpacesWithSingleSpace(required string thestring) {
 		return Trim(REReplaceNoCase(arguments.thestring, "\s{2,}", " ", "all"));
 	}
 
 	/**
 	 * I remove html from a string
 	 */
-	string function stripHTML(required string thestring) {
+	private string function stripHTML(required string thestring) {
 		return Trim(replaceMultipleSpacesWithSingleSpace(REReplaceNoCase(arguments.thestring, "<[^>]{1,}>", " ", "all")));
 	}
 

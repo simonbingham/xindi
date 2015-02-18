@@ -45,8 +45,7 @@ component accessors="true" extends="model.abstract.BaseService" {
 			select * from fileListing where name not like '.%'
 			union
 			select * from fullListing where type = 'Dir'
-			order by type, name "
-		);
+			order by type, name ");
 		return queryobject.execute().getResult();
 	}
 

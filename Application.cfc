@@ -3,7 +3,7 @@ component extends="framework.one" {
 	// ------------------------ APPLICATION SETTINGS ------------------------ //
 
 	this.applicationroot = getDirectoryFromPath(getCurrentTemplatePath());
-	this.name = ListLast(this.applicationroot, "\/") & "_" & Hash(this.applicationroot);
+	this.name = Lcase(ReReplace(this.applicationroot, "[\W]", "", "all"));
 	this.sessionmanagement = true;
 	// note: IsLocalHost on CF returns YES|NO which can't be passed to hibernate
 	this.development = IsLocalHost(CGI.REMOTE_ADDR) ? true : false;
@@ -181,7 +181,7 @@ component extends="framework.one" {
 				, resetpasswordemailsubject = ""
 				, whitelist = "^admin#variables.framework.subsystemDelimiter#security,^public#variables.framework.subsystemDelimiter#" // list of unsecure actions - by default all requests require authentication
 			}
-			, version = "XXXX.X.X"
+			, version = "2015.2.23"
 		};
 		// override config in development mode
 		if (config.development) {
