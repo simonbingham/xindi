@@ -18,7 +18,7 @@ Xindi uses the frameworks listed below.
 * [DI/1] (https://github.com/seancorfield/di1)
 * [ValidateThis] (https://github.com/bobsilverberg/ValidateThis)
 * [Hoth] (https://github.com/aarongreenlee/Hoth)
-* [MXUnit] (https://github.com/mxunit/mxunit)
+* [Testbox] (https://github.com/Ortus-Solutions/TestBox)
 * [CFSelenium] (https://github.com/bobsilverberg/CFSelenium)
 
 ### Frontend
