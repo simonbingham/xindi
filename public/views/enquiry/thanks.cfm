@@ -1,6 +1,6 @@
 <cfoutput>
 	<ul class="breadcrumb">
-		<li><a href="#rc.basehref#">Home</a> <span class="divider">/</span></li>
+		<li><a href="#rc.basehref#">Home</a></li>
 		<li class="active">Contact</li>
 	</ul>
 

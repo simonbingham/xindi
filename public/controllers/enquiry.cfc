@@ -8,9 +8,9 @@ component accessors="true" extends="abstract" {
 	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	void function default(required struct rc) {
-		if(!StructKeyExists(rc, "Enquiry")) rc.Enquiry = variables.EnquiryService.newEnquiry();
+		if (!StructKeyExists(rc, "Enquiry")) rc.Enquiry = variables.EnquiryService.newEnquiry();
 		rc.Validator = variables.EnquiryService.getValidator(rc.Enquiry);
-		if(!StructKeyExists(rc, "result")) rc.result = rc.Validator.newResult();
+		if (!StructKeyExists(rc, "result")) rc.result = rc.Validator.newResult();
 		rc.MetaData.setMetaTitle("Contact Us");
 		rc.MetaData.setMetaDescription("");
 		rc.MetaData.setMetaKeywords("");
@@ -21,9 +21,9 @@ component accessors="true" extends="abstract" {
 		param name="rc.email" default="";
 		param name="rc.message" default="";
 		rc.result = variables.EnquiryService.sendEnquiry(rc, variables.config.enquiry, "../../public/views/enquiry/email.cfm");
-		if(rc.result.getIsSuccess()) {
+		if (rc.result.getIsSuccess()) {
 			variables.fw.redirect("enquiry.thanks");
-		}else{
+		} else {
 			rc.Enquiry = rc.result.getTheObject();
 			variables.fw.redirect("enquiry", "Enquiry,result");
 		}

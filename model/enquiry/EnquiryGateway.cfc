@@ -14,7 +14,7 @@ component accessors="true" extends="model.abstract.BaseGateway" {
 	 */
 	array function getEnquiries(numeric maxresults=0) {
 		var ormoptions = {};
-		if(arguments.maxresults) ormoptions.maxresults = arguments.maxresults;
+		if (arguments.maxresults) ormoptions.maxresults = arguments.maxresults;
 		return EntityLoad("Enquiry", {}, "read, created DESC", ormoptions);
 	}
 
@@ -36,10 +36,10 @@ component accessors="true" extends="model.abstract.BaseGateway" {
 	 * I mark an enquiry, or enquiries, as read
 	 */
 	void function markRead(theEnquiry="") {
-		if(IsObject(arguments.theEnquiry)) {
+		if (IsObject(arguments.theEnquiry)) {
 			arguments.theEnquiry.setRead(true);
 			save(arguments.theEnquiry);
-		}else{
+		} else {
 			ORMExecuteQuery("update Enquiry set read=true");
 		}
 	}

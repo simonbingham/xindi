@@ -13,9 +13,9 @@ component accessors="true" {
 
 	void function before(required struct rc) {
 		rc.isallowed = variables.SecurityService.isAllowed(variables.fw.getFullyQualifiedAction());
-		if(!rc.isallowed) {
+		if (!rc.isallowed) {
 			variables.fw.redirect("security");
-		}else{
+		} else {
 			rc.CurrentUser = variables.SecurityService.getCurrentUser();
 			rc.unreadenquirycount = variables.EnquiryService.getUnreadCount();
 		}

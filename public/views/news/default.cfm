@@ -1,6 +1,6 @@
 <cfoutput>
 	<ul class="breadcrumb">
-		<li><a href="#rc.basehref#">Home</a> <span class="divider">/</span></li>
+		<li><a href="#rc.basehref#">Home</a></li>
 		<li class="active">News</li>
 	</ul>
 
@@ -19,7 +19,7 @@
 			</div>
 		</cfloop>
 
-		<ul class="pager append-top">
+		<ul class="pager">
 			<cfif rc.offset>
 				<li class="previous"><a href="#buildURL(action='news', querystring='offset=#rc.offset-rc.maxresults#')#">&larr; Newer</a></li>
 			<cfelse>
@@ -37,10 +37,10 @@
 	</cfif>
 
 	<script>
-	jQuery(function($){
-		$(".previous.disabled,.next.disabled").click(function(e){
-			e.preventDefault();
+		jQuery(function($){
+			$(".previous.disabled,.next.disabled").click(function(e){
+				e.preventDefault();
+			});
 		});
-	});
 	</script>
 </cfoutput>

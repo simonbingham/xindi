@@ -16,10 +16,10 @@ component accessors="true" extends="model.abstract.BaseService" {
 		transaction{
 			var Page = variables.ContentGateway.getPage(Val(arguments.pageid));
 			var result = variables.Validator.newResult();
-			if(Page.isPersisted()) {
+			if (Page.isPersisted()) {
 				variables.ContentGateway.deletePage(Page);
 				result.setSuccessMessage("The page &quot;#Page.getTitle()#&quot; has been deleted.");
-			}else{
+			} else {
 				result.setErrorMessage("The page could not be deleted.");
 			}
 		}
@@ -105,19 +105,19 @@ component accessors="true" extends="model.abstract.BaseService" {
 			param name="arguments.properties.metagenerated" default="false";
 			arguments.properties.pageid = Val(arguments.properties.pageid);
 			var Page = variables.ContentGateway.getPage(arguments.properties.pageid);
-			if(arguments.properties.metagenerated) {
+			if (arguments.properties.metagenerated) {
 				arguments.properties.metatitle = variables.MetaData.generatePageTitle(arguments.websitetitle, arguments.properties.title);
 				arguments.properties.metadescription = variables.MetaData.generateMetaDescription(arguments.properties.content);
 				arguments.properties.metakeywords = variables.MetaData.generateMetaKeywords(arguments.properties.title);
 			}
 			var User = variables.SecurityService.getCurrentUser();
-			if(!IsNull(User)) arguments.properties.updatedby = User.getName();
+			if (!IsNull(User)) arguments.properties.updatedby = User.getName();
 			populate(Page, arguments.properties);
 			var result = variables.Validator.validate(theObject=Page, context=arguments.context);
-			if(!result.hasErrors()) {
+			if (!result.hasErrors()) {
 				variables.ContentGateway.savePage(Page, arguments.ancestorid, arguments.defaultslug);
 				result.setSuccessMessage("The page &quot;#Page.getTitle()#&quot; has been saved.");
-			}else{
+			} else {
 				result.setErrorMessage("Your page could not be saved. Please amend the highlighted fields.");
 			}
 		}
@@ -135,30 +135,30 @@ component accessors="true" extends="model.abstract.BaseService" {
 		for (var page in arguments.pages) {
 			var PageEntity = getPage(page.pageid);
 			if (IsNull(PageEntity) || !PageEntity.isPersisted()) return false;
-			width = PageEntity.getrightvalue() - PageEntity.getleftvalue();
+			width = PageEntity.getRightValue() - PageEntity.getLeftValue();
 			if (newLeft == -1) newLeft = page.left; // first time thorough the loop
 			else newLeft = newRight + 1;
 			newRight = newLeft + width;
-			shift = newLeft - PageEntity.getleftvalue();
+			shift = newLeft - PageEntity.getLeftValue();
 			affectedpages = PageEntity.getPageID();
 			if (shift != 0) {
-				var qDescendants = variables.ContentGateway.getNavigation(left=PageEntity.getleftvalue(), right=PageEntity.getrightvalue());
+				var qDescendants = variables.ContentGateway.getNavigation(left = PageEntity.getLeftValue(), right = PageEntity.getRightValue());
 				if (qDescendants.recordCount) affectedpages &= "," & ValueList(qDescendants.pageid);
 			}
 			// storing extra info to help debug
 			ArrayAppend(sorted, {
-				shift=shift,
-				affectedpages=affectedpages,
-				newLeft=newLeft,
-				newRight=newRight,
-				width=width,
-				title=PageEntity.getTitle()
+				shift = shift,
+				affectedpages = affectedpages,
+				newLeft = newLeft,
+				newRight = newRight,
+				width = width,
+				title = PageEntity.getTitle()
 			});
 		}
 		// now it's all figured out, save it
 		transaction{
 			for (var node in sorted) {
-				if (node.shift != 0) variables.ContentGateway.shiftPages(affectedpages=node.affectedpages, shift=node.shift);
+				if (node.shift != 0) variables.ContentGateway.shiftPages(affectedpages = node.affectedpages, shift = node.shift);
 			}
 		}
 		// as we've used SQL instead of ORM to adjust clear ORM cache

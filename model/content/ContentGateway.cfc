@@ -7,7 +7,7 @@
 		 */
 		void function deletePage(required Page thePage) {
 			var startvalue = arguments.thePage.getLeftValue();
-			if(!IsNull(startvalue)) {
+			if (!IsNull(startvalue)) {
 				ORMExecuteQuery("update Page set leftvalue = leftvalue - 2 where leftvalue > :startvalue", {startvalue=startvalue});
 				ORMExecuteQuery("update Page set rightvalue = rightvalue - 2 where rightvalue > :startvalue", {startvalue=startvalue});
 			}
@@ -115,7 +115,7 @@
 		 */
 		Page function getPageBySlug(required string slug) {
 			var Page = EntityLoad("Page", {slug=arguments.slug}, TRUE);
-			if(IsNull(Page)) Page = new("Page");
+			if (IsNull(Page)) Page = new("Page");
 			return Page;
 		}
 	</cfscript>
@@ -218,7 +218,7 @@
 		 * I save a page
 		 */
 		Page function savePage(required Page thePage, required numeric ancestorid, required string defaultslug) {
-			if(!arguments.thePage.isPersisted() && arguments.ancestorid) {
+			if (!arguments.thePage.isPersisted() && arguments.ancestorid) {
 				var Ancestor = get("Page", arguments.ancestorid);
 				var slug = "";
 				if(Len(Trim(Ancestor.getSlug())) && Ancestor.getSlug() != arguments.defaultslug) slug = Ancestor.getSlug() & "/";
@@ -232,7 +232,7 @@
 				ORMExecuteQuery("update Page set leftvalue = leftvalue + 2 where leftvalue > :startingvalue", {startingvalue=Ancestor.getRightValue() - 1});
 				ORMExecuteQuery("update Page set rightvalue = rightvalue + 2 where rightvalue > :startingvalue", {startingvalue=Ancestor.getRightValue() - 1});
 				return save(arguments.thePage);
-			}else if(arguments.thePage.isPersisted()) {
+			} else if(arguments.thePage.isPersisted()) {
 				return save(arguments.thePage);
 			}
 		}

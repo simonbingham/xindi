@@ -1,6 +1,6 @@
 <cfoutput>
 	<ul class="breadcrumb">
-		<li><a href="#rc.basehref#">#rc.Page.getTitle()#</a> <span class="divider">/</span></li>
+		<li><a href="#rc.basehref#">#rc.Page.getTitle()#</a></li>
 		<li class="active">Site Map</li>
 	</ul>
 

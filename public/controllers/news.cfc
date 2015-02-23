@@ -9,12 +9,12 @@ component accessors="true" extends="abstract" {
 	void function article(required struct rc) {
 		param name="rc.slug" default="";
 		rc.Article = variables.NewsService.getArticleBySlug(rc.slug);
-		if(rc.Article.isPersisted()) {
+		if (rc.Article.isPersisted()) {
 			rc.MetaData.setMetaTitle(rc.Article.getMetaTitle());
 			rc.MetaData.setMetaDescription(rc.Article.getMetaDescription());
 			rc.MetaData.setMetaKeywords(rc.Article.getMetaKeywords());
 			rc.MetaData.setMetaAuthor(rc.Article.getAuthor());
-		}else{
+		} else {
 			variables.fw.redirect("main.notfound");
 		}
 	}

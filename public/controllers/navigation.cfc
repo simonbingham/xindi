@@ -16,7 +16,7 @@ component accessors="true" extends="abstract" {
 
 	void function xml(required struct rc) {
 		rc.sesomitindex = variables.fw.getConfig().sesomitindex;
-		if(rc.config.news.enabled) rc.articles = variables.NewsService.getArticles(published=true);
+		if (rc.config.news.enabled) rc.articles = variables.NewsService.getArticles(published=true);
 	}
 
 }

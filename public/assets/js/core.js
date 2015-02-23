@@ -1,31 +1,35 @@
 // log errors to Hoth (serverside)
 window.onerror = function(message,url,linenumber){
 	var e = {message:message,url:url,linenumber:linenumber};
-	if(typeof jQuery != 'undefined'){
+	if (typeof jQuery != "undefined"){
 		var jqxhr = jQuery.ajax({
-			type:'POST',
-			url:'remote/RemoteProxy.cfc?method=logClientSideError',
+			type:"POST",
+			url:"remote/RemoteProxy.cfc?method=logClientSideError",
 			data:e
 		});
 	}
-	return document.domain !== 'localhost'; // true stops errors being shown to the client
+	return document.domain !== "localhost"; // true stops errors being shown to the client
 }
 
-jQuery(function($){
-	// use jQuery to wire up dropdown menu using bootstrap classes
-	var $dropdowns = $('#primary-navigation>ul>li').on('mouseenter', function(e){
-		$dropdowns.removeClass('open');
-		$self = $(this);
-		if ($self.hasClass('dropdown')) {
-			$(this).addClass('open');
+$(function(){
+	$("#navbar").addClass("collapse navbar-collapse");
+	$("#navbar > ul").addClass("nav navbar-nav");
+	$("#navbar ul ul")
+		.each(function(){
+			$parentLink = $(this).prev();
+			$(this).prepend($("<li><a href='" + $parentLink.attr("href") + "'>" + $parentLink.text() + "</a></li>"));
+		})
+		.addClass("dropdown-menu")
+		.prev().addClass("dropdown-toggle").attr("data-toggle", "dropdown").append(' <b class="caret"></b>')
+		.parent().addClass("dropdown");
+	$("#navbar a").each(function(i){
+		if (this.href.replace(/^.*\/\/[^\/]+/, "") === window.location.pathname) {
+			$(this).parent().addClass("active");
+			return false;
 		}
-		e.stopPropagation();
-	}).find('ul.dropdown-menu').on('mouseleave',function(e){
-		$dropdowns.removeClass('open');
-		e.stopPropagation();
-	}).attr({role:'menu'}).siblings().filter('a').attr({'data-toggle':'dropdown',role:'button',class:'dropdown-toggle'}).append(' <b class="caret"></b>').parent().addClass('dropdown');
-	
+	});
+
 	if (document.createElement("input").webkitSpeech !== undefined) {
-		$('#searchterm').attr('x-webkit-speech','x-webkit-speech');
-	} 
-})
+		$("#searchterm").attr("x-webkit-speech","x-webkit-speech");
+	}
+});

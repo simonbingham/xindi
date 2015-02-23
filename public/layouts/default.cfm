@@ -15,12 +15,10 @@
 
 			<title>#rc.MetaData.getMetaTitle()#</title>
 
-			<link href="public/assets/css/core.css?r=#rc.config.revision#" rel="stylesheet">
+			<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+			<link rel="stylesheet" href="public/assets/css/core.css?r=#rc.config.revision#">
 
-			<!--[if lt IE 9]>
-				<script src="public/assets/js/html5shiv.js"></script>
-			<![endif]-->
-			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
 			<cfif Len(rc.config.googleanalyticstrackingid)>
 				<script type="text/javascript">
@@ -42,67 +40,44 @@
 
 		<body id="#getSection()#" class="#getItem()#">
 			<cfif rc.config.development>
-				<span class="dev-mode label label-warning">Development Mode</span>
+				<span class="development-mode label label-warning">Development Mode</span>
 			</cfif>
 
-			<div class="navbar navbar-fixed-top" role="banner">
-				<div class="navbar-inner">
-					<div class="container">
-						<a class="brand" href="#rc.basehref#" title="Return to home page"><img src="public/assets/img/global/xindi-logo.png" alt="Xindi logo" /></a>
+			<nav class="navbar navbar-default" role="navigation">
+				<div class="container">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="##navbar" aria-expanded="false" aria-controls="navbar">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
 
-						<form action="#buildURL('search')#" method="post" class="navbar-search pull-right" id="search" role="search">
-							<input type="text" name="searchterm" id="searchterm" class="search-query" placeholder="Search">
+						<a class="navbar-brand" href="#rc.basehref#" title="Return to home page"><img src="public/assets/img/global/xindi-logo.png" alt="Xindi logo" /></a>
+					</div>
+
+					<div id="navbar" class="navbar-collapse collapse">
+						#view("partials/navigation")#
+
+						<form action="#buildURL('search')#" method="post" class="navbar-form navbar-right" id="search" role="search">
+							<div class="form-group">
+								<input type="text" name="searchterm" id="searchterm" class="form-control input-sm">
+							</div>
+							<input type="submit" name="searchbtn" id="searchbtn" value="Search" class="btn btn-default btn-sm">
 						</form>
 					</div>
 				</div>
+			</nav>
+
+			<div class="container" role="main">#body#</div>
+
+			<div id="footer" role="contentinfo">
+				<div class="container">
+					<p><a href="#buildURL('navigation/map')#">Site Map</a></p>
+				</div>
 			</div>
 
-			<div id="container" class="container">
-				<div class="row">
-					<nav class="span12" id="primary-navigation" role="navigation">
-						<cfset local.prevLevel = -1>
-						<cfset local.currLevel = -1>
-
-						<cfloop query="rc.navigation">
-							<cfset local.currLevel = rc.navigation.depth>
-
-							<cfif local.currLevel gt local.prevLevel>
-								<ul class="<cfif local.prevLevel eq -1>nav nav-pills<cfelse>dropdown-menu</cfif>"><li><a href="#buildURL(rc.navigation.slug)#">#rc.navigation.title#</a>
-							<cfelseif local.currLevel lt local.prevLevel>
-								<cfset local.tmp = local.prevLevel>
-
-								<cfloop condition="local.tmp gt local.currLevel">
-									</li></ul>
-
-									<cfset local.tmp -= 1>
-								</cfloop>
-								</li><li><a href="#buildURL(rc.navigation.slug)#">#rc.navigation.title#</a>
-							<cfelse>
-								</li><li><a href="#buildURL(rc.navigation.slug)#">#rc.navigation.title#</a>
-							</cfif>
-
-							<cfset local.prevLevel = rc.navigation.depth>
-						</cfloop>
-
-						<cfset local.tmp = local.currLevel>
-
-						<cfloop condition="local.tmp gt 0">
-							</li></ul>
-
-							<cfset local.tmp -= 1>
-						</cfloop>
-					</nav>
-				</div>
-
-				<div id="content" class="row" role="main">
-					<div class="span12">#body#</div>
-				</div>
-
-				<footer id="footer" class="row" role="contentinfo">
-					<div class="span12"><a href="#buildURL('navigation/map')#">Site Map</a></div>
-				</footer>
-			</div>
-
+			<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 			<script src="public/assets/js/core.js?r=#rc.config.revision#"></script>
 		</body>
 	</html>

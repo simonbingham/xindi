@@ -1,7 +1,7 @@
 <cfoutput>
 	<ul class="breadcrumb">
-		<li><a href="#rc.basehref#">Home</a> <span class="divider">/</span></li>
-		<li><a href="#buildURL(action='news')#">News</a> <span class="divider">/</span></li>
+		<li><a href="#rc.basehref#">Home</a></li>
+		<li><a href="#buildURL(action='news')#">News</a></li>
 		<li class="active">#rc.Article.getTitle()#</li>
 	</ul>
 

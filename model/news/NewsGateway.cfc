@@ -21,7 +21,7 @@
 		 */
 		Article function getArticleBySlug(required string slug) {
 			var Article = ORMExecuteQuery("from Article where slug=:slug and published<=:published", {slug=arguments.slug, published=Now()}, true);
-			if(IsNull(Article)) Article = new("Article");
+			if (IsNull(Article)) Article = new("Article");
 			return Article;
 		}
 

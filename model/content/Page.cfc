@@ -44,7 +44,7 @@ component persistent="true" table="pages" cacheuse="transactional" {
 	 */
 	string function getDescendentPageIDList() {
 		var pageidlist = "";
-		for(var looppage in getDescendents()) pageidlist = ListAppend(pageidlist, looppage.getPageID());
+		for (var looppage in getDescendents()) pageidlist = ListAppend(pageidlist, looppage.getPageID());
 		return pageidlist;
 	}
 
@@ -108,9 +108,9 @@ component persistent="true" table="pages" cacheuse="transactional" {
 	 * I return true if the page id is found in a list of page ids
 	 */
 	boolean function hasPageIDInPath(required string pageidlist) {
-		if(ListFind(arguments.pageidlist, variables.pageid)) return true;
-		for(var Page in getPath()) {
-			if(ListFind(arguments.pageidlist, Page.getPageID())) return true;
+		if (ListFind(arguments.pageidlist, variables.pageid)) return true;
+		for (var Page in getPath()) {
+			if (ListFind(arguments.pageidlist, Page.getPageID())) return true;
 		}
 		return false;
 	}
@@ -126,8 +126,8 @@ component persistent="true" table="pages" cacheuse="transactional" {
 	 * I return true if the page has a FW/1 route
 	 */
 	boolean function hasRoute(array routes=[]) {
-		for(var route in arguments.routes) {
-			if(StructKeyExists(route, getSlug())) return true;
+		for (var route in arguments.routes) {
+			if (StructKeyExists(route, getSlug())) return true;
 		}
 		return false;
 	}

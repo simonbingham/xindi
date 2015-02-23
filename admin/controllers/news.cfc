@@ -18,9 +18,9 @@ component accessors="true" extends="abstract" {
 
 	void function maintain(required struct rc) {
 		param name="rc.articleid" default="0";
-		if(!StructKeyExists(rc, "Article")) rc.Article = variables.NewsService.getArticle(rc.articleid);
+		if (!StructKeyExists(rc, "Article")) rc.Article = variables.NewsService.getArticle(rc.articleid);
 		rc.Validator = variables.NewsService.getValidator(rc.Article);
-		if(!StructKeyExists(rc, "result")) rc.result = rc.Validator.newResult();
+		if (!StructKeyExists(rc, "result")) rc.result = rc.Validator.newResult();
 	}
 
 	void function save(required struct rc) {
@@ -36,10 +36,10 @@ component accessors="true" extends="abstract" {
 		param name="rc.submit" default="Save & exit";
 		rc.result = variables.NewsService.saveArticle(rc, rc.config.name);
 		rc.Article = rc.result.getTheObject();
-		if(rc.result.getIsSuccess()) {
-			if(rc.submit == "Save & Continue") variables.fw.redirect("news.maintain", "Article,result", "articleid");
+		if (rc.result.getIsSuccess()) {
+			if (rc.submit == "Save & Continue") variables.fw.redirect("news.maintain", "Article,result", "articleid");
 			else variables.fw.redirect("news", "result");
-		}else{
+		} else {
 			variables.fw.redirect("news.maintain", "Article,result", "articleid");
 		}
 	}

@@ -13,12 +13,12 @@ component accessors="true" {
 
 	void function default(required struct rc) {
 		rc.loggedin = variables.SecurityService.hasCurrentUser();
-		if(rc.loggedin) {
+		if (rc.loggedin) {
 			variables.fw.redirect("main");
-		}else{
+		} else {
 			rc.User = variables.UserService.newUser();
 			rc.Validator = variables.UserService.getValidator(rc.User);
-			if(!StructKeyExists(rc, "result")) rc.result = rc.Validator.newResult();
+			if (!StructKeyExists(rc, "result")) rc.result = rc.Validator.newResult();
 		}
 	}
 
@@ -26,7 +26,7 @@ component accessors="true" {
 		param name="rc.email" default="";
 		param name="rc.password" default="";
 		rc.result = variables.SecurityService.loginUser(rc);
-		if(rc.result.getIsSuccess()) variables.fw.redirect("main", "result");
+		if (rc.result.getIsSuccess()) variables.fw.redirect("main", "result");
 		else variables.fw.redirect("security", "result");
 	}
 
@@ -38,7 +38,7 @@ component accessors="true" {
 	void function password(required struct rc) {
 		rc.User = variables.UserService.newUser();
 		rc.Validator = variables.UserService.getValidator(rc.User);
-		if(!StructKeyExists(rc, "result")) rc.result = rc.Validator.newResult();
+		if (!StructKeyExists(rc, "result")) rc.result = rc.Validator.newResult();
 	}
 
 	void function resetpassword(required struct rc) {

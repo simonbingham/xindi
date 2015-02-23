@@ -30,7 +30,7 @@ component accessors="true" extends="model.abstract.BaseGateway" {
 	 */
 	User function getUserByEmail(required User theUser) {
 		var User = ORMExecuteQuery("from User where email=:email", {email=arguments.theUser.getEmail()}, true);
-		if(IsNull(User)) User = new("User");
+		if (IsNull(User)) User = new("User");
 		return User;
 	}
 
