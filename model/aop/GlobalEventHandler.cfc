@@ -46,14 +46,14 @@ component implements="cfide.orm.IEventHandler" {
 	 */
 	void function postDelete(any entity) {}
 
-    /**
-     * I am called before the session is flushed.
-     */
-    void function preFlush(any entities) {}
+	/**
+	 * I am called before the session is flushed.
+	 */
+	void function preFlush(any entities) {}
 
-    /**
-     * I am called after the session is flushed.
-     */
-    void function postFlush(any entities) {}
+	/**
+	 * I am called after the session is flushed.
+	 */
+	void function postFlush(any entities) {}
 
 }
