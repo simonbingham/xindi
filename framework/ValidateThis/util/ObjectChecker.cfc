@@ -31,7 +31,7 @@
 			<cfset ancestry = buildInheritanceTree( getMetadata(theObject) )>
 		</cfif>
 
-		<cfreturn listFindNoCase( ancestry, "WEB-INF.cftags.component" ) GT 0 OR listFindNoCase( ancestry, "railo-context.component" ) GT 0>
+		<cfreturn listFindNoCase( ancestry, "WEB-INF.cftags.component" ) GT 0 OR listFindNoCase( ancestry, "railo-context.component" ) GT 0 OR listFindNoCase( ancestry, "lucee.component" ) GT 0>
 	</cffunction>
 
 	<cffunction name="isWheels" access="public" output="false" returntype="any" hint="Returns true if the object passed in is a Wheels object.">

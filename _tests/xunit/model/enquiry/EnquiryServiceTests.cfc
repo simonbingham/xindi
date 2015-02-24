@@ -5,7 +5,7 @@ component extends="tests.xunit.BaseTest" {
 	function beforeTests() {
 		variables.mocked.enquiryGatewayObj = variables.mockbox.createEmptyMock("model.enquiry.EnquiryGateway");
 		variables.mocked.notificationServiceObj = variables.mockbox.createEmptyMock("model.utility.NotificationService");
-		variables.mocked.validationFactoryObj = variables.mockbox.createEmptyMock("framework.ValidateThis.core.ValidationFactory");
+		variables.mocked.validationFactoryObj = variables.mockbox.createEmptyMock("ValidateThis.core.ValidationFactory");
 	}
 
 	function setup() {
@@ -98,7 +98,7 @@ component extends="tests.xunit.BaseTest" {
 	// Helper Methods
 
 	private function setupDeleteEnquiryTests() {
-		variables.mocked.resultObj = variables.mockbox.createEmptyMock("framework.ValidateThis.util.Result")
+		variables.mocked.resultObj = variables.mockbox.createEmptyMock("ValidateThis.util.Result")
 			.$("setSuccessMessage")
 			.$("setErrorMessage");
 		variables.mocked.validationFactoryObj.$("newResult", variables.mocked.resultObj);
@@ -109,7 +109,7 @@ component extends="tests.xunit.BaseTest" {
 	}
 
 	private function setupMarkReadTests() {
-		variables.mocked.resultObj = variables.mockbox.createEmptyMock("framework.ValidateThis.util.Result")
+		variables.mocked.resultObj = variables.mockbox.createEmptyMock("ValidateThis.util.Result")
 			.$("setSuccessMessage")
 			.$("setErrorMessage");
 		variables.mocked.validationFactoryObj.$("newResult", variables.mocked.resultObj);
@@ -120,13 +120,14 @@ component extends="tests.xunit.BaseTest" {
 	}
 
 	private function setupSendEnquiryTests() {
-		variables.mocked.resultObj = variables.mockbox.createEmptyMock("framework.ValidateThis.util.Result")
+		variables.mocked.resultObj = variables.mockbox.createEmptyMock("ValidateThis.util.Result")
 			.$("setSuccessMessage")
 			.$("setErrorMessage");
 		variables.mocked.validationFactoryObj.$("validate", variables.mocked.resultObj);
 		variables.mocked.enquiryObj = variables.mockbox.createEmptyMock("model.enquiry.Enquiry")
 			.$("getDisplayMessage")
-			.$("getEmail", "the email");
+			.$("getEmail", "the email")
+			.$("getName");
 		variables.mocked.enquiryGatewayObj
 			.$("newEnquiry", variables.mocked.enquiryObj, FALSE)
 			.$("saveEnquiry", variables.mocked.enquiryObj, FALSE);

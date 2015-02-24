@@ -23,7 +23,7 @@ component extends="framework.one" {
 		, eventhandling = true
 		, eventhandler = "model.aop.GlobalEventHandler"
 		, logsql = this.development
-		, secondarycacheenabled = true
+		, secondarycacheenabled = server.coldfusion.productName != "Lucee" ? true : false // throws an error if enabled on Lucee
 	};
 
 	// create database and populate when the application starts in development environment
@@ -181,7 +181,7 @@ component extends="framework.one" {
 				, resetpasswordemailsubject = ""
 				, whitelist = "^admin#variables.framework.subsystemDelimiter#security,^public#variables.framework.subsystemDelimiter#" // list of unsecure actions - by default all requests require authentication
 			}
-			, version = "2015.2.23"
+			, version = "2015.2.24"
 		};
 		// override config in development mode
 		if (config.development) {

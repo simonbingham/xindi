@@ -6,7 +6,7 @@ component extends="tests.xunit.BaseTest" {
 		variables.mocked.notificationServiceObj = variables.mockbox.createEmptyMock("model.utility.NotificationService");
 		variables.mocked.userGatewayObj = variables.mockbox.createEmptyMock("model.user.UserGateway");
 		variables.mocked.userServiceObj = variables.mockbox.createEmptyMock("model.user.UserService");
-		variables.mocked.validationFactoryObj = variables.mockbox.createEmptyMock("framework.ValidateThis.core.ValidationFactory");
+		variables.mocked.validationFactoryObj = variables.mockbox.createEmptyMock("ValidateThis.core.ValidationFactory");
 		variables.mocked.config = {};
 	}
 
@@ -142,7 +142,7 @@ component extends="tests.xunit.BaseTest" {
 	// Helper Methods
 
 	private function setupDeleteCurrentUserTests() {
-		variables.mocked.resultObj = variables.mockbox.createEmptyMock("framework.ValidateThis.util.Result")
+		variables.mocked.resultObj = variables.mockbox.createEmptyMock("ValidateThis.util.Result")
 			.$("setSuccessMessage")
 			.$("setErrorMessage");
 		variables.mocked.validationFactoryObj.$("newResult", variables.mocked.resultObj);
@@ -158,14 +158,14 @@ component extends="tests.xunit.BaseTest" {
 	}
 
 	private function setupLoginUserTests() {
-		variables.mocked.userObj = variables.mockbox.createEmptyMock("model.user.User");
+		variables.mocked.userObj = variables.mockbox.createEmptyMock("model.user.User").$("getName");
 		variables.mocked.userGatewayObj
 			.$("newUser", variables.mocked.userObj, FALSE)
 			.$("getUserByCredentials", variables.mocked.userObj, FALSE);
 		variables.CUT
 			.$("populate")
 			.$("setCurrentUser");
-		variables.mocked.resultObj = variables.mockbox.createEmptyMock("framework.ValidateThis.util.Result")
+		variables.mocked.resultObj = variables.mockbox.createEmptyMock("ValidateThis.util.Result")
 			.$("addFailure")
 			.$("setSuccessMessage")
 			.$("setErrorMessage");
@@ -173,7 +173,9 @@ component extends="tests.xunit.BaseTest" {
 	}
 
 	private function setupResetPasswordTests() {
-		variables.mocked.userObj = variables.mockbox.createEmptyMock("model.user.User").$("setPassword");
+		variables.mocked.userObj = variables.mockbox.createEmptyMock("model.user.User")
+			.$("getEmail")
+			.$("setPassword");
 		variables.mocked.userGatewayObj
 			.$("newUser", variables.mocked.userObj, FALSE)
 			.$("getUserByEmail", variables.mocked.userObj, FALSE);
@@ -181,7 +183,7 @@ component extends="tests.xunit.BaseTest" {
 		variables.CUT
 			.$("populate")
 			.$("setCurrentUser");
-		variables.mocked.resultObj = variables.mockbox.createEmptyMock("framework.ValidateThis.util.Result")
+		variables.mocked.resultObj = variables.mockbox.createEmptyMock("ValidateThis.util.Result")
 			.$("addFailure")
 			.$("setSuccessMessage")
 			.$("setErrorMessage");

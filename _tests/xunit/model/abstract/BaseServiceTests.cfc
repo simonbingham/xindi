@@ -3,7 +3,7 @@ component extends="tests.xunit.BaseTest" {
 	// Testcase Lifecycle Methods
 
 	function beforeTests() {
-		variables.mocked.validationFactoryObj = variables.mockbox.createEmptyMock("framework.ValidateThis.core.ValidationFactory");
+		variables.mocked.validationFactoryObj = variables.mockbox.createEmptyMock("ValidateThis.core.ValidationFactory");
 		variables.mocked.metaDataObj = variables.mockbox.createEmptyMock("model.content.MetaData");
 	}
 

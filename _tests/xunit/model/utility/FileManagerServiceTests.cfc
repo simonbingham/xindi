@@ -3,7 +3,7 @@ component extends="tests.xunit.BaseTest" {
 	// Testcase Lifecycle Methods
 
 	function beforeTests() {
-		variables.mocked.validationFactoryObj = variables.mockbox.createEmptyMock("framework.ValidateThis.core.ValidationFactory");
+		variables.mocked.validationFactoryObj = variables.mockbox.createEmptyMock("ValidateThis.core.ValidationFactory");
 	}
 
 	function setup() {
@@ -47,7 +47,7 @@ component extends="tests.xunit.BaseTest" {
 	// Helper Methods
 
 	private function setupDeleteFileTests() {
-		variables.mocked.resultObj = variables.mockbox.createEmptyMock("framework.ValidateThis.util.Result")
+		variables.mocked.resultObj = variables.mockbox.createEmptyMock("ValidateThis.util.Result")
 			.$("setSuccessMessage")
 			.$("setErrorMessage");
 		variables.mocked.validationFactoryObj.$("newResult", variables.mocked.resultObj);
