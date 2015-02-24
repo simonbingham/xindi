@@ -1,3 +1,7 @@
+Version 2015.2.24
+
+- Amendments to make Xindi work on Lucee (http://lucee.org/).
+
 Version 2015.2.23
 
 - Upgrade to Bootstrap version 3.3.2.

@@ -8,28 +8,6 @@ component extends="tests.xunit.BaseTest" {
 
 	// Tests
 
-	function test_getMessage_calls_getSuccessMessage_if_success_message_exists() {
-		variables.mocked.resultObj = variables.mockbox.createEmptyMock("framework.ValidateThis.util.Result").$("getSuccessMessage", "the success message");
-		variables.CUT
-			.$("getSuccessMessage", "the success message")
-			.$property(propertyName = "message", propertyScope = "variables", mock = "the message")
-			.$property(propertyName = "super", propertyScope = "variables", mock = variables.mocked.resultObj)
-			.getMessage();
-		local.actual = variables.CUT.$once("getSuccessMessage");
-		$assert.isTrue(local.actual);
-	}
-
-	function test_getMessage_returns_message_if_success_message_does_not_exist() {
-		variables.mocked.resultObj = variables.mockbox.createEmptyMock("framework.ValidateThis.util.Result").$("getSuccessMessage");
-		variables.CUT
-			.$("getSuccessMessage", "the success message")
-			.$property(propertyName = "message", propertyScope = "variables", mock = "the message")
-			.$property(propertyName = "super", propertyScope = "variables", mock = variables.mocked.resultObj);
-		local.expected = "the message";
-		local.actual = variables.CUT.getMessage();
-		$assert.isEqual(local.expected, local.actual);
-	}
-
 	function test_getMessageType_returns_message_type() {
 		variables.CUT.$property(propertyName = "messageType", propertyScope = "variables", mock = "the message type");
 		local.expected = "the message type";
@@ -50,7 +28,7 @@ component extends="tests.xunit.BaseTest" {
 	}
 
 	function test_setErrorMessage_sets_error_message() {
-		variables.mocked.resultObj = variables.mockbox.createEmptyMock("framework.ValidateThis.util.Result").$("setIsSuccess");
+		variables.mocked.resultObj = variables.mockbox.createEmptyMock("ValidateThis.util.Result").$("setIsSuccess");
 		variables.CUT
 			.$property(propertyName = "message", propertyScope = "variables", mock = "")
 			.$property(propertyName = "messageType", propertyScope = "variables", mock = "")
@@ -72,7 +50,7 @@ component extends="tests.xunit.BaseTest" {
 	}
 
 	function test_setSuccessMessage_sets_success_message() {
-		variables.mocked.resultObj = variables.mockbox.createEmptyMock("framework.ValidateThis.util.Result")
+		variables.mocked.resultObj = variables.mockbox.createEmptyMock("ValidateThis.util.Result")
 			.$("setIsSuccess")
 			.$("setSuccessMessage");
 		variables.CUT

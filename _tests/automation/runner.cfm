@@ -6,6 +6,6 @@
 
 <cfsetting requesttimeout="600">
 
-<cfset testbox = new testbox.system.TestBox(directory = "tests.xunit")>
+<cfset testbox = new testbox.system.TestBox(directory = "tests.automation")>
 
 <cfoutput>#testbox.run()#</cfoutput>

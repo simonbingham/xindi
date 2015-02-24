@@ -6,7 +6,7 @@ component extends="tests.xunit.BaseTest" {
 		variables.mocked.newsGatewayObj = variables.mockbox.createEmptyMock("model.news.NewsGateway");
 		variables.mocked.metaDataObj = variables.mockbox.createEmptyMock("model.content.MetaData");
 		variables.mocked.securityServiceObj = variables.mockbox.createEmptyMock("model.security.SecurityService");
-		variables.mocked.validationFactoryObj = variables.mockbox.createEmptyMock("framework.ValidateThis.core.ValidationFactory");
+		variables.mocked.validationFactoryObj = variables.mockbox.createEmptyMock("ValidateThis.core.ValidationFactory");
 	}
 
 	function setup() {
@@ -89,7 +89,7 @@ component extends="tests.xunit.BaseTest" {
 	// Helper Methods
 
 	private function setupDeleteArticleTests() {
-		variables.mocked.resultObj = variables.mockbox.createEmptyMock("framework.ValidateThis.util.Result")
+		variables.mocked.resultObj = variables.mockbox.createEmptyMock("ValidateThis.util.Result")
 			.$("setSuccessMessage")
 			.$("setErrorMessage");
 		variables.mocked.validationFactoryObj.$("newResult", variables.mocked.resultObj);
@@ -100,7 +100,7 @@ component extends="tests.xunit.BaseTest" {
 	}
 
 	private function setupSaveArticleTests() {
-		variables.mocked.articleObj = variables.mockbox.createEmptyMock("model.news.Article");
+		variables.mocked.articleObj = variables.mockbox.createEmptyMock("model.news.Article").$("getTitle");
 		variables.mocked.newsGatewayObj
 			.$("getArticle", variables.mocked.articleObj, FALSE)
 			.$("saveArticle", variables.mocked.articleObj, FALSE);
@@ -110,7 +110,7 @@ component extends="tests.xunit.BaseTest" {
 			.$("generateMetaKeywords");
 		variables.mocked.userObj = variables.mockbox.createEmptyMock("model.user.User").$("getName");
 		variables.mocked.securityServiceObj.$("getCurrentUser");
-		variables.mocked.resultObj = variables.mockbox.createEmptyMock("framework.ValidateThis.util.Result")
+		variables.mocked.resultObj = variables.mockbox.createEmptyMock("ValidateThis.util.Result")
 			.$("hasErrors", FALSE)
 			.$("setSuccessMessage")
 			.$("setErrorMessage");

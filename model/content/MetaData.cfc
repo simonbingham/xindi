@@ -33,7 +33,7 @@ component accessors="true" {
 	 * I generate meta keywords
 	 */
 	string function generateMetaKeywords(string keywords="") {
-		return Left(replaceMultipleSpacesWithSingleSpace(removeUnrequiredCharacters(listDeleteDuplicatesNoCase(ListChangeDelims(removeNonKeywords(stripHTML(arguments.keywords)), ",", " .")))), 200);
+		return ListSort(Lcase(Left(replaceMultipleSpacesWithSingleSpace(removeUnrequiredCharacters(listDeleteDuplicatesNoCase(ListChangeDelims(removeNonKeywords(stripHTML(arguments.keywords)), ",", " .")))), 200)), "text");
 	}
 
 	/**

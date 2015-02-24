@@ -4,7 +4,7 @@ component extends="tests.xunit.BaseTest" {
 
 	function beforeTests() {
 		variables.mocked.userGatewayObj = variables.mockbox.createEmptyMock("model.user.UserGateway");
-		variables.mocked.validationFactoryObj = variables.mockbox.createEmptyMock("framework.ValidateThis.core.ValidationFactory");
+		variables.mocked.validationFactoryObj = variables.mockbox.createEmptyMock("ValidateThis.core.ValidationFactory");
 	}
 
 	function setup() {
@@ -87,23 +87,23 @@ component extends="tests.xunit.BaseTest" {
 	// Helper Methods
 
 	private function setupDeleteUserTests() {
-		variables.mocked.userObj = variables.mockbox.createEmptyMock("model.user.User");
+		variables.mocked.userObj = variables.mockbox.createEmptyMock("model.user.User").$("getName");
 		variables.mocked.userGatewayObj
 			.$("deleteUser")
 			.$("getUser", variables.mocked.userObj);
-		variables.mocked.resultObj = variables.mockbox.createEmptyMock("framework.ValidateThis.util.Result")
+		variables.mocked.resultObj = variables.mockbox.createEmptyMock("ValidateThis.util.Result")
 			.$("setSuccessMessage")
 			.$("setErrorMessage");
 		variables.mocked.validationFactoryObj.$("newResult", variables.mocked.resultObj);
 	}
 
 	private function setupSaveUserTests() {
-		variables.mocked.userObj = variables.mockbox.createEmptyMock("model.user.User");
+		variables.mocked.userObj = variables.mockbox.createEmptyMock("model.user.User").$("getName");
 		variables.mocked.userGatewayObj
 			.$("getUser", variables.mocked.userObj)
 			.$("populate")
 			.$("saveUser", variables.mocked.userObj, FALSE);
-		variables.mocked.resultObj = variables.mockbox.createEmptyMock("framework.ValidateThis.util.Result")
+		variables.mocked.resultObj = variables.mockbox.createEmptyMock("ValidateThis.util.Result")
 			.$("setSuccessMessage")
 			.$("setErrorMessage");
 		variables.mocked.validationFactoryObj.$("validate", variables.mocked.resultObj);

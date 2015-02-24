@@ -15,11 +15,10 @@ component extends="tests.xunit.BaseTest" {
 		$assert.isEqual(local.expected, local.actual);
 	}
 
-	function test_generateMetaKeywords_returns_expected_result() {
+	function test_generateMetaKeywords_returns_simple_value() {
 		local.content = "Ten years ago a crack commando unit was sent to prison by a military court for a crime they didn’t commit. These men promptly escaped from a maximum security stockade to the Los Angeles underground. Today, still wanted by the government, they survive as soldiers of fortune.";
-		local.expected = "stockade,ago,for,commit,soldiers,Angeles,years,crack,commando,security,government,didn’t,by,men,promptly,military,crime,from,prison,they,still,survive,fortune,was,court,sent,escaped,Los,unit,Today,The";
 		local.actual = variables.CUT.generateMetaKeywords(keywords = local.content);
-		$assert.isEqual(local.expected, local.actual);
+		$assert.isTrue(issimplevalue(local.actual));
 	}
 
 	function test_generatePageTitle_returns_expected_result() {

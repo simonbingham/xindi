@@ -7,5 +7,10 @@ component {
 	this.mappings["/framework"] = this.applicationroot & "framework/";
 	this.mappings["/model"] = this.applicationroot & "model/";
 	this.mappings["/tests"] = this.applicationroot & "_tests/";
+	this.mappings["/ValidateThis"] = this.applicationroot & "framework/validatethis/";
+
+	this.datasource = "xindi";
+
+	this.ormenabled = TRUE;
 
 }
