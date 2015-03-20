@@ -3,7 +3,7 @@
 	http://localhost/xindi/_tests/automation/Tests.cfc?method=runRemote
 */
 
-component extends="testbox.system.BaseSpec" {
+component extends = "testbox.system.BaseSpec" {
 
 	// Testcase Lifecycle Methods
 

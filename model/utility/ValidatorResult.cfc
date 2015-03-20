@@ -1,19 +1,26 @@
+/**
+ * I am the validator result component.
+ */
 component extends="ValidateThis.util.Result" {
+
+	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	/**
 	 * I initialise this component
 	 */
 	function init(required any Translator, required struct ValidateThisConfig) {
-		variables.messagetype = "";
+		variables.messageType = "";
 		variables.message = "";
-		return super.init(argumentCollection=arguments);
+		return super.init(argumentCollection = arguments);
 	}
 
 	/**
 	 * I return a message
 	 */
 	string function getMessage() {
-		if (Len(super.getSuccessMessage()) != 0) return getSuccessMessage();
+		if (Len(Trim(super.getSuccessMessage())) != 0) {
+			return getSuccessMessage();
+		}
 		return variables.message;
 	}
 
@@ -21,7 +28,7 @@ component extends="ValidateThis.util.Result" {
 	 * I return a message type
 	 */
 	string function getMessageType() {
-		return variables.messagetype;
+		return variables.messageType;
 
 	}
 
@@ -38,7 +45,7 @@ component extends="ValidateThis.util.Result" {
 	void function setErrorMessage(required string message) {
 		super.setIsSuccess(false);
 		variables.message = arguments.message;
-		variables.messagetype = "error";
+		variables.messageType = "danger";
 	}
 
 	/**
@@ -46,7 +53,7 @@ component extends="ValidateThis.util.Result" {
 	 */
 	void function setInfoMessage(required string message) {
 		variables.message = arguments.message;
-		variables.messagetype = "info";
+		variables.messageType = "info";
 	}
 
 	/**
@@ -55,7 +62,7 @@ component extends="ValidateThis.util.Result" {
 	void function setSuccessMessage(required string message) {
 		super.setIsSuccess(true);
 		super.setSuccessMessage(arguments.message);
-		variables.messagetype = "success";
+		variables.messageType = "success";
 	}
 
 	/**
@@ -63,7 +70,7 @@ component extends="ValidateThis.util.Result" {
 	 */
 	void function setWarningMessage(required string message) {
 		variables.message = arguments.message;
-		variables.messagetype = "warning";
+		variables.messageType = "warning";
 	}
 
 }

@@ -1,6 +1,6 @@
 // log errors to Hoth (serverside)
-window.onerror = function(message,url,linenumber){
-	var e = {message:message,url:url,linenumber:linenumber};
+window.onerror = function(message, url, linenumber){
+	var e = {message:message, url:url, linenumber:linenumber};
 	if (typeof jQuery != "undefined"){
 		var jqxhr = jQuery.ajax({
 			type:"POST",

@@ -1,3 +1,6 @@
+/**
+ * I am the user service component.
+ */
 component accessors="true" extends="model.abstract.BaseService" {
 
 	// ------------------------ DEPENDENCY INJECTION ------------------------ //
@@ -5,44 +8,48 @@ component accessors="true" extends="model.abstract.BaseService" {
 	property name="UserGateway" getter="false";
 	property name="Validator" getter="false";
 
+	// ------------------------ CONSTANTS ------------------------ //
+
+	variables.PASSWORD_LENGTH = 8;
+
 	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	/**
 	 * I delete a user
 	 */
-	struct function deleteUser(required userid) {
+	struct function deleteUser(required numeric userId) {
 		transaction{
-			var User = variables.UserGateway.getUser(Val(arguments.userid));
-			var result = variables.Validator.newResult();
-			if (User.isPersisted()) {
-				variables.UserGateway.deleteUser(User);
-				result.setSuccessMessage("The user &quot;#User.getName()#&quot; has been deleted.");
+			local.User = variables.UserGateway.getUser(userId = Val(arguments.userId));
+			local.result = variables.Validator.newResult();
+			if (local.User.isPersisted()) {
+				variables.UserGateway.deleteUser(theUser = local.User);
+				local.result.setSuccessMessage("The user &quot;#local.User.getName()#&quot; has been deleted.");
 			} else {
-				result.setErrorMessage("The user could not be deleted.");
+				local.result.setErrorMessage("The user could not be deleted.");
 			}
 		}
-		return result;
+		return local.result;
 	}
 
 	/**
 	 * I return a user matching an id
 	 */
-	User function getUser(required userid) {
-		return variables.UserGateway.getUser(Val(arguments.userid));
+	User function getUser(required numeric userId) {
+		return variables.UserGateway.getUser(userId = Val(arguments.userId));
 	}
 
 	/**
 	 * I return a user matching an email address and password
 	 */
 	User function getUserByCredentials(required User theUser) {
-		return variables.UserGateway.getUserByCredentials(theUser);
+		return variables.UserGateway.getUserByCredentials(theUser = arguments.theUser);
 	}
 
 	/**
 	 * I return a user matching an email address
 	 */
 	User function getUserByEmail(required User theUser) {
-		return variables.UserGateway.getUserByEmail(theUser);
+		return variables.UserGateway.getUserByEmail(theUser = arguments.theUser);
 	}
 
 	/**
@@ -56,7 +63,7 @@ component accessors="true" extends="model.abstract.BaseService" {
 	 * I return a new password
 	 */
 	string function newPassword() {
-		return Left(CreateUUID(), 8);
+		return Left(CreateUUId(), variables.PASSWORD_LENGTH);
 	}
 
 	/**
@@ -71,18 +78,19 @@ component accessors="true" extends="model.abstract.BaseService" {
 	 */
 	struct function saveUser(required struct properties, required string context) {
 		transaction{
-			param name="arguments.properties.userid" default="0";
-			var User = variables.UserGateway.getUser(Val(arguments.properties.userid));
-			populate(User, arguments.properties);
-			var result = variables.Validator.validate(theObject=User, context=arguments.context);
+			local.args = Duplicate(arguments);
+			param name = "local.args.properties.userId" default = 0;
+			local.User = variables.UserGateway.getUser(userId = Val(local.args.properties.userId));
+			populate(Entity = local.User, memento = local.args.properties);
+			local.result = variables.Validator.validate(theObject = local.User, context = local.args.context);
 			if (!result.hasErrors()) {
-				result.setSuccessMessage("The user &quot;#User.getName()#&quot; has been saved.");
-				variables.UserGateway.saveUser(User);
+				local.result.setSuccessMessage("The user &quot;#local.User.getName()#&quot; has been saved.");
+				variables.UserGateway.saveUser(theUser = local.User);
 			} else {
-				result.setErrorMessage("The user could not be saved. Please amend the highlighted fields.");
+				local.result.setErrorMessage("The user could not be saved. Please amend the highlighted fields.");
 			}
 		}
-		return result;
+		return local.result;
 	}
 
 }

@@ -1,6 +1,6 @@
 <cfoutput>
 	<ul class="breadcrumb">
-		<li><a href="#rc.basehref#">Home</a></li>
+		<li><a href="#rc.baseHref#">Home</a></li>
 		<li class="active">News</li>
 	</ul>
 
@@ -21,13 +21,13 @@
 
 		<ul class="pager">
 			<cfif rc.offset>
-				<li class="previous"><a href="#buildURL(action='news', querystring='offset=#rc.offset-rc.maxresults#')#">&larr; Newer</a></li>
+				<li class="previous"><a href="#buildURL(action='news', querystring='offset=#rc.offset-rc.maxResults#')#">&larr; Newer</a></li>
 			<cfelse>
 				<li class="previous disabled"><a href="">&larr; Newer</a></li>
 			</cfif>
 
 			<cfif rc.maxresults + rc.offset lt rc.articlecount>
-				<li class="next"><a href="#buildURL(action='news', querystring='offset=#rc.offset+rc.maxresults#')#">Older &rarr;</a></li>
+				<li class="next"><a href="#buildURL(action='news', querystring='offset=#rc.offset+rc.maxResults#')#">Older &rarr;</a></li>
 			<cfelse>
 				<li class="next disabled"><a href="">Older &rarr;</a></li>
 			</cfif>

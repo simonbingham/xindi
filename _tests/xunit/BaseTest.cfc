@@ -1,4 +1,4 @@
-component extends="testbox.system.BaseSpec" {
+component extends = "testbox.system.BaseSpec" {
 
 	variables.mockbox = new testbox.system.MockBox();
 

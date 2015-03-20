@@ -1,4 +1,4 @@
-component extends="tests.xunit.BaseTest" {
+component extends = "tests.xunit.BaseTest" {
 
 	// Testcase Lifecycle Methods
 
@@ -14,17 +14,29 @@ component extends="tests.xunit.BaseTest" {
 
 	// Tests
 
-	function test_deleteFile_deletes_file_if_it_exists() {
-		setupDeleteFileTests();
+	// deleteFile() tests
+
+	private struct function getMocksForDeleteFileTests() {
+		local.mocked = {};
+		variables.mocked.resultObj = variables.mockbox.createEmptyMock("ValidateThis.util.Result")
+			.$("setSuccessMessage")
+			.$("setErrorMessage");
+		variables.mocked.validationFactoryObj.$("newResult", variables.mocked.resultObj);
 		variables.CUT
-			.$("isFile", TRUE)
-			.deleteFile(file = "");
+			.$("getFile", variables.mockbox.createStub().$("delete"))
+			.$("isFile", TRUE);
+		return local.mocked;
+	}
+
+	function test_deleteFile_deletes_file_if_it_exists() {
+		local.mocked = getMocksForDeleteFileTests();
+		variables.CUT.deleteFile(file = "");
 		local.actual = variables.CUT.$once("getFile");
 		$assert.isTrue(local.actual);
 	}
 
 	function test_deleteFile_does_not_delete_file_if_it_does_not_exist() {
-		setupDeleteFileTests();
+		local.mocked = getMocksForDeleteFileTests();
 		variables.CUT
 			.$("isFile", FALSE)
 			.deleteFile(file = "");
@@ -32,26 +44,25 @@ component extends="tests.xunit.BaseTest" {
 		$assert.isTrue(local.actual);
 	}
 
-	function test_isDirectory_returns_true_if_directory_exists() {
+	// isDirectory() tests
+
+	private struct function getMocksForIsDirectoryTests() {
+		local.mocked = {};
 		variables.CUT.$("getFile", variables.mockbox.createStub().$("isDirectory", TRUE));
+		return local.mocked;
+	}
+
+	function test_isDirectory_returns_true_if_directory_exists() {
+		local.mocked = getMocksForIsDirectoryTests();
 		local.actual = variables.CUT.isDirectory(directory = "");
 		$assert.isTrue(local.actual);
 	}
 
 	function test_isDirectory_returns_false_if_directory_does_not_exist() {
+		local.mocked = getMocksForIsDirectoryTests();
 		variables.CUT.$("getFile", variables.mockbox.createStub().$("isDirectory", FALSE));
 		local.actual = variables.CUT.isDirectory(directory = "");
 		$assert.isFalse(local.actual);
-	}
-
-	// Helper Methods
-
-	private function setupDeleteFileTests() {
-		variables.mocked.resultObj = variables.mockbox.createEmptyMock("ValidateThis.util.Result")
-			.$("setSuccessMessage")
-			.$("setErrorMessage");
-		variables.mocked.validationFactoryObj.$("newResult", variables.mocked.resultObj);
-		variables.CUT.$("getFile", variables.mockbox.createStub().$("delete"));
 	}
 
 }

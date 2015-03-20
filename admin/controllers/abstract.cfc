@@ -1,9 +1,9 @@
-component accessors="true" {
+component accessors = true {
 
 	// ------------------------ DEPENDENCY INJECTION ------------------------ //
 
-	property name="EnquiryService" setter="true" getter="false";
-	property name="SecurityService" setter="true" getter="false";
+	property name = "EnquiryService" setter = true getter = false;
+	property name = "SecurityService" setter = true getter = false;
 
 	// ------------------------ PUBLIC METHODS ------------------------ //
 
@@ -12,12 +12,12 @@ component accessors="true" {
 	}
 
 	void function before(required struct rc) {
-		rc.isallowed = variables.SecurityService.isAllowed(variables.fw.getFullyQualifiedAction());
-		if (!rc.isallowed) {
+		rc.isAllowed = variables.SecurityService.isAllowed(action = variables.fw.getFullyQualifiedAction());
+		if (!rc.isAllowed) {
 			variables.fw.redirect("security");
 		} else {
 			rc.CurrentUser = variables.SecurityService.getCurrentUser();
-			rc.unreadenquirycount = variables.EnquiryService.getUnreadCount();
+			rc.unreadEnquiryCount = variables.EnquiryService.getUnreadCount();
 		}
 	}
 

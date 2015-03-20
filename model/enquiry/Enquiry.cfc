@@ -1,14 +1,17 @@
-component persistent="true" table="enquiries" cacheuse="transactional" {
+/**
+ * I am the enquiry entity component.
+ */
+component persistent = true table = "enquiries" cacheuse = "transactional" {
 
 	// ------------------------ PROPERTIES ------------------------ //
 
-	property name="enquiryid" column="enquiry_id" fieldtype="id" setter="false" generator="native";
+	property name = "enquiryId" column = "enquiry_id" fieldtype = "id" setter = false generator = "native";
 
-	property name="name" column="enquiry_name" ormtype="string" length="50";
-	property name="email" column="enquiry_email" ormtype="string" length="150";
-	property name="message" column="enquiry_message" ormtype="text";
-	property name="read" column="enquiry_read" ormtype="boolean";
-	property name="created" column="enquiry_created" ormtype="timestamp";
+	property name = "name" column = "enquiry_name" ormtype = "string" length = 50;
+	property name = "email" column = "enquiry_email" ormtype = "string" length = 150;
+	property name = "message" column = "enquiry_message" ormtype = "text";
+	property name = "read" column = "enquiry_read" ormtype = "boolean";
+	property name = "created" column = "enquiry_created" ormtype = "timestamp";
 
 	// ------------------------ CONSTRUCTOR ------------------------ //
 
@@ -17,6 +20,7 @@ component persistent="true" table="enquiries" cacheuse="transactional" {
 	 */
 	Enquiry function init() {
 		variables.name = "";
+		variables.message = "";
 		variables.read = false;
 		return this;
 	}
@@ -34,7 +38,7 @@ component persistent="true" table="enquiries" cacheuse="transactional" {
 	 * I return true if the enquiry is persisted
 	 */
 	boolean function isPersisted() {
-		return !IsNull(variables.enquiryid);
+		return !IsNull(variables.enquiryId);
 	}
 
 	/**

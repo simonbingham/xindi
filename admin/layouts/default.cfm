@@ -8,7 +8,7 @@
 			<meta charset="utf-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-			<base href="#rc.basehref##request.subsystem#/">
+			<base href="#rc.baseHref##request.subSystem#/">
 
 			<title>Xindi Site Manager</title>
 
@@ -48,16 +48,20 @@
 							<span class="icon-bar"></span>
 						</button>
 
-						<a class="navbar-brand" href="#rc.basehref##request.subsystem#/" title="Return to home page"><img src="assets/img/xindi-logo.png" alt="Xindi logo" /></a>
+						<a class="navbar-brand" href="#rc.baseHref##request.subSystem#/" title="Return to home page"><img src="assets/img/xindi-logo.png" alt="Xindi logo" /></a>
 					</div>
 
 					<div id="navbar" class="navbar-collapse collapse">
 						<ul class="nav navbar-nav">
 							<cfif StructKeyExists(rc, "CurrentUser")>
-								<li><a href="#rc.basehref##request.subsystem#/">Dashboard</a></li>
+								<li><a href="#rc.baseHref##request.subSystem#/">Dashboard</a></li>
 								<li><a href="#buildURL('pages')#">Pages</a></li>
-								<cfif rc.config.news.enabled><li><a href="#buildURL('news')#">News</a></li></cfif>
-								<cfif rc.config.enquiry.enabled><li><a href="#buildURL('enquiries')#">Enquiries<cfif rc.unreadenquirycount> <span class="badge badge-info">#NumberFormat(rc.unreadenquirycount)#</span></cfif></a></li></cfif>
+								<cfif rc.config.news.enabled>
+									<li><a href="#buildURL('news')#">News</a></li>
+								</cfif>
+								<cfif rc.config.enquiry.enabled>
+									<li><a href="#buildURL('enquiries')#">Enquiries<cfif rc.unreadEnquiryCount> <span class="badge badge-info">#NumberFormat(rc.unreadEnquiryCount)#</span></cfif></a></li>
+								</cfif>
 								<li><a href="#buildURL('users')#">Users</a></li>
 								<li><a href="#buildURL('security/logout')#">Logout</a></li>
 							</cfif>
@@ -67,7 +71,11 @@
 			</nav>
 
 			<div id="container" class="container" role="main">
-				<h2 class="pull-right"><cfif StructKeyExists(rc, "CurrentUser")><small class="pull-right">#rc.CurrentUser.getName()#</small></cfif></h2>
+				<h2 class="pull-right">
+					<cfif StructKeyExists(rc, "CurrentUser")>
+						<small class="pull-right">#rc.CurrentUser.getName()#</small>
+					</cfif>
+				</h2>
 
 				#body#
 

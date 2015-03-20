@@ -1,42 +1,45 @@
-component accessors="true" extends="model.abstract.BaseService" {
+/**
+ * I am the enquiry service component.
+ */
+component accessors = true extends = "model.abstract.BaseService" {
 
 	// ------------------------ DEPENDENCY INJECTION ------------------------ //
 
-	property name="EnquiryGateway" getter="false";
-	property name="NotificationService" getter="false";
-	property name="Validator" getter="false";
+	property name = "EnquiryGateway" getter = false;
+	property name = "NotificationService" getter = false;
+	property name = "Validator" getter = false;
 
 	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	/**
 	 * I delete an enquiry
 	 */
-	struct function deleteEnquiry(required enquiryid) {
+	struct function deleteEnquiry(required numeric enquiryId) {
 		transaction{
-			var Enquiry = variables.EnquiryGateway.getEnquiry(Val(arguments.enquiryid));
-			var result = variables.Validator.newResult();
-			if (Enquiry.isPersisted()) {
-				variables.EnquiryGateway.deleteEnquiry(Enquiry);
-				result.setSuccessMessage("The enquiry from &quot;#Enquiry.getName()#&quot; has been deleted.");
+			local.Enquiry = variables.EnquiryGateway.getEnquiry(enquiryId = Val(arguments.enquiryId));
+			local.result = variables.Validator.newResult();
+			if (local.Enquiry.isPersisted()) {
+				variables.EnquiryGateway.deleteEnquiry(theEnquiry = local.Enquiry);
+				local.result.setSuccessMessage("The enquiry from &quot;#local.Enquiry.getName()#&quot; has been deleted.");
 			} else {
-				result.setErrorMessage("The enquiry could not be deleted.");
+				local.result.setErrorMessage("The enquiry could not be deleted.");
 			}
 		}
-		return result;
+		return local.result;
 	}
 
 	/**
 	 * I return an array of enquiries
 	 */
-	array function getEnquiries(maxresults=0) {
-		return variables.EnquiryGateway.getEnquiries(maxresults=Val(arguments.maxresults));
+	array function getEnquiries(numeric maxResults = 0) {
+		return variables.EnquiryGateway.getEnquiries(maxResults = Val(arguments.maxResults));
 	}
 
 	/**
 	 * I return an enquiry matching an id
 	 */
-	Enquiry function getEnquiry(required enquiryid) {
-		return variables.EnquiryGateway.getEnquiry(Val(arguments.enquiryid));
+	Enquiry function getEnquiry(required numeric enquiryId) {
+		return variables.EnquiryGateway.getEnquiry(enquiryId = Val(arguments.enquiryId));
 	}
 
 	/**
@@ -49,23 +52,23 @@ component accessors="true" extends="model.abstract.BaseService" {
 	/**
 	 * I mark an enquiry, or enquiries, as read
 	 */
-	struct function markRead(enquiryid=0) {
+	struct function markRead(numeric enquiryId = 0) {
 		transaction{
-			var result = variables.Validator.newResult();
-			if (Val(arguments.enquiryid)) {
-				var Enquiry = variables.EnquiryGateway.getEnquiry(Val(arguments.enquiryid));
-				if (!IsNull(Enquiry)) {
-					variables.EnquiryGateway.markRead(Enquiry);
-					result.setSuccessMessage("The message has been marked as read.");
+			local.result = variables.Validator.newResult();
+			if (Val(arguments.enquiryId)) {
+				local.Enquiry = variables.EnquiryGateway.getEnquiry(enquiryId = Val(arguments.enquiryId));
+				if (!IsNull(local.Enquiry)) {
+					variables.EnquiryGateway.markRead(theEnquiry = local.Enquiry);
+					local.result.setSuccessMessage("The message has been marked as read.");
 				} else {
-					result.setErrorMessage("The message could not be marked as read.");
+					local.result.setErrorMessage("The message could not be marked as read.");
 				}
 			} else {
 				variables.EnquiryGateway.markRead();
-				result.setSuccessMessage("All messages have been marked as read.");
+				local.result.setSuccessMessage("All messages have been marked as read.");
 			}
 		}
-		return result;
+		return local.result;
 	}
 
 	/**
@@ -78,22 +81,21 @@ component accessors="true" extends="model.abstract.BaseService" {
 	/**
 	 * I validate and send an enquiry
 	 */
-	struct function sendEnquiry(required struct properties, required struct config, required string emailtemplatepath) {
+	struct function sendEnquiry(required struct properties, required struct config, required string emailTemplatePath) {
 		transaction{
-			var emailtemplate = "";
-			var Enquiry = variables.EnquiryGateway.newEnquiry();
-			populate(Enquiry, arguments.properties);
-			var result = variables.Validator.validate(theObject=Enquiry);
-			if (!result.hasErrors()) {
-				savecontent variable="emailtemplate" {include arguments.emailtemplatepath;}
-				variables.NotificationService.send(arguments.config.subject, arguments.config.emailto, Enquiry.getEmail(), emailtemplate);
-				variables.EnquiryGateway.saveEnquiry(Enquiry);
-				result.setSuccessMessage("Your enquiry has been sent.");
+			local.Enquiry = variables.EnquiryGateway.newEnquiry();
+			populate(Entity = local.Enquiry, memento = arguments.properties);
+			local.result = variables.Validator.validate(theObject = local.Enquiry);
+			if (!local.result.hasErrors()) {
+				savecontent variable="local.emailTemplate" {include arguments.emailTemplatePath;}
+				variables.NotificationService.send(subject = arguments.config.subject, to = arguments.config.emailTo, from = local.Enquiry.getEmail(), body = local.emailTemplate);
+				variables.EnquiryGateway.saveEnquiry(theEnquiry = local.Enquiry);
+				local.result.setSuccessMessage("Your enquiry has been sent.");
 			} else {
-				result.setErrorMessage("Your enquiry could not be sent. Please amend the highlighted fields.");
+				local.result.setErrorMessage("Your enquiry could not be sent. Please amend the highlighted fields.");
 			}
 		}
-		return result;
+		return local.result;
 	}
 
 }

@@ -1,4 +1,4 @@
-component extends="tests.xunit.BaseTest" {
+component extends = "tests.xunit.BaseTest" {
 
 	// Testcase Lifecycle Methods
 
@@ -8,20 +8,38 @@ component extends="tests.xunit.BaseTest" {
 
 	// Tests
 
+	// preInsert() tests
+
+	private struct function getMocksForPreInsertTests() {
+		local.mocked = {};
+		local.mocked.entity = variables.mockbox.createStub()
+			.$("setCreated")
+			.$("setUpdated");
+		return local.mocked;
+	}
+
 	function test_preInsert_calls_setCreated_when_method_exists() {
-		local.mocked.entity = variables.mockbox.createStub().$("setCreated");
+		local.mocked = getMocksForPreInsertTests();
 		variables.CUT.preInsert(entity = local.mocked.entity);
 		$assert.isTrue(local.mocked.entity.$once("setCreated"));
 	}
 
 	function test_preInsert_calls_setUpdated_when_method_exists() {
-		local.mocked.entity = variables.mockbox.createStub().$("setUpdated");
+		local.mocked = getMocksForPreInsertTests();
 		variables.CUT.preInsert(entity = local.mocked.entity);
 		$assert.isTrue(local.mocked.entity.$once("setUpdated"));
 	}
 
-	function test_preUpdate_calls_setUpdated_when_method_exists() {
+	// preUpdate() tests
+
+	private struct function getMocksForPreUpdateTests() {
+		local.mocked = {};
 		local.mocked.entity = variables.mockbox.createStub().$("setUpdated");
+		return local.mocked;
+	}
+
+	function test_preUpdate_calls_setUpdated_when_method_exists() {
+		local.mocked = getMocksForPreUpdateTests();
 		variables.CUT.preUpdate(entity = local.mocked.entity);
 		$assert.isTrue(local.mocked.entity.$once("setUpdated"));
 	}

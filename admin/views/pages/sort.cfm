@@ -1,9 +1,11 @@
 <cfoutput>
-	<div class="page-header clear"><h1>Sort Pages</h1></div>
+	<div class="page-header clear">
+		<h1>Sort Pages</h1>
+	</div>
 
 	<ul id="sortable">
 		<cfloop query="rc.subpages">
-			<li data-pageid="#rc.subpages.pageid#"><i class="glyphicon glyphicon-retweet"></i> #rc.subpages.title#</li>
+			<li data-pageid="#rc.subpages.pageId#"><i class="glyphicon glyphicon-retweet"></i> #rc.subpages.title#</li>
 		</cfloop>
 	</ul>
 
@@ -15,7 +17,7 @@
 		jQuery(function ($){
 			var originalOrder = [];
 			<cfloop query="rc.subpages">
-				originalOrder.push({left: #rc.subpages.positionleft#, right: #rc.subpages.positionright#});
+				originalOrder.push({left: #rc.subpages.positionLeft#, right: #rc.subpages.positionRight#});
 			</cfloop>
 
 			$("##sortable").sortable({

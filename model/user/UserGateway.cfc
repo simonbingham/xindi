@@ -1,3 +1,6 @@
+/**
+ * I am the user gateway component.
+ */
 component accessors="true" extends="model.abstract.BaseGateway" {
 
 	// ------------------------ PUBLIC METHODS ------------------------ //
@@ -12,26 +15,30 @@ component accessors="true" extends="model.abstract.BaseGateway" {
 	/**
 	 * I return a user matching an id
 	 */
-	User function getUser(required numeric userid) {
-		return get("User", arguments.userid);
+	User function getUser(required numeric userId) {
+		return get(entityName = "User", id = arguments.userId);
 	}
 
 	/**
 	 * I return a user matching a email address and password
 	 */
 	User function getUserByCredentials(required User theUser) {
-		var User = ORMExecuteQuery("from User where email=:email and password=:password", {email=arguments.theUser.getEmail(), password=arguments.theUser.getPassword()}, true);
-		if(IsNull(User)) User = new("User");
-		return User;
+		local.User = ORMExecuteQuery("from User where email = :email and password = :password", {email = arguments.theUser.getEmail(), password = arguments.theUser.getPassword()}, true);
+		if (IsNull(local.User)) {
+			local.User = new("User");
+		}
+		return local.User;
 	}
 
 	/**
 	 * I return a user matching an email address
 	 */
 	User function getUserByEmail(required User theUser) {
-		var User = ORMExecuteQuery("from User where email=:email", {email=arguments.theUser.getEmail()}, true);
-		if (IsNull(User)) User = new("User");
-		return User;
+		local.User = ORMExecuteQuery("from User where email = :email", {email = arguments.theUser.getEmail()}, true);
+		if (IsNull(User)) {
+			local.User = new("User");
+		}
+		return local.User;
 	}
 
 	/**

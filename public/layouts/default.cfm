@@ -11,7 +11,7 @@
 			<cfif rc.MetaData.hasMetaAuthor()><meta name="author" content="#rc.MetaData.getMetaAuthor()#"></cfif>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-			<base href="#rc.basehref#">
+			<base href="#rc.baseHref#">
 
 			<title>#rc.MetaData.getMetaTitle()#</title>
 
@@ -23,7 +23,7 @@
 			<cfif Len(rc.config.googleanalyticstrackingid)>
 				<script type="text/javascript">
 				var _gaq = _gaq || [];
-				_gaq.push(['_setAccount', '#rc.config.googleanalyticstrackingid#']);
+				_gaq.push(['_setAccount', '#rc.config.googleAnalyticsTrackingId#']);
 				_gaq.push(['_trackPageview']);
 
 				(function() {
@@ -53,7 +53,7 @@
 							<span class="icon-bar"></span>
 						</button>
 
-						<a class="navbar-brand" href="#rc.basehref#" title="Return to home page"><img src="public/assets/img/global/xindi-logo.png" alt="Xindi logo" /></a>
+						<a class="navbar-brand" href="#rc.baseHref#" title="Return to home page"><img src="public/assets/img/global/xindi-logo.png" alt="Xindi logo" /></a>
 					</div>
 
 					<div id="navbar" class="navbar-collapse collapse">
