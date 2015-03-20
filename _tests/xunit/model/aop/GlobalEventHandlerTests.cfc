@@ -1,4 +1,4 @@
-component extends="tests.xunit.BaseTest" {
+component extends = "tests.xunit.BaseTest" {
 
 	// Testcase Lifecycle Methods
 

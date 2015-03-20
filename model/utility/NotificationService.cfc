@@ -1,16 +1,21 @@
+/**
+ * I am the notification service component.
+ */
 component accessors="true" {
+
+	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	/**
 	 * I send an email
 	 */
-	void function send(required string subject, required string to, required string from, required string body, string type="html") {
-		var Email = new mail();
-		Email.setSubject(arguments.subject);
-		Email.setTo(arguments.to);
-		Email.setFrom(arguments.from);
-		Email.setBody(arguments.body);
-		Email.setType(arguments.type);
-		Email.send();
+	void function send(required string subject, required string to, required string from, required string body, string type = "html") {
+		local.emailService = new mail();
+		local.emailService.setSubject(arguments.subject);
+		local.emailService.setTo(arguments.to);
+		local.emailService.setFrom(arguments.from);
+		local.emailService.setBody(arguments.body);
+		local.emailService.setType(arguments.type);
+		local.emailService.send();
 	}
 
 }

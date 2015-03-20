@@ -1,4 +1,4 @@
-component extends="tests.xunit.BaseTest" {
+component extends = "tests.xunit.BaseTest" {
 
 	// Testcase Lifecycle Methods
 
@@ -56,12 +56,12 @@ component extends="tests.xunit.BaseTest" {
 	private struct function getMocksForPopulateMetaDataTests() {
 		local.mocked = {};
 		variables.mocked.metaDataObj
-			.$("generateMetaDescription")
-			.$("generateMetaKeywords");
+			.$("generateMetaDescription", "")
+			.$("generateMetaKeywords", "");
 		local.mocked.entity = variables.mockbox.createStub()
 			.$("isMetaGenerated", TRUE)
-			.$("getContent")
-			.$("getTitle")
+			.$("getContent", "")
+			.$("getTitle", "")
 			.$("setMetaTitle")
 			.$("setMetaDescription")
 			.$("setMetaKeywords");

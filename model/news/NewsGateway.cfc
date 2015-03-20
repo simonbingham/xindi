@@ -1,4 +1,4 @@
-<cfcomponent accessors="true" output="false" extends="model.abstract.BaseGateway">
+<cfcomponent displayname="News Gateway" hint="I am the news gateway component" accessors="true" extends="model.abstract.BaseGateway" output="false">
 	<cfscript>
 		// ------------------------ PUBLIC METHODS ------------------------ //
 
@@ -12,17 +12,19 @@
 		/**
 		 * I return an article matching an id
 		 */
-		Article function getArticle(required numeric articleid) {
-			return get("Article", arguments.articleid);
+		Article function getArticle(required numeric articleId) {
+			return get(entityName = "Article", id = arguments.articleId);
 		}
 
 		/**
 		 * I return an article matching a unique id
 		 */
 		Article function getArticleBySlug(required string slug) {
-			var Article = ORMExecuteQuery("from Article where slug=:slug and published<=:published", {slug=arguments.slug, published=Now()}, true);
-			if (IsNull(Article)) Article = new("Article");
-			return Article;
+			local.Article = ORMExecuteQuery("from Article where slug = :slug and published <= :published", {slug = arguments.slug, published = Now()}, true);
+			if (IsNull(local.Article)) {
+				local.Article = new("Article");
+			}
+			return local.Article;
 		}
 
 		/**
@@ -34,36 +36,40 @@
 	</cfscript>
 
 	<cffunction name="getArticles" output="false" returntype="Array" hint="I return an array of articles">
-		<cfargument name="searchterm" type="string" required="false" default="">
-		<cfargument name="sortorder" type="string" required="false" default="published desc">
-		<cfargument name="published" type="boolean" required="false" default="false">
-		<cfargument name="maxresults" type="numeric" required="false" default="0">
-		<cfargument name="offset" type="numeric" required="false" default="0">
-		<cfset var qArticles = "">
-		<cfset var thesearchterm = Trim(arguments.searchterm)>
-		<cfset var ormoptions = {}>
-		<cfif arguments.maxresults>
-			<cfset ormoptions.maxresults = arguments.maxresults>
+		<cfargument name="searchTerm" type="string" required="false" default="" hint="The search term">
+		<cfargument name="sortOrder" type="string" required="false" default="published desc" hint="The column upon which to sort">
+		<cfargument name="published" type="boolean" required="false" default="false" hint="True if only published articles should be returned">
+		<cfargument name="maxResults" type="numeric" required="false" default="0" hint="The maximum number of results to return">
+		<cfargument name="offset" type="numeric" required="false" default="0" hint="The offset">
+
+		<cfset local.theSearchTerm = Trim(arguments.searchTerm)>
+		<cfset local.ormOptions = {}>
+
+		<cfif arguments.maxResults>
+			<cfset local.ormOptions.maxresults = arguments.maxResults>
 		</cfif>
+
 		<cfif arguments.offset>
-			<cfset ormoptions.offset = arguments.offset>
+			<cfset local.ormOptions.offset = arguments.offset>
 		</cfif>
-		<cfquery name="qArticles" dbtype="hql" ormoptions="#ormoptions#">
-			from Article
-			where 1=1
+
+		<cfquery name="local.articles" dbtype="hql" ormoptions="#local.ormOptions#">
+			FROM Article
+			WHERE 1 = 1
 			<cfif arguments.published>
-				and published < <cfqueryparam cfsqltype="cf_sql_date" value="#Now()#">
+				AND published < <cfqueryparam cfsqltype="cf_sql_date" value="#Now()#">
 			</cfif>
-			<cfif Len(thesearchterm)>
-				and
+			<cfif Len(local.thesearchterm)>
+				AND
 				(
-				 	title like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#thesearchterm#%">
-				 	or content like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#thesearchterm#%">
+				 	title LIKE <cfqueryparam cfsqltype="cf_sql_varchar" value="%#local.thesearchterm#%">
+				 	OR content LIKE <cfqueryparam cfsqltype="cf_sql_varchar" value="%#local.thesearchterm#%">
 				)
 			</cfif>
-			order by #arguments.sortorder#
+			ORDER BY #arguments.sortOrder#
 		</cfquery>
-		<cfreturn qArticles>
+
+		<cfreturn local.articles>
 	</cffunction>
 
 	<cfscript>

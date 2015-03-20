@@ -1,4 +1,7 @@
-component implements="cfide.orm.IEventHandler" {
+/**
+ * I am the global event handler component.
+ */
+component implements = "cfide.orm.IEventHandler" {
 
 	/**
 	 * I am called before injecting property values into a newly loaded entity instance
@@ -15,8 +18,12 @@ component implements="cfide.orm.IEventHandler" {
 	 */
 	void function preInsert(any entity) {
 		local.timestamp = now();
-		if (StructKeyExists(arguments.entity, "setCreated")) arguments.entity.setCreated(local.timestamp);
-		if (StructKeyExists(arguments.entity, "setUpdated")) arguments.entity.setUpdated(local.timestamp);
+		if (StructKeyExists(arguments.entity, "setCreated")) {
+			arguments.entity.setCreated(local.timestamp);
+		}
+		if (StructKeyExists(arguments.entity, "setUpdated")) {
+			arguments.entity.setUpdated(local.timestamp);
+		}
 	}
 
 	/**
@@ -28,7 +35,9 @@ component implements="cfide.orm.IEventHandler" {
 	 * I am called before the entity is updated in the database
 	 */
 	void function preUpdate(any entity, struct oldData) {
-		if (StructKeyExists(arguments.entity, "setUpdated")) arguments.entity.setUpdated(Now());
+		if (StructKeyExists(arguments.entity, "setUpdated")) {
+			arguments.entity.setUpdated(Now());
+		}
 	}
 
 	/**

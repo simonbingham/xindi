@@ -1,17 +1,17 @@
 component {
 
-	remote any function logClientSideError(message, url, linenumber) {
-		if (StructKeyExists(application, "exceptiontracker")) {
+	remote any function logClientSideError(required string message, required string url, required numeric lineNumber) {
+		if (StructKeyExists(application, "exceptionTracker")) {
 			// Hoth expects a struct with the following keys
-			var exception = {
-				detail = "[#arguments.url# (#arguments.linenumber#)] #arguments.message#",
+			local.exception = {
+				detail = "[#arguments.url# (#arguments.lineNumber#)] #arguments.message#",
 				type = "clientside",
-				tagContext = "[#arguments.url# (#arguments.linenumber#)]",
+				tagContext = "[#arguments.url# (#arguments.lineNumber#)]",
 				// stack is used to identify unique errors so include lots of info!
-				StackTrace = SerializeJSON(arguments),
-				Message = arguments.message
+				stackTrace = SerializeJSON(arguments),
+				message = arguments.message
 			};
-			application.exceptiontracker.track(exception);
+			application.exceptionTracker.track(local.exception);
 			return true;
 		}
 		return false;

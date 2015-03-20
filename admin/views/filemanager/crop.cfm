@@ -14,28 +14,43 @@
 
 	<form action="#buildURL('filemanager.docrop?subdirectory=#urlSafePath(rc.subdirectory)#&image=#rc.image#')#" method="post">
 		<p>To resize the image you can choose a predefined sizes or drag the slider.</p>
-		<cfif rc.ImageInfo.width gt 100><label><input type="radio" name="resize-width" value="#local.thumbnail.width#" /> Thumbnail (#local.thumbnail.width# x #Round(rc.ImageInfo.height/local.thumbnail.factor)#)</label></cfif>
-		<cfif rc.ImageInfo.width gt local.small.width><label><input type="radio" name="resize-width" value="#local.small.width#" /> Small (#local.small.width# x #Round(rc.ImageInfo.height/local.small.factor)#)</label></cfif>
-		<cfif rc.ImageInfo.width gt local.medium.width><label><input type="radio" name="resize-width" value="#local.medium.width#" /> Medium (#local.medium.width# x #Round(rc.ImageInfo.height/local.medium.factor)#)</label></cfif>
-		<cfif rc.ImageInfo.width gt local.large.width><label><input type="radio" name="resize-width" value="#local.large.width#" /> Large (#local.large.width# x #Round(rc.ImageInfo.height/local.large.factor)#)</label></cfif>
-		<label><input type="radio" name="resize-width" value="#rc.ImageInfo.width#" checked="checked" /> Original (#rc.ImageInfo.width# x #rc.ImageInfo.height#)</label>
-		<br />
+
+		<cfif rc.ImageInfo.width gt 100>
+			<label><input type="radio" name="resize-width" value="#local.thumbnail.width#"> Thumbnail (#local.thumbnail.width# x #Round(rc.ImageInfo.height / local.thumbnail.factor)#)</label>
+		</cfif>
+
+		<cfif rc.ImageInfo.width gt local.small.width>
+			<label><input type="radio" name="resize-width" value="#local.small.width#"> Small (#local.small.width# x #Round(rc.ImageInfo.height / local.small.factor)#)</label>
+		</cfif>
+
+		<cfif rc.ImageInfo.width gt local.medium.width>
+			<label><input type="radio" name="resize-width" value="#local.medium.width#"> Medium (#local.medium.width# x #Round(rc.ImageInfo.height / local.medium.factor)#)</label>
+		</cfif>
+
+		<cfif rc.ImageInfo.width gt local.large.width>
+			<label><input type="radio" name="resize-width" value="#local.large.width#"> Large (#local.large.width# x #Round(rc.ImageInfo.height / local.large.factor)#)</label>
+		</cfif>
+
+		<label><input type="radio" name="resize-width" value="#rc.ImageInfo.width#" checked="checked"> Original (#rc.ImageInfo.width# x #rc.ImageInfo.height#)</label>
+
+		<br>
+
 		<label for="resize-width-slider">Width (px):</label>
-		<input type="text" id="width" name="width" value="#rc.ImageInfo.width#" class="textField" style="font-weight:bold; width:40px" placeholder="Width (px)" />
-		<input type="hidden" name="height" id="height" value="#rc.ImageInfo.height#" />
-		<input type="hidden" name="x1" id="x1" />
-		<input type="hidden" name="x2" id="x2" />
-		<input type="hidden" name="y1" id="y1" />
-		<input type="hidden" name="y2" id="y2" />
-		<input type="submit" name="submit" id="submit" value="save" />
-		<input type="button" name="cancel" id="cancel" value="cancel" />
+		<input type="text" id="width" name="width" value="#rc.ImageInfo.width#" class="textField" style="font-weight:bold; width:40px" placeholder="Width (px)">
+		<input type="hidden" name="height" id="height" value="#rc.ImageInfo.height#">
+		<input type="hidden" name="x1" id="x1">
+		<input type="hidden" name="x2" id="x2">
+		<input type="hidden" name="y1" id="y1">
+		<input type="hidden" name="y2" id="y2">
+		<input type="submit" name="submit" id="submit" value="save">
+		<input type="button" name="cancel" id="cancel" value="cancel">
 	</form>
 
 	<div id="slider"></div>
 
 	<p>To crop the image, click on the picture and drag to highlight the area you want to keep.</p>
 
-	<img src="#rc.basehref##rc.clientfilesdirectory##rc.subdirectory#/#rc.image#" id="photo" width="#rc.ImageInfo.width#" height="#rc.ImageInfo.height#" style="border:2px solid ##e5e5e5" />
+	<img src="#rc.basehref##rc.clientfilesdirectory##rc.subdirectory#/#rc.image#" id="photo" width="#rc.ImageInfo.width#" height="#rc.ImageInfo.height#" style="border:2px solid ##e5e5e5">
 </cfoutput>
 
 <script>
@@ -102,8 +117,10 @@
 
 <cfscript>
 	string function urlSafePath(required string path){
-		var result = Replace(arguments.path, "/", ":", "all");
-		if(!Len(Trim(result))) result = "*";
-		return result;
+		local.result = Replace(arguments.path, "/", ":", "all");
+		if(!Len(Trim(local.result))) {
+			local.result = "*";
+		}
+		return local.result;
 	}
 </cfscript>

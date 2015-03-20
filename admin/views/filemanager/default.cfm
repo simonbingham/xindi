@@ -2,38 +2,42 @@
 
 <cfscript>
 	string function urlSafePath(required string path){
-		var result = Replace(arguments.path, "/", ":", "all");
-		if(!Len(Trim(result))) result = "*";
-		return result;
+		local.result = Replace(arguments.path, "/", ":", "all");
+		if(!Len(Trim(local.result))) {
+			local.result = "*";
+		}
+		return local.result;
 	}
 </cfscript>
 
 <cfoutput>
 	<h1>File Manager</h1>
 
-	<p>You are here: <cfif Len(Trim(rc.subdirectory))>#rc.subdirectory#<cfelse>/</cfif></p>
+	<p>You are here: <cfif Len(Trim(rc.subDirectory))>#rc.subDirectory#<cfelse>/</cfif></p>
 
 	#view("partials/messages")#
 
-	<form action="#buildURL('filemanager/upload')#" method="post" class="form-horizontal append-bottom" id="upload-form" enctype="multipart/form-data">
-		<fieldset>
-			<legend>Upload File</legend>
+	<hr>
 
-			<div class="form-group">
-				<label for="file">Select File</label>
-				<input type="file" name="file" id="file">
-			</div>
+	<form action="#buildURL('filemanager/upload')#" method="post" class="append-bottom" id="upload-form" enctype="multipart/form-data">
+		<div class="form-group">
+			<label for="file">Select File</label>
+			<input type="file" name="file" id="file">
+		</div>
 
-			<input type="submit" name="upload" id="upload" value="Upload" class="btn btn-primary">
-		</fieldset>
+		<button type="submit" class="btn btn-primary">Upload</button>
 
-		<input type="hidden" name="subdirectory" id="subdirectory" value="#HtmlEditFormat(rc.subdirectory)#">
+		<input type="hidden" name="subdirectory" id="subdirectory" value="#HtmlEditFormat(rc.subDirectory)#">
 	</form>
 
-	<cfif rc.subdirectory neq rc.clientfilesdirectory>
+	<hr>
+
+	<cfif rc.subDirectory neq rc.clientFilesDirectory>
 		<p class="clear">
-			<cfif Len(Trim(rc.subdirectory))><a href="#buildURL(action='filemanager', querystring='subdirectory=#urlSafePath(ReReplaceNoCase(rc.subdirectory, '/[^/]*$', ''))#')#"><i class="glyphicon glyphicon-chevron-up"></i> Move Up</a>&nbsp;&nbsp;</cfif>
-			<a href="#buildURL(action='filemanager.createdirectory', querystring='subdirectory=#urlSafePath(rc.subdirectory)#')#" onclick="return createFolder(this.href)"><i class="glyphicon glyphicon-plus"></i> Add Directory</a>
+			<cfif Len(Trim(rc.subDirectory))>
+				<a href="#buildURL(action = 'filemanager', queryString = 'subdirectory=#urlSafePath(ReReplaceNoCase(rc.subDirectory, '/[^/]*$', ''))#')#"><i class="glyphicon glyphicon-chevron-up"></i> Move Up</a>&nbsp;&nbsp;
+			</cfif>
+			<a href="#buildURL(action = 'filemanager.createdirectory', queryString = 'subdirectory=#urlSafePath(rc.subDirectory)#')#" onclick="return createFolder(this.href)"><i class="glyphicon glyphicon-plus"></i> Add Directory</a>
 		</p>
 	</cfif>
 
@@ -55,21 +59,21 @@
 						<cfif rc.listing.name neq "null">
 							<tr>
 								<td><i class="glyphicon glyphicon-folder-close"></i></td>
-								<td><a href="#buildURL(action='filemanager', querystring='subdirectory=#urlSafePath(rc.subdirectory & '/' & rc.listing.name)#')#">#rc.listing.name#</a></td>
+								<td><a href="#buildURL(action = 'filemanager', queryString = 'subdirectory=#urlSafePath(rc.subDirectory & '/' & rc.listing.name)#')#">#rc.listing.name#</a></td>
 								<td>&ndash;</td>
 								<td>&ndash;</td>
 								<td>&ndash;</td>
 							</tr>
 						</cfif>
 					<cfelse>
-						<cfset local.relativepathtofile = rc.basehref & rc.clientfilesdirectory & rc.subdirectory & "/" & rc.listing.name>
+						<cfset local.relativePathToFile = rc.baseHref & rc.clientFilesDirectory & rc.subDirectory & "/" & rc.listing.name>
 
 						<tr>
 							<td><i class="glyphicon glyphicon-file"></i></td>
-							<td><a href="##" onclick="return sendToEditor('#rc.listing.name#')" <cfif IsImageFile(local.relativepathtofile)>class="image-preview" rel="#local.relativepathtofile#"</cfif>>#rc.listing.name#</a></td>
+							<td><a href="##" onclick="return sendToEditor('#rc.listing.name#')" <cfif IsImageFile(local.relativePathToFile)>class="image-preview" rel="#local.relativePathToFile#"</cfif>>#rc.listing.name#</a></td>
 							<td <cfif rc.listing.size gt 15360>class="error"</cfif>>#NumberFormat(rc.listing.size / 1024)# kb</td>
-							<td class="center"><a href="#buildURL(action='filemanager.crop', querystring='subdirectory=*#urlSafePath(rc.subdirectory)#&image=#rc.listing.name#')#" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a></td>
-							<td class="center"><a href="#buildURL(action='filemanager.delete', querystring='subdirectory=*#urlSafePath(rc.subdirectory)#&delete=#rc.listing.name#')#" title="Delete"><i class="glyphicon glyphicon-trash"></i></a></td>
+							<td class="center"><a href="#buildURL(action = 'filemanager.crop', queryString = 'subdirectory=*#urlSafePath(rc.subDirectory)#&image=#rc.listing.name#')#" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a></td>
+							<td class="center"><a href="#buildURL(action = 'filemanager.delete', queryString = 'subdirectory=*#urlSafePath(rc.subDirectory)#&delete=#rc.listing.name#')#" title="Delete"><i class="glyphicon glyphicon-trash"></i></a></td>
 						</tr>
 					</cfif>
 				</cfloop>
@@ -78,7 +82,7 @@
 
 		<p class="error">Large files are highlighted and will be slow to download.</p>
 	<cfelse>
-		<hr />
+		<hr>
 
 		<p>There are currently no files.</p>
 	</cfif>
@@ -91,13 +95,13 @@
 		}
 
 		function createFolder(url){
-			var newdirectory = prompt("Please enter the folder name", "");
-			window.location.href = url + "/newdirectory/" + newdirectory;
+			var newDirectory = prompt("Please enter the folder name", "");
+			window.location.href = url + "/newdirectory/" + newDirectory;
 			return false;
 		}
 
 		jQuery(function($){
-			$imagePreview = $('<img id="preview-image" style="position:absolute;top:10px;right:10px;" alt="image preview" />').hide().appendTo('body');
+			$imagePreview = $('<img id="preview-image" style="position:absolute;top:10px;right:10px;" alt="image preview">').hide().appendTo('body');
 
 			$("a.image-preview").hover(
 				function(){

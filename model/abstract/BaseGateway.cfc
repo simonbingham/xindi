@@ -1,51 +1,52 @@
-<cfcomponent output="false">
+<cfcomponent displayname="Base Gateway" hint="I am the base gateway component" output="false">
 	<cfscript>
-	// ------------------------ CONSTRUCTOR ------------------------ //
+		// ------------------------ CONSTRUCTOR ------------------------ //
 
-	any function init() {
-		variables.dbengine = getDBEngine();
-		return this;
-	}
+		any function init() {
+			variables.dbEngine = getDBEngine();
+			return this;
+		}
 
-	// ------------------------ PUBLIC METHODS ------------------------ //
+		// ------------------------ PUBLIC METHODS ------------------------ //
 
-	/**
-	 * I delete an entity
-	 */
-	void function delete(required entity) {
-		EntityDelete(arguments.entity);
-	}
+		/**
+		 * I delete an entity
+		 */
+		void function delete(required any entity) {
+			EntityDelete(arguments.entity);
+		}
 
-	/**
-	 * I return an entity matching an id
-	 */
-	function get(required string entityname, required numeric id) {
-		var Entity = EntityLoadByPK(arguments.entityname, arguments.id);
-		if (IsNull(Entity)) Entity = new(arguments.entityname);
-		return Entity;
-	}
+		/**
+		 * I return an entity matching an id
+		 */
+		function get(required string entityName, required numeric id) {
+			local.entity = EntityLoadByPK(arguments.entityName, arguments.id);
+			if (IsNull(local.entity)) {
+				local.entity = new(arguments.entityName);
+			}
+			return local.entity;
+		}
 
-	/**
-	 * I return a new entity
-	 */
-	function new(required string entityname) {
-		return EntityNew(arguments.entityname);
-	}
+		/**
+		 * I return a new entity
+		 */
+		function new(required string entityName) {
+			return EntityNew(arguments.entityName);
+		}
 
-	/**
-	 * I save an entity
-	 */
-	function save(required entity) {
-		EntitySave(arguments.entity);
-		return arguments.entity;
-	}
+		/**
+		 * I save an entity
+		 */
+		function save(required any entity) {
+			EntitySave(arguments.entity);
+			return arguments.entity;
+		}
 	</cfscript>
 
 	<!------------------------ PRIVATE METHODS ------------------------>
 
-	<cffunction name="getDBEngine" returntype="string" output="false" access="private">
-		<cfset var dbinfo = "">
-		<cfdbinfo type="version" name="dbinfo">
-		<cfreturn UCase(dbinfo.DATABASE_PRODUCTNAME)>
+	<cffunction name="getDBEngine" returntype="string" output="false" access="private" hint="I return the database engine (e.g. MySQL, MSSQL, etc.)">
+		<cfdbinfo type="version" name="local.dbInfo">
+		<cfreturn UCase(local.dbInfo.DATABASE_PRODUCTNAME)>
 	</cffunction>
 </cfcomponent>

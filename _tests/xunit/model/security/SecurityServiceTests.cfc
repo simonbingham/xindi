@@ -1,4 +1,4 @@
-component extends="tests.xunit.BaseTest" {
+component extends = "tests.xunit.BaseTest" {
 
 	// Testcase Lifecycle Methods
 
@@ -65,7 +65,7 @@ component extends="tests.xunit.BaseTest" {
 		variables.CUT
 			.$("getCurrentStorage", {the_user_key = "the user key"})
 			.$("hasCurrentUser", TRUE)
-			.$property(propertyName = "userKey", propertyScope = "variables", mock = "the_user_key");
+			.$property(propertyName = "USER_KEY", propertyScope = "variables", mock = "the_user_key");
 		variables.mocked.userObj = variables.mockbox.createEmptyMock("model.user.User");
 		variables.mocked.userGatewayObj.$("getUser", variables.mocked.userObj, FALSE);
 		return local.mocked;
@@ -91,7 +91,7 @@ component extends="tests.xunit.BaseTest" {
 		local.mocked = {};
 		variables.CUT
 			.$("getCurrentStorage", {the_user_key = ""})
-			.$property(propertyName = "userKey", propertyScope = "variables", mock = "the_user_key");
+			.$property(propertyName = "USER_KEY", propertyScope = "variables", mock = "the_user_key");
 		return local.mocked;
 	}
 
@@ -216,7 +216,7 @@ component extends="tests.xunit.BaseTest" {
 		local.mocked = {};
 		variables.mocked.userObj = variables.mockbox.createEmptyMock("model.user.User").$("getUserId", 111);
 		variables.CUT
-			.$property(propertyName = "userKey", propertyScope = "variables", mock = "the_user_key")
+			.$property(propertyName = "USER_KEY", propertyScope = "variables", mock = "the_user_key")
 			.$("getCurrentStorage", {});
 		return local.mocked;
 	}

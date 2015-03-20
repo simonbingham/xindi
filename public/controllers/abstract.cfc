@@ -1,4 +1,4 @@
-component accessors="true" {
+component accessors = true {
 
 	// ------------------------ PUBLIC METHODS ------------------------ //
 

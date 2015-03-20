@@ -11,7 +11,7 @@
 			<meta name="author" content="Simon Bingham (http://www.simonbingham.me.uk/)">
 			<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-			<base href="#rc.basehref##request.subsystem#/">
+			<base href="#rc.baseHref##request.subSystem#/">
 
 			<title>Xindi File Manager</title>
 
@@ -23,9 +23,9 @@
 			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 			<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 			<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
-			<script src="assets/bootstrap/js/bootstrap.min.js"></script>
 			<script src="assets/js/jquery.imgareaselect.min.js"></script>
 			<script src="assets/ckeditor/ckeditor.js"></script>
+			<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 			<script src="assets/js/core.js?r=#rc.config.revision#"></script>
 
 			<link rel="shortcut icon" href="assets/ico/favicon.ico">

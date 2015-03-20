@@ -1,6 +1,6 @@
 <cfoutput>
 	<ul class="breadcrumb">
-		<li><a href="#rc.basehref#">Home</a></li>
+		<li><a href="#rc.baseHref#">Home</a></li>
 		<li class="active">Contact</li>
 	</ul>
 
@@ -13,7 +13,7 @@
 			<div class="form-group <cfif rc.result.hasErrors('name')>error</cfif>">
 				<label for="name">Name <cfif rc.Validator.propertyIsRequired("name")>*</cfif></label>
 				<input class="form-control" type="text" name="name" id="name" value="#HtmlEditFormat(rc.Enquiry.getName())#" maxlength="50">
-				#view("partials/failures", {property="name"})#
+				#view("partials/failures", {property = "name"})#
 			</div>
 
 			<div class="form-group <cfif rc.result.hasErrors('email')>error</cfif>">
@@ -24,7 +24,7 @@
 			<div class="form-group <cfif rc.result.hasErrors('message')>error</cfif>">
 				<label for="message">Message <cfif rc.Validator.propertyIsRequired("message")>*</cfif></label>
 				<textarea class="form-control" name="message" id="message">#HtmlEditFormat(rc.Enquiry.getMessage())#</textarea>
-				#view("partials/failures", {property="message"})#
+				#view("partials/failures", {property = "message"})#
 			</div>
 		</fieldset>
 
@@ -50,5 +50,5 @@
 
 	#rc.Validator.getInitializationScript()#
 
-	#rc.Validator.getValidationScript(formName="enquiry-form")#
+	#rc.Validator.getValidationScript(formName = "enquiry-form")#
 </cfoutput>

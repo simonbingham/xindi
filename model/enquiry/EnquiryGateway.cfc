@@ -1,4 +1,7 @@
-component accessors="true" extends="model.abstract.BaseGateway" {
+/**
+ * I am the enquiry gateway component.
+ */
+component accessors = true extends = "model.abstract.BaseGateway" {
 
 	// ------------------------ PUBLIC METHODS ------------------------ //
 
@@ -12,17 +15,19 @@ component accessors="true" extends="model.abstract.BaseGateway" {
 	/**
 	 * I return an array of enquiries
 	 */
-	array function getEnquiries(numeric maxresults=0) {
-		var ormoptions = {};
-		if (arguments.maxresults) ormoptions.maxresults = arguments.maxresults;
-		return EntityLoad("Enquiry", {}, "read, created DESC", ormoptions);
+	array function getEnquiries(numeric maxResults = 0) {
+		local.ormOptions = {};
+		if (arguments.maxResults) {
+			local.ormOptions.maxResults = arguments.maxResults;
+		}
+		return EntityLoad("Enquiry", {}, "read, created DESC", local.ormOptions);
 	}
 
 	/**
 	 * I return an enquiry matching an id
 	 */
-	Enquiry function getEnquiry(required numeric enquiryid) {
-		return get("Enquiry", arguments.enquiryid);
+	Enquiry function getEnquiry(required numeric enquiryId) {
+		return get(entityName = "Enquiry", id = arguments.enquiryId);
 	}
 
 	/**
@@ -35,12 +40,12 @@ component accessors="true" extends="model.abstract.BaseGateway" {
 	/**
 	 * I mark an enquiry, or enquiries, as read
 	 */
-	void function markRead(theEnquiry="") {
+	void function markRead(any theEnquiry = "") {
 		if (IsObject(arguments.theEnquiry)) {
 			arguments.theEnquiry.setRead(true);
 			save(arguments.theEnquiry);
 		} else {
-			ORMExecuteQuery("update Enquiry set read=true");
+			ORMExecuteQuery("update Enquiry set read = true");
 		}
 	}
 

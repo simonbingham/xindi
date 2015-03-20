@@ -1,9 +1,9 @@
-component accessors="true" extends="abstract" {
+component accessors = true extends = "abstract" {
 
 	// ------------------------ DEPENDENCY INJECTION ------------------------ //
 
-	property name="ContentService" setter="true" getter="false";
-	property name="NewsService" setter="true" getter="false";
+	property name = "ContentService" setter = true getter = false;
+	property name = "NewsService" setter = true getter = false;
 
 	// ------------------------ PUBLIC METHODS ------------------------ //
 
@@ -15,8 +15,10 @@ component accessors="true" extends="abstract" {
 	}
 
 	void function xml(required struct rc) {
-		rc.sesomitindex = variables.fw.getConfig().sesomitindex;
-		if (rc.config.news.enabled) rc.articles = variables.NewsService.getArticles(published=true);
+		rc.sesOmitIndex = variables.fw.getConfig().sesOmitIndex;
+		if (rc.config.news.enabled) {
+			rc.articles = variables.NewsService.getArticles(published = true);
+		}
 	}
 
 }

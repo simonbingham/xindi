@@ -1,4 +1,4 @@
-component extends="tests.xunit.BaseTest" {
+component extends = "tests.xunit.BaseTest" {
 
 	// Testcase Lifecycle Methods
 
@@ -59,7 +59,7 @@ component extends="tests.xunit.BaseTest" {
 	function test_setErrorMessage_sets_error_message() {
 		local.mocked = getMocksForSetErrorMessageTests();
 		variables.CUT.setErrorMessage(message = "the message");
-		local.expected = "error";
+		local.expected = "danger";
 		local.actual = variables.CUT.$getProperty(name = "messageType", scope = "variables");
 		$assert.isEqual(local.expected, local.actual);
 	}

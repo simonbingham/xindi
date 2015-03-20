@@ -1,7 +1,7 @@
 <cfoutput>
 	<h1>Oops!</h1>
 
-	<cfif !rc.config.exceptiontracker.emailnewexceptions>
+	<cfif !rc.config.exceptionTracker.emailNewExceptions>
 		<p>An error has occurred.</p>
 
 		<h2>Failed Action</h2>

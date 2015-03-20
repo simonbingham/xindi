@@ -1,92 +1,97 @@
-component accessors="true" extends="model.abstract.BaseService" {
+/**
+ * I am the content service component.
+ */
+component accessors = true extends = "model.abstract.BaseService" {
 
 	// ------------------------ DEPENDENCY INJECTION ------------------------ //
 
-	property name="ContentGateway" getter="false";
-	property name="MetaData" getter="false";
-	property name="SecurityService" getter="false";
-	property name="Validator" getter="false";
+	property name = "ContentGateway" getter = false;
+	property name = "MetaData" getter = false;
+	property name = "SecurityService" getter = false;
+	property name = "Validator" getter = false;
 
 	// ------------------------ PUBLIC METHODS ------------------------ //
 
 	/**
 	 * I delete a page
 	 */
-	struct function deletePage(required pageid) {
+	struct function deletePage(required numeric pageId) {
 		transaction{
-			var Page = variables.ContentGateway.getPage(Val(arguments.pageid));
-			var result = variables.Validator.newResult();
-			if (Page.isPersisted()) {
-				variables.ContentGateway.deletePage(Page);
-				result.setSuccessMessage("The page &quot;#Page.getTitle()#&quot; has been deleted.");
+			local.Page = variables.ContentGateway.getPage(pageId = Val(arguments.pageId));
+			local.result = variables.Validator.newResult();
+			if (local.Page.isPersisted()) {
+				variables.ContentGateway.deletePage(thePage = local.Page);
+				local.result.setSuccessMessage("The page &quot;#local.Page.getTitle()#&quot; has been deleted.");
 			} else {
-				result.setErrorMessage("The page could not be deleted.");
+				local.result.setErrorMessage("The page could not be deleted.");
 			}
 		}
-		return result;
+		return local.result;
 	}
 
 	/**
 	 * I return a query of pages and articles that match the search term
 	 */
-	query function findContentBySearchTerm(string searchterm="", maxresults=50) {
-		arguments.maxresults = Val(arguments.maxresults);
-		return variables.ContentGateway.findContentBySearchTerm(argumentCollection=arguments);
+	query function findContentBySearchTerm(string searchTerm = "", numeric maxResults = 50) {
+		local.args = Duplicate(arguments);
+		local.args.maxresults = Val(local.args.maxResults);
+		return variables.ContentGateway.findContentBySearchTerm(argumentCollection = local.args);
 	}
 
 	/**
 	 * I return a query of child pages
 	 */
-	query function getChildren(Page, clearcache=false) {
-		return variables.ContentGateway.getChildren(left=arguments.Page.getLeftValue(), right=arguments.Page.getRightValue(), clearcache=arguments.clearcache);
+	query function getChildren(required any Page, boolean clearCache = false) {
+		return variables.ContentGateway.getChildren(left = arguments.Page.getLeftValue(), right = arguments.Page.getRightValue(), clearCache = arguments.clearCache);
 	}
 
 	/**
 	 * I return a page matching an id
 	 */
-	Page function getPage(required pageid) {
-		return variables.ContentGateway.getPage(Val(arguments.pageid));
+	Page function getPage(required numeric pageId) {
+		return variables.ContentGateway.getPage(pageId = Val(arguments.pageId));
 	}
 
 	/**
 	 * I return a page matching a slug
 	 */
 	Page function getPageBySlug(required string slug) {
-		return variables.ContentGateway.getPageBySlug(slug=Trim(arguments.slug));
+		return variables.ContentGateway.getPageBySlug(slug = Trim(arguments.slug));
 	}
 
 	/**
 	 * I return an array of pages
 	 */
-	array function getPages(string searchterm="", sortorder="leftvalue", maxresults=0) {
-		arguments.maxresults = Val(arguments.maxresults);
-		return variables.ContentGateway.getPages(argumentCollection=arguments);
+	array function getPages(string searchTerm = "", string sortOrder = "leftValue", numeric maxResults = 0) {
+		local.args = Duplicate(arguments);
+		local.args.maxResults = Val(local.args.maxResults);
+		return variables.ContentGateway.getPages(argumentCollection = local.args);
 	}
 
 	/**
 	 * I return a query of pages making up the site hierarchy
 	 */
-	query function getNavigation(Page, depth, clearcache=false) {
-		var params = {};
-		params.clearcache=arguments.clearcache;
-
+	query function getNavigation(any Page, numeric depth, boolean clearCache = false) {
+		local.params = {
+			clearcache = arguments.clearCache
+		};
 		if (StructKeyExists(arguments, "Page")) {
-			params.left = arguments.Page.getleftvalue();
-			params.right = arguments.Page.getrightvalue();
+			local.params.left = arguments.Page.getLeftValue();
+			local.params.right = arguments.Page.getRightValue();
 		}
 		if (StructKeyExists(arguments, "depth")) {
-			params.depth = arguments.depth;
+			local.params.depth = arguments.depth;
 		}
-
-		return variables.ContentGateway.getNavigation(argumentCollection=params);
+		return variables.ContentGateway.getNavigation(argumentCollection = local.params);
 	}
 
 	/**
 	 * I return a query of pages for page's hierarchy
 	 */
-	query function getNavigationPath(required pageid) {
-		arguments.pageid = Val(arguments.pageid);
-		return variables.ContentGateway.getNavigationPath(arguments.pageid);
+	query function getNavigationPath(required numeric pageId) {
+		local.args = Duplicate(arguments);
+		local.args.pageId = Val(local.args.pageId);
+		return variables.ContentGateway.getNavigationPath(pageId = local.args.pageId);
 	}
 
 	/**
@@ -99,66 +104,74 @@ component accessors="true" extends="model.abstract.BaseService" {
 	/**
 	 * I validate and save a page
 	 */
-	struct function savePage(required struct properties, required ancestorid, required string context, required string websitetitle, required string defaultslug) {
+	struct function savePage(required struct properties, required numeric ancestorId, required string context, required string websiteTitle, required string defaultSlug) {
 		transaction{
-			param name="arguments.properties.pageid" default="";
-			param name="arguments.properties.metagenerated" default="false";
-			arguments.properties.pageid = Val(arguments.properties.pageid);
-			var Page = variables.ContentGateway.getPage(arguments.properties.pageid);
-			if (arguments.properties.metagenerated) {
-				arguments.properties.metatitle = variables.MetaData.generatePageTitle(arguments.websitetitle, arguments.properties.title);
-				arguments.properties.metadescription = variables.MetaData.generateMetaDescription(arguments.properties.content);
-				arguments.properties.metakeywords = variables.MetaData.generateMetaKeywords(arguments.properties.title);
+			local.args = Duplicate(arguments);
+			param name = "local.args.properties.pageId" default = "";
+			param name = "local.args.properties.metaGenerated" default = false;
+			local.args.properties.pageId = Val(local.args.properties.pageId);
+			local.Page = variables.ContentGateway.getPage(pageId = local.args.properties.pageId);
+			if (local.args.properties.metaGenerated) {
+				local.args.properties.metaTitle = variables.MetaData.generatePageTitle(websiteTitle = local.args.websiteTitle, pageTitle = local.args.properties.title);
+				local.args.properties.metaDescription = variables.MetaData.generateMetaDescription(content = local.args.properties.content);
+				local.args.properties.metaKeywords = variables.MetaData.generateMetaKeywords(content = local.args.properties.title);
 			}
-			var User = variables.SecurityService.getCurrentUser();
-			if (!IsNull(User)) arguments.properties.updatedby = User.getName();
-			populate(Page, arguments.properties);
-			var result = variables.Validator.validate(theObject=Page, context=arguments.context);
-			if (!result.hasErrors()) {
-				variables.ContentGateway.savePage(Page, arguments.ancestorid, arguments.defaultslug);
-				result.setSuccessMessage("The page &quot;#Page.getTitle()#&quot; has been saved.");
+			local.User = variables.SecurityService.getCurrentUser();
+			if (!IsNull(local.User)) {
+				local.args.properties.updatedBy = local.User.getName();
+			}
+			populate(Entity = local.Page, memento = local.args.properties);
+			local.result = variables.Validator.validate(theObject = local.Page, context = local.args.context);
+			if (!local.result.hasErrors()) {
+				variables.ContentGateway.savePage(thePage = local.Page, ancestorId = local.args.ancestorId, defaultSlug = local.args.defaultSlug);
+				local.result.setSuccessMessage("The page &quot;#local.Page.getTitle()#&quot; has been saved.");
 			} else {
-				result.setErrorMessage("Your page could not be saved. Please amend the highlighted fields.");
+				local.result.setErrorMessage("Your page could not be saved. Please amend the highlighted fields.");
 			}
 		}
-		return result;
+		return local.result;
 	}
 
 	// accepts an array of structs
 	// TODO: doesn't currently update left and right values of sub pages - need to fix
 	boolean function saveSortOrder(required array pages) {
-		var newLeft = -1;
-		var width = -1;
-		var newRight = -1;
-		var affectedpages = -1;
-		var sorted = [];
-		for (var page in arguments.pages) {
-			var PageEntity = getPage(page.pageid);
-			if (IsNull(PageEntity) || !PageEntity.isPersisted()) return false;
-			width = PageEntity.getRightValue() - PageEntity.getLeftValue();
-			if (newLeft == -1) newLeft = page.left; // first time thorough the loop
-			else newLeft = newRight + 1;
-			newRight = newLeft + width;
-			shift = newLeft - PageEntity.getLeftValue();
-			affectedpages = PageEntity.getPageID();
-			if (shift != 0) {
-				var qDescendants = variables.ContentGateway.getNavigation(left = PageEntity.getLeftValue(), right = PageEntity.getRightValue());
-				if (qDescendants.recordCount) affectedpages &= "," & ValueList(qDescendants.pageid);
+		local.newLeft = -1;
+		local.width = -1;
+		local.newRight = -1;
+		local.affectedPages = -1;
+		local.sorted = [];
+		for (local.page in arguments.pages) {
+			local.PageEntity = getPage(pageId = local.page.pageId);
+			if (IsNull(local.PageEntity) || !local.PageEntity.isPersisted()) {
+				return false;
+			}
+			local.width = local.PageEntity.getRightValue() - local.PageEntity.getLeftValue();
+			local.newLeft = local.newLeft == -1 ? local.page.left : local.newRight++;
+			local.newRight = local.newLeft + local.width;
+			local.shift = local.newLeft - local.PageEntity.getLeftValue();
+			local.affectedPages = local.PageEntity.getPageId();
+			if (local.shift != 0) {
+				local.descendants = variables.ContentGateway.getNavigation(left = local.PageEntity.getLeftValue(), right = local.PageEntity.getRightValue());
+				if (local.descendants.recordCount) {
+					local.affectedPages &= "," & ValueList(local.descendants.pageid);
+				}
 			}
 			// storing extra info to help debug
-			ArrayAppend(sorted, {
-				shift = shift,
-				affectedpages = affectedpages,
-				newLeft = newLeft,
-				newRight = newRight,
-				width = width,
-				title = PageEntity.getTitle()
+			ArrayAppend(local.sorted, {
+				shift = local.shift,
+				affectedPages = local.affectedPages,
+				newLeft = local.newLeft,
+				newRight = local.newRight,
+				width = local.width,
+				title = local.PageEntity.getTitle()
 			});
 		}
 		// now it's all figured out, save it
 		transaction{
-			for (var node in sorted) {
-				if (node.shift != 0) variables.ContentGateway.shiftPages(affectedpages = node.affectedpages, shift = node.shift);
+			for (local.node in local.sorted) {
+				if (local.node.shift != 0) {
+					variables.ContentGateway.shiftPages(affectedPages = local.node.affectedPages, shift = local.node.shift);
+				}
 			}
 		}
 		// as we've used SQL instead of ORM to adjust clear ORM cache
