@@ -29,8 +29,10 @@ Xindi uses the frameworks listed below.
 
 ## Minimum Requirements
 
-* [Adobe ColdFusion 9.0.1](http://www.adobe.com/uk/products/coldfusion-family.html) or [Lucee 4.5.1.000](http://lucee.org/)
-* [MySQL 5](http://dev.mysql.com/downloads/mysql/)
+<img src="https://img.shields.io/badge/Adobe%20ColdFusion-9.01%2B-blue.svg"> or
+<img src="https://img.shields.io/badge/Lucee-4.5.1%2B-blue.svg">
+
+<img src="https://img.shields.io/badge/MySQL-5%2B-blue.svg">
 
 ## Quick Start
 
