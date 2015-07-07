@@ -16,6 +16,18 @@ component extends = "tests.xunit.BaseTest" {
 		return local.mocked;
 	}
 
+	function test_getMessage_returns_message_if_success_message_does_not_exist() {
+		variables.mocked.resultObj = variables.mockbox.createEmptyMock("framework.ValidateThis.util.Result").$("getSuccessMessage");
+		variables.CUT
+			.$property(propertyName = "instance", propertyScope = "variables", mock = {successMessage = ""})
+			.$("getSuccessMessage", "the success message")
+			.$property(propertyName = "message", propertyScope = "variables", mock = "the message")
+			.$property(propertyName = "super", propertyScope = "variables", mock = variables.mocked.resultObj);
+		local.expected = "the message";
+		local.actual = variables.CUT.getMessage();
+		$assert.isEqual(local.expected, local.actual);
+	}
+
 	function test_getMessageType_returns_message_type() {
 		local.mocked = getMocksForGetMessageTypeTests();
 		local.expected = "the message type";

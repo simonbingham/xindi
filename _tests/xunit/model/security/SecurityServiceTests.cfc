@@ -227,23 +227,4 @@ component extends = "tests.xunit.BaseTest" {
 		$assert.isTrue(variables.CUT.$once("getCurrentStorage"));
 	}
 
-	private function setupResetPasswordTests() {
-		variables.mocked.userObj = variables.mockbox.createEmptyMock("model.user.User")
-			.$("getEmail")
-			.$("setPassword");
-		variables.mocked.userGatewayObj
-			.$("newUser", variables.mocked.userObj, FALSE)
-			.$("getUserByEmail", variables.mocked.userObj, FALSE);
-		variables.mocked.userServiceObj.$("newPassword", "");
-		variables.CUT
-			.$("populate")
-			.$("setCurrentUser");
-		variables.mocked.resultObj = variables.mockbox.createEmptyMock("ValidateThis.util.Result")
-			.$("addFailure")
-			.$("setSuccessMessage")
-			.$("setErrorMessage");
-		variables.mocked.validationFactoryObj.$("validate", variables.mocked.resultObj);
-		variables.mocked.notificationServiceObj.$("send");
-	}
-
 }
