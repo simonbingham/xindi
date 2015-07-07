@@ -258,16 +258,4 @@ component extends = "tests.xunit.BaseTest" {
 		$assert.isFalse(local.actual);
 	}
 
-	function test_saveSortOrder_calls_getNavigation_when_page_is_being_moved() {
-		local.mocked = getMocksForSaveSortOrderTests();
-		variables.CUT.saveSortOrder(pages = [{pageid = 111, left = 3, right = 4}]);
-		$assert.isTrue(variables.mocked.contentGatewayObj.$once("getNavigation"));
-	}
-
-	function test_saveSortOrder_calls_shiftPages_when_page_is_being_moved() {
-		local.mocked = getMocksForSaveSortOrderTests();
-		variables.CUT.saveSortOrder(pages = [{pageid = 111, left = 3, right = 4}]);
-		$assert.isTrue(variables.mocked.contentGatewayObj.$once("shiftPages"));
-	}
-
 }
