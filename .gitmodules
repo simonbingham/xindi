@@ -1,3 +1,6 @@
 [submodule "framework/testbox"]
 	path = framework/testbox
 	url = https://github.com/Ortus-Solutions/TestBox.git
+[submodule "framework/CFSelenium"]
+	path = framework/CFSelenium
+	url = https://github.com/teamcfadvance/CFSelenium.git
