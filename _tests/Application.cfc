@@ -9,6 +9,6 @@ component {
 	this.mappings["/model"] = this.applicationroot & "model/";
 	this.mappings["/testbox"] = this.applicationroot & "framework/testbox/";
 	this.mappings["/tests"] = this.applicationroot & "_tests/";
-	this.mappings["/ValidateThis"] = this.applicationroot & "framework/ValidateThis/";
+	this.mappings["/ValidateThis"] = this.applicationroot & "framework/ValidateThis/ValidateThis/";
 
 }

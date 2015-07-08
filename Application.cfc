@@ -22,7 +22,7 @@ component extends = "framework.one" {
 	}
 	this.mappings["/hoth"] = this.applicationRoot & "framework/hoth/";
 	this.mappings["/model"] = this.applicationRoot & "model/";
-	this.mappings["/ValidateThis"] = this.applicationRoot & "framework/ValidateThis/";
+	this.mappings["/ValidateThis"] = this.applicationRoot & "framework/ValidateThis/ValidateThis/";
 	this.datasource = ListLast(this.applicationRoot, "\/");
 	this.ormEnabled = true;
 	this.ormSettings = {

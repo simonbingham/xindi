@@ -7,3 +7,6 @@
 [submodule "framework/hoth"]
 	path = framework/hoth
 	url = https://github.com/aarongreenlee/Hoth
+[submodule "framework/ValidateThis"]
+	path = framework/ValidateThis
+	url = https://github.com/teamcfadvance/ValidateThis.git
