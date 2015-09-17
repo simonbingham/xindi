@@ -1,5 +1,5 @@
 component {
-    variables._fw1_version = "3.1.0";
+    variables._fw1_version = "3.1.1";
 /*
     Copyright (c) 2009-2015, Sean Corfield, Marcin Szczepanski, Ryan Cogswell
 
@@ -1941,8 +1941,6 @@ component {
                    detail = 'renderData() called with unknown type: ' & type );
             break;
         }
-        // Clear any previous content then set status / content type:
-        getPageContext().getResponse().reset();
         getPageContext().getResponse().setStatus( statusCode );
         getPageContext().getResponse().setContentType( contentType );
         return out;
@@ -2104,9 +2102,9 @@ component {
         // this will recreate the main bean factory on a reload:
         internalFrameworkTrace( 'setupApplication() called' );
         setupApplication();
-		application[variables.framework.applicationKey] = variables.fw1App;
+        application[variables.framework.applicationKey] = variables.fw1App;
 
-	}
+    }
 
     private void function setupFrameworkDefaults() {
 
