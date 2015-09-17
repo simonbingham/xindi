@@ -29,7 +29,7 @@ Xindi uses the frameworks listed below.
 
 ## Minimum Requirements
 
-<img src="https://img.shields.io/badge/Adobe%20ColdFusion-9.01%2B-blue.svg"> or
+<img src="https://img.shields.io/badge/Adobe%20ColdFusion-9.0.2%2B-blue.svg"> or
 <img src="https://img.shields.io/badge/Lucee-4.5.1%2B-blue.svg">
 
 <img src="https://img.shields.io/badge/MySQL-5%2B-blue.svg">
