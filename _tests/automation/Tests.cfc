@@ -239,7 +239,7 @@ component extends = "testbox.system.BaseSpec" {
 	private function doLogin() {
 		selenium.open(browserURL & "/index.cfm/admin:security");
 		selenium.waitForPageToLoad(timeout);
-		selenium.type("id=email", "admin@getxindi.com");
+		selenium.type("id=email", "admin@example.com");
 		selenium.type("id=password", "password");
 		selenium.click("id=login");
 		selenium.waitForPageToLoad(timeout);

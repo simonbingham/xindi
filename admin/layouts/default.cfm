@@ -85,7 +85,7 @@
 			<div id="footer" role="contentinfo">
 				<div class="container">
 					<p>
-						<a href="http://www.getxindi.com/">Version #rc.config.version#</a>
+						Version #rc.config.version#
 						<a href="##" id="top-of-page" class="pull-right">Back to top <i class="icon-chevron-up"></i></a>
 					</p>
 				</div>

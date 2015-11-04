@@ -1,4 +1,4 @@
-# [Xindi] (http://www.getxindi.com/)
+# Xindi
 
 ## Introduction
 
