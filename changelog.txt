@@ -1,3 +1,7 @@
+Version 2015.11.4
+
+- Implement CFSelenium, Hoth and ValidateThis as Submodules.
+
 Version 2015.7.7
 
 - Implement Travis CI.

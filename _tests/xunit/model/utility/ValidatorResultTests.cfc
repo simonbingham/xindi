@@ -17,7 +17,7 @@ component extends = "tests.xunit.BaseTest" {
 	}
 
 	function test_getMessage_returns_message_if_success_message_does_not_exist() {
-		variables.mocked.resultObj = variables.mockbox.createEmptyMock("framework.ValidateThis.util.Result").$("getSuccessMessage");
+		variables.mocked.resultObj = variables.mockbox.createEmptyMock("ValidateThis.util.Result").$("getSuccessMessage");
 		variables.CUT
 			.$property(propertyName = "instance", propertyScope = "variables", mock = {successMessage = ""})
 			.$("getSuccessMessage", "the success message")

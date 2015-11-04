@@ -22,7 +22,7 @@ component extends = "framework.one" {
 	}
 	this.mappings["/hoth"] = this.applicationRoot & "framework/hoth/";
 	this.mappings["/model"] = this.applicationRoot & "model/";
-	this.mappings["/ValidateThis"] = this.applicationRoot & "framework/ValidateThis/";
+	this.mappings["/ValidateThis"] = this.applicationRoot & "framework/ValidateThis/ValidateThis/";
 	this.datasource = ListLast(this.applicationRoot, "\/");
 	this.ormEnabled = true;
 	this.ormSettings = {
@@ -203,7 +203,7 @@ component extends = "framework.one" {
 				, resetPasswordEmailSubject = ""
 				, whitelist = "^admin#variables.framework.subsystemDelimiter#security,^public#variables.framework.subsystemDelimiter#" // list of unsecure actions - by default all requests require authentication
 			}
-			, version = "2015.7.7"
+			, version = "2015.11.4"
 		};
 		// override config in development mode
 		if (local.config.development) {
