@@ -1,3 +1,7 @@
+Version 2016.2.17
+
+- Update automation to use Google Chrome instead of Firefox which no longer supports Selenium RC.
+
 Version 2015.11.4
 
 - Implement CFSelenium, Hoth and ValidateThis as Submodules.

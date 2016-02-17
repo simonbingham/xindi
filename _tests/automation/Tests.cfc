@@ -9,7 +9,7 @@ component extends = "testbox.system.BaseSpec" {
 
 	function beforeTests() {
 		browserURL = "http://#CGI.HTTP_HOST#/xindi";
-		browserStartCommand = "*firefox";
+		browserStartCommand = "*googlechrome";
 
 		selenium = createobject("component", "CFSelenium.selenium").init();
 		selenium.start(browserUrl, browserStartCommand);
