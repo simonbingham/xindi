@@ -203,7 +203,7 @@ component extends = "framework.one" {
 				, resetPasswordEmailSubject = ""
 				, whitelist = "^admin#variables.framework.subsystemDelimiter#security,^public#variables.framework.subsystemDelimiter#" // list of unsecure actions - by default all requests require authentication
 			}
-			, version = "2016.2.17"
+			, version = "2016.6.9"
 		};
 		// override config in development mode
 		if (local.config.development) {

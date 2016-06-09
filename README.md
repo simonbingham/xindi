@@ -62,4 +62,4 @@ If you experience any problems with Xindi please:
 
 ## Social Media
 
-You'll find Xindi on [Twitter] (https://twitter.com/#!/getxindi), [Facebook] (http://www.facebook.com/getxindi) and [Google+] (https://plus.google.com/112798469896267857099).
+You'll find Xindi on [Twitter] (https://twitter.com/#!/getxindi).
