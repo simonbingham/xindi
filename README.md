@@ -56,10 +56,5 @@ Xindi is authored by [Simon Bingham] (https://twitter.com/#!/simonbingham) with 
 
 If you experience any problems with Xindi please:
 
-* [visit the Google Group for help and advice] (https://groups.google.com/forum/?hl=en&fromgroups#!forum/getxindi)
 * [submit a ticket to the issue tracker] (https://github.com/simonbingham/xindi/issues)
 * fix the error yourself and submit a pull request
-
-## Social Media
-
-You'll find Xindi on [Twitter] (https://twitter.com/#!/getxindi).
