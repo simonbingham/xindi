@@ -50,7 +50,7 @@ However, the frameworks listed above have their own licenses which you should re
 
 ## Contributors
 
-Xindi is authored by [Simon Bingham] (https://twitter.com/#!/simonbingham) with support from [John Whish] (https://twitter.com/#!/aliaspooryorik) but anyone and everyone is welcome to contribute.
+Xindi is authored by [Simon Bingham](https://twitter.com/#!/simonbingham) with support from [John Whish](https://twitter.com/#!/aliaspooryorik) but anyone and everyone is welcome to contribute.
 
 ## Problems
 
