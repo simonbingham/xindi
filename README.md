@@ -14,18 +14,18 @@ Xindi uses the frameworks listed below.
 
 ### Backend
 
-* [FW/1] (https://github.com/seancorfield/fw1)
-* [DI/1] (https://github.com/seancorfield/di1)
-* [ValidateThis] (https://github.com/bobsilverberg/ValidateThis)
-* [Hoth] (https://github.com/aarongreenlee/Hoth)
-* [Testbox] (https://github.com/Ortus-Solutions/TestBox)
-* [CFSelenium] (https://github.com/bobsilverberg/CFSelenium)
+* [FW/1](https://github.com/seancorfield/fw1)
+* [DI/1](https://github.com/seancorfield/di1)
+* [ValidateThis](https://github.com/bobsilverberg/ValidateThis)
+* [Hoth](https://github.com/aarongreenlee/Hoth)
+* [Testbox](https://github.com/Ortus-Solutions/TestBox)
+* [CFSelenium](https://github.com/bobsilverberg/CFSelenium)
 
 ### Frontend
 
-* [Twitter Bootstrap] (http://twitter.github.com/bootstrap/)
-* [jQuery (and jQuery UI)] (http://jquery.com/)
-* [CKeditor] (http://ckeditor.com/)
+* [Twitter Bootstrap](http://twitter.github.com/bootstrap/)
+* [jQuery (and jQuery UI)](http://jquery.com/)
+* [CKeditor](http://ckeditor.com/)
 
 ## Minimum Requirements
 
@@ -36,15 +36,15 @@ Xindi uses the frameworks listed below.
 
 ## Quick Start
 
-Clone the git repo - `git clone git@github.com:simonbingham/xindi.git` - or [download it] (https://github.com/simonbingham/xindi/zipball/master).
+Clone the git repo - `git clone git@github.com:simonbingham/xindi.git` - or [download it](https://github.com/simonbingham/xindi/zipball/master).
 
 ## Installation
 
-[Please view the project wiki for installation instructions.] (https://github.com/simonbingham/xindi/wiki)
+[Please view the project wiki for installation instructions.](https://github.com/simonbingham/xindi/wiki)
 
 ## License
 
-Xindi is licensed under the [MIT License (MIT)] (http://www.opensource.org/licenses/mit-license.php).
+Xindi is licensed under the [MIT License (MIT)](http://www.opensource.org/licenses/mit-license.php).
 
 However, the frameworks listed above have their own licenses which you should review before using Xindi.
 
@@ -56,5 +56,5 @@ Xindi is authored by [Simon Bingham](https://twitter.com/#!/simonbingham) with s
 
 If you experience any problems with Xindi please:
 
-* [submit a ticket to the issue tracker] (https://github.com/simonbingham/xindi/issues)
+* [submit a ticket to the issue tracker](https://github.com/simonbingham/xindi/issues)
 * fix the error yourself and submit a pull request
